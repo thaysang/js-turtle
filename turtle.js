@@ -1,11 +1,22 @@
+/************************************************************************
+*  turtle.js -- javascript for the turtle graphic language extensions
+*
+*  Copyright (c) 2015 Kirk Carlson
+*  MIT license
+************************************************************************/
+
+// some globals
+var intervals = []; //array of inteval ids started with the animate function
+var timeouts = []; //array of time out ids started with the delay function
+
 // get a handle for the canvases in the document
-var imageCanvas = $('#imagecanvas')[0];
+var imageCanvas = document.getElementById('imagecanvas');
 var imageContext = imageCanvas.getContext('2d');
 
 imageContext.textAlign = "center";
 imageContext.textBaseline = "middle";
 
-var turtleCanvas = $('#turtlecanvas')[0];
+var turtleCanvas = document.getElementById('turtlecanvas');
 var turtleContext = turtleCanvas.getContext('2d');
 
 // the turtle takes precedence when compositing
@@ -19,13 +30,13 @@ function initialise() {
                  x: 0,
                  y: 0
               },
-              angle: 0,
+              angle: 0, //12 o'clock
               penDown: true,
               width: 1,
               visible: true,
               redraw: true, // does this belong here?
               wrap: true,
-              colour: {r: 0, g: 0, b: 0, a: 1},
+              color: "black",
             };
    imageContext.lineWidth = turtle.width;
    imageContext.strokeStyle = "black";
@@ -95,6 +106,24 @@ function reset() {
    initialise();
    clear();
    draw();
+   stopAnimation();
+}
+
+// move the turtle to the origin and set heading to 0
+function home() {
+   setposition (0,0);
+   setheading (0);
+}
+
+// stop all animations in progress
+function stopAnimation() {
+  while (intervals.length > 0) {
+    clearInterval(intervals.pop());
+  }
+  while (timeouts.length > 0) {
+    clearTimeout(timeouts.pop());
+  }
+  document.getElementById("stopButton").hidden=true;
 }
 
 // Trace the forward motion of the turtle, allowing for possible
@@ -170,50 +199,22 @@ function forward(distance) {
    drawIf();
 }
 
-/*
-// move the turtle forward by some distance from its current position
-function forward(distance) {
-   imageContext.save();
-   centerCoords(imageContext);
-   imageContext.beginPath();
-   imageContext.moveTo(turtle.pos.x, turtle.pos.y);
-   turtle.pos.x += Math.sin(turtle.angle) * distance;
-   turtle.pos.y += Math.cos(turtle.angle) * distance;
-   imageContext.lineTo(turtle.pos.x, turtle.pos.y);
-   // only draw if the pen is currently down.
-   if (turtle.penDown)
-      imageContext.stroke();
-   imageContext.restore();
-   drawIf();
-}
-*/
+fd = forward;
 
-// turn edge wrapping on/off
-function wrap(bool) {
-   turtle.wrap = bool;
+function backward (distance) {
+  right (180);
+  forward (distance);
+  right (180);
 }
 
-// show/hide the turtle
-function hideTurtle() {
-   turtle.visible = false;
-   drawIf();
-}
+bk = backward;
+back = backward;
 
-// show/hide the turtle
-function showTurtle() {
-   turtle.visible = true;
-   drawIf();
-}
 
 // turn on/off redrawing
 function redrawOnMove(bool) {
    turtle.redraw = bool;
 }
-
-// lift up the pen (don't draw)
-function penup() { turtle.penDown = false; }
-// put the pen down (do draw)
-function pendown() { turtle.penDown = true; }
 
 // turn right by an angle in degrees
 function right(angle) {
@@ -221,11 +222,52 @@ function right(angle) {
    drawIf();
 }
 
+turn = right;
+
 // turn left by an angle in degrees
 function left(angle) {
    turtle.angle -= degToRad(angle);
    drawIf();
 }
+
+// lift up the pen (don't draw)
+function penup() {
+  turtle.penDown = false;
+}
+
+pu = penup;
+up = penup;
+
+
+// put the pen down (do draw)
+function pendown() {
+  turtle.penDown = true;
+}
+
+pd = pendown;
+down = pendown;
+
+// turn edge wrapping on/off
+function wrap(bool) {
+   turtle.wrap = bool;
+}
+
+// show/hide the turtle
+function hideturtle() {
+   turtle.visible = false;
+   drawIf();
+}
+
+ht = hideturtle;
+hideTurtle = hideturtle;
+
+function showturtle() {
+   turtle.visible = true;
+   drawIf();
+}
+
+st = showturtle;
+showTurtle = showturtle;
 
 // move the turtle to a particular coordinate (don't draw on the way there)
 function goto(x,y) {
@@ -234,10 +276,119 @@ function goto(x,y) {
    drawIf();
 }
 
+setposition = goto;
+setpos = goto;
+
+// move the turtle to a particular x coordinate
+function setx(x) {
+   turtle.pos.x = x;
+   drawIf();
+}
+
+// move the turtle to a particular y coordinate
+function sety(y) {
+   turtle.pos.y = y;
+   drawIf();
+}
+
 // set the angle of the turtle in degrees
 function angle(angle) {
    turtle.angle = degToRad(angle);
 }
+
+setheading = angle;
+seth = angle;
+
+// set the width of the line
+function width(w) {
+   turtle.width = w;
+   imageContext.lineWidth = w;
+   imageContext.lineWidth = turtle.width;
+}
+
+pensize = width;
+
+// write some text at the turtle position in direction of turtle
+// turtle position does not change
+function write(msg) {
+   imageContext.save();
+   centerCoords(imageContext);
+   imageContext.translate(turtle.pos.x, turtle.pos.y);
+   imageContext.transform(1, 0, 0, -1, 0, 0);
+   imageContext.rotate(turtle.angle - Math.PI/2);
+   imageContext.textAlign = "left";
+   imageContext.textBaseline = "bottom";
+   imageContext.fillText(msg, 0, 0);
+   imageContext.restore();
+   drawIf();
+}
+
+
+// set the color of the line and fill using turtle graphic standard color and CSS colors
+function color (col) {
+  if (typeof(col) === "number") {
+    if (col < 16) { // assume standard logo turtle color
+      col = logoColors [col];
+    } else {
+      //color is assumed to be a 32-bit color value
+    }
+  } else if (typeof(col) != "string") { // col is not a supported type
+    col = "black";
+  }
+  turtle.color = col;
+  imageContext.strokeStyle = col;
+}
+
+colour = color;
+
+// map one of several color methods to a 32-bit integer
+//    Hexadecimal colors (e.g., #ff0000)
+//    RGB colors (e.g., rgb(255,0,0))
+//    RGBA colors (e.g., rgba(255,0,0,1))
+//    HSL colors (e.g., hsl(120, 100%, 50%))
+//    HSLA colors (e.g., hsla(120, 100%, 50%, 1))
+//    Predefined/Cross-browser color names (e.g., "red")
+//    logo color numbers (although this conflicts with 16 legitimate color values
+//      that are shades of very dark blue #000000 - #00000F)
+logoColors = ["black", "blue", "lime", "cyan", "red", "magenta", "yellow", "white", 
+              "brown", "tan", "green", "aqua", "salmon", "purple", "orange", "gray"]
+
+
+
+// Generate a random integer between low and high (or 0 and low if only one specified)
+function random(low, high) {
+   if (high == undefined) {
+     return Math.floor( (low + 1) * Math.random ());
+   } else {
+     return Math.floor(Math.random() * (high - low + 1) + low);
+   }
+}
+
+// Repeat some action n times
+function repeat(n, action) {
+   for (var count = 1; count <= n; count++) {
+      action();
+   }
+}
+
+// Repeat some action every ms milliseconds
+function animate(f, ms) {
+   intervals.push (setInterval(f, ms));
+   document.getElementById("stopButton").hidden=false;
+}
+
+function delay(f, ms) {
+   timeouts.push (setTimeout(f, ms));
+   document.getElementById("stopButton").hidden=false;
+}
+
+function setfont(font) {
+   imageContext.font = font;
+}
+
+setFont = setfont;
+
+//SUPPORT FUNCTIONS
 
 // convert degrees to radians
 function degToRad(deg) {
@@ -249,76 +400,153 @@ function radToDeg(deg) {
    return deg * 180 / Math.PI;
 }
 
-// set the width of the line
-function width(w) {
-   turtle.width = w;
-   imageContext.lineWidth = w;
+// constrain a value between low and high
+function constrain(n, low, high) {
+  var modulo = high - low;
+  while (n < low) {
+    n = n + modulo;
+  }
+  while (n > high) {
+    n = n - modulo;
+  }
+  return n;
+}
+  
+/*************************************************************************************
+Coordinate systems...
+
+Drawing a circle became a pain because of the number of different coordinate
+systems being used. These are:
+  - the javascript canvas.
+    = origin is at the top left
+    = origin has positive going down, no negatives
+    = origin has been translated to mimic cartesian coordinates
+    = arcs are referenced with 0 at 3 o'clock going clockwise
+  - the turtle graphic space.
+    = Origin at center to mimic cartesian coordinates
+    = heading is referenced with 0 at 12 o'clock going clockwise
+  - cartesian coodinates
+    = origin is at center with positive up
+    = 0 angle is at 3 o'clock going counterclockwise
+*************************************************************************************/
+
+//  curveleft (radius, extent)
+//   center is radius distance perpendicular to turtle's left
+//   extent (if given) is number of degrees in partial arc
+//   arc is drawn counterclockwise
+//   direction of turtle is changed by extent
+function curveleft (radius, extent) {
+  if (extent == undefined) {
+    extent = 360;
+  }
+  var startAngle = turtle.angle; // in radians from 12 o'clock .. heading is same as start
+  var counterclockwise = true;
+  var centerX = turtle.pos.x - radius * Math.cos (turtle.angle); // left of turtle
+  var centerY = turtle.pos.y + radius * Math.sin (turtle.angle);
+  stopAngle = constrain( (startAngle - degToRad(extent)), 0, 2*Math.PI); // in radians CCW
+  turtle.angle = stopAngle;
+  turtle.pos.x = centerX + radius * Math.cos(stopAngle);
+  turtle.pos.y = centerY - radius * Math.sin(stopAngle);
+
+  // correct for flipping of x values, this changes rotation and angles
+  counterclockwise = !counterclockwise;
+  startAngle = -startAngle;
+  stopAngle = -stopAngle;
+  imageContext.save();
+  centerCoords(imageContext);
+  imageContext.beginPath();
+  imageContext.arc (centerX, centerY, radius, startAngle, stopAngle, counterclockwise);
+  // draw it
+  if (turtle.penDown) {
+    imageContext.stroke();
+  }
+  imageContext.restore();
+  drawIf();
 }
 
-// write some text at the turtle position.
-// ideally we'd like this to rotate the text based on
-// the turtle orientation, but this will require some clever
-// canvas transformations which aren't implemented yet.
-function write(msg) {
-   imageContext.save();
-   centerCoords(imageContext);
-   imageContext.translate(turtle.pos.x, turtle.pos.y);
-   imageContext.transform(1, 0, 0, -1, 0, 0);
-   imageContext.translate(-turtle.pos.x, -turtle.pos.y);
-   imageContext.fillText(msg, turtle.pos.x, turtle.pos.y);
-   imageContext.restore();
-   drawIf();
+
+//  curveright (radius, extent)
+//   center is radius distance perpendicular to turtle's right
+//   extent (if given) is number of degrees in partial arc
+//   arc is drawn clockwise
+//   direction of turtle is changed by extent
+function curveright (radius, extent) {
+  if (extent == undefined) {
+    extent = 360;
+  }
+  var startAngle = Math.PI + turtle.angle; // in radians .. heading is same as start
+  var counterclockwise = false;
+  var centerX = turtle.pos.x + radius * Math.cos (turtle.angle); // right of turtle
+  var centerY = turtle.pos.y - radius * Math.sin (turtle.angle);
+  stopAngle = constrain( startAngle + degToRad(extent), 0, 2*Math.PI); // in radians CW
+  turtle.angle = stopAngle + Math.PI;
+  turtle.pos.x = centerX + radius * Math.cos(stopAngle);
+  turtle.pos.y = centerY - radius * Math.sin(stopAngle);
+
+  // correct for flipping of x values, this changes rotation and angles
+  counterclockwise = !counterclockwise;
+  startAngle = -startAngle;
+  stopAngle = -stopAngle;
+  imageContext.save();
+  centerCoords(imageContext);
+  imageContext.beginPath();
+  imageContext.arc (centerX, centerY, radius, startAngle, stopAngle, counterclockwise);
+  // draw it
+  if (turtle.penDown) {
+    imageContext.stroke();
+  }
+  imageContext.restore();
+  drawIf();
 }
 
-// set the colour of the line using RGB values in the range 0 - 255.
-function colour (r,g,b,a) {
-    imageContext.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + a + ")";
-    turtle.colour.r = r;
-    turtle.colour.g = g;
-    turtle.colour.b = b;
-    turtle.colour.a = a;
+
+// circle(radius[[,extent],CCW))
+// radius is length in pixels (if none, max of pensize+4, 2*pensize)
+// CCW is boolean for counterclockwise, default to false)
+function circle(radius, extent, CCW) {
+  if (extent === undefined) {
+    var startAngle = 0;
+    var stopAngle = 2*Math.PI;
+  } else {
+    var startAngle = turtle.angle-Math.PI/2;
+    var stopAngle = startAngle + degToRad(extent);
+  }
+  if (CCW === undefined) {
+    CCW = false;
+  } else {
+    CCW = true;
+  }
+  imageContext.save();
+  centerCoords(imageContext);
+  imageContext.beginPath();
+  imageContext.strokeStyle=turtle.color;
+  //imageContext.fillStyle=turtle.color;
+  // negate angles and CCW due to context translation
+  imageContext.arc (turtle.pos.x, turtle.pos.y, radius, -startAngle, -stopAngle, !CCW);
+  // draw it regardless of pen up or down
+  imageContext.stroke();
+  //imageContext.fill();
+  imageContext.restore();
+  drawIf();
 }
 
-// Generate a random integer between low and hi
-function random(low, hi) {
-   return Math.floor(Math.random() * (hi - low + 1) + low);
+// dot(radius)
+// radius in pixels (if none, max of pensize+4, 2*pensize)
+function dot(size) {
+  if (size == undefined) {
+    size = Math.max(turtle.width+4, turtle.width*2);
+  }
+  imageContext.save();
+  centerCoords(imageContext);
+  imageContext.beginPath();
+  imageContext.fillStyle=turtle.color;
+  imageContext.strokeStyle=turtle.color;
+  imageContext.arc (turtle.pos.x, turtle.pos.y, size, 0, 2*Math.PI);
+  // draw it regardless of pen up or down
+  imageContext.stroke();
+  imageContext.fill();
+  imageContext.restore();
+  drawIf();
 }
-
-function repeat(n, action) {
-   for (var count = 1; count <= n; count++)
-      action();
-}
-
-function animate(f,ms) {
-   return setInterval(f, ms);
-}
-
-function setFont(font) {
-   imageContext.font = font;
-}
-
-// Execute the program when the command box is changed
-// (when the user presses enter)
-$('#command').change(function () {
-   var commandText = $(this).val();
-   var definitionsText = $('#definitions').val();
-   try {
-     // execute any code in the definitions box
-     eval(definitionsText);
-     // execute the code in the command box
-     eval(commandText);
-   } catch(e) {
-     alert('Exception thrown, please see console');
-     throw e;
-   } finally {
-     // clear the command box
-     $(this).val('');
-   }
-});
-
-$('#resetButton').click(function() {
-  reset();
-});
-
 
 reset();

@@ -1,72 +1,477 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-   <head>
-      <title>Javascript Turtle</title>
-      <script type="text/javascript" src="jquery-1.6.4.min.js"></script>
-      <link type="text/css" rel="stylesheet" href="turtle.css" />
-   </head>
-   <body>
-      <div id="wrap">
-         <h1>Javascript Turtle Graphics</h1>
-         <div id="leftcolumn">
-            <h4>Language Reference</h4>
-            <code>
-              forward(distance) <br/>
-              right(angle) <br/>
-              left(angle) <br/>
-              goto(x,y) <br/>
-              clear() <br/>
-              penup() <br/>
-              pendown() <br/>
-              reset() <br/>
-              angle(angle) <br/>
-              width(width) <br/>
-              colour(r,g,b,a) <br/>
-              write(string) <br/>
-              n = random(low,high) <br/>
-              hideTurtle() <br/>
-              showTurtle() <br/>
-              redrawOnMove(bool) <br/>
-              draw() <br/>
-              repeat(n, action) <br/>
-              wrap(bool) <br/>
-              animate(action,ms) <br/>
-            </code>
-         </div> <!-- leftcolumn -->
-         <div id="midcolumn">
-            <h4>Canvas</h4>
-            <canvas id="turtlecanvas" width="300" height="300"></canvas>
-            <canvas id="imagecanvas" width="300" height="300" style="display:none"></canvas>
-            <h4>Command</h4>
-               <input type="text" id="command" />
-	    <br/>
-	    <button id="resetButton">Reset</button>
-
-         </div> <!-- midcolumn -->
-         <div id="rightcolumn">
-            <h4>Definitions</h4>
-            <textarea id="definitions" rows="20">
+<head>
+   <title>Turtle Graphics</title>
+   <link type="text/css" rel="stylesheet" href="turtle.css" />
+</head>
+<body>
+  <div id="wrap">
+    <h1>Javascript Turtle Graphics</h1>
+    <div id="leftcolumn">
+      <div id="lefthandle"></div>
+    <div id="reference">
+      <h4>Language Reference</h4>
+       <ul>
+         <li>
+           forward(<em>distance</em>) | fd(<em>distance</em>)
+           <p>
+             Move the turtle forward <em>distance</em> pixels.
+           </p>
+           <p>
+             Example: <code id="forwardCode">forward (10)</code>
+           </p>
+         </li>
+         <li>
+           backward(<em>distance</em>) | back(<em>distance</em>) | bk(<em>distance</em>)
+           <p>
+             Move the turtle backward <em>distance</em> pixels, but leave
+             it pointing forward.
+           </p>
+           <p>
+             Example: <code id=backwardCode>backward (10)</code>
+           </p>
+         </li>
+         <li>
+           right(<em>angle</em>) | rt(<em>angle</em>) | turn(<em>angle</em>)
+           <p>
+             Turn the turtle to the right <em>angle</em> degrees.
+           </p>
+           <p>
+             Example: <code id=rightCode>right (90)</code>
+           </p>
+         </li>
+         <li>
+           left(<em>angle</em>)
+           <p>
+             Turn the turtle to the left <em>angle</em> degrees.
+           </p>
+           <p>
+             Example: <code id=leftCode>left (90)</code>
+           </p>
+         </li>
+         <li>
+           penup() | up() | pu()
+           <p>
+              Lift the pen in the turtle so that it does not leave a mark as
+              it moves.
+           </p>
+           <p>
+              Example: <code id=penupCode>penup()</code>
+           </p>
+         </li>
+         <li>
+           pendown() | down() | pd()
+           <p>
+             Lower the pen in the turtle so that it leaves a mark as
+             it moves.
+           </p>
+           <p>
+             Example: <code id=pendownCode>pendown()</code>
+           </p>
+         </li>
+         <li>
+           hideturtle() | ht()
+           <p>
+             Hide the turtle. It can still draw, but it isn't shown.
+           </p>
+           <p>
+             Example: <code id=hideturtleCode>hideTurtle()</code>
+           </p>
+         </li>
+         <li>
+           showturtle() | st()
+           <p>
+             Show the turtle.
+           </p>
+           <p>
+             Example: <code id=showturtleCode>showTurtle()</code>
+           </p>
+         </li>
+         <li>
+           home()
+           <p>
+             Move the turtle to its home in the center
+             (x=0, y=0) and pointing toward the top (angle=0).
+           </p>
+           <p>
+             Example: <code id=homeCode>home()</code>
+           </p>
+         </li>
+         <li>
+           clear()
+           <p>
+             Clear the graphics area, but leave the turtle where it is.
+           </p>
+           <p>
+             Example: <code id=clearCode>clear()</code>
+           </p>
+         </li>
+         <li>
+           reset()
+           <p>
+             Clear the graphics area and move the turtle to its home in the center
+             (x=0, y=0) and pointing toward the top (angle=0).
+           </p>
+           <p>
+             Example: <code id=resetCode>reset()</code>
+           </p>
+         </li>
+         <li>
+           goto(<em>x</em>,<em>y</em>) | setposition(<em>x</em>,<em>y</em>) | setpos(<em>x</em>,<em>y</em>)
+           <p>
+             Move the turtle to the coordinates <em>x</em> pixels to the
+             right of the center of the drawing area (or <em>-x</em> pixels to the
+             left of the center) and <em>y</em> pixels above the center of the drawing
+             area (or <em>-y</em> to below the center). This does not draw on the way.
+           </p>
+           <p>
+             Example: <code id=gotoCode>goto (20,10)</code>
+           </p>
+         </li>
+         <li>
+           setx(<em>x</em>)
+           <p>
+             Move the turtle horizontally to the coordinates <em>x</em> pixels to the
+             right of the center of the drawing area (or <em>-x</em> pixels to the
+             left of the center).
+           </p>
+           <p>
+             Example: <code id=setxCode>setx (0)</code>
+           </p>
+         </li>
+         <li>
+           sety(<em>y</em>)
+           <p>
+             Move the turtle vertically to the coordinates <em>y</em> pixels above
+             the center of the drawing area (or <em>-y</em> to below the center).
+             This does not draw on the way.
+           </p>
+           <p>
+             Example: <code id=setyCode>sety (0)</code>
+           </p>
+         </li>
+         <li>
+           angle(<em>angle</em>)
+           <p>
+             Turn the turtle to to the absolute <em>angle</em> relative to top
+             of the graphic area. <em>0</em> is the top, <em>0</em> is toward the top,
+             <em>90</em> is toward the right, <em>180</em> is toward the bottom, and
+             <em>270</em> <em>-90</em> is toward the left.
+           </p>
+           <p>
+             Example: <code id=angleCode>angle (90)</code>
+           </p>
+         </li>
+         <li>
+           width(<em>width</em>)
+           <p>
+             Change the <em>width</em> of the turtle pen (in pixels).
+           </p>
+           <p>
+             Example: <code id=widthCode>width(5);</code>
+           </p>
+         </li>
+         <li>
+           color(<em>colorcode</em>)
+           <p>
+             Change the color of the turtle pen. The <em>colorcode</em> may be a number
+             from 0 to 15 representing the standard turtle graphics colors.
+             <br/>
+             <button id="blackButton">0 black</button>
+             <button id="blueButton">1 blue</button>
+             <button id="limeButton">2 lime</button>
+             <button id="cyanButton">3 cyan</button>
+             <button id="redButton">4 red</button>
+             <button id="magentaButton">5 magenta</button>
+             <button id="yellowButton">6 yellow</button>
+             <button id="whiteButton">7 white</button>
+             <button id="brownButton">8 brown</button>
+             <button id="tanButton">9 tan</button>
+             <button id="greenButton">10 green</button>
+             <button id="aquaButton">11 aqua</button>
+             <button id="salmonButton">12 salmon</button>
+             <button id="purpleButton">13 purple</button>
+             <button id="orangeButton">14 orange</button>
+             <button id="grayButton">15 gray</button>
+           </p>
+           <p>
+             The <em>colorcode</em> may also be a quoted string with any acceptable CSS color code as in:
+           </p>
+             <ul>
+               <li>
+                 "<em>colorName</em>"
+                 where <em>colorName</em> is any of the named CSS colors.
+               </li>
+               <li>
+                 #<em>RRGGBB</em>"
+                 where <em>RR</em>, <em>GG</em>, and <em>BB</em> is the hexidecimal
+                 amount of red, green and blue respectively.
+               </li>
+               <li>
+                 "rgb(<em>RR</em>, <em>GG</em>, <em>BB</em>)"
+                 where <em>RR</em>, <em>GG</em>, and <em>BB</em> is the decimal
+                 amount of red, green and blue respectively.
+               </li>
+               <li>
+                 "rgba(<em>RR</em>, <em>GG</em>, <em>BB</em>, <em>AA</em>)"
+                 where <em>RR</em>, <em>GG</em>, and <em>BB</em> is the decimal
+                 amount of red, green and blue respectively and
+                 <em>AA</em> is the alpha channel for transparancy between 1.0 for
+                 opaque and 0.0 for totally transparent.
+               </li>
+               <li>
+                 "rbg(RR, BB, GG)"
+               </li>
+               <li>
+                 "rgba(RR, GG, BB, AA)"
+               </li>
+               <li>
+                 "hsl(120, 100%, 50%)"
+                 where the values are hue is postion on the color wheel (0 to 360),
+                 saturation percentage, and lightness percentage.
+               </li>
+               <li>
+                 "hsl(120, 100%, 50%, 1)"
+                 where the values are hue is postion on the color wheel (0 to 360),
+                 saturation percentage, lightness percentage and alpha channel
+                 for transparancy between 1.0 for opaque and 0.0 for totally
+                 transparent.
+               </li>
+             </ul> 
+           <p>
+             Example: <code id=colorCode>color("red")</code>
+           </p>
+         </li>
+         <li>
+           write(<em>string</em>)
+           <p>
+             Places the text in the <em>string</em>along the projected path of
+             the turtle. The <em>string</em> may be a set of characters enclosed by
+             single or double quotation marks. The <em>string</em> may also be a value
+             returned by a function.
+           </p>
+           <p>
+             Example: <code id=writeCode>write("Hello World")</code>
+           </p>
+         </li>
+         <li>
+           setfont(<em>fontName</em>)
+           <p>
+             Set the font to the font named <em>fontname</em> for the text used
+             by the turtle.
+           </p>
+           <p>
+             Example: <code id=setfontCode>setfont("courier")</code>
+           </p>
+         </li>
+         <li>
+           curveright (<em>radius</em>[,<em>extent</em>])
+           <p>
+             Draw a circular curve from the turtle's postion. The
+             center of the curve is to the right of the turtle at a perpendicular
+             distance of <em>radius</em> pixels. The curve is a full circle unless
+             <em>extent</em> is provided to limit the number of degrees of arc.
+           </p>
+           <p>
+             Example: <code id=curveright1Code>curveright(30)</code>
+           </p>
+           <p>
+             Example: <code id=curveright2Code>curveright(10,45)</code>
+           </p>
+         </li>
+         <li>
+           curveleft (<em>radius</em>[,<em>extent</em>])
+           <p>
+             Draw a circular curve from the turtle's postion. The
+             center of the curve is to the left of the turtle at a perpendicular
+             distance of <em>radius</em> pixels. The curve is a full circle unless
+             <em>extent</em> is provided to limit the number of degrees of arc.
+           </p>
+           <p>
+             Example: <code id=curveleft1Code>curveleft(20)</code>
+           </p>
+           <p>
+             Example: <code id=curveleft2Code>curveleft(10,45)</code>
+           </p>
+         </li>
+         <li>
+           circle (<em>radius</em>[[,(<em>extent</em>],(<em>CCW</em>])
+           <p>
+             Draw a circle or arc centered on the turtle's postion.  A full circle
+             is drawn unless <em>extent</em> is provided to limit the number of
+             degrees of arc. The arc is drawn clockwise unless a boolean <em>CCW</em>
+             of <em>false</em> is supplied.
+           </p>
+           <p>
+             Example: <code id=circle1Code>circle(10)</code>
+           </p>
+           <p>
+             Example: <code id=circle2Code>circle(20,90)</code>
+           </p>
+           <p>
+             Example: <code id=circle3Code>circle(30,-90,false)</code>
+           </p>
+         </li>
+         <li>
+           dot ([<em>radius</em>])
+           <p>
+// radius in pixels (if none, max of pensize+4, 2*pensize)
+             Draw a filled circle centered on the turtle's postion.
+             The circle is drawn with a radius of <em>radius</em>) pixels. If
+             <em>radius</em>) is not specified, it defaults to the larger of
+             width plus 4 or twice the pensize). 
+           </p>
+           <p>
+             Example: <code id=dot1Code>dot()</code>
+           </p>
+           <p>
+             Example: <code id=dot2Code>dot(10)</code>
+           </p>
+         </li>
+         <li>
+           n = random([<em>low,</em>]<em>high</em>)
+           <p>
+             Pick a random number between <em>low</em> and <em>high</em> -1.
+             If only one value <em>high</em> is provided, pick a number between 0 and
+             <em>high</em> -1.
+           </p>
+           <p>
+             Example: <code id=random1Code>write(random(1,7)+ " ")</code>
+           </p>
+           <p>
+             Example: <code id=random2Code>write(random(6)+ " ")</code>
+           </p>
+         </li>
+         <li>
+           repeat(<em>n</em>, <em>action</em>)
+           <p>
+             Allows a function <em>action</em> or group of actions to be repeated
+             <em>n</em> times.
+           </p>
+           <p>
+             Example: <code id=repeat1Code>repeat (4, function () {forward(10);right(90)})</code>
+           </p>
+           <p>
+             Example: <code id=repeat2Code>function el () {forward(10);right(90)}; repeat (4, el)</code>
+           </p>
+         </li>
+         <li>
+           wrap(<em>bool</em>)
+           <p>
+             Turns wrapping on and off at the edges of the graphic area by setting it
+             <em>true</em> or <em>false</em> respecitively.
+           </p>
+           <p>
+             Example: <code id=wrapTrueCode>wrap(true)</code>
+           </p>
+           <p>
+             Example: <code id=wrapFalseCode>wrap(false)</code>
+           </p>
+         </li>
+         <li>
+           animate(<em>action</em>,<em>ms</em>)
+           <p>
+             Evalutes <em>action</em> every <em>ms</em> milliseconds.
+           </p>
+           <p>
+             Example: <code id=animate1Code>animate ("forward(10)",100)</code>
+           </p>
+           <p>
+             Example: <code id=animate2Code>animate ("forward(100);right(90)};",100)</code>
+           </p>
+           <p>
+             Example: <code id=animate3Code>function el () {forward(100);right(90)}; animate (el,1000)</code>
+           </p>
+         </li>
+         <li>
+           redrawOnMove(<em>bool</em>)
+           <p>
+             Turn redrawing on or off by specifying the <em>bool</em> as
+             <em>true</em> or <em>false</em>.
+             <em>Not sure that this is useful.</em>
+           </p>
+           <p>
+             Example: <code id=redrawOnMoveTrueCode>redrawOnMove(true)</code>
+           </p>
+           <p>
+             Example: <code id=redrawOnMoveFalseCode>redrawOnMove(false)</code>
+           </p>
+         </li>
+         <li>
+           draw()
+           <p>
+             Draw the turtle and the current image.
+             <em>Not sure that this is useful.</em>
+           </p>
+           <p>
+             Example: <code id=drawCode>draw()</code>
+           </p>
+         </li>
+         </ul>
+      </div> <!-- reference -->
+      </div> <!-- leftcolumn -->
+      <div id="midcolumn">
+        <h4>Canvas</h4>
+        <canvas id="turtlecanvas" width="300" height="300"></canvas>
+        <canvas id="imagecanvas" width="300" height="300" style="display:none"></canvas>
+        <h4>Command</h4>
+        <input type="text" id="command" />
+	<br/>
+	<button id="resetButton">Reset</button>
+	<button id="runButton">Run Demo</button>
+	<button id="stopButton">Stop</button>
+      </div> <!-- midcolumn -->
+      <div id="rightcolumn">
+        <h4>Examples
+        <select id=examples>
+          <option value="bounce">Bounce</option>
+          <option value="clock">Clock</option>
+          <option value="nested_hexagons">Nested Hexagons</option>
+          <option value="nested_squares">Nested Squares</option>
+          <option value="polygon">Polygon</option>
+          <option value="randstripe">Graphitti</option>
+          <option value="sierpinski">Sierpinski Curve</option>
+          <option value="spiral">Random Spiral</option>
+          <option value="spinning_squares">Spinning Squares</option>
+          <option value="tree">Tree</option>
+        </select>
+        </h4>
+        <textarea id="definitions">
 // Define helper functions here.
 // For example:
 
 function square(side) {
-   repeat(4, function () {
-      forward(side);
-      right(90);
-   });
+  repeat(4, function () {
+    forward(side);
+    right(90);
+  });
 }
 
 function demo() {
-   hideTurtle();
-   colour(0,0,255,1);
-   for(s = 100; s > 0; s -= 10) {
-      square(s);
-      right(36);
-   }
+  hideTurtle();
+  color("blue");
+  for(s = 100; s > 0; s -= 10) {
+    square(s);
+    right(36);
+  }
 }
-            </textarea>
-         </div> <!-- rightcolumn -->
-      </div> <!-- wrap-->
-      <script type="text/javascript" src="turtle.js"></script>
-   </body>
+         </textarea> <!-- definitions -->
+      </div> <!-- rightcolumn -->
+   </div> <!-- wrap-->
+
+<!-- example scripts -->
+   <script type="text/javascript" src="examples/bounce.str.js"></script>
+   <script type="text/javascript" src="examples/clock.str.js"></script>
+   <script type="text/javascript" src="examples/nested_hexagons.str.js"></script>
+   <script type="text/javascript" src="examples/nested_squares.str.js"></script>
+   <script type="text/javascript" src="examples/polygon.str.js"></script>
+   <script type="text/javascript" src="examples/randstripe.str.js"></script>
+   <script type="text/javascript" src="examples/sierpinski.str.js"></script>
+   <script type="text/javascript" src="examples/spinning_squares.str.js"></script>
+   <script type="text/javascript" src="examples/spiral.str.js"></script>
+   <script type="text/javascript" src="examples/tree.str.js"></script>
+<!-- base scripts -->
+   <script type="text/javascript" src="turtle.js"></script>
+   <script type="text/javascript" src="turtleConsole.js"></script>
+</body>
 </html>

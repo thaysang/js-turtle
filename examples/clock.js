@@ -2,47 +2,42 @@
 function ticks(x, y, radius) {
    var tickLen = 7;
    var gap = radius - tickLen;
-   colour(0,0,255,0.5);
+   color("blue");
    width(1);
    for (var theta = 0; theta < 360; theta += 6) {
-      // skip the mark where the numbers are drawn
+      // Thicken hour marks
       if (theta % 30 != 0) {
-         penup();
-         goto(0,0);
-         angle(theta);
-         forward(gap);
-         pendown();
-         forward(tickLen);
+         width(1);
+      } else {
+         width(3);
       }
+      penup();
+      goto(0,0);
+      angle(theta);
+      forward(gap);
+      pendown();
+      forward(tickLen);
    }
 }
 
-function circle(x, y, w, radius, sides) {
-   var theta = 360/sides;
-   var sideLen = 2 * radius * Math.sin(degToRad(theta/2));
-   penup();
-   goto(x,y);
-   forward(radius);
-   left(90);
-   forward(sideLen/2);
-   right(180);
-   pendown();
-   colour(0, 255, 0, 0.5);
-   width(w);
-   for(var n = 0; n < sides; n++) {
-      forward(sideLen);
-      right(theta);
-   }
-}
 
 // draw the hour numbers on the clock face
 function numbers(x, y, radius) {
+   var vertCorrection = [0, 0,3,10, 14,20,24, 20,16,12, 3,0,0];
+   var horizCorrection = [0, 0,-2,-14, -10,-6,-6, 10,14,14, 14,10,10];
    penup();
-   setFont('20px sans-serif');
+   setFont("20px sans-serif");
    for (var hour = 1; hour <= 12; hour++) {
       goto(x,y);
       angle(hour * 30);
       forward(radius);
+      angle(180);
+      //forward(5);
+      forward(vertCorrection[hour]);
+      right(90);
+      forward(horizCorrection[hour]);
+      //forward(4);
+      right(180);
       write(hour);
    }
    pendown();
@@ -54,7 +49,7 @@ function hand (theta, w, length, col) {
    var widthDelta = w / (length / stepSize);
    goto(0, 0);
    angle(theta);
-   colour(col.r, col.g, col.b, col.a);
+   color(col);
    for (var step = 0; step < length; step += stepSize) {
       width(w);
       forward(stepSize);
@@ -64,22 +59,25 @@ function hand (theta, w, length, col) {
 
 function hands(hours, minutes, seconds) {
     // draw seconds hand
-    hand(seconds * 6, 6, 100, {r: 255, g: 0, b: 0, a: 0.5 });
-    // draw minutes hand
-    var minutesInSeconds = minutes * 60;
-    var minutesAndSeconds = minutesInSeconds + seconds;
-    hand(minutesAndSeconds * 0.1, 10, 100, {r: 0, g: 255, b: 0, a: 0.5 });
+    var secDegreesPerSecond = 6;	// = 360 degrees/60 seconds /minute
+    hand(seconds * secDegreesPerSecond, 4, 100, "red");
+    // draw minutes hand 
+    var minDegreePerSecond = 0.1;	// = 360 degrees /3600 seconds /hour
+    var minutesInSeconds = minutes * 60 + seconds;
+    hand(minutesInSeconds * minDegreePerSecond, 10, 100, "blue");
     // draw hours hand
-    var hoursInSeconds = ((hours % 12) * 3600)
-    var hoursAndMinutesAndSeconds = hoursInSeconds + minutesAndSeconds;
-    hand(hoursAndMinutesAndSeconds * 360 / 43200, 10, 60, {r: 0, g: 0, b: 255, a: 0.5 });
+    var hourDegreePerSecond = .1/12;	// = 360 degrees /3600 seconds per hour /12 hours per half day /half day
+    var hoursInSeconds = ((hours % 12) * 3600) + minutesInSeconds;
+    hand(hoursInSeconds * hourDegreePerSecond, 10, 60, "blue");
 }
 
 // refresh the entire clock
 function clock() {
    clear();
-   numbers(0, 0, 115);
-   circle(0, 0, 2, 130, 50);
+   numbers(0, 0, 100);
+   color("lightgreen");
+   goto (0,0);
+   circle(130);
    ticks(0, 0, 130);
    var d = new Date();
    hands(d.getHours(), d.getMinutes(), d.getSeconds());
