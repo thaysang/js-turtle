@@ -137,6 +137,7 @@ h4 {
 }
 
 #reference button { // mostly the color buttons
+  display: block;
   width: 7em;
   border:black solid 2px;
   padding: 2px;
@@ -145,72 +146,72 @@ h4 {
   margin:2px;
 }
 
-button#blackButton {
+button#black{
   background-color:black;
   color:white;
 }
 
-button#blueButton {
+button#blue{
   background-color:blue;
   color:white;
 }
 
-button#limeButton {
+button#lime{
   background-color:lime;
 }
 
-button#cyanButton {
+button#cyan{
   background-color:cyan;
 }
 
-button#redButton {
+button#red{
   background-color:red;
 }
 
-button#magentaButton {
+button#magenta{
   background-color:magenta;
 }
 
-button#yellowButton {
+button#yellow{
   background-color:yellow;
 }
 
-button#whiteButton {
+button#white{
   background-color:white;
 }
 
-button#brownButton {
+button#brown{
   background-color:brown;
   color:white;
 }
 
-button#tanButton {
+button#tan{
   background-color:tan;
 }
 
-button#greenButton {
+button#green{
   background-color:green;
   color:white;
 }
 
-button#aquaButton {
+button#aqua{
   background-color:aqua;
 }
 
-button#salmonButton {
+button#salmon{
   background-color:salmon;
 }
 
-button#purpleButton {
+button#purple{
   background-color:purple;
   color:white;
 }
 
-button#orangeButton {
+button#orange{
   background-color:orange;
 }
 
-button#grayButton {
+button#gray{
   background-color:gray;
   color:white;
 }
@@ -218,5 +219,9 @@ button#grayButton {
 code {
   font-size:120%;
   font-weight:bold;
+  text-decoration:none;
+}
+
+code.linked {
   text-decoration:underline;
 }

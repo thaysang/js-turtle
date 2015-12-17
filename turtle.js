@@ -500,29 +500,28 @@ function curveright (radius, extent) {
 }
 
 
-// circle(radius[[,extent],CCW))
-// radius is length in pixels (if none, max of pensize+4, 2*pensize)
-// CCW is boolean for counterclockwise, default to false)
-function circle(radius, extent, CCW) {
-  if (extent === undefined) {
-    var startAngle = 0;
-    var stopAngle = 2*Math.PI;
-  } else {
-    var startAngle = turtle.angle-Math.PI/2;
-    var stopAngle = startAngle + degToRad(extent);
+// circle(radius[[,extent],CW))
+// radius is length in pixels
+// extent is size of arc in degrees
+// CW is boolean for clockwise, default to true)
+function circle(radius, extent, CW) {
+  if (CW === undefined) {
+    CW = true;
   }
-  if (CCW === undefined) {
-    CCW = false;
-  } else {
-    CCW = true;
-  }
+  startAngle = turtle.angle - Math.PI/2; // translate turtle to normal canvas coordinate
   imageContext.save();
   centerCoords(imageContext);
   imageContext.beginPath();
   imageContext.strokeStyle=turtle.color;
   //imageContext.fillStyle=turtle.color;
-  // negate angles and CCW due to context translation
-  imageContext.arc (turtle.pos.x, turtle.pos.y, radius, -startAngle, -stopAngle, !CCW);
+  // negate angles and CW due to context translation
+  if (extent === undefined) {
+   imageContext.arc (turtle.pos.x, turtle.pos.y, radius, 0, 2*Math.PI);
+  } else if (CW) {
+    imageContext.arc (turtle.pos.x, turtle.pos.y, radius, -startAngle, -(startAngle+degToRad(extent)), CW);
+  } else {
+    imageContext.arc (turtle.pos.x, turtle.pos.y, radius, -startAngle, -(startAngle-degToRad(extent)), CW);
+  }
   // draw it regardless of pen up or down
   imageContext.stroke();
   //imageContext.fill();

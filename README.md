@@ -50,7 +50,7 @@ Multiple Javascript expressions on a single line such as the **command** box mus
 semicolon ';' characters. A single expression may or may not include the ending semicolon
 (e.g., **pendown();** or **pendown()**)
 
-Code comments are a way for programmers to leave notes to themselves or others about the
+Code **comments** are a way for programmers to leave notes to themselves or others about the
 operation of the program. Comments are not executed. Javascript has two ways to include comments.
 The single line method starts a comment with a double slash '//' and the comment extends to
 the end of the line.
@@ -61,7 +61,8 @@ a line of code. This method cannot be nested, so the comment will end when the f
 combination is encountered.
 
 While many programs can be written with the Logo Graphics functions alone, it is possible (and
-sometime necessary or desirable) to use the full power of the Javascript language.
+sometime necessary or desirable) to use the full power of the Javascript language. The use of
+Javascript can be found elsewhere.
 
 ###Canvas
 The canvas is the area where the graphics are drawn. When the platform is stared up or reset
@@ -122,4 +123,5 @@ through the developer tools. Chrome can acess the console through its developer 
 It is not easy to intermix the Logo Graphic functions with the normal Javascript
 canvas methods. As a result, filling a bounded area is not currently possible.
 
-The full Logo Language
+The full Logo language is not implemented here, nor is its syntax. This is a set of Javascript
+functions.

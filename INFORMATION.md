@@ -75,7 +75,10 @@ dynamically loaded into the **definitions** box.
 
 
 ##Things To Do
-- [ ] developed a test example that tests the various features of the extensions.
+- [ ] develop a test example that tests the various features of the extensions.
+- [ ] clean up the triggers for the <code> tags
+- [ ] handle errors better. Logo used a red background and white text at bottom of canvas for
+its errors. That may be appropriate here also.
 - [ ] made the design responsive to work on smaller screens.
 - [ ] added a drawer handle to the **language reference** to allow it to be closed and give
 more room to the canvas.
