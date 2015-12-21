@@ -1,4 +1,5 @@
-// draw a symmetrical tree
+// Tree Symmetrical -- draw a symmetrical tree
+
 //  code inspired from a code.org lesson
 function drawTree(depth, branches) {
   var spread = 120;	//spread is angle of left to right branches

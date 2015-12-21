@@ -1,4 +1,4 @@
-// rectagles which bounce off the side of the canvas
+// Bouncing Rectangles -- rectagles which bounce off the side of the canvas
 function init_drops(n) {
    var drops = new Array(n);
    for (var i = 0; i < n; i++) {

@@ -8,56 +8,101 @@ body{
 }
 
 h1 {
+  position:absolute;
+  top:0;
+  width:100%;
   text-align:center;
   margin-bottom:8px;
   margin-top:12px;
+  border-bottom: blue 4px solid;
 }
 
+#hamburger {
+ width: 40px;
+ height: 40px;
+ border: none;
+ background-color:white;
+ display:inline;
+}
+
+#hamburger-div {
+  position:absolute;
+  top:10px;
+  left:5px;
+  z-index: 50;
+}
 h4 {
   margin-bottom:2px;
   margin-top:0;
+  margin-left:4px;
+  color:blue;
 }
 
 #wrap {
   position:relative;
   top:0;
-  width:1000px;
-  margin:0 auto;
+  margin:0 auto 0 auto;
+  border: red 1px solid;
 }
 
 #leftcolumn {
   position:absolute;
-  top:50;
+  top:58px;
   left:0;
   width:32%;
+  border: green 1px dotted;
+  margin:2px 2px 2px 2px;
   //width:300px;
 }
 
 #midcolumn {
   position:absolute;
-  top:50;
+  top:58px;
   left:33%;
   //float:left;
   width:32%;
   //width:300px;
+  border: green 1px dotted;
   margin:2px 2px 2px 2px;
 }
 
 #rightcolumn {
   position:absolute;
-  top:50;
+  top:50px;
   left:66%;
   //float:right;
   width:32%;
+  border: green 1px dotted;
   margin:2px 2px 2px 2px;
 }
 
 #reference {
-  float:left;
+  //float:left;
+  position:relative;
+  top:0;
+  left:0;
   width:97%;
   margin:2px 2px 2px 2px;
-  height:600px;
+  //height:600px;
+  height:95%;
+  border: black 1px solid;
   overflow:auto;
+}
+
+#reference.open {
+  width:97%;
+}
+
+#reference.closed {
+  width:0;
+}
+
+#referenceTitle.open {
+  display:block;
+}
+
+#referenceTitle.closed {
+  display:none;
 }
 
 #lefthandle {
@@ -77,6 +122,13 @@ h4 {
 #turtlecanvas {
   background:#fff;
   border: 2px solid red;
+  width:auto;
+  height:auto;
+}
+
+#imagecanvas {
+  width:auto;
+  height:auto;
 }
 
 #command, 
@@ -86,7 +138,8 @@ h4 {
   padding:0;
   margin:0;
   width:100%;
-  height:400px;
+  //height:400px;
+  height:90%;
   border:1px solid black;
   resize:none;
 }
@@ -122,7 +175,7 @@ h4 {
   margin:0;
   padding:5px;
   background-color:whitesmoke;
-  border:solid darkgray 1px;
+  //border:solid darkgray 1px;
 }
 
 #reference p {

@@ -1,6 +1,7 @@
+// Sierpinski Curve -- draw a set of Sierpinski curves
+
 /* A Sierpinski curve is a symmetric
-fractal that covers a plane.  This
-demo draws a set of Sierpinski curves.
+fractal that covers a plane.  
 Note how each level is similar to the
 preceding level
 
@@ -8,6 +9,17 @@ This also demonstrates the use of the
 delay function and powerful concepts
 of function redefinition and
 recursion.
+Function redefinition is a function
+defined within a function so that each
+time the outer function is invoked a new
+copy of the inner function is created.
+In this example, a part() function is
+created when either the sierpinski or
+halfSierpinski functions are invoked.
+Recursion is a function that calls
+itself. Recurive functions must include
+some test to stop the recursion to
+prevent the dreaded infinite loop.
 */
 function halfSierpinski(size, level) {
   if (level == 0)

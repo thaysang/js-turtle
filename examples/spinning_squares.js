@@ -1,3 +1,4 @@
+// Spinning Squares -- draw some square of increasing size and angle.
 // Define helper functions here.
 // For example:
 

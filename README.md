@@ -77,7 +77,7 @@ Positive Y-coordinates increase from the center toward the top of the canvas.
 Negative Y-coordinates increase from the center toward the bottome of the canvas.
 This mimics the cartesian coordinate system used in algebra. Note that this coordinate
 system is different than the normal Javascript canvas coordinate system.
-The Logo Graphics functions hide these differences and much of the
+The Logo Turtle Graphics functions hide these differences and much of the
 mathematical complexity from the user.
 ###Command Area
 The command area has controls for entering Logo Turtle Graphic Javascript code and for controlling
@@ -120,7 +120,7 @@ Javascript console, one must turn it on. Firefox does this with Firebug console 
 through the developer tools. Chrome can acess the console through its developer tools.
 [More specific information is needed here.]
 
-It is not easy to intermix the Logo Graphic functions with the normal Javascript
+It is not easy to intermix the Logo Turtle Graphic functions with the normal Javascript
 canvas methods. As a result, filling a bounded area is not currently possible.
 
 The full Logo language is not implemented here, nor is its syntax. This is a set of Javascript

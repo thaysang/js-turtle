@@ -1,4 +1,4 @@
-// draw a set of Koch snowflakes
+// Koch Snowflakes -- draw an animated set of Koch snowflakes
 
 
 function kochLine (length, order) {
@@ -55,7 +55,11 @@ function kochSnowflakeDelay() {
    var minY = -imageContext.canvas.height / 2;
 
   clear();
-  kochSnowflake (200,i);
+  var side = maxY - minY;
+  if (side > maxX - minX) {
+    side = maxX - minX
+  }
+  kochSnowflake (.8 * side,i);
   goto(minX,minY);
   angle(90);
   setfont("Helvetica,san-serif 12pt")

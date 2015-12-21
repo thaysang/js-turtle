@@ -75,8 +75,8 @@ dynamically loaded into the **definitions** box.
 
 
 ##Things To Do
-- [ ] develop a test example that tests the various features of the extensions.
-- [ ] clean up the triggers for the <code> tags
+- [x] develop a test example that tests the various features of the extensions.
+- [x] clean up the triggers for the <code> tags
 - [ ] handle errors better. Logo used a red background and white text at bottom of canvas for
 its errors. That may be appropriate here also.
 - [ ] made the design responsive to work on smaller screens.
@@ -84,18 +84,22 @@ its errors. That may be appropriate here also.
 more room to the canvas.
 - [ ] allow the examples select and **definitions** box to be hidden to give more room to the canvas.
 - [ ] make the command box execute on a second ENTER without other changes (onkeypress?)
+- [ ] delay() needs to have a way to turn off the **Stop** button. Perhaps it could include this in
+the delayed function mechanism.
 - [ ] add more examples:
  - [ ] Sierpinski triangles
  - [ ] Sierpinski carpet
- - [ ] Koch snowflake
- - [ ] circle eye
+ - [x] Koch snowflake
+ - [x] circle eye
  - [ ] dividing a circle
- - [ ] random stick men
+ - [x] random stick men
  - [ ] jumping jack
  - [ ] walking stick man
  - [ ] hexagon tesselation
 - [ ] development tools to automatically add examples to the code by placing a '.js' file in 
-'examples' directory with the Linux 'make' command.
+'examples' directory with the Linux 'make' command. This is partially done, but needs improvements.
+It would be better to combine all of the outputs into a single .js file. Perhaps that file could
+also configure the examples select.
 - [ ] develop lessons to lead a student throught some basic programming concepts. [This may be a
 separate selector from the example selector].
  - [ ] moving the turtle and executing a command

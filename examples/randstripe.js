@@ -1,4 +1,4 @@
-// draw some randomly placed coloured stripes
+// Graphitti -- draw randomly placed coloured stripes
 
 function plotOne() {
   goto(random(-150, 150),random(-150, 150));
@@ -9,6 +9,5 @@ function plotOne() {
 }
 
 function demo () {
-  hideTurtle();
-  repeat (50, plotOne)
+  animate (plotOne, 100);
 }

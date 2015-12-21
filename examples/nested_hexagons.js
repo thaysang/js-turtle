@@ -1,4 +1,6 @@
-// draw a polygon with number of sides of length side
+// Nested Hexagons -- draw a set of nested hexagons
+
+// draw a polygon of n sides of length m
 function polygon(sides,side) {
   repeat(sides, function () {
     forward(side);

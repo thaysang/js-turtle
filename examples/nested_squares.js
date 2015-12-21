@@ -1,3 +1,5 @@
+// Nested Squares -- draw a set of nested squares
+
 //draw a square
 function square(side) {
    repeat(4, function () {
@@ -10,6 +12,7 @@ function square(side) {
 // draw some nested squares
 function nestedSquares(count) {
   clear();
+  home();
   hideturtle();
   for (s=1; s<count*4; s=s+4) {
     penup();

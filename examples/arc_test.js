@@ -1,6 +1,5 @@
-// test of arcs and curves
+// Arc and Curve Test -- test of arcs and curves
 // this draws three figures
-
 
 function radialArc (x, y, startRadius, armAngle, tangentAngle, arcRadius, extent, dir) {
   goto(x,y);

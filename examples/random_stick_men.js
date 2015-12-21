@@ -1,5 +1,4 @@
-//Random Stick Men
-// draw stick men randomly on the canvas
+//Random Stick Men -- draw stick men randomly on the canvas
 
 // stick man
 function stickMan (height) {

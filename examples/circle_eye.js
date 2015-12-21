@@ -1,7 +1,4 @@
-// Circle Eye Example
-// this draws a set of n circles
-// inscribed between the center and
-// outside of a containing circle
+// Circle Eye -- draws a set of n inscribedcircles within circle
 
 function circleEye (x, y, n, outerRadius) {
   goto (x, y);
@@ -20,6 +17,8 @@ function circleEye (x, y, n, outerRadius) {
 
 
 function demo () {
-  clear();
+  reset();
+  hideturtle();
+  color(random(16));
   circleEye (0,0,16,120);
 }

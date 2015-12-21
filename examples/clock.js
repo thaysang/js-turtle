@@ -1,3 +1,5 @@
+// Clock -- draw and animate an analog clock
+
 //draw the tick marks around the edge of the clock
 function ticks(x, y, radius) {
    var tickLen = 7;
@@ -23,20 +25,16 @@ function ticks(x, y, radius) {
 
 // draw the hour numbers on the clock face
 function numbers(x, y, radius) {
-   var vertCorrection = [0, 0,3,10, 14,20,24, 20,16,12, 3,0,0];
-   var horizCorrection = [0, 0,-2,-14, -10,-6,-6, 10,14,14, 14,10,10];
    penup();
    setFont("20px sans-serif");
    for (var hour = 1; hour <= 12; hour++) {
       goto(x,y);
       angle(hour * 30);
-      forward(radius);
+      forward(radius); // to center of digit
       angle(180);
-      //forward(5);
-      forward(vertCorrection[hour]);
+      forward(5); // vertical correction to baseline
       right(90);
-      forward(horizCorrection[hour]);
-      //forward(4);
+      forward(4); // horizontal correction to lower left corner
       right(180);
       write(hour);
    }
@@ -74,7 +72,7 @@ function hands(hours, minutes, seconds) {
 // refresh the entire clock
 function clock() {
    clear();
-   numbers(0, 0, 100);
+   numbers(0, 0, 110);
    color("lightgreen");
    goto (0,0);
    circle(130);
