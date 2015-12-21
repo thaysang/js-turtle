@@ -296,6 +296,7 @@ function sety(y) {
 // set the angle of the turtle in degrees
 function angle(angle) {
    turtle.angle = degToRad(angle);
+   drawIf();
 }
 
 setheading = angle;

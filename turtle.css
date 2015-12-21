@@ -135,9 +135,9 @@ h4 {
 #definitions { //input and text area
   background-color:whitesmoke;
   overflow:auto;
-  padding:0;
+  padding:4px;
   margin:0;
-  width:100%;
+  width:96%;
   //height:400px;
   height:90%;
   border:1px solid black;
