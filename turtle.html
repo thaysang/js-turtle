@@ -15,9 +15,16 @@
     </div>
     <h1>Javascript Turtle Graphics</h1>
     <div id="leftcolumn">
-      <div id="lefthandle"></div>
-      <h4 id="referenceTitle">Language Reference</h4>
-    <div id="reference">
+      <h4 id="referenceTitle">
+        Language Reference
+        <button id="referenceClose">
+          <svg class="fi" viewBox="0 0 64 64">
+            <line x1="2" y1="2" x2="62" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
+            <line x1="62" y1="2" x2="2" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
+          </svg>
+        </button>
+      </h4>
+      <div id="reference">
        <ul>
          <li>
            forward(<em>distance</em>) | fd(<em>distance</em>)
@@ -430,7 +437,7 @@
            </p>
          </li>
          </ul>
-      </div> <!-- reference -->
+        </div> <!-- reference -->
       </div> <!-- leftcolumn -->
       <div id="midcolumn">
         <h4>Canvas</h4>

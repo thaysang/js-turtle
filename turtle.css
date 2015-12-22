@@ -2,6 +2,7 @@ body,
 html {
   margin:0;
   padding:0;
+  background-color:#FFF8FF;
 }
 
 body{
@@ -14,7 +15,7 @@ h1 {
   text-align:center;
   margin-bottom:8px;
   margin-top:12px;
-  border-bottom: blue 4px solid;
+  //border-bottom: blue 4px solid;
 }
 
 #hamburger {
@@ -22,6 +23,14 @@ h1 {
  height: 40px;
  border: none;
  background-color:white;
+ display:none;
+}
+
+#hamburger.open {
+ display:none;
+}
+
+#hamburger.closed {
  display:inline;
 }
 
@@ -42,7 +51,7 @@ h4 {
   position:relative;
   top:0;
   margin:0 auto 0 auto;
-  border: red 1px solid;
+  //border: red 1px solid;
 }
 
 #leftcolumn {
@@ -50,7 +59,7 @@ h4 {
   top:58px;
   left:0;
   width:32%;
-  border: green 1px dotted;
+  //border: green 1px dotted;
   margin:2px 2px 2px 2px;
   //width:300px;
 }
@@ -62,7 +71,7 @@ h4 {
   //float:left;
   width:32%;
   //width:300px;
-  border: green 1px dotted;
+  //border: green 1px dotted;
   margin:2px 2px 2px 2px;
 }
 
@@ -72,7 +81,7 @@ h4 {
   left:66%;
   //float:right;
   width:32%;
-  border: green 1px dotted;
+  //border: green 1px dotted;
   margin:2px 2px 2px 2px;
 }
 
@@ -84,17 +93,30 @@ h4 {
   width:97%;
   margin:2px 2px 2px 2px;
   //height:600px;
-  height:95%;
+  //height:95%;
   border: black 1px solid;
   overflow:auto;
 }
 
 #reference.open {
+  display:block;
+  border: black 1px solid;
   width:97%;
 }
 
 #reference.closed {
+  display:hidden;
+  border: none;
   width:0;
+}
+
+#referenceTitle svg {
+  float:right;
+  display:inline;
+  margin-top: 2px;
+  margin-right: 10px;
+  width: 15px;
+  height: 15px;
 }
 
 #referenceTitle.open {
@@ -105,6 +127,16 @@ h4 {
   display:none;
 }
 
+#referenceClose {
+  float:right;
+  border:none;
+  background-color: none;
+  width:25px;
+  height:25px;
+  padding:0;
+}
+
+/*
 #lefthandle {
   position:absolute;
   top:50;
@@ -113,6 +145,7 @@ h4 {
   height:600px;
   width:5px;
 }
+*/
 
 #lefthandle:hover {
   background-color:gray;

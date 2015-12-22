@@ -77,7 +77,20 @@ document.getElementById("command").onchange=function commandChanged () {
     // execute the code in the command box
     eval(commandText);
   } catch(e) {
-    alert('Exception thrown, please see console');
+    var maxX = imageContext.canvas.width / 2;
+    var minX = -imageContext.canvas.width / 2;
+    var maxY = imageContext.canvas.height / 2;
+    var minY = -imageContext.canvas.height / 2;
+    goto (minX+8,minY+24);
+    angle(90);
+    imageContext.fillStyle = "red";
+    setfont ("14pt bold Helvetica, sans-serif")
+    write(e.name + ": " + e.message);
+    //alert('Exception thrown, please see console');
+    imageContext.fillStyle = "blue";
+    setfont ("10pt bold Helvetica, sans-serif")
+    goto (minX+8,minY+4);
+    write("..." + e.fileName.substr(-40) + " line: " + e.lineNumber);
     throw e;
   } finally {
     // clear the command box
@@ -172,6 +185,7 @@ function resizeColumns () {
   var wrapElement = document.getElementById("wrap");
   wrapElement.style.width = wrapWidth + "px";
   wrapElement.style.height = overallHeight + "px";
+  reference.style.height = (workAreaHeight -37) + "px";
 
   leftcolElement.style.width = leftcolWidth + "px";
   leftcolElement.style.height = workAreaHeight + "px";
@@ -211,6 +225,7 @@ resizeColumns();
 function openReferenceDrawer() {
   document.getElementById("reference").className = "open";
   document.getElementById("referenceTitle").className = "open";
+  document.getElementById("hamburger").className = "open";
   resizeColumns();
 
 }
@@ -218,9 +233,11 @@ function openReferenceDrawer() {
 function closeReferenceDrawer() {
   document.getElementById("reference").className = "closed";
   document.getElementById("referenceTitle").className = "closed";
+  document.getElementById("hamburger").className = "closed";
   resizeColumns();
 }
 
+/*
 referenceDrawerHandle = document.getElementById("lefthandle")
 referenceDrawerHandle.onclick = function () {
   if (document.getElementById("reference").className == "closed") {
@@ -229,12 +246,17 @@ referenceDrawerHandle.onclick = function () {
     closeReferenceDrawer();
   }
 }
+*/
 
 document.getElementById("hamburger").onclick = function () {
   if (document.getElementById("reference").className == "closed") {
     openReferenceDrawer();
+    
   } else {
     closeReferenceDrawer();
   }
 }
 
+document.getElementById("referenceClose").onclick = function () {
+  closeReferenceDrawer();
+}

@@ -381,7 +381,13 @@ function animate(f, ms) {
 }
 
 function delay(f, ms) {
-   timeouts.push (setTimeout(f, ms));
+   timeouts.push (setTimeout(function () {
+     timeouts.pop(); // pop the current timer
+     if (timeouts.length == 0) {
+       document.getElementById("stopButton").hidden=true;
+     };
+     f()
+   }, ms));
    document.getElementById("stopButton").hidden=false;
 }
 
