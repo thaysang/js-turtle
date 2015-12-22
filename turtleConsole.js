@@ -28,7 +28,7 @@ function runClicked() {
   stopAnimation();
   cmd ("demo()");
   eval (document.getElementById("definitions").value);
-  eval ("demo()");
+  eval ("demo();");
 }
 
 // Set up all code elements to be linked and have onclick functionality
@@ -77,19 +77,15 @@ document.getElementById("command").onchange=function commandChanged () {
     // execute the code in the command box
     eval(commandText);
   } catch(e) {
-    var maxX = imageContext.canvas.width / 2;
-    var minX = -imageContext.canvas.width / 2;
-    var maxY = imageContext.canvas.height / 2;
-    var minY = -imageContext.canvas.height / 2;
-    goto (minX+8,minY+24);
+    goto (minX()+8, minY()+24);
     angle(90);
-    imageContext.fillStyle = "red";
+    color("red");
     setfont ("14pt bold Helvetica, sans-serif")
     write(e.name + ": " + e.message);
     //alert('Exception thrown, please see console');
-    imageContext.fillStyle = "blue";
+    color("blue");
     setfont ("10pt bold Helvetica, sans-serif")
-    goto (minX+8,minY+4);
+    goto (minX()+8, minY()+4);
     write("..." + e.fileName.substr(-40) + " line: " + e.lineNumber);
     throw e;
   } finally {
@@ -106,6 +102,9 @@ var STOP = document.getElementById("stopButton")
 STOP.onclick=stopClicked;
 STOP.hidden=true;
 
+document.getElementById("github").onclick=function () {
+  window.location="https://github.com/kirkcarlson/js-turtle";
+}
 
 /* functions or whatever to do reactive design stuff
 1. Expand to fill given area

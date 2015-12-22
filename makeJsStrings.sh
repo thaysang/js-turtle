@@ -17,27 +17,26 @@ if [ ${1}NotSpecified =  NotSpecified ]; then
   exit
 fi
 
-rm -f tmp tmp2 # in case it exists
-touch tmp # create temporary file
+rm -f tmp # in case it exists
 rm -f examples.js # clear temporary file
 
-for f in `ls $directory` ; do
-  fileName=`echo $f | sed -e s/.js\$//`
-  optionName=`head -1 $directory/$f |sed "s/^\/\/ *\(.*\) --.*$/\1/"`
-  echo "$f" | sed -e "s/\(.*\)\.js/          <option value=\1><\/option>/" -e "s/></>$optionName</" >>tmp
-  (echo "${fileName} ='\\\\"
-  cat $directory/$f | sed -e "s/$/\\\\n\\\\/"
+for fileName in `ls $directory` ; do
+  stringName=`echo $fileName | sed -e s/.js\$//`
+  optionName=`head -1 $directory/$fileName |sed "s/^\/\/ *\(.*\) --.*$/\1/"`
+  echo "$fileName" | sed -e "s/\(.*\)\.js/          <option value=\1><\/option>/" -e "s/></>$optionName</" >>tmp
+  (echo "${stringName} ='\\\\"
+  sed -e "s/$/\\\\n\\\\/" < $directory/$fileName
   echo "'") >>examples.js
 done
 
 # add the new options to the turtle.html file
-cp -f turtle.html backups/turtle.html.`date "+%Y-%m-%d.%H.%M.%S"`
+backupName=backups/turtle.html.`date "+%Y-%m-%d.%H.%M.%S"`
+cp -f turtle.html $backupName
 (
-  sed -n -e "1,/<select id=examples>/p" <turtle.html
+  sed -n -e "1,/<select id=examples>/p" <$backupName
   cat tmp
-  sed -n -e "/<\/select>/,\$p" <turtle.html
-) >> tmp2
-mv -f tmp2 turtle.html
+  sed -n -e "/<\/select>/,\$p" <$backupName
+) > turtle.html
 
 # clean up
-rm -f tmp tmp2
+rm -f tmp 

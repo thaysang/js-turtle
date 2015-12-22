@@ -77,14 +77,14 @@ dynamically loaded into the **definitions** box.
 ##Things To Do
 - [x] develop a test example that tests the various features of the extensions.
 - [x] clean up the triggers for the <code> tags
-- [ ] handle errors better. Logo used a red background and white text at bottom of canvas for
-its errors. That may be appropriate here also.
-- [ ] made the design responsive to work on smaller screens.
-- [ ] added a drawer handle to the **language reference** to allow it to be closed and give
+- [X] handle errors better. Logo used a red background and white text at bottom of canvas for
+its errors. This implements red text on a white background
+- [X] make the design responsive to work on smaller screens.
+- [X] added a drawer handle to the **language reference** to allow it to be closed and give
 more room to the canvas.
 - [ ] allow the examples select and **definitions** box to be hidden to give more room to the canvas.
 - [ ] make the command box execute on a second ENTER without other changes (onkeypress?)
-- [ ] delay() needs to have a way to turn off the **Stop** button. Perhaps it could include this in
+- [X] delay() needs to have a way to turn off the **Stop** button. Perhaps it could include this in
 the delayed function mechanism.
 - [ ] add more examples:
  - [ ] Sierpinski triangles
@@ -96,7 +96,7 @@ the delayed function mechanism.
  - [ ] jumping jack
  - [ ] walking stick man
  - [ ] hexagon tesselation
-- [ ] development tools to automatically add examples to the code by placing a '.js' file in 
+- [X] development tools to automatically add examples to the code by placing a '.js' file in 
 'examples' directory with the Linux 'make' command. This is partially done, but needs improvements.
 It would be better to combine all of the outputs into a single .js file. Perhaps that file could
 also configure the examples select.

@@ -123,5 +123,5 @@ through the developer tools. Chrome can acess the console through its developer 
 It is not easy to intermix the Logo Turtle Graphic functions with the normal Javascript
 canvas methods. As a result, filling a bounded area is not currently possible.
 
-The full Logo language is not implemented here, nor is its syntax. This is a set of Javascript
-functions.
+The full Logo language is not implemented here, nor is its syntax. This is only a set of Javascript
+functions that mimic the Logo Turtle Graphics part of the Logo language.

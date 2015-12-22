@@ -57,6 +57,38 @@ function centerCoords (context) {
    context.transform(1, 0, 0, -1, 0, 0);
 }
 
+// maxX()
+// return maximum X value for the current canvas
+function maxX () {
+  return (imageContext.canvas.width / 2);
+}
+
+maxx = maxX;
+
+// minX()
+// return minimum X value for the current canvas
+function minX () {
+  return (-imageContext.canvas.width / 2);
+}
+
+minx = minX;
+
+// maxY()
+// return maximum Y value for the current canvas
+function maxY () {
+  return (imageContext.canvas.height / 2);
+}
+
+maxy = maxY;
+
+// minY()
+// return minimum Y value for the current canvas
+function minY () {
+  return (-imageContext.canvas.height / 2);
+}
+
+miny = minY;
+
 // draw the turtle and the current image
 function draw() {
    clearContext(turtleContext);
@@ -239,6 +271,7 @@ function penup() {
 
 pu = penup;
 up = penup;
+penUp = penup;
 
 
 // put the pen down (do draw)
@@ -248,6 +281,7 @@ function pendown() {
 
 pd = pendown;
 down = pendown;
+penDown = pendown;
 
 // turn edge wrapping on/off
 function wrap(bool) {
@@ -280,6 +314,8 @@ function goto(x,y) {
 
 setposition = goto;
 setpos = goto;
+setPosition = goto;
+setPos = goto;
 
 // move the turtle to a particular x coordinate
 function setx(x) {
@@ -287,11 +323,15 @@ function setx(x) {
    drawIf();
 }
 
+setX = setx;
+
 // move the turtle to a particular y coordinate
 function sety(y) {
    turtle.pos.y = y;
    drawIf();
 }
+
+setY = sety;
 
 // set the angle of the turtle in degrees
 function angle(angle) {
@@ -300,6 +340,7 @@ function angle(angle) {
 }
 
 setheading = angle;
+setHeading = angle;
 seth = angle;
 
 // set the width of the line
@@ -310,6 +351,9 @@ function width(w) {
 }
 
 pensize = width;
+penwidth = width;
+penSize = width;
+penWidth = width;
 
 // write some text at the turtle position in direction of turtle
 // turtle position does not change
@@ -321,6 +365,7 @@ function write(msg) {
    imageContext.rotate(turtle.angle - Math.PI/2);
    imageContext.textAlign = "left";
    imageContext.textBaseline = "bottom";
+   imageContext.fillStyle = turtle.color;
    imageContext.fillText(msg, 0, 0);
    imageContext.restore();
    drawIf();
@@ -345,14 +390,13 @@ function color (col) {
 colour = color;
 
 // map one of several color methods to a 32-bit integer
-//    Hexadecimal colors (e.g., #ff0000)
-//    RGB colors (e.g., rgb(255,0,0))
-//    RGBA colors (e.g., rgba(255,0,0,1))
-//    HSL colors (e.g., hsl(120, 100%, 50%))
-//    HSLA colors (e.g., hsla(120, 100%, 50%, 1))
+//    Hexadecimal colors (e.g., "#ff0000")
+//    RGB colors (e.g., "rgb(255,0,0)")
+//    RGBA colors (e.g., "rgba(255,0,0,1)")
+//    HSL colors (e.g., "hsl(120, 100%, 50%)")
+//    HSLA colors (e.g., "hsla(120, 100%, 50%, 1)")
 //    Predefined/Cross-browser color names (e.g., "red")
-//    logo color numbers (although this conflicts with 16 legitimate color values
-//      that are shades of very dark blue #000000 - #00000F)
+//    logo color numbers 
 logoColors = ["black", "blue", "lime", "cyan", "red", "magenta", "yellow", "white", 
               "brown", "tan", "green", "aqua", "salmon", "purple", "orange", "gray"]
 
@@ -473,6 +517,7 @@ function curveleft (radius, extent) {
   drawIf();
 }
 
+curveLeft = curveleft;
 
 //  curveright (radius, extent)
 //   center is radius distance perpendicular to turtle's right
@@ -508,6 +553,7 @@ function curveright (radius, extent) {
   drawIf();
 }
 
+curveRight = curveright;
 
 // circle(radius[[,extent],CW))
 // radius is length in pixels
@@ -538,6 +584,8 @@ function circle(radius, extent, CW) {
   drawIf();
 }
 
+arc = circle;
+
 // dot(radius)
 // radius in pixels (if none, max of pensize+4, 2*pensize)
 function dot(size) {
@@ -556,5 +604,6 @@ function dot(size) {
   imageContext.restore();
   drawIf();
 }
+
 
 reset();

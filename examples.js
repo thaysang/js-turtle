@@ -257,6 +257,311 @@ function demo() {\n\
    animate(clock,1000);\n\
 }\n\
 '
+dividing_circle ='\
+// Dividing a Circle -- Divide a circle with other circles\n\
+\n\
+function divideCenter(radii,radius) {\n\
+    left(60);\n\
+    forward(radius);\n\
+    right(60);\n\
+    repeat(6, function () {\n\
+      right(60);\n\
+      repeat(radii, function () {\n\
+        forward(radius);\n\
+        circle(radius);\n\
+      });\n\
+    });\n\
+}\n\
+\n\
+function demo() {\n\
+  clear();\n\
+  home();\n\
+  penup();\n\
+  wrap(false);\n\
+  circle (50);\n\
+  delay (tier1, 1000);\n\
+}\n\
+\n\
+function tier1 () {\n\
+  divideCenter (1,50);\n\
+  delay (tier2, 2000);\n\
+}\n\
+\n\
+function tier2 () {\n\
+  divideCenter (2,50);\n\
+  delay (tier3, 2000);\n\
+}\n\
+\n\
+function tier3 () {\n\
+  divideCenter (3,50);\n\
+  delay (tier4, 2000);\n\
+}\n\
+\n\
+function tier4 () {\n\
+  divideCenter (4,50);\n\
+  delay (tier5, 2000);\n\
+}\n\
+\n\
+function tier5 () {\n\
+  divideCenter (5,50);\n\
+  delay (tier6, 2000);\n\
+}\n\
+\n\
+function tier6 () {\n\
+  divideCenter (6,50);\n\
+}\n\
+'
+hexTesselation ='\
+// Hexagon Tessalation -- tile a surface with hexagons\n\
+\n\
+function hexagon (side) {\n\
+  penup();\n\
+  forward(side);\n\
+  right(120);\n\
+  pendown();\n\
+  repeat (6, function () {\n\
+    forward(side);\n\
+    right(60);\n\
+  })\n\
+}\n\
+\n\
+function repeatToRight (side) {\n\
+  while (turtle.pos.x < maxX()) {\n\
+    hexagon(side);\n\
+    penup();\n\
+    forward(side * 2);\n\
+    left(120);\n\
+    pendown();\n\
+  }\n\
+}\n\
+\n\
+function repeatToLeft(side) {\n\
+  while (turtle.pos.x > minX())\n\
+   {\n\
+    hexagon(side);\n\
+    penup();\n\
+    forward(side * 2);\n\
+    left(120);\n\
+    pendown();\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+  \n\
+  side = 50;\n\
+  \n\
+  \n\
+  reset();\n\
+  wrap(false);\n\
+  width(1);\n\
+  goto(minX()-1, maxY()-1);\n\
+  \n\
+  while (turtle.pos.y > minY()) {\n\
+    repeatToRight(side); // draw a row of hexagons\n\
+  \n\
+    //advance to next row on right side\n\
+    penup();\n\
+    left(120);\n\
+    forward(side);\n\
+    left(60);\n\
+    forward(side)\n\
+    pendown();\n\
+  \n\
+    repeatToLeft (side);  // draw a row of hexagons\n\
+  \n\
+    //advance on next row on left side\n\
+    penup();\n\
+    left(60);\n\
+    forward(side);\n\
+    right(60);\n\
+    forward(side);\n\
+    right(180);\n\
+    pendown();\n\
+    draw();\n\
+  }\n\
+}\n\
+'
+jumping_jack ='\
+// Jumping Jack -- stick man doing jumping jacks\n\
+\n\
+/*\n\
+This example shows a couple of concepts.\n\
+One is the use of variables. The stick man is created based on proprotions of its\n\
+height. Changing the height variable changes the size of the other body parts.\n\
+\n\
+Drawing of the body parts is done so that the turtle is returned to its starting point.\n\
+This allows the body parts to be drawn in any order or for the center of the stick man\n\
+to be moved. Each body part is draw with a function (also called a sub-routine) to\n\
+make the problem easier to understand.\n\
+\n\
+The drawLeftLeg(), drawRightLeg(), drawLeftArm(), and drawRightArm() functions use a\n\
+parameter that is used to determine the angle of\n\
+the particular appendage being drawn. This way the same function can be used without\n\
+regard to the arm or leg position.\n\
+\n\
+The drawBody() function ties everything together and draws all of the body parts.\n\
+It has two parameters, one for the arm angle and one for the leg angle. This assumes\n\
+that the arms move together and the legs move together, but that is not a requirement.\n\
+You can change this.\n\
+\n\
+To make this a bit more fun, this can be animated, so the figure\'s arms and legs move\n\
+as if it were doing jumping jacks. To do this we want to vary the angle of the\n\
+arms, from 45 degrees to almost 180 degrees, say 175. The legs should vary from a \n\
+135 degree angle to almost 180, lets say 175.  The two extreme positions of the\n\
+body can be drawn as:\n\
+  drawBody(45, 45);\n\
+and\n\
+  drawBody(175, 5);\n\
+\n\
+(hint: You can try each one separately in the command box.)\n\
+\n\
+For smooth motion, there should be 4 steps. (This is really a guess, there could be\n\
+more or there could be less, but for now lets assume that 4 is a good number.)\n\
+A step would be the base movement plus one quarter of the total movement. The moveBody()\n\
+function uses the variable\n\
+n to step throught the various movements with n=0, n=1, n=2, n=3, and n=4\n\
+successively.\n\
+\n\
+For the arms: 45 + n * (175-45)/4\n\
+\n\
+For the legs: 45 - n * (45-5)/4\n\
+\n\
+The direction of the movement changes at either end, that is when\n\
+n = 0 or n = 4; So when n is zero, n should be increased by one to get to 1. When n is\n\
+4, n should be decreased by one (add a negative one) to get to 3. Using a direction\n\
+variable allows the moveBody() function to remember what direction it is moving.\n\
+\n\
+Successive calls to moveBody() are controlled by the delay() function. This function is set\n\
+to repeat in 100 ms. You could change the time to make it faster or slower.\n\
+\n\
+*/\n\
+\n\
+\n\
+\n\
+// GLOBALS\n\
+  var height = 40;\n\
+  var headDiameter = .25 * height;\n\
+  var torsoLength = .3 * height;\n\
+  var neckLength = .5 * torsoLength;\n\
+  var armLength = .4 * height;\n\
+  var legLength = .5 * height;\n\
+\n\
+/*\n\
+  The body parts are drawn with the following asumptions\n\
+  - the center of figure is the center of torso\n\
+  - the turtle is returned to the center of the figure\n\
+  - the turtle is pointed up \n\
+  - the pen of the turtle is up\n\
+*/\n\
+\n\
+\n\
+function drawHead() {\n\
+  forward (torsoLength/2 + neckLength + headDiameter/2); \n\
+  pendown();\n\
+  circle (headDiameter/2); //draw head\n\
+  penup();\n\
+  right(180);\n\
+  forward (torsoLength/2 + neckLength + headDiameter/2); \n\
+  right(180);\n\
+}\n\
+\n\
+function drawNeck() {\n\
+  forward (torsoLength/2 ); \n\
+  pendown();\n\
+  forward (neckLength); //neck\n\
+  penup();\n\
+  backward (torsoLength/2 + neckLength); \n\
+}\n\
+\n\
+function drawTorso() {\n\
+  backward (torsoLength/2); \n\
+  pendown();\n\
+  forward (torsoLength); \n\
+  penup();\n\
+  backward (torsoLength/2); \n\
+}\n\
+\n\
+function drawLeftLeg(angle){\n\
+  right(180);\n\
+  forward (torsoLength/2);\n\
+  left(angle);\n\
+  pendown();\n\
+  forward (legLength); //left leg\n\
+  penup();\n\
+  backward (legLength);\n\
+  right(angle);\n\
+  right(180);\n\
+  forward (torsoLength/2); \n\
+} \n\
+\n\
+function drawRightLeg(angle) {\n\
+  right(180);\n\
+  forward (torsoLength/2);\n\
+  right(angle);\n\
+  pendown();\n\
+  forward (legLength); //right leg\n\
+  penup();\n\
+  backward (legLength);\n\
+  left(angle);\n\
+  right(180);\n\
+  forward (torsoLength/2); \n\
+}\n\
+\n\
+function drawLeftArm(angle){\n\
+  forward (torsoLength/2);\n\
+  right(angle);\n\
+  pendown();\n\
+  forward (armLength); //left arm\n\
+  penup();\n\
+  backward (armLength);\n\
+  left(angle);\n\
+  backward (torsoLength/2); \n\
+} \n\
+\n\
+function drawRightArm(angle) {\n\
+  forward (torsoLength/2);\n\
+  left(angle);\n\
+  pendown();\n\
+  forward (armLength); //left arm\n\
+  penup();\n\
+  backward (armLength);\n\
+  right(angle);\n\
+  backward (torsoLength/2); \n\
+}\n\
+\n\
+function drawBody(armAngle, legAngle) {\n\
+  drawTorso();\n\
+  drawHead();\n\
+  drawNeck();\n\
+  drawLeftArm(armAngle);\n\
+  drawRightArm(armAngle);\n\
+  drawLeftLeg(legAngle);\n\
+  drawRightLeg(legAngle);\n\
+}\n\
+\n\
+var n = 0;\n\
+var direction = +1;\n\
+\n\
+function demo () {\n\
+  clear();\n\
+  home();\n\
+  hideturtle();\n\
+  n = 0;\n\
+  direction = +1;\n\
+  moveBody();\n\
+}\n\
+\n\
+function moveBody () {\n\
+  clear();\n\
+  drawBody(45 + n * (175-45)/4,\n\
+    45 - n * (45-5)/4);\n\
+  n = n + direction;\n\
+  if (n>=4 || n<=0) {\n\
+    direction = -direction;\n\
+  }\n\
+  delay(moveBody,100);\n\
+}\n\
+'
 koch_snowflake ='\
 // Koch Snowflakes -- draw an animated set of Koch snowflakes\n\
 \n\
