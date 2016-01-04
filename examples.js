@@ -202,9 +202,13 @@ function numbers(x, y, radius) {\n\
       angle(hour * 30);\n\
       forward(radius); // to center of digit\n\
       angle(180);\n\
-      forward(5); // vertical correction to baseline\n\
+      forward(10); // vertical correction to baseline\n\
       right(90);\n\
-      forward(4); // horizontal correction to lower left corner\n\
+      if (hour < 10) {\n\
+        forward(6); // horizontal correction to lower left corner\n\
+      } else {\n\
+        forward (10)\n\
+      }\n\
       right(180);\n\
       write(hour);\n\
    }\n\

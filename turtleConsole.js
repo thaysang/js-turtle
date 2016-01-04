@@ -24,6 +24,23 @@ function stopClicked() {
   }
 }
 
+// set up command field to accept an ENTER without field modification
+var command = document.getElementById("command");
+if (command.addEventListener)
+    command.addEventListener("keypress", function(e) {
+        if (e.keyCode === 13) {
+            commandChanged();
+            e.preventDefault();
+        }
+    }, false);
+else if (command.attachEvent)
+    command.attachEvent("onkeypress", function(e) {
+        if (e.keyCode === 13) {
+            commandChanged();
+            return e.returnValue = false;
+        }
+    });
+    
 function runClicked() {
   stopAnimation();
   cmd ("demo()");
@@ -31,8 +48,8 @@ function runClicked() {
   eval ("demo();");
 }
 
-// Set up all code elements to be linked and have onclick functionality
-var codeElements = document.querySelectorAll ("code");
+// Set up all reference code elements to be linked and have onclick functionality
+var codeElements = document.querySelectorAll ("#reference code");
 for (var i=0; i< codeElements.length; i++) {
   //console.log ("element id: " + codeElements[0].id);
   codeElements[i].className = "linked";
@@ -60,10 +77,10 @@ document.getElementById("examples").onchange = function () {
   document.getElementById('definitions').value = eval(this.value);
 }
 
-document.getElementById("command").onchange=function commandChanged () {
+document.getElementById("command").onchange=commandChanged;
 
-  // handle a change (after an ENTER) to the command box
-  var commandText = this.value;
+function commandChanged () {
+  var commandText = document.getElementById("command").value;
   var definitionsText = document.getElementById('definitions').value;
   try {
     //*** Boys and girls please don't use eval() functions at home. In general this
@@ -102,9 +119,6 @@ var STOP = document.getElementById("stopButton")
 STOP.onclick=stopClicked;
 STOP.hidden=true;
 
-document.getElementById("github").onclick=function () {
-  window.location="https://github.com/kirkcarlson/js-turtle";
-}
 
 /* functions or whatever to do reactive design stuff
 1. Expand to fill given area
@@ -144,6 +158,7 @@ function resizeColumns () {
   }
   var refElement = document.getElementById("reference");
   var leftcolElement = document.getElementById("leftcolumn")
+  var rightcolElement = document.getElementById("rightcolumn")
 
   // left column resized for language reference or for drawer handle
   if (refElement.className == "closed") {
@@ -153,11 +168,10 @@ function resizeColumns () {
   }
    
   // right column resized for examples if active
-  var examplesActive = true;
-  if (examplesActive) {
+  if (document.getElementById("examplesLabel").className != "closed") {
     var rightcolWidth = Math.min(300, .32* overallWidth);
   } else {
-    var rightcolWidth = 0;
+    var rightcolWidth = 10;
   }
   // mid column resized for space available
   var midcolWidth = overallWidth - leftcolWidth - rightcolWidth;
@@ -224,7 +238,8 @@ resizeColumns();
 function openReferenceDrawer() {
   document.getElementById("reference").className = "open";
   document.getElementById("referenceTitle").className = "open";
-  document.getElementById("hamburger").className = "open";
+  document.getElementById("viewReferenceItem").className = "checked";
+//  document.getElementById("hamburger").className = "open";
   resizeColumns();
 
 }
@@ -232,9 +247,41 @@ function openReferenceDrawer() {
 function closeReferenceDrawer() {
   document.getElementById("reference").className = "closed";
   document.getElementById("referenceTitle").className = "closed";
-  document.getElementById("hamburger").className = "closed";
+  document.getElementById("viewReferenceItem").className = "";
+//  document.getElementById("hamburger").className = "closed";
   resizeColumns();
 }
+
+function openDefinitionsDrawer() {
+  document.getElementById("definitions").className = "open";
+  document.getElementById("examples").className = "open";
+  document.getElementById("examplesLabel").className = "open";
+  document.getElementById("viewDefinitionsItem").className = "checked";
+//  document.getElementById("hamburger").className = "open";
+  resizeColumns();
+
+}
+
+function closeDefinitionsDrawer() {
+  document.getElementById("definitions").className = "closed";
+  document.getElementById("examples").className = "closed";
+  closeTutorial();
+
+  document.getElementById("examplesLabel").className = "closed";
+  document.getElementById("viewDefinitionsItem").className = "";
+//  document.getElementById("hamburger").className = "closed";
+  resizeColumns();
+}
+
+function openTutorial() {
+  document.getElementById("tutorial").className = "";
+}
+
+function closeTutorial() {
+  document.getElementById("tutorial").className = "closed";
+}
+
+closeTutorial();
 
 /*
 referenceDrawerHandle = document.getElementById("lefthandle")
@@ -247,15 +294,87 @@ referenceDrawerHandle.onclick = function () {
 }
 */
 
-document.getElementById("hamburger").onclick = function () {
-  if (document.getElementById("reference").className == "closed") {
-    openReferenceDrawer();
-    
-  } else {
-    closeReferenceDrawer();
-  }
-}
 
 document.getElementById("referenceClose").onclick = function () {
   closeReferenceDrawer();
+}
+
+document.getElementById("viewReference").onclick = function () {
+  if (document.getElementById("reference").className == "closed") {
+    openReferenceDrawer();
+  } else {
+    closeReferenceDrawer();
+  }
+  closeMenu();
+}
+
+document.getElementById("viewDefinitions").onclick = function () {
+  if (document.getElementById("definitions").className == "closed") {
+    openDefinitionsDrawer();
+  } else {
+    closeDefinitionsDrawer();
+  }
+  closeMenu();
+}
+
+/*
+document.getElementById("definitionsClose").onclick = function () {
+  closeDefinitionsDrawer();
+}
+*/
+  
+mouseOverElementIds = ["reference","turtlecanvas", "examples", "definitions",
+                       "command", "resetButton", "runButton", "stopButton"];
+for (var i=0; i < mouseOverElementIds.length; i++) {
+  element = document.getElementById(mouseOverElementIds[i]);
+  console.log ("Found div with id=" + element.id)
+  element.onmouseover = function (event) {
+    var tooltip = document.getElementById(this.id + "_help_text");
+    console.log ("mouseover for "+ this.id + " at x:" + event.clientX + " y:" + event.clientY)
+    tooltip.style.display = "block";
+    tooltip.style.top = event.clientY + "px";
+    if (this.id === "examples" || this.id === "definitions") {
+      tooltip.style.right = window.innerWidth - event.clientX + "px";
+    } else {
+      tooltip.style.left = event.clientX + "px";
+    }
+    this.onmouseleave = function () {
+      document.getElementById(this.id+"_help_text").style.display="none";
+    }
+  }
+}
+
+function closeMenu() {
+  document.getElementById("menu").className="closed";
+}
+
+function openMenu() {
+  document.getElementById("menu").className="";
+}
+
+tutorialMenuIds = [ "basicGrammarMenu", "basicConceptsMenu",
+                   "advancedConceptsMenu", "animationMenu", "underHoodMenu",
+                   "aboutMenu"]
+
+for (var i=0; i < tutorialMenuIds.length; i++) {
+  element = document.getElementById(tutorialMenuIds[i]);
+  console.log ("Found menu with id=" + element.id)
+  element.onclick = function (event) {
+    openTutorial();
+    window.location.hash = this.href;
+    closeMenu();
+  }
+}
+  
+document.getElementById("hamburger").onclick = function () {
+  if ( document.getElementById("menu").className === "closed") {
+    openMenu();
+  } else {
+    closeMenu();
+  }
+}
+  
+document.getElementById("tutorialClose").onclick = function () {
+  closeTutorial();
+  document.getElementById("menu").className="closed";
 }

@@ -32,9 +32,13 @@ function numbers(x, y, radius) {
       angle(hour * 30);
       forward(radius); // to center of digit
       angle(180);
-      forward(5); // vertical correction to baseline
+      forward(10); // vertical correction to baseline
       right(90);
-      forward(4); // horizontal correction to lower left corner
+      if (hour < 10) {
+        forward(6); // horizontal correction to lower left corner
+      } else {
+        forward (10)
+      }
       right(180);
       write(hour);
    }

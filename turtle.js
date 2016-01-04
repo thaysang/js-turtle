@@ -257,12 +257,17 @@ function right(angle) {
 }
 
 turn = right;
+rt = right;
 
 // turn left by an angle in degrees
 function left(angle) {
    turtle.angle -= degToRad(angle);
    drawIf();
 }
+
+lt = left;
+
+
 
 // lift up the pen (don't draw)
 function penup() {

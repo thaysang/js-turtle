@@ -12,7 +12,7 @@
           <path d="M.004 8h63.998v5.627H.004zM.004 29.187h63.998v5.626H.004zM.004 50.373h63.998V56H.004z"/>
         </svg>
       </button>
-    </div>
+    </div>  <!-- end of hamburger-div -->
     <h1>Javascript Turtle Graphics</h1>
     <div id="leftcolumn">
       <h4 id="referenceTitle">
@@ -472,26 +472,63 @@
              Example: <code>write(maxY())</code>
            </p>
          </li>
-         </ul>
+       </ul>
         </div> <!-- reference -->
       </div> <!-- leftcolumn -->
+         <span class='help_text' id='reference_help_text'>
+           <p>
+           The language reference lists the available functions for turtle graphics. Parameters are
+           included within parentheses '(' and ')' characters. Optional parameters and separating
+           commas are enclosed withing square bracket '[' and ']' characters. Alternative forms of
+           the functions are separated with the pipe '|' character. 
+           </p>
+           <p>
+            Hint: The example may be clicked to immediately execute it to see what it does.
+           </p>
+         </span>
       <div id="midcolumn">
         <h4>Canvas</h4>
-        <canvas id="turtlecanvas" width="300" height="300"></canvas>
-        <canvas id="imagecanvas" width="300" height="300" style="display:none"></canvas>
-        <h4>Command</h4>
+          <canvas id="turtlecanvas" width="300" height="300"></canvas>
+          <canvas id="imagecanvas" width="300" height="300" style="display:none"></canvas>
+         <span class='help_text' id='turtlecanvas_help_text'>
+           <p>
+           The canvas is the area where the turtle graphics are drawn.
+           The turtle is the green triangle.
+           </p>
+         </span>
+        <label id="commandLabel" for=#command>Command</label>
         <input type="text" id="command" />
-	<br/>
-	<button id="resetButton">Reset</button>
-	<button id="runButton">Run Demo</button>
-	<button id="stopButton">Stop</button>
-	<button id="github"><a href=https://github.com/kirkcarlson/js-turtle>Source
-<svg class="fi" width=12 height=12 viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M56.956 20.895c0-4.618-1.76-8.333-4.61-11.143.5-1.592 1.157-5.128-.67-9.66 0 0-3.24-1.014-10.555 3.822-2.862-.72-5.92-1.064-8.965-1.064-3.353 0-6.753.42-9.918 1.282C14.684-.953 11.357.086 11.357.086c-2.174 5.37-.834 9.35-.42 10.338-2.57 2.72-4.114 6.206-4.114 10.456 0 3.23.37 6.106 1.28 8.623l.943 2.13c2.558 4.692 7.582 7.73 16.515 8.68-1.262.843-2.575 2.266-3.086 4.688-1.73.817-7.2 2.813-10.48-2.75 0 0-1.843-3.336-5.36-3.587 0 0-3.416-.047-.232 2.095 0 0 2.275 1.07 3.86 5.056 0 0 2.05 6.817 11.968 4.636v7.034s-.22 2.49-2.524 3.322c0 0-1.364.913.1 1.448 0 0 6.414.508 6.414-4.664V49.9s-.26-3.045 1.248-4.088v12.604s-.095 3-1.676 4.13c0 0-1.053 1.88 1.26 1.363 0 0 4.41-.618 4.604-5.723l.103-12.752h1.06l.1 12.752c.216 5.088 4.623 5.72 4.623 5.72 2.306.518 1.246-1.36 1.246-1.36-1.576-1.13-1.682-4.132-1.682-4.132V45.913c1.51 1.172 1.263 3.985 1.263 3.985v7.688c0 5.172 6.4 4.664 6.4 4.664 1.47-.54.108-1.45.108-1.45-2.312-.83-2.522-3.32-2.522-3.32V47.414c0-3.918-1.674-5.985-3.308-7.087 9.533-.924 14.095-3.98 16.21-8.698-.042.082.756-2.11.756-2.11.725-2.503.945-5.4.945-8.623h-.004z"/></svg>
-      </a>
-      </button>
+         <span class='help_text' id='command_help_text'>
+           <p>
+           The Command area is a place where text can be entered and executed by pressing
+           the ENTER (Return) key.
+           </p>
+         </span>
+         <br/>
+         <button id="resetButton">Reset</button>
+         <span class='help_text' id='resetButton_help_text'>
+           <p>
+           The Reset button is used to return the canvas and the turtle to their starting
+           positions.
+           </p>
+         </span>
+         <button id="runButton">Run Demo</button>
+         <span class='help_text' id='runButton_help_text'>
+           <p>
+           The Run Demo button is used to run the function in the definitions area named 
+           demo().
+           </p>
+         </span>
+         <button id="stopButton">Stop</button>
+         <span class='help_text' id='stopButton_help_text'>
+           <p>
+           The Stop button is used to stop animations. The Stop button only appears when
+           it is needed.
+           </p>
+         </span>
       </div> <!-- midcolumn -->
       <div id="rightcolumn">
-        <h4>Examples
+        <label id="examplesLabel" for=#examples>Examples</label>
         <select id=examples>
           <option value=arc_test>Arc and Curve Test</option>
           <option value=bounce>Bouncing Rectangles</option>
@@ -512,7 +549,14 @@
           <option value=squiggle>Squiggle</option>
           <option value=tree>Tree Symmetrical</option>
         </select>
-        </h4>
+        <span class='left_help_text' id='examples_help_text'>
+          <p>
+          The examples select is used to load various examples into the defintions area.
+          The example can be run with the run demo button. Individual functions can be run
+          by invoking them from the command area. The code can be examined or modified as
+          desired.
+          </p>
+        </span>
         <textarea id="definitions">
 // Define helper functions here.
 // For example:
@@ -533,12 +577,302 @@ function demo() {
   }
 }
          </textarea> <!-- definitions -->
+         <span class='left_help_text' id='definitions_help_text'>
+           <p>
+           The definitions area allow the entry of multi-line programs and examples. This code
+           can be either as individual functions by invoking the function with the command area.
+           Most example code includes a function named demo that can be invoked without
+           parameters with the Run Demo button.
+           </p>
+         </span>
       </div> <!-- rightcolumn -->
+         <span class='left_help_text' id='rightcolumn_help_text'>
+           <p>
+           The definitions area allow the entry of multi-line programs and examples. This code
+           can be either as individual functions by invoking the function with the command area.
+           Most example code includes a function named demo that can be invoked without
+           parameters with the Run Demo button.
+           </p>
+         </span>
    </div> <!-- wrap-->
+
+
+  <div id="menu" class="closed">
+    <ul>
+      <li id=viewReferenceItem class=checked>
+        <a href="#" id="viewReference">View Language Reference</a>
+      </li>
+      <li id=viewDefinitionsItem class=checked>
+        <a href="#" id="viewDefinitions">View Examples and Definitions</a>
+      </li>
+      <li>
+        <a href="#basic grammar" id="basicGrammarMenu">Basic Javascript Grammar</a>         
+      </li>
+      <li>
+        <a href="#basic javascript concepts" id="basicConceptsMenu">Basic Javascript Concepts</a>
+      </li>
+      <li>
+        <a href="#advanced javascript concepts" id="advancedConceptsMenu">Advanced Javascript Concepts</a>
+      </li>
+      <li>
+        <a href="#animation" id="animationMenu">Animation</a>
+      </li>
+      <li>
+        <a href="#under the hood" id="underHoodMenu">Under the Hood</a>
+      </li>
+      <li>
+        <a href="#about this page" id="aboutMenu">About This Page</a>
+      </li>
+    </ul>
+  </div> <!-- end of menu -->
+
+  <div class="tutorial" id="tutorial">
+    <button id="tutorialClose">
+      <svg class="fi" viewBox="0 0 64 64">
+        <line x1="2" y1="2" x2="62" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
+        <line x1="62" y1="2" x2="2" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
+      </svg>
+    </button>
+    <div>
+   <h2 id="basic grammar">Basic Javascript Grammar</h2>
+     <p>
+        While a better and more complete guide to the Javascript grammar can be found elsewhere in books or on the Internet,
+        this is a brief guide to help get you started.
+     </p>
+     <h3>Statements</h3>
+       <p>
+         Usually there is one Javascript statement per line, but you can put more on a line as long as
+         each statement is separated with a semicolon ';'. Some programmers like to end each statement with a semi-colon
+         anyway. Some statements may span more than one line, especially complex assignment statements.
+         <code>
+a = 1;
+a = 1 // statement without the ending semicolon
+a = 1; b = 2
+a = 1 // could be the end or not depending on what follows
+  + 1  // appended to preceding line
+  + 1 // appended to the preceding lines
+  + 2; // appended to the preceding lines, so a = 5
+         </code>
+       </p>
+       <p>
+         Many of Javascript's constructs come in pairs. Strings are enclosed in pair of single quotes (apostrophes) or a pair
+         of double quotes. A single quote may appear in a string set off with double quotes and a double quote may appear in a string
+         set of with single quotes. An opening parentheses, square bracket, or squiggle bracket (brace), must be matched with the closing
+         parentheses, square bracket or squiggle bracket.
+       </p>
+     <h3>Comments</h3>
+       <p>
+         A comment is a note left by the developer to others, including the developer, about some
+         aspect of the code to make it easier to understand. Comments are not executed by the Javascript interpreter.
+         Javascript has two kinds of comments. A single line comment starts with a double slash '//' and
+         runs to the end of the current line. The line may contain other Javascript before the double slash.
+         A multi-line comment is fenced in by a slash-star '/*' start sequence and ends in a '*/' sequence. This comment
+         may cover several lines or it may be within the Javascript code of a single line.
+       </p>
+       <code>
+/*
+a multi-line comment
+that spans more than
+one line
+*/
+//a simple single line comment
+a = 1; // a single line comment at the end of a line
+a /* an embedded multi-line comment */ = 1;
+/* multi-line comments /* cannot be nested */ syntax error */
+       </code>
+     <h3 id=variables>Variables</h3>
+       <p>
+         Variables are used to store a value for later use. Sometimes this may be a fairly long time and sometimes it may be
+         vary short time. Variables do not have a single particular type. So the same variable may be assigned a number, such as 1,
+         in one instance and be assigned a string like "Javascript" at some other time. It is up to the programmer to keep track
+         of the type of a variable.
+       </p>
+       <code>
+a = 1;   // assign the value / assign the value of the integer '1' to the variable 'a'.
+a = 1.0;   // assign the value of the floating point number ' 1.0' to the variable 'a'.
+a = "red rutabaga"; // assign the string "red rutabaga" to the variable 'a'.
+a = true; // assign boolean value of true to the variable 'a'.
+       </code>
+       <p>
+         Javascript allows for a wide variety of types beyond simple integers and strings. It allows floating point numbers, Boolean
+         (true or false) values, ordered lists, and objectnctions for later use. This allows the same code to be used over and over.
+         Some functions may be return a value, others do ns. You can find out more about these in other places.
+       </p>
+     <h3 id=functions>Functions</h3>
+       <p>
+         Javascript allows the programmer to define blocks of code that can be used over and over. These blocks are called
+         <em>functions</em>. Some functions may take parameters as inputs, others do not. It is
+         up to the programmer to decide what the function will do, whether it takes parameters and whether it returns a result. A
+         function may be called a procedure, a subroutine, or other names. These names are generally talking about the same thing
+         that Javascript calls a function. A function is "invoked" in a statement by using its name followed by a opening and closing
+         parentheses '(' and ')'. There may be parameters between the parentheses.
+       </p>
+       <p>
+         A simple example could be a function that draws a shape (like a square or other figure) on the canvas. The turtle is moved to where the
+         shape is required and the function is invoked.
+       </p>
+       <code>
+function square () {
+  forward (100);
+  right (90);
+  forward (100);
+  right (90);
+  forward (100);
+  right (90);
+  forward (100);
+  right (90);
+}
+       </code>
+       <p>
+         Good functions have no side effects. So a function that draws a shape should leave the turtle in the same position as it
+         was when the function was called and pointing in the same direction. Of course there are exceptions like a function that draws
+         a fancy corner. The point is, the function should be predictable and not have a side effect which would manifest itself as a
+         nasty bug down the road.
+       </p>
+     <h3>Functions with Parameters</h3>
+       <p>
+         A more powerful version of a function is a function that is called with one or more parameters. A parameter may be a size of a
+         shape. It may be the input of a mathmatical function, say one that takes a number as its input and returns the value of the
+         square of the input (the value of the input times itself). There is no limit to the number of paramters that a function can
+         use, but it is usually wise to keep the number down to the minimum reguired for the function.
+       </p>
+       <code>
+function square (size) {
+  forward (size);
+  right (90);
+  forward (size);
+  right (90);
+  forward (size);
+  right (90);
+  forward (size);
+  right (90);
+}
+       </code>
+   <h2 id="basic javascript concepts">Basic Javascript Concepts</h2>
+     <h3 id=scope>Scoping</h3>
+       <p>
+         Let's say you want to use the variable 'i' as within an iteration as is common practice. There could be trouble if there is
+         a variable named 'i' elsewhere in the program. To solve this problem generally languages, like Javascript, provide rules
+         of scoping to limit the reach of a particular variable. In general a variable may be used within the context in which it is
+         defined. A variable declared with 'var' within a function is only accessed within that function, even if there is another
+         variable named 'i' in the code invoking that function. The 'var' declaration is important, as it states, this variable is
+         defined here and connot be accessed out side of this scope. A function defines a scope basically as the code between the opening
+         and closing curley brackets '{' and '}'. A variable that is defined at the same level of the function is called a "global"
+         variable, in that it CAN be accessed from any function that does not include a locally defined variable of the same name.
+         When a variable is used in a function without being defined with the 'var', it is assumed to be a global external to the
+         function.
+       </p>
+       <code>
+var angle = 90; // this is global
+var size = 10; // this is global
+          
+function square (size /* parameters are automatially local variables) {
+  forward (size); // size references the local parameter size
+  right (angle);  // angle references the global variable angle
+  forward (size);
+  right (angle);
+  forward (size);
+  right (angle);
+  forward (size);
+  right (angle);
+}
+          
+square (100); // draws a square of size 100 pixels
+       </code>
+       <p>
+         Of course functions may be defined within the scope of a function. The "inner" functions can only be used by other inner functions
+         or the outer function. It cannot be used by the code external to the outer function. Likewise variables can be declared
+         within functions to limit their scope of usage.
+       </p>
+     <h3>Iteration</h3>
+       <p>
+         Computer science calls the process of doing things over and over, iteration. Turtle graphics give you only one way to
+         do iteration with the <strong>repeat(<em>count</em>,<em>function</em>)</strong> statement. This lets you do things a
+         set number of times. But what if you want to do things a number of times bases on some other criteria, like getting
+         too small or too big. Then you need to look into Javascript for such purposes.
+       </p>
+       <code>
+function square (size) {
+  repeat (4, function () {
+    forward (size);
+    right (90);
+  })
+}
+       </code>
+       <p>
+function spiral (count, size)
+  repeat (count, function () {
+    forward (size);
+    right (91);
+  })
+}
+       </p>
+       <code>
+function spiral (count, size) {
+  for (var i = 0; i < count; i++) {
+    forward (i);
+    right (90);
+  }
+}
+       </code>
+     <h3>Conditionals</h3>
+   <h2 id="advanced javascript concepts">Advanced Javascript Concepts</h2>
+     <h3>Recursion</h3>
+     <h3>Recursion vs. Iteration</h3>
+   <h2 id=animation>Animation</h2>
+     <h3>Animate</h3>
+     <h3>Delay</h3>
+   <h2 id="under the hood">Under the Hood</h2>
+     <h3>Source Code</h3>
+       <p>
+       The source code for this page can be found in several ways.
+       </p>
+         <ul>
+           <li>
+             Firefox: select the menu <strong>Tools>Web Developer>Page Source</strong>.
+           </li>
+           <li>
+             Chrome: select the menu <strong>View>Developer>View Source</strong>.
+           </li>
+           <li>
+             Safari: select the menu <strong>Develop>Show Page Source</strong>.
+           </li>
+         </ul>
+       <p>
+         To access all of the source code, documentation and development tools used go to
+         <a href="https://github.com/kirkcarlson/js-turtle">https://github.com/kirkcarlson/js-turtle</a>.
+       </p>
+       <p>
+         Basically the following modules were used:
+       </p>
+       <ul>
+         <li>
+           <strong>turtle.html</strong> defines the layout and content of the page as basic HTML.
+         </li>
+         <li>
+           <strong>turtle.css</strong> defines the styling used to make the page more readable as a Cascading Style Sheet.
+         </li>
+         <li>
+           <strong>turtle.js</strong> defines the the basic turtle graphics functions for Javascript.
+         </li>
+         <li>
+           <strong>turtle_console.js</strong> defines the behind the scenes mechanisms to make this page work.
+         </li>
+         <li>
+           <strong>examples.js</strong> is a tool generated file that contains one string for each example. The examples
+           and the tool may be viewed directly on the web page or on github.
+         </li>
+       </ul>
+   <h2 id="about this page">About This Page</h2>
+     <h3>History of Logo Turtle Graphics</h3>
+     <h3>History of This Page</h3>
+    </div>
+  </div> <!-- end of help -->
 
 <!-- scripts -->
    <script type="text/javascript" src="examples.js"></script>
    <script type="text/javascript" src="turtle.js"></script>
    <script type="text/javascript" src="turtleConsole.js"></script>
+  
 </body>
 </html>
