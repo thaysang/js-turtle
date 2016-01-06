@@ -71,11 +71,9 @@ h4, label {
   position:absolute;
   top:58px;
   left:33%;
-  //float:left;
   width:32%;
-  //width:300px;
-  //border: green 1px dotted;
   margin:2px 2px 2px 2px;
+  border:none;
 }
 
 #rightcolumn {
@@ -97,13 +95,13 @@ h4, label {
   margin:2px 2px 2px 2px;
   //height:600px;
   //height:95%;
-  border: black 1px solid;
+  border: lightgray 1px solid;
   overflow:auto;
 }
 
 #reference.open {
   display:block;
-  border: black 1px solid;
+  border: lightgray 1px solid;
   width:97%;
 }
 
@@ -172,12 +170,14 @@ h4, label {
   border: none;
   width:auto;
   height:auto;
+  border: 2px solid lightgray;
 }
 
 #imagecanvas {
-  border: 1px solid black;
+  display:none;
   width:auto;
   height:auto;
+  border: 2px solid lightgray;
 }
 
 #command, 
@@ -186,27 +186,27 @@ h4, label {
   font-family: Courier New,Courier,monospace;
   //height:400px;
   height:90%;
-  border:1px solid black;
+  border:1px solid lightgray;
   resize:none;
 }
 
 #command {
   height:20px;
   width:90%;
-  border: 1px solid black;
+  border: 1px solid lightgray;
 }
 
 #command:focus {
-  border: 2px solid black;
+  border: 2px solid lightgray;
 }
   
 #definitions {
   width:90%;
-  border: 1px solid black;
+  border: 1px solid lightgray;
 }
 
 #definitions:focus {
-  border: 2px solid black;
+  border: 2px solid lightgray;
 }
   
 #midcolumn button {
@@ -445,6 +445,7 @@ code.linked {
   position:absolute;
   top:4%;
   left:4%;
+  z-index:50;
 }
 
 #menu ul {
@@ -508,6 +509,7 @@ code.linked {
   background-color:white;
   display:block;
   padding:0 5px 0 5px;
+  z-index:20;
 }
 
 #tutorial code {

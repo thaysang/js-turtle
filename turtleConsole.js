@@ -156,6 +156,11 @@ function resizeColumns () {
   } else {
     var overallWidth = 1200;
   }
+  if (w < 450) {
+    document.getElementById("title").innerHTML = "Turtle Graphics"
+  } else {
+    document.getElementById("title").innerHTML = "Javascript Turtle Graphics"
+  }
   var refElement = document.getElementById("reference");
   var leftcolElement = document.getElementById("leftcolumn")
   var rightcolElement = document.getElementById("rightcolumn")
@@ -226,7 +231,7 @@ function resizeColumns () {
   imageContext.strokeRect(0,0,canvasWidth,canvasHeight);
 
   turtleContext.lineWidth = "1px";
-  turtleContext.strokeStyle = "black";
+  turtleContext.strokeStyle = "lightgray";
   turtleContext.strokeRect(0,0,canvasWidth,canvasHeight);
 }
 
@@ -324,26 +329,64 @@ document.getElementById("definitionsClose").onclick = function () {
 */
   
 mouseOverElementIds = ["reference","turtlecanvas", "examples", "definitions",
-                       "command", "resetButton", "runButton", "stopButton"];
+                       "command", "resetButton", "runButton", "stopButton",
+                       "hamburger"];
+var helpTextTimer; // global for delaying all help text
+var helpDelay = 1000; // global delay in milliseconds for all help text
+var bottomY = (window.innerHeight // global for lowest Y on page for tool tip
+      || document.documentElement.clientHeight
+      || document.body.clientHeight) // variations for cross browser support
+      - 50; // bottom margin in pixels
+
 for (var i=0; i < mouseOverElementIds.length; i++) {
   element = document.getElementById(mouseOverElementIds[i]);
   console.log ("Found div with id=" + element.id)
-  element.onmouseover = function (event) {
+  element.onmouseenter = function (event) {
     var tooltip = document.getElementById(this.id + "_help_text");
-    console.log ("mouseover for "+ this.id + " at x:" + event.clientX + " y:" + event.clientY)
-    tooltip.style.display = "block";
-    tooltip.style.top = event.clientY + "px";
-    if (this.id === "examples" || this.id === "definitions") {
-      tooltip.style.right = window.innerWidth - event.clientX + "px";
+    //console.log ("mouseover for "+ this.id + " at x:" + event.clientX + " y:" + event.clientY)
+    onHelpEnter(tooltip);
+    if (event.clientY < bottomY) {
+      tooltip.style.top = event.clientY + "px";
     } else {
+      tooltip.style.top = bottomY + "px";
+    }
+    if (this.id === "examples" || this.id === "definitions") { // do on left
+      tooltip.style.right = window.innerWidth - event.clientX + "px";
+    } else { // do on the right side
       tooltip.style.left = event.clientX + "px";
     }
-    this.onmouseleave = function () {
-      document.getElementById(this.id+"_help_text").style.display="none";
-    }
+  }
+  element.onmouseleave = function () {
+    var tooltip = document.getElementById(this.id + "_help_text");
+    onHelpExit(tooltip);
   }
 }
 
+function onHelpEnter (helpTextElement) {
+  if (helpTextTimer === undefined) {
+    helpTextTimer = setTimeout(onHelpTimeout,helpDelay, helpTextElement);
+  }
+}
+
+function onHelpExit (helpTextElement) {
+  if (helpTextTimer != undefined) {
+    window.clearTimeout (helpTextTimer);
+  }
+  helpTextElement.style.display="none";
+  helpTextTimer = undefined;
+}
+
+function onHelpTimeout (helpTextElement) {
+  helpTextElement.style.display="block";
+  helpTextTimer = undefined;
+}
+
+/*
+want to fix help_text bubbles so that they are delayed a bit
+on entry: set up position and start timer
+on timer expiry: show help_text
+on exit: stop timer, if running. clear help_text
+ */
 function closeMenu() {
   document.getElementById("menu").className="closed";
 }
