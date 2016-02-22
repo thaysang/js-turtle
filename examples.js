@@ -82,14 +82,21 @@ function demo () {\n\
 '
 bounce ='\
 // Bouncing Rectangles -- rectagles which bounce off the side of the canvas\n\
+\n\
+  var maxX =  imageContext.canvas.width/2;\n\
+  var maxY =  imageContext.canvas.height/2;\n\
+  var minX =  -maxX;\n\
+  var minY =  -maxY;\n\
+  var maxVelocity = 12;\n\
+\n\
 function init_drops(n) {\n\
    var drops = new Array(n);\n\
    for (var i = 0; i < n; i++) {\n\
       drops[i] = { // each drop is an object with a set of properties\n\
-         x: random(-150, 150),\n\
-         y: random(-150, 150),\n\
-         velocityX: random(-6,6),\n\
-         velocityY: random(-6,6),\n\
+         x: random(minX, maxX),\n\
+         y: random(minY, maxY),\n\
+         velocityX: random(-maxVelocity, maxVelocity),\n\
+         velocityY: random(-maxVelocity, maxVelocity),\n\
          size: random(20,300),\n\
          red:random(0,255),\n\
          green:random(0,255),\n\
@@ -107,16 +114,16 @@ function rain (drops, n) {\n\
       // access each drop object\n\
       var d = drops[i]; // access each drop object and react with it\n\
       // if the drop hits a wall, reverse its motion direction (velocity)\n\
-      if (d.y < -150) {\n\
+      if (d.y < minY) {\n\
          d.velocityY = -d.velocityY;\n\
       }\n\
-      else if (d.y + d.size > 150 && d.velocityY > 0) {\n\
+      else if (d.y + d.size > maxY && d.velocityY > 0) {\n\
          d.velocityY = -d.velocityY;\n\
       }\n\
-      if (d.x - d.width/2 < -150) {\n\
+      if (d.x - d.width/2 < minX) {\n\
          d.velocityX = -d.velocityX;\n\
       }\n\
-      else if (d.x + d.width/2 > 150) {\n\
+      else if (d.x + d.width/2 > maxX) {\n\
          d.velocityX = -d.velocityX;\n\
       }\n\
       // paint the drop\n\
@@ -138,7 +145,7 @@ function let_them_drop (n) {\n\
 }\n\
 \n\
 function demo() {\n\
-  let_them_drop (5);\n\
+  let_them_drop (Math.floor(maxX * maxY/2000));\n\
 }\n\
 '
 circle_eye ='\
@@ -197,6 +204,7 @@ function ticks(x, y, radius) {\n\
 function numbers(x, y, radius) {\n\
    penup();\n\
    setFont("20px sans-serif");\n\
+   color("black");\n\
    for (var hour = 1; hour <= 12; hour++) {\n\
       goto(x,y);\n\
       angle(hour * 30);\n\
@@ -261,6 +269,110 @@ function demo() {\n\
    animate(clock,1000);\n\
 }\n\
 '
+colorChangingDots ='\
+//Color Changing Dots -- demonstrate the concept of changing the colors of a string of dots (lights?)\n\
+\n\
+/*\n\
+Maybe you can adapt to make a traffic light simulator or Christmas light\n\
+controller.\n\
+*/\n\
+\n\
+function drawDot () {\n\
+    color(random(16))\n\
+    dot()\n\
+    forward (15)\n\
+}\n\
+\n\
+function drawRowOfDots () {\n\
+  setpos(minX() + 20,0)\n\
+  repeat (32, drawDot)\n\
+}\n\
+\n\
+function colorChangingDots () {\n\
+  wrap(false)\n\
+  setpos(minX(),0)\n\
+  angle(90)\n\
+  pendown()\n\
+  color ("black")\n\
+  penwidth (80)\n\
+  forward (maxX() + maxX()) //draw black band\n\
+  penup()\n\
+  width (1)\n\
+  animate( drawRowOfDots, 500)\n\
+}\n\
+\n\
+demo = colorChangingDots;\n\
+'
+coordinates ='\
+//Canvas Coordinates -- draw the axes of the coordinate system on the canvas\n\
+\n\
+function lines () {\n\
+  clear()\n\
+  pendown()\n\
+\n\
+  goto(0,minY())\n\
+  angle(0)\n\
+  forward (2*maxY())\n\
+\n\
+  goto(minX(),0)\n\
+  angle(90)\n\
+  forward (2*maxX())\n\
+\n\
+  //lable the axes\n\
+  setFont("bold 14px sans-serif");\n\
+  goto (0+10,maxY()-25)\n\
+  angle (90)\n\
+  write (maxY())\n\
+\n\
+  goto (maxX()-5,+10)\n\
+  angle (0)\n\
+  write (maxX())\n\
+\n\
+  goto (10,minY()+5)\n\
+  angle (90)\n\
+  write (minY())\n\
+\n\
+  goto (minX()+25,0+10)\n\
+  angle (0)\n\
+  write (minX())\n\
+}\n\
+\n\
+\n\
+function ticks (dir, limit, step) {\n\
+  var tickLen = 5\n\
+  angle(dir)\n\
+  goto(0,0)\n\
+  penup()\n\
+  for (i=1; i*step<limit; i=i+1) {\n\
+\n\
+    forward(step)\n\
+    left(90)\n\
+    if (i%5 == 0) {\n\
+      forward(tickLen)\n\
+      pendown()\n\
+      backward (tickLen*2)\n\
+      penup()\n\
+      forward(tickLen)\n\
+      right(90)\n\
+    } else {\n\
+      forward(tickLen/2)\n\
+      pendown()\n\
+      backward (tickLen)\n\
+      penup()\n\
+      forward(tickLen/2)\n\
+      right(90)\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+  lines()\n\
+  ticks (0, maxY(), 10)\n\
+  ticks (90, maxX(), 10)\n\
+  ticks (180, -minY(), 10)\n\
+  ticks (270, -minX(), 10)\n\
+}\n\
+'
 dividing_circle ='\
 // Dividing a Circle -- Divide a circle with other circles\n\
 \n\
@@ -314,6 +426,134 @@ function tier5 () {\n\
 function tier6 () {\n\
   divideCenter (6,50);\n\
 }\n\
+'
+flag ='\
+// Flag -- draw an American Flag\n\
+\n\
+\n\
+function star (size) {\n\
+  penup()\n\
+  forward(.54*size)\n\
+  turn (180-18)\n\
+  pendown()\n\
+  var i=0\n\
+  while (i<5){\n\
+    forward(size)\n\
+    right(180-36)\n\
+    i = i + 1\n\
+  }\n\
+  turn (180+18)\n\
+  backward(.54*size)\n\
+}\n\
+\n\
+\n\
+function starLine(count, size, sep) {\n\
+  while (count > 0) {\n\
+    star(size)\n\
+    penup()\n\
+    right(90)\n\
+    forward (sep)\n\
+    left(90)\n\
+    pendown()\n\
+    count = count -1;\n\
+  }\n\
+}\n\
+\n\
+\n\
+function rectangle (width, height) {\n\
+  // assume x, y at upper right hand corner in and out\n\
+  // assume angle is 90 in and out\n\
+  angle (90)\n\
+  forward (width)\n\
+  right(90)\n\
+  forward (height)\n\
+  right (90)\n\
+  forward (width)\n\
+  right (90)\n\
+  forward (height)\n\
+  right (90)\n\
+}\n\
+\n\
+\n\
+function stripes (width, spacing, number) {\n\
+  //assume x, y is at right side of stripe\n\
+  //assume angle is -90\n\
+  var i = 0\n\
+  while (i<number) {\n\
+    pendown()\n\
+    forward (width)\n\
+    penup()\n\
+    // make the turn\n\
+    if (i%2 == 0) {\n\
+      left(90)\n\
+      forward(spacing)\n\
+      left(90)\n\
+    } else {\n\
+      right(90)\n\
+      forward(spacing)\n\
+      right(90)\n\
+    }\n\
+    i = i + 1\n\
+  }\n\
+}\n\
+\n\
+\n\
+function flag() {\n\
+  //***Constants\n\
+  var xBase = -200 // base is upper left corner\n\
+  var yBase = 200\n\
+  var flagHeight = 250 // everything else is proportional to flagHeight\n\
+  var stripeWidth = flagHeight/13\n\
+  var flagWidth = 1.9 * flagHeight\n\
+  var fieldWidth = .76 * flagHeight\n\
+  var fieldHeight = 7 * stripeWidth\n\
+  var xSeparation = .063 * flagHeight\n\
+  var ySeparation = .054 * flagHeight\n\
+  starSize = .06 *flagHeight // star size\n\
+    \n\
+  //outline flag and field\n\
+  wrap(false)\n\
+  hideTurtle()\n\
+  goto (xBase, yBase)\n\
+  angle (90)\n\
+  color("black")\n\
+  width(1)\n\
+  rectangle (flagWidth, flagHeight)\n\
+  rectangle (fieldWidth, fieldHeight)\n\
+\n\
+  //  draw stripes\n\
+  color("red");\n\
+  width(stripeWidth);\n\
+  goto (xBase+flagWidth, yBase-stripeWidth/2)\n\
+  angle (-90)\n\
+  stripes (flagWidth-fieldWidth, 2*stripeWidth, 4)\n\
+  stripes (flagWidth, 2*stripeWidth, 3)\n\
+\n\
+  //draw field\n\
+  color("blue")\n\
+  goto (xBase+fieldWidth, yBase-stripeWidth/2)\n\
+  angle (-90)\n\
+  stripes (fieldWidth, stripeWidth, 7)\n\
+\n\
+  //draw field of stars\n\
+  angle(0)\n\
+  width (2)\n\
+  color("white")\n\
+  pendown()\n\
+  var row = 0\n\
+  while (row<9) {\n\
+   if (row % 2 == 0) {\n\
+      goto (xBase + xSeparation, yBase - (row +1) * ySeparation)\n\
+      starLine(6, starSize, xSeparation*2)\n\
+    } else {\n\
+      goto (xBase + 2* xSeparation, yBase - (row +1) * ySeparation)\n\
+      starLine(5, starSize, xSeparation * 2)\n\
+    }\n\
+    row = row + 1;\n\
+  }\n\
+}\n\
+  \n\
+demo = flag\n\
 '
 hexTesselation ='\
 // Hexagon Tessalation -- tile a surface with hexagons\n\
@@ -384,6 +624,1213 @@ function demo() {\n\
     draw();\n\
   }\n\
 }\n\
+'
+intersectionSimulator ='\
+// Intersection Simulator -- simulates a traffic intersection and its lights\n\
+/*\n\
+current problems to be fixed\n\
+ - turn green not extending\n\
+*/\n\
+/*\n\
+Simple Traffic Light Simulator\n\
+\n\
+This simulates a set of traffic lights at an intersection.\n\
+There are sets of lights for each direction: north, south, east, west.\n\
+Each set of lights includes:\n\
+  - the green, yellow, and red lights for the main traffic flow\n\
+  - the green, yellow, and red left turn arrows\n\
+  - a green Walk and red Don\'t Walk signs\n\
+  \n\
+The location of the signal display is as follows:\n\
+       w |N|\n\
+       m | |\n\
+       l | |\n\
+       W | | N lmw\n\
+---------------------\n\
+W                   E\n\
+---------------------\n\
+   wml S | | E\n\
+         | | l\n\
+         | | m\n\
+         |S| w\n\
+where N, S, E, W indicates the direction of travel\n\
+      l is the left turn signal\n\
+      m is the main traffic signal\n\
+      w is the walk signal\n\
+\n\
+\n\
+rules for lights\n\
+  \n\
+basic duration rules\n\
+  flashing don\'t walk duration is fixed\n\
+    let those crossing get across but no new starts\n\
+  yellow has a fixed duration (for this simulation, it could vary based on insection size)\n\
+  green duration can be extended based on queued traffid\n\
+  number unqueued is dependent on duration of green\n\
+  green has a maximum duration (see next)\n\
+  periodically allow cross traffic, even if not seen\n\
+  periodically allow turn traffic, even if not seen \n\
+  lights flash 1/2 sec on, 1/2 sec off -- not implemented yet\n\
+  don\'t want to cut off flashing -- not implemented yet\n\
+  east and west greens (and walks) set together, except turns\n\
+  north and south greens (and walks) set together, except turns\n\
+  lights are protected from cross traffic with guard times\n\
+  while a queue is implemented as in integer, it is treated as a binary for modeling purposes\n\
+    to emulate a simple loop detector\n\
+  \n\
+ traffic arrivals\n\
+   independent random intervals for E, W, N, S cars, left turns and people\n\
+\n\
+ events (one direction)\n\
+  lights normally procede from red to green to yellow and back to red\n\
+  lights may flash red -- not implemented yet\n\
+  start of extendable green time\n\
+  end of turn guard time\n\
+  end of main guard time\n\
+*/\n\
+\n\
+//**** GLOBALS ****\n\
+// reporting and debug constants\n\
+var NO_MESSAGES =      0;\n\
+var QUEUE_MESSAGES =   1;\n\
+var OVERALL_MESSAGES = 2;\n\
+var STATE_MESSAGES =   3;\n\
+var EVENT_MESSAGES =   4;\n\
+var DEBUG_LEVEL = QUEUE_MESSAGES;\n\
+\n\
+// drawing constants\n\
+var roadWidth = 80;\n\
+var crossWalkWidth = 8;\n\
+var stopLineSeparation = 4;\n\
+var stopLineWidth = 2;\n\
+\n\
+// light states\n\
+var red = "red";\n\
+var green = "green";\n\
+var yellow = "yellow";\n\
+\n\
+// light types\n\
+var main = "main";\n\
+var leftTurn = "leftTurn";\n\
+var walk = "walk";\n\
+\n\
+// light duration constants\n\
+// all of the below times are in milliseconds\n\
+var minimumGreenDuration =      5 * 1000;\n\
+var maximumGreenDuration =     30 * 1000;\n\
+var mainPerCar =              1.5 * 1000;\n\
+var yellowDuration =            5 * 1000;\n\
+var mainGuardDuration =         1 * 1000;\n\
+\n\
+var minimumTurnDuration =       4 * 1000;\n\
+var maximumTurnDuration =      20 * 1000;\n\
+var turnPerCar =                2 * 1000;\n\
+var turnGuardDuration =         1 * 1000;\n\
+\n\
+var minimumGreenWalkDuration =  4 * 1000;\n\
+var ewWalkDuration =           20 * 1000;\n\
+var nsWalkDuration =           25 * 1000;\n\
+\n\
+var extendDuration =            1 * 1000;\n\
+var extendDelayDuration =       3 * 1000; // must be less than minimum green duration and minimum walk duration\n\
+var extendDelayDuration = Math.min (minimumGreenWalkDuration, minimumGreenDuration) - .5 * 1000; // must be less than minimum green duration and minimum walk duration\n\
+\n\
+// light data structures (object)\n\
+\n\
+function Light(id, type, aveArrivalTime, aveDepartureTime) {\n\
+    // create a Light object\n\
+    this.id = id;\n\
+    this.type = type;\n\
+    this.state = red;\n\
+    this.queue = [];\n\
+    this.aveArrivalTime = aveArrivalTime;\n\
+    this.aveDepartureTime = aveDepartureTime;\n\
+    this.nextArrivalTime = undefined;\n\
+    this.nextDepartureTime = undefined;\n\
+    this.nextTime = undefined;\n\
+    this.maxNextTime = undefined;\n\
+    this.nextState = "turnRed";\n\
+}\n\
+\n\
+//  milliseconds per hour / arrivals per hour = ave milliseconds /arrival\n\
+//                  id       type, ave arrival time per hour, ave departure msec\n\
+var ebMain = new Light("ebMain", main,     3600000 / 600, 1200);\n\
+var ebTurn = new Light("ebTurn", leftTurn, 3600000 / 300, 1700);\n\
+var ebWalk = new Light("ebWalk", walk,     3600000 /  25,    0);\n\
+var wbMain = new Light("wbMain", main,     3600000 / 600, 1200);\n\
+var wbTurn = new Light("wbTurn", leftTurn, 3600000 / 300, 1700);\n\
+var wbWalk = new Light("wbWalk", walk,     3600000 /  25,    0);\n\
+var nbMain = new Light("nbMain", main,     3600000 / 600, 1200);\n\
+var nbTurn = new Light("nbTurn", leftTurn, 3600000 / 300, 1700);\n\
+var nbWalk = new Light("nbWalk", walk,     3600000 /  25,    0);\n\
+var sbMain = new Light("sbMain", main,     3600000 / 600, 1200);\n\
+var sbTurn = new Light("sbTurn", leftTurn, 3600000 / 300, 1700);\n\
+var sbWalk = new Light("sbWalk", walk,     3600000 /  25,    0);\n\
+\n\
+\n\
+function testRates () {\n\
+  // testRates -- test assumptions to see if they can handle the indicated traffic\n\
+  var totalCycleTime = 2 * (Math.max( maximumGreenDuration + yellowDuration + mainGuardDuration,\n\
+                              minimumGreenWalkDuration + ewWalkDuration + mainGuardDuration) +\n\
+                            maximumTurnDuration + yellowDuration + turnGuardDuration);\n\
+  \n\
+  testRate (nbMain);\n\
+  testRate (nbWalk);\n\
+  testRate (nbTurn);\n\
+  testRate (sbMain);\n\
+  testRate (sbWalk);\n\
+  testRate (sbTurn);\n\
+  testRate (ebMain);\n\
+  testRate (ebWalk);\n\
+  testRate (ebTurn);\n\
+  testRate (wbMain);\n\
+  testRate (wbWalk);\n\
+  testRate (wbTurn);\n\
+\n\
+  function testRate (signal) {\n\
+    // testRate -- test assumptions to see if a signal can handle the indicated traffic\n\
+  \n\
+    var cycleArrivalRate = totalCycleTime / signal.aveArrivalTime;\n\
+    if (signal.type === leftTurn) {\n\
+      var cycleDepartureRate = maximumTurnDuration / signal.aveDepartureTime;\n\
+    } else if (signal.type === main) {\n\
+      var cycleDepartureRate = maximumGreenDuration / signal.aveDepartureTime;\n\
+    } else { // assume walkers\n\
+      var cycleDepartureRate = 10000; // assuming no walker delay or congestion\n\
+    }\n\
+    if (cycleArrivalRate > .90 * cycleDepartureRate) {\n\
+      throw "Cycle arrival rate exceeded departure rate for " + signal.id;\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+testRates();\n\
+\n\
+//**** FUNCTIONS ****\n\
+\n\
+//** Drawing functions **\n\
+function drawEWstreet() {\n\
+  wrap(false);\n\
+  setpos(minX(),0);\n\
+  angle(90);\n\
+  pendown();\n\
+  color("black");\n\
+  penwidth(roadWidth);\n\
+  forward(maxX() + maxX());\n\
+}\n\
+\n\
+function drawNSstreet() {\n\
+  setpos(0,maxY());\n\
+  angle(180);\n\
+  pendown();\n\
+  color("black");\n\
+  penwidth(roadWidth);\n\
+  forward(maxY() + maxY());\n\
+}\n\
+\n\
+function drawEWstripe() {\n\
+  setpos(minX(),0);\n\
+  angle(90);\n\
+  color("yellow");\n\
+  penwidth(1);\n\
+  forward(maxX() - roadWidth / 2 - crossWalkWidth);\n\
+  penup();\n\
+  forward(roadWidth + 2 * crossWalkWidth);\n\
+  pendown();\n\
+  forward(maxX() - roadWidth / 2 - crossWalkWidth);\n\
+}\n\
+\n\
+function drawNSstripe() {\n\
+  setpos(0,maxY());\n\
+  angle(180);\n\
+  color("yellow");\n\
+  penwidth(1);\n\
+  forward(maxY() - roadWidth / 2 - crossWalkWidth);\n\
+  penup();\n\
+  forward(roadWidth + 2 * crossWalkWidth);\n\
+  pendown();\n\
+  forward(maxY() - roadWidth / 2 - crossWalkWidth);\n\
+}\n\
+\n\
+function drawCrossWalk(x, y, dir) {\n\
+  // draw stripes for a crosswalk\n\
+  // x,y is coordinates of travel side of road\n\
+  // dir is direction across road\n\
+    \n\
+  // draw inner cross walk line\n\
+  color("white");\n\
+  setposition(x, y);\n\
+  angle(dir);\n\
+  width(1);\n\
+  penDown();\n\
+  forward(roadWidth);\n\
+    \n\
+  // draw outer cross walk line\n\
+  penUp();\n\
+  left(90);\n\
+  forward(crossWalkWidth);\n\
+  left(90);\n\
+  penDown();\n\
+  forward(roadWidth);\n\
+    \n\
+  // draw stop line\n\
+  penUp();\n\
+  right(90);\n\
+  forward(stopLineSeparation);\n\
+  right(90);\n\
+  forward(2);\n\
+  penWidth(stopLineWidth);\n\
+  penDown();\n\
+  forward(roadWidth / 2 - 4);\n\
+  penWidth(1);\n\
+}\n\
+\n\
+function drawTurnArrow(x, y, dir) {\n\
+  hideturtle();\n\
+  goto (x,y);\n\
+  angle (dir);\n\
+  pendown();\n\
+  color("white");\n\
+  penwidth(5);\n\
+  forward (5);\n\
+  curveLeft(5,90);\n\
+  forward(4);\n\
+  penwidth (2);\n\
+  left(130);\n\
+  forward (5);\n\
+  right (160);\n\
+  forward (9);\n\
+  right(120);\n\
+  forward (9);\n\
+  right(160);\n\
+  forward(5);\n\
+}\n\
+  \n\
+\n\
+function drawStreets() {\n\
+  drawNSstreet();\n\
+  drawEWstreet();\n\
+\n\
+  drawNSstripe();\n\
+  drawEWstripe();\n\
+\n\
+  drawTurnArrow(-18,75,180);\n\
+  drawTurnArrow(-75,-18,90);\n\
+  drawTurnArrow(18,-75,0);\n\
+  drawTurnArrow(75,18,270);\n\
+\n\
+  drawCrossWalk( roadWidth / 2,  roadWidth / 2, 180 );\n\
+  drawCrossWalk( roadWidth / 2, -roadWidth / 2, 270 );\n\
+  drawCrossWalk(-roadWidth / 2, -roadWidth / 2, 0 );\n\
+  drawCrossWalk(-roadWidth / 2,  roadWidth / 2, 90 );\n\
+}\n\
+\n\
+//** Light Drawing Functions **\n\
+\n\
+function setLightColor(lightColor, stateColor) {\n\
+  var signalBackground = "lightgray"; // color of an "off" signal light\n\
+  if (lightColor === stateColor) {\n\
+    color(lightColor);\n\
+  } else {\n\
+    color(signalBackground);\n\
+  }\n\
+}\n\
+\n\
+function drawArrow() { // assume pointing up, color set and pen up\n\
+  var penWidth = turtle.width;\n\
+  var arrowSize = 8;\n\
+  var vertOffset = 5;\n\
+  backward(vertOffset);\n\
+  pendown();\n\
+  penwidth(3);\n\
+  left(45);\n\
+  forward(arrowSize);\n\
+  right(90);\n\
+  forward(arrowSize);\n\
+  penup();\n\
+  backward(arrowSize);\n\
+  left(90);\n\
+  backward(arrowSize);\n\
+  right(45);\n\
+  penwidth(penWidth);\n\
+  forward(vertOffset);\n\
+}\n\
+\n\
+function drawTurnSignal(state) {\n\
+  left(90);\n\
+  forward(13);\n\
+  setLightColor("green", state);\n\
+  drawArrow();\n\
+\n\
+  backward(13);\n\
+  setLightColor("yellow", state);\n\
+  drawArrow();\n\
+\n\
+  backward(13);\n\
+  setLightColor("red", state);\n\
+  drawArrow();\n\
+\n\
+  forward(13);\n\
+  right(90);\n\
+}\n\
+\n\
+function drawMainSignal(state) { // main signal is straight ahead\n\
+  left(90);\n\
+  forward(13);\n\
+  setLightColor("green", state);\n\
+  dot();\n\
+\n\
+  backward(13);\n\
+  setLightColor("yellow", state);\n\
+  dot();\n\
+\n\
+  backward(13);\n\
+  setLightColor("red", state);\n\
+  dot();\n\
+\n\
+  forward(13);\n\
+  right(90);\n\
+}\n\
+\n\
+function drawWalkSignal(state) {\n\
+  // should do the flashing red for don\'t start\n\
+  // could do the flash down counter\n\
+  setLightColor("green", state);\n\
+  left(90);\n\
+  forward(5);\n\
+  right(90);\n\
+  write("WALK");\n\
+\n\
+  left(90);\n\
+  backward(5);\n\
+  right(90);\n\
+  setLightColor("red", state);\n\
+  if (state === "yellow") {\n\
+    color("yellow")\n\
+  }\n\
+  right(90);\n\
+  forward(8);\n\
+  left(90);\n\
+  write("DONT");\n\
+\n\
+  right(90);\n\
+  forward(13);\n\
+  left(90);\n\
+  write("WALK");\n\
+\n\
+  right(90);\n\
+  backward(25);\n\
+  left(90);\n\
+}\n\
+\n\
+function drawSignal(x, y, orient, mainState, turnState, walkState) {\n\
+  // move turtle to position and angle depending on street direction\n\
+  setpos (x, y);\n\
+  angle(orient);\n\
+  drawTurnSignal(turnState);\n\
+\n\
+  forward(10);\n\
+  drawMainSignal(mainState);\n\
+\n\
+  forward(10);\n\
+  drawWalkSignal(walkState);\n\
+}\n\
+\n\
+function drawSignals() {\n\
+  drawSignal( 50,  65,  90, nbMain.state, nbTurn.state, nbWalk.state);\n\
+  drawSignal(-50, -65, 270, sbMain.state, sbTurn.state, sbWalk.state);\n\
+  drawSignal( 65, -50, 180, ebMain.state, ebTurn.state, ebWalk.state);\n\
+  drawSignal(-65,  50,   0, wbMain.state, wbTurn.state, wbWalk.state);\n\
+}\n\
+\n\
+\n\
+function printQueues () {\n\
+  console.log (currentSecs +\n\
+               " Northbound main: " + nbMain.queue.length +\n\
+               ", turn: " +           nbTurn.queue.length +\n\
+               ", walk: " +           nbWalk.queue.length + \n\
+               " Southbound main: " + sbMain.queue.length +\n\
+               ", turn: " +           sbTurn.queue.length +\n\
+               ", walk: " +           sbWalk.queue.length);\n\
+\n\
+  console.log (currentSecs +\n\
+               " Eastbound main: " +  ebMain.queue.length +\n\
+               ", turn: " +           ebTurn.queue.length +\n\
+               ", walk: " +           ebWalk.queue.length +\n\
+               " Westbound main: " +  wbMain.queue.length +\n\
+               ", turn: " +           wbTurn.queue.length +\n\
+               ", walk: " +           wbWalk.queue.length);\n\
+}\n\
+\n\
+\n\
+function writeQueues () {\n\
+  writeQueueSizes(55,  -maxY()+5,  0, "N",\n\
+    nbTurn.queue.length, nbMain.queue.length, nbWalk.queue.length);\n\
+  writeQueueSizes(-68,  maxY()-20, 0, "S",\n\
+    sbTurn.queue.length, sbMain.queue.length, sbWalk.queue.length);\n\
+  writeQueueSizes(-maxX()+5, -55, 90, "E",\n\
+    ebTurn.queue.length, ebMain.queue.length, ebWalk.queue.length);\n\
+  writeQueueSizes( maxX()-20, 68, 90, "W",\n\
+    wbTurn.queue.length, wbMain.queue.length, wbWalk.queue.length);\n\
+}\n\
+\n\
+function writeQueueSizes(x, y, orientation, dir, turn, main, walk) {\n\
+//write the number waiting for each signal\n\
+//  x is the x position of the text start\n\
+//  y is the y position of the text start\n\
+//  orientation is the direction of the text\n\
+//  dir is directon of traffic\n\
+//  turn is the turn light queue\n\
+//  main is the main light queue\n\
+//  walk is the walk light queue\n\
+  setpos(x,y)\n\
+  angle(orientation)\n\
+/*\n\
+  if (dir === "N") {\n\
+    setpos(55,-maxY()+5);\n\
+    angle(0);\n\
+  } else if (dir === "S") {\n\
+    setpos(-68,maxY()-20);\n\
+    angle(0);\n\
+  } else if (dir === "E") {\n\
+    setpos(-maxX()+5, -55);\n\
+    angle(90);\n\
+  } else if (dir === "W") {\n\
+    setpos(maxX()-20, 68);\n\
+    angle(90);\n\
+  } else {\n\
+    setpos(-200,200);\n\
+    angle(90);\n\
+  }\n\
+*/\n\
+  penwidth(1);\n\
+  color("black");\n\
+  if (dir === "S" || dir === "W") { // South and West are in opposite order\n\
+    write(walk);\n\
+  } else {\n\
+    write(turn);\n\
+  }\n\
+\n\
+  right(90);\n\
+  forward(12);\n\
+  left(90);\n\
+  write(main);\n\
+\n\
+  right(90);\n\
+  forward(12);\n\
+  left(90);\n\
+  if (dir === "S" || dir === "W") {\n\
+    write(turn);\n\
+  } else {\n\
+    write(walk);\n\
+  }\n\
+  write ("     " + dir); // debug statement\n\
+}\n\
+\n\
+function drawQueues() {\n\
+  //SB\n\
+  drawQueue( -10,   55,   0, sbTurn.queue, 12);\n\
+  drawQueue( -30,   55,   0, sbMain.queue, 12);\n\
+  drawQueue( -50,  105,   0, sbWalk.queue,  6);\n\
+\n\
+  //WB\n\
+  drawQueue(  55,   10,  90, wbTurn.queue, 12);\n\
+  drawQueue(  55,   30,  90, wbMain.queue, 12);\n\
+  drawQueue( 105,   50,  90, wbWalk.queue,  6);\n\
+\n\
+  //NB\n\
+  drawQueue(  10,  -55, 180, nbTurn.queue, 12);\n\
+  drawQueue(  30,  -55, 180, nbMain.queue, 12);\n\
+  drawQueue(  50, -105, 180, nbWalk.queue,  6);\n\
+\n\
+  //EB\n\
+  drawQueue( -55,  -10, 270, ebTurn.queue, 12);\n\
+  drawQueue( -55,  -30, 270, ebMain.queue, 12);\n\
+  drawQueue(-105,  -50, 270, ebWalk.queue,  6);\n\
+}\n\
+\n\
+function drawQueue(x, y, dir, queue, len) {\n\
+  goto(x, y);\n\
+  angle(dir);\n\
+  width(10);\n\
+  for (var i=0; i<queue.length; i++) {\n\
+    pendown();\n\
+    color(queue[i].color);\n\
+    forward(len); \n\
+    penup();\n\
+    forward(4);\n\
+  }\n\
+}\n\
+\n\
+//** Safety Functions **\n\
+\n\
+function safetyCheck() {\n\
+/*\n\
+ safetyCheck makes sure that traffic is not allowed in cross\n\
+ directions (even if a programmer made an error)\n\
+ \n\
+ no cross traffic is allowed for any green or yellow light\n\
+\n\
+*/\n\
+  var fault = false;\n\
+  if ( (ebMain.state === green || ebMain.state === yellow ||\n\
+        ebWalk.state === green || ebWalk.state === yellow) &&\n\
+       !(nbMain.state === red && sbMain.state === red &&\n\
+         nbTurn.state === red && sbTurn.state === red &&\n\
+         wbTurn.state === red) ) {\n\
+    console.log (currentSecs + " East bound main or walk conflict");\n\
+    fault = true;\n\
+  }\n\
+  if ( (wbMain.state === green || wbMain.state === yellow ||\n\
+        wbWalk.state === green || wbWalk.state === yellow) &&\n\
+       !(nbMain.state === red && sbMain.state === red &&\n\
+         nbTurn.state === red && sbTurn.state === red &&\n\
+         ebTurn.state === red) ) {\n\
+    console.log (currentSecs + " West bound main or walk conflict");\n\
+    fault = true;\n\
+  }\n\
+  if ( (ebTurn.state === green || ebTurn.state === yellow) &&\n\
+       !(nbMain.state === red && sbMain.state === red &&\n\
+         nbTurn.state === red && sbTurn.state === red &&\n\
+         wbMain.state === red) ) {\n\
+    console.log (currentSecs + " East bound turn conflict");\n\
+    fault = true;\n\
+  }\n\
+  if ( (wbTurn.state === green || wbTurn.state === yellow) &&\n\
+       !(nbMain.state === red && sbMain.state === red &&\n\
+         nbTurn.state === red && sbTurn.state === red &&\n\
+         ebMain.state === red) ) {\n\
+    console.log (currentSecs + " West bound turn conflict");\n\
+    fault = true;\n\
+  }\n\
+  \n\
+  if ( (nbMain.state === green || nbMain.state === yellow ||\n\
+        nbWalk.state === green || nbWalk.state === yellow) &&\n\
+       !(ebMain.state === red && wbMain.state === red &&\n\
+         ebTurn.state === red && wbTurn.state === red &&\n\
+         sbTurn.state === red) ) {\n\
+    console.log (currentSecs + " North bound main or walk conflict");\n\
+    fault = true;\n\
+  }\n\
+  if ( (sbMain.state === green || sbMain.state === yellow ||\n\
+        sbWalk.state === green || sbWalk.state === yellow) &&\n\
+       !(ebMain.state === red && wbMain.state === red &&\n\
+         ebTurn.state === red && wbTurn.state === red &&\n\
+         nbTurn.state === red) ) {\n\
+    console.log (currentSecs + " South bound main or walk conflict");\n\
+    fault = true;\n\
+  }\n\
+  if ( (nbTurn.state === green || nbTurn.state === yellow) &&\n\
+       !(ebMain.state === red && wbMain.state === red &&\n\
+         ebTurn.state === red && wbTurn.state === red &&\n\
+         sbMain.state === red) ) {\n\
+    console.log (currentSecs + " North bound turn conflict");\n\
+    fault = true;\n\
+  }\n\
+  if ( (sbTurn.state === green || sbTurn.state === yellow) &&\n\
+       !(ebMain.state === red && wbMain.state === red &&\n\
+         ebTurn.state === red && wbTurn.state === red &&\n\
+         nbMain.state === red) ) {\n\
+    console.log (currentSecs + " South bound turn conflict");\n\
+    fault = true;\n\
+  }\n\
+  \n\
+  if (fault) {\n\
+    /*\n\
+state s/b flashing red all around, may restart after a time\n\
+    turnFlashingRed(ebMain, -1);\n\
+    turnFlashingRed(ebTurn, -1);\n\
+    turnFlashingRed(ebWalk, -1);\n\
+    turnFlashingRed(wbMain, -1);\n\
+    turnFlashingRed(wbTurn, -1);\n\
+    turnFlashingRed(wbWalk, -1);\n\
+    turnFlashingRed(nbMain, -1);\n\
+    turnFlashingRed(nbTurn, -1);\n\
+    turnFlashingRed(nbWalk, -1);\n\
+    turnFlashingRed(sbMain, -1);\n\
+    turnFlashingRed(sbTurn, -1);\n\
+    turnFlashingRed(sbWalk, -1);\n\
+     */\n\
+    throw "safety fault";\n\
+  }\n\
+}\n\
+\n\
+// ** Light State Machines and Functions ***\n\
+// the light state machines advances the light from one state to the next\n\
+// usually based on the expiry of a timer, but may change due to a callback\n\
+\n\
+var baseTime;\n\
+function msToSec(msecs) {\n\
+  if (baseTime === undefined) {\n\
+    baseTime = msecs;\n\
+  }\n\
+  return (msecs - baseTime) % 1000000/1000;\n\
+}\n\
+\n\
+function logEvent (id, eventName, duration) {\n\
+  if (duration === undefined) {\n\
+    duration =  "undefined"\n\
+  } else {\n\
+    duration = (duration/1000) + " secs"; // convert from msec to seconds\n\
+  }\n\
+  if (DEBUG_LEVEL >= EVENT_MESSAGES) {\n\
+    console.log(currentSecs.toFixed(3) + "     " + id + " turned " + eventName + " for " + duration);\n\
+  }\n\
+}\n\
+\n\
+function turnGreen(signal, duration) {\n\
+  logEvent (signal.id, "green", duration)\n\
+  signal.state = green;\n\
+  greenCount = greenCount + 1;\n\
+  if (signal.type === main) {\n\
+    signal.nextState = "extendGreen";\n\
+  } else if (signal.type === turn) {\n\
+    signal.nextState = "extendTurn";\n\
+  } else {\n\
+    signal.nextState = "turnYellow";\n\
+  }\n\
+  signal.nextTime = currentTime + duration;\n\
+}\n\
+\n\
+function extendTurn (signal, duration) {\n\
+  logEvent (signal.id, "extendTurn", duration);\n\
+  signal.nextState = "extendTurn";\n\
+  signal.nextTime = currentTime + duration;\n\
+}\n\
+\n\
+function extendGreen(signal, duration) {\n\
+  logEvent (signal.id, "extending green", duration)\n\
+  // signal should already be green, assume no extension, so ignor duration\n\
+  signal.nextState = "turnYellow";\n\
+  if (duration === undefined || duration < 0) {\n\
+    signal.nextTime = undefined;\n\
+  } else {\n\
+    signal.nextTime = currentTime + duration;\n\
+  }\n\
+}\n\
+\n\
+function turnYellow(signal, duration) {\n\
+  logEvent (signal.id, "yellow", duration)\n\
+  signal.state = yellow;\n\
+  signal.nextState = "turnRed";\n\
+  signal.nextTime = currentTime + duration;\n\
+}\n\
+\n\
+function turnRed(signal, duration) {\n\
+  logEvent (signal.id, "red", duration)\n\
+  signal.state = red;\n\
+  signal.nextState = "turnGuardRed";\n\
+  if (duration === undefined || duration < 0) {\n\
+    signal.nextTime = undefined;\n\
+  } else {\n\
+    signal.nextTime = currentTime + duration;\n\
+  }\n\
+}\n\
+\n\
+function turnGuardRed(signal, duration) {\n\
+  logEvent (signal.id, "guard red", duration)\n\
+  signal.state = red;\n\
+  signal.nextState = "turnGreen";\n\
+  if (duration === undefined || duration < 0) {\n\
+    signal.nextTime = undefined;\n\
+  } else {\n\
+    signal.nextTime = currentTime + duration;\n\
+  }\n\
+}\n\
+\n\
+function turnFlashingRed(signal, duration) {\n\
+  logEvent (signal.id, "flashing red", duration)\n\
+  signal.state = red;\n\
+  signal.nextState = "turnGreen";\n\
+  if (duration === undefined || duration < 0) {\n\
+    signal.nextTime = undefined;\n\
+  } else {\n\
+    signal.nextTime = currentTime + duration;\n\
+  }\n\
+}\n\
+\n\
+function enableTransition(signal, nextState) { // allow light state machine to fire on next go around\n\
+  signal.nextState = nextState;\n\
+  signal.nextTime = currentTime;\n\
+}\n\
+\n\
+function turnStateMachine(signal, currentTime) {\n\
+  if (signal.nextTime !== undefined && currentTime >= signal.nextTime) { // state change is due\n\
+    changed = true;\n\
+    if (DEBUG_LEVEL >= STATE_MESSAGES) {\n\
+      console.log(currentSecs.toFixed(3) + "   time-out for " + signal.id + " turned " + signal.nextState);\n\
+    }\n\
+    switch (signal.nextState) {\n\
+\n\
+    case "turnGreen":\n\
+      turnGreen(signal,minimumTurnDuration);\n\
+      signal.maxNextTime = currentTime + maximumTurnDuration;\n\
+      extendTurn(signal, minimumTurnDuration);\n\
+    break;\n\
+\n\
+    case "extendTurn":\n\
+      if (signal.queue.length > 0 && currentTime + extendDuration < signal.maxNextTime) {\n\
+        extendTurn(signal, extendDuration);\n\
+      } else {\n\
+        turnYellow(signal, yellowDuration);\n\
+      }\n\
+    break;\n\
+\n\
+    case "turnYellow":\n\
+      turnYellow(signal, yellowDuration);\n\
+    break;\n\
+\n\
+    case "turnRed":\n\
+      turnRed(signal, turnGuardDuration);\n\
+    break;\n\
+\n\
+    case "turnGuardRed":\n\
+      turnGuardRed(signal, undefined); // wait for overall to start the turn\n\
+      redGuardComplete(signal);\n\
+    break;\n\
+\n\
+    default:\n\
+      stopAnimation();\n\
+      throw "unknown next turn state for " + signal.id;\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+function walkStateMachine(signal, currentTime) {\n\
+  if (signal.nextTime !== undefined && currentTime >= signal.nextTime) { // state change is due\n\
+    changed = true;\n\
+    if (DEBUG_LEVEL >= STATE_MESSAGES) {\n\
+      console.log(currentSecs.toFixed(3) + "   time-out for " + signal.id + " turned " + signal.nextState);\n\
+    }\n\
+    switch (signal.nextState) {\n\
+\n\
+    case "turnGreen":\n\
+      if (signal.id == "nbWalk" || signal.id == "sbWalk") {\n\
+        signal.maxNextTime = currentTime + maximumGreenDuration + yellowDuration - nsWalkDuration;\n\
+      } else {\n\
+        signal.maxNextTime = currentTime + maximumGreenDuration + yellowDuration - ewWalkDuration;\n\
+      }\n\
+      turnGreen(signal, minimumGreenWalkDuration);\n\
+    break;\n\
+\n\
+    case "turnYellow":\n\
+      if (signal.id == "nbWalk" || signal.id == "sbWalk") {\n\
+        turnYellow(signal, nsWalkDuration);\n\
+      } else {\n\
+        turnYellow(signal, ewWalkDuration);\n\
+      }\n\
+    break;\n\
+\n\
+    case "turnRed":\n\
+      turnRed(signal, mainGuardDuration);\n\
+    break;\n\
+\n\
+    case "turnGuardRed":\n\
+      turnGuardRed(signal, undefined); // wait for overall to start the turn\n\
+      redGuardComplete(signal);\n\
+    break;\n\
+\n\
+    default:\n\
+      stopAnimation();\n\
+      throw "unknown next walk state for " + signal.id;\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+function mainStateMachine(signal, currentTime) {\n\
+  if (signal.nextTime !== undefined && currentTime >= signal.nextTime) { // state change is due\n\
+    changed = true;\n\
+    if (DEBUG_LEVEL >= STATE_MESSAGES) {\n\
+      console.log(currentSecs.toFixed(3) + "   time-out for " + signal.id + " turned " + signal.nextState);\n\
+    }\n\
+    switch (signal.nextState) {\n\
+\n\
+    case "turnGreen":\n\
+      signal.maxNextTime = currentTime + maximumGreenDuration;\n\
+      turnGreen(signal, minimumGreenDuration);\n\
+    break;\n\
+\n\
+    case "extendGreen":\n\
+      extendGreen(signal, extendDuration);\n\
+    break;\n\
+\n\
+    case "turnYellow":\n\
+      turnYellow(signal, yellowDuration);\n\
+    break;\n\
+\n\
+    case "turnRed":\n\
+      turnRed(signal, mainGuardDuration);\n\
+    break;\n\
+\n\
+    case "turnGuardRed":\n\
+      turnGuardRed(signal, undefined); // wait for sync\n\
+      redGuardComplete(signal);\n\
+    break;\n\
+\n\
+    default:\n\
+      stopAnimation();\n\
+      throw "unknown next main state for " + signal.id;\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+//** Traffic Simulation Functions **\n\
+\n\
+function incDecQueue(signal) {\n\
+  // check for departures when light is green\n\
+   // should only do this when light is green and start new departure timer when light goes green\n\
+  var spread;\n\
+  spread = 0.5;\n\
+  var possibleDepartureTime = currentTime +\n\
+            random((1 - spread) * signal.aveDepartureTime, (1 + spread) * signal.aveDepartureTime);\n\
+  if (signal.state === green) {\n\
+    if (signal.aveDepartureTime === 0) { // special case for walkers\n\
+      signal.queue = [];\n\
+      changed = true;\n\
+    } else if (signal.nextDepartureTime === undefined) {\n\
+      signal.nextDepartureTime = possibleDepartureTime;\n\
+    } else if (currentTime > signal.nextDepartureTime) {\n\
+      if (signal.queue.length > 0) { // queue has member to leave\n\
+        changed = true;\n\
+        signal.queue.shift();\n\
+        signal.nextDepartureTime = possibleDepartureTime;\n\
+      }\n\
+    } else {\n\
+      // no departure pending\n\
+    }\n\
+  } else { // light is not green, so no departures\n\
+    signal.nextDepartureTime = undefined;\n\
+  }\n\
+  \n\
+  // check for arrivals\n\
+  if (signal.nextArrivalTime === undefined || currentTime > signal.nextArrivalTime) {\n\
+    changed = true;\n\
+    signal.queue.push ({color:random(16), arrivalTime:currentTime});\n\
+    // adjust the average to give it some variation within the average\n\
+    spread = 0.95;\n\
+    signal.nextArrivalTime = currentTime +\n\
+      random((1 - spread) * signal.aveArrivalTime, (1 + spread) * signal.aveArrivalTime);\n\
+  }\n\
+}\n\
+\n\
+\n\
+function simulateTraffic() {\n\
+  incDecQueue(ebTurn);\n\
+  incDecQueue(ebWalk);\n\
+  incDecQueue(ebMain);\n\
+  incDecQueue(wbTurn);\n\
+  incDecQueue(wbWalk);\n\
+  incDecQueue(wbMain);\n\
+  incDecQueue(nbTurn);\n\
+  incDecQueue(nbWalk);\n\
+  incDecQueue(nbMain);\n\
+  incDecQueue(sbTurn);\n\
+  incDecQueue(sbWalk);\n\
+  incDecQueue(sbMain);\n\
+}\n\
+\n\
+// ** Overall State Machine and Functions\n\
+\n\
+// *Globals*\n\
+var overallNextState;\n\
+var overallNextTime;\n\
+var turnCount = 0;\n\
+var greenCount = 0;\n\
+\n\
+function nextOverallState(nextState, time) {\n\
+  overallNextState = nextState;\n\
+  overallNextTime = time;\n\
+}\n\
+\n\
+function redGuardComplete(signal) {\n\
+  /* callback when red guard time complete for a particular signal */\n\
+  var id = signal.id;\n\
+  if (id === nbTurn || id === sbTurn || id === ebTurn || id === wbTurn) {\n\
+    turnCount = turnCount - 1; //global\n\
+    if (turnCount < 0) {\n\
+      throw "Turn counter negative by " + id;\n\
+    }\n\
+  }\n\
+  greenCount = greenCount - 1;\n\
+  if (greenCount < 0) {\n\
+    throw "Green counter made negative by " + id;\n\
+  } else if (greenCount === 0) {\n\
+    overallNextTime = currentTime;\n\
+  }\n\
+}\n\
+\n\
+function startNS() {\n\
+  /* entry point to start overall machine into motion */\n\
+  nextOverallState("startNS", currentTime);\n\
+}\n\
+\n\
+\n\
+function overallStateMachine() {\n\
+/*\n\
+- controls the start of travel in either direction\n\
+- extends the main green\n\
+- has callbacks for competion of turns to advance cross traffic\n\
+- has callbacks for competion of guard red to advance cross traffic\n\
+\n\
+ turn lights are autonomous\n\
+ increment left turn counter when changing individual turn light to green\n\
+ decrement left turn counter when changing individual turn ight ends guard red\n\
+\n\
+when left turn counter is 0, main green may be extended after the minimum green\n\
+\n\
+overall starts NS and EW alternatively based on completion of guard red\n\
+overall extends main green in a coordinated way\n\
+  starts when both directions have completed minimum green\n\
+  ends on either walking yellow or main yellow\n\
+*/\n\
+  if (overallNextTime !== undefined && currentTime >= overallNextTime) { // state change is due\n\
+    if (DEBUG_LEVEL >= OVERALL_MESSAGES) {\n\
+      console.log (currentSecs.toFixed(3) + " overall " + overallNextState);\n\
+    }\n\
+    switch (overallNextState) {\n\
+  \n\
+    case "startNS":\n\
+      //nextOverallState("startEW", undefined); // wait for sync\n\
+      if (DEBUG_LEVEL >= QUEUE_MESSAGES) {\n\
+         printQueues();\n\
+      }\n\
+      if (nbTurn.queue.length > 0) {\n\
+        enableTransition(nbTurn, "turnGreen");\n\
+        turnCount = turnCount + 1;\n\
+        if (sbTurn.queue.length === 0) {\n\
+          enableTransition(nbMain, "turnGreen");\n\
+        }\n\
+        nextOverallState("startNSMainOnly", undefined); // wait for sync\n\
+      }\n\
+      if (sbTurn.queue.length > 0) {\n\
+        enableTransition(sbTurn, "turnGreen");\n\
+        turnCount = turnCount + 1;\n\
+        if (nbTurn.queue.length === 0) {\n\
+          enableTransition(sbMain, "turnGreen");\n\
+        }\n\
+        nextOverallState("startNSMainOnly", undefined); // wait for sync\n\
+      }\n\
+      if (nbTurn.queue.length === 0 && sbTurn.queue.length === 0) {\n\
+        enableTransition(nbMain, "turnGreen");\n\
+        enableTransition(sbMain, "turnGreen");\n\
+        if (nbWalk.queue.length > 0) {\n\
+          enableTransition(nbWalk, "turnGreen");\n\
+        }\n\
+        if (nbWalk.queue.length > 0) {\n\
+          enableTransition(sbWalk, "turnGreen");\n\
+        }\n\
+        // extend main green invoked after minimum main green\n\
+        nextOverallState("extendMainGreenNS", extendDelayDuration);\n\
+      }\n\
+    break;\n\
+\n\
+    case "startNSMainOnly":\n\
+      if (nbTurn.state === red && sbTurn.state === red) {\n\
+        enableTransition(nbMain, "turnGreen");\n\
+        enableTransition(sbMain, "turnGreen");\n\
+        if (nbWalk.queue.length > 0 || sbWalk.queue.length > 0) {\n\
+          enableTransition(nbWalk, "turnGreen");\n\
+          enableTransition(sbWalk, "turnGreen");\n\
+        }\n\
+        nextOverallState("extendMainGreenNS", extendDelayDuration);\n\
+      } else {\n\
+        nextOverallState("startNSMainOnly", undefined); // wait for sync\n\
+      }\n\
+    break;\n\
+  \n\
+    case "extendMainGreenNS":\n\
+      // assume nbMain.state === green && sbMain.state === green\n\
+      if (nbMain.queue.length > 0 || sbMain.queue.length > 0) { //time extension warrented\n\
+        if (nbWalk.state === green || sbWalk.state === green) {\n\
+          if ( (currentTime + extendDuration < nbMain.maxNextTime) &&\n\
+               (currentTime + extendDuration < sbMain.maxNextTime) &&\n\
+               (currentTime + extendDuration < nbWalk.maxNextTime) &&\n\
+               (currentTime + extendDuration < sbWalk.maxNextTime) ) { //walk extension OK\n\
+            extendGreen(nbWalk, undefined);\n\
+            extendGreen(sbWalk, undefined);\n\
+            extendGreen(nbMain, undefined);\n\
+            extendGreen(sbMain, undefined);\n\
+            overallNextTime = currentTime + extendDuration; // just stay in extendMainGreenNS\n\
+          } else { //end walk extension\n\
+            enableTransition(nbWalk, "turnYellow");\n\
+            enableTransition(sbWalk, "turnYellow");\n\
+            extendGreen(sbMain, nsWalkDuration - yellowDuration);\n\
+            extendGreen(nbMain, nsWalkDuration - yellowDuration);\n\
+            nextOverallState("startEW", undefined); // wait for sync\n\
+          }\n\
+        } else { // walks do not apply\n\
+          if ( (currentTime + extendDuration < nbMain.maxNextTime) &&\n\
+               (currentTime + extendDuration < sbMain.maxNextTime) ) { //main extension OK\n\
+            extendGreen(nbMain, undefined);\n\
+            extendGreen(sbMain, undefined);\n\
+            overallNextTime = currentTime + extendDuration; // just stay in extendMainGreenNS\n\
+          } else { // end main extension\n\
+            enableTransition(nbMain, "turnYellow");\n\
+            enableTransition(sbMain, "turnYellow");\n\
+            nextOverallState("startEW", undefined); // wait for sync\n\
+          }\n\
+        }\n\
+      } else { // extension not warrented\n\
+        if (nbWalk.state === green || sbWalk.state === green) {\n\
+          enableTransition(nbWalk, "turnYellow");\n\
+          enableTransition(sbWalk, "turnYellow");\n\
+          extendGreen(sbMain, nsWalkDuration - yellowDuration);\n\
+          extendGreen(nbMain, nsWalkDuration - yellowDuration);\n\
+          nextOverallState("startEW", undefined); // wait for sync\n\
+        } else { // walks do not apply\n\
+          enableTransition(nbMain, "turnYellow");\n\
+          enableTransition(sbMain, "turnYellow");\n\
+          nextOverallState("startEW", undefined); // wait for sync\n\
+        }\n\
+      }\n\
+    break;\n\
+\n\
+    case "startEW":\n\
+      nextOverallState("startEWMainOnly", undefined); // wait for sync\n\
+      if (ebTurn.queue.length > 0) {\n\
+        enableTransition(ebTurn, "turnGreen");\n\
+        if (wbTurn.queue.length === 0) {\n\
+          enableTransition(ebMain, "turnGreen");\n\
+        }\n\
+      }\n\
+      if (wbTurn.queue.length > 0) {\n\
+        enableTransition(wbTurn, "turnGreen");\n\
+        if (ebTurn.queue.length === 0) {\n\
+          enableTransition(wbMain, "turnGreen");\n\
+        }\n\
+      }\n\
+      if (ebTurn.queue.length === 0 && wbTurn.queue.length === 0) {\n\
+        enableTransition(ebMain, "turnGreen");\n\
+        enableTransition(wbMain, "turnGreen");\n\
+        if (ebWalk.queue.length > 0) {\n\
+          enableTransition(ebWalk, "turnGreen");\n\
+          // set up the maximum time that the walk light can be green\n\
+          ebWalk.maxNextTime = currentTime + maximumGreenDuration - ewWalkDuration;\n\
+        }\n\
+        if (wbWalk.queue.length > 0) {\n\
+          enableTransition(wbWalk, "turnGreen");\n\
+          // set up the maximum time that the walk light can be green\n\
+          wbWalk.maxNextTime = currentTime + maximumGreenDuration - ewWalkDuration;\n\
+        }\n\
+        nextOverallState("extendMainGreenEW", undefined);\n\
+      }\n\
+    break;\n\
+  \n\
+    case "startEWMainOnly":\n\
+      nextOverallState("startEWMainOnly", undefined); // wait for sync\n\
+      if (ebTurn.state === red && wbTurn.state === red) {\n\
+          enableTransition(ebMain, "turnGreen");\n\
+          enableTransition(wbMain, "turnGreen");\n\
+        if (ebWalk.queue.length > 0 || wbWalk.queue.length > 0) {\n\
+          enableTransition(ebWalk, "turnGreen");\n\
+          enableTransition(wbWalk, "turnGreen");\n\
+        }\n\
+        nextOverallState("extendMainGreenEW", extendDelayDuration);\n\
+      }\n\
+    break;\n\
+  \n\
+    case "extendMainGreenEW":\n\
+      // assume ebMain.state === green && sbMain.state === green\n\
+      if (ebMain.queue.length > 0 || wbMain.queue.length > 0) { //time extension warrented\n\
+        if (ebWalk.state === green || wbWalk.state === green) {\n\
+          if ( (currentTime + extendDuration < ebMain.maxNextTime) &&\n\
+               (currentTime + extendDuration < wbMain.maxNextTime) &&\n\
+               (currentTime + extendDuration < ebWalk.maxNextTime) &&\n\
+               (currentTime + extendDuration < wbWalk.maxNextTime) ) { //walk extension OK\n\
+            extendGreen(ebWalk, undefined);\n\
+            extendGreen(wbWalk, undefined);\n\
+            extendGreen(ebMain, undefined);\n\
+            extendGreen(wbMain, undefined);\n\
+            overallNextTime = currentTime + extendDuration; // just stay in extendMainGreenEW\n\
+          } else { //end walk extension\n\
+            enableTransition(ebWalk, "turnYellow");\n\
+            enableTransition(wbWalk, "turnYellow");\n\
+            extendGreen(wbMain, ewWalkDuration - yellowDuration);\n\
+            extendGreen(ebMain, ewWalkDuration - yellowDuration);\n\
+            nextOverallState("startNS", undefined); // wait for sync\n\
+          }\n\
+        } else { // walks do not apply\n\
+          if ( (currentTime + extendDuration < ebMain.maxNextTime) &&\n\
+               (currentTime + extendDuration < wbMain.maxNextTime) ) { //main extension OK\n\
+            extendGreen(ebMain, undefined);\n\
+            extendGreen(wbMain, undefined);\n\
+            overallNextTime = currentTime + extendDuration; // just stay in extendMainGreenEW\n\
+          } else { // end main extension\n\
+            enableTransition(ebMain, "turnYellow");\n\
+            enableTransition(wbMain, "turnYellow");\n\
+            nextOverallState("startNS", undefined); // wait for sync\n\
+          }\n\
+        }\n\
+      } else { // extension not warrented\n\
+        if (ebWalk.state === green || wbWalk.state === green) {\n\
+          enableTransition(ebWalk, "turnYellow");\n\
+          enableTransition(wbWalk, "turnYellow");\n\
+          extendGreen(wbMain, ewWalkDuration - yellowDuration);\n\
+          extendGreen(ebMain, ewWalkDuration - yellowDuration);\n\
+          nextOverallState("startNS", undefined); // wait for sync\n\
+        } else { // walks do not apply\n\
+          enableTransition(ebMain, "turnYellow");\n\
+          enableTransition(wbMain, "turnYellow");\n\
+          nextOverallState("startNS", undefined); // wait for sync\n\
+        }\n\
+      }\n\
+    break;\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+\n\
+var date = new Date();\n\
+var currentTime = date.getTime();\n\
+var currentSecs = msToSec(currentTime);\n\
+var changed = false;\n\
+startNS(); // start up the overall machine \n\
+\n\
+function loop() {\n\
+  changed = false;\n\
+  date = new Date();\n\
+  currentTime = date.getTime();\n\
+  currentSecs = msToSec(currentTime);\n\
+  \n\
+  // check individual light state machines\n\
+  turnStateMachine(ebTurn, currentTime);\n\
+  walkStateMachine(ebWalk, currentTime);\n\
+  mainStateMachine(ebMain, currentTime);\n\
+  \n\
+  turnStateMachine(wbTurn, currentTime);\n\
+  walkStateMachine(wbWalk, currentTime);\n\
+  mainStateMachine(wbMain, currentTime);\n\
+  \n\
+  turnStateMachine(nbTurn, currentTime);\n\
+  walkStateMachine(nbWalk, currentTime);\n\
+  mainStateMachine(nbMain, currentTime);\n\
+  \n\
+  turnStateMachine(sbTurn, currentTime);\n\
+  walkStateMachine(sbWalk, currentTime);\n\
+  mainStateMachine(sbMain, currentTime);\n\
+\n\
+  // check overall state machine and process changes caused by individual lights\n\
+  overallStateMachine();\n\
+\n\
+  // simulate traffic\n\
+  simulateTraffic();\n\
+\n\
+  // update drawing\n\
+  if (changed) {\n\
+    clear();\n\
+    drawStreets();\n\
+    drawSignals();\n\
+    drawQueues();\n\
+  }\n\
+  //writeQueues (); // for debugging\n\
+\n\
+  // make sure all is safe\n\
+  safetyCheck();\n\
+}\n\
+ \n\
+animate(loop, 100);\n\
 '
 jumping_jack ='\
 // Jumping Jack -- stick man doing jumping jacks\n\
@@ -566,6 +2013,63 @@ function moveBody () {\n\
   delay(moveBody,100);\n\
 }\n\
 '
+kochLine ='\
+// Koch Line -- draw an animated set of Koch lines\n\
+\n\
+function kochLine (length, order) {\n\
+  //assume drawn on the current angle\n\
+  if (order == 0) {\n\
+    forward (length);\n\
+  } else {\n\
+    //break line and bump out to the left\n\
+    kochLine (length/3, order-1);\n\
+    left(60); \n\
+    kochLine (length/3, order-1);\n\
+    right(120); \n\
+    kochLine (length/3, order-1);\n\
+    left(60); \n\
+    kochLine (length/3, order-1);\n\
+  }\n\
+}\n\
+\n\
+function kochLines (side, steps) {\n\
+  goto (-side/2, 0);\n\
+  angle(90);\n\
+  kochLine (side, i);\n\
+}\n\
+\n\
+//*** Globals ***\n\
+var i = 0;\n\
+var steps = 6;\n\
+var size = 0;\n\
+\n\
+function kochLineDelay() {\n\
+  clear();\n\
+  kochLines (size, i);\n\
+  goto(minX(), minY());\n\
+  angle(90);\n\
+  setfont("Helvetica,san-serif 12pt")\n\
+  write ("Koch line of order " +i);\n\
+  draw();\n\
+  i = i + 1;\n\
+  if (i < steps) {\n\
+    delay (kochLineDelay, 2000);\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+  size = maxY();\n\
+  if (size > maxX()) {\n\
+    size = maxX();\n\
+  }\n\
+  size = 1.6 * size; // really 80% of twice the half width\n\
+\n\
+  reset();\n\
+  hideturtle();\n\
+  i = 0;\n\
+  kochLineDelay();\n\
+}\n\
+'
 koch_snowflake ='\
 // Koch Snowflakes -- draw an animated set of Koch snowflakes\n\
 \n\
@@ -587,8 +2091,8 @@ function kochLine (length, order) {\n\
 }\n\
 \n\
 function kochSnowflake (length, order) {\n\
-  angle (150);\n\
-  goto (0,120);\n\
+  angle (30);\n\
+  goto (-length/2,-.3 * length);\n\
   kochLine (length, order);\n\
   right(120);\n\
   kochLine (length, order);\n\
@@ -611,33 +2115,29 @@ function kochLines () {\n\
   }\n\
 }\n\
 \n\
-function demo() {\n\
-  hideturtle();\n\
-  i = 0;\n\
-  kochSnowflakeDelay();\n\
-}\n\
-\n\
 function kochSnowflakeDelay() {\n\
-   var maxX = imageContext.canvas.width / 2;\n\
-   var minX = -imageContext.canvas.width / 2;\n\
-   var maxY = imageContext.canvas.height / 2;\n\
-   var minY = -imageContext.canvas.height / 2;\n\
 \n\
   clear();\n\
-  var side = maxY - minY;\n\
-  if (side > maxX - minX) {\n\
-    side = maxX - minX\n\
+  var side = maxY() - minY();\n\
+  if (side > maxX() - minX()) {\n\
+    side = maxX() - minX()\n\
   }\n\
   kochSnowflake (.8 * side,i);\n\
-  goto(minX,minY);\n\
+  goto(minX(),minY());\n\
   angle(90);\n\
   setfont("Helvetica,san-serif 12pt")\n\
   write ("Koch snowflake of order " +i);\n\
   draw();\n\
-  i = i+1;\n\
+  i = i + 1;\n\
   if (i < steps) {\n\
     delay (kochSnowflakeDelay, 2000);\n\
   }\n\
+}\n\
+\n\
+function demo() {\n\
+  hideturtle();\n\
+  i = 0;\n\
+  kochSnowflakeDelay();\n\
 }\n\
 '
 nested_hexagons ='\
@@ -788,16 +2288,25 @@ function demo () {\n\
 randstripe ='\
 // Graphitti -- draw randomly placed coloured stripes\n\
 \n\
+//** Globals **\n\
+\n\
+var maxX =  imageContext.canvas.width/2;\n\
+var maxY =  imageContext.canvas.height/2;\n\
+var minX =  -maxX;\n\
+var minY =  -maxY;\n\
+var maxVelocity = 12;\n\
+\n\
+\n\
 function plotOne() {\n\
-  goto(random(-150, 150),random(-150, 150));\n\
+  goto(random(minX, maxX), random(minY, maxY));\n\
   color(random(16));\n\
   angle(random(0, 180));\n\
-  width(random(1, 10));\n\
+  width(random(1, 20));\n\
   forward(random(10, 30));\n\
 }\n\
 \n\
 function demo () {\n\
-  animate (plotOne, 100);\n\
+  animate (plotOne, 20);\n\
 }\n\
 '
 sierpinski ='\
@@ -820,7 +2329,7 @@ In this example, a part() function is\n\
 created when either the sierpinski or\n\
 halfSierpinski functions are invoked.\n\
 Recursion is a function that calls\n\
-itself. Recurive functions must include\n\
+itself. Recursive functions must include\n\
 some test to stop the recursion to\n\
 prevent the dreaded infinite loop.\n\
 */\n\
@@ -866,7 +2375,7 @@ function delayed() {\n\
     // move start point so figure stays centered\n\
     penup();\n\
     angle(0);\n\
-    var side = 64/Math.pow(2,i);\n\
+    var side = 64/(i * i);\n\
     left(45);\n\
     forward(side * Math.sqrt(2) / 2);\n\
     right(45);\n\
@@ -890,17 +2399,17 @@ function demo () {\n\
 '
 spinning_squares ='\
 // Spinning Squares -- draw some square of increasing size and angle.\n\
-// Define helper functions here.\n\
-// For example:\n\
 \n\
-function square(side) {\n\
-   repeat(4, function () {\n\
-      forward(side);\n\
-      right(90);\n\
-   });\n\
+function square (side) {\n\
+  var i=0\n\
+  while (i<4) {\n\
+    forward( side)\n\
+    turn(90)\n\
+    i=i+1\n\
+  }\n\
 }\n\
 \n\
-function demo() {\n\
+function spinningSquare2() {\n\
    hideTurtle();\n\
    color("blue");\n\
    for(s = 100; s > 0; s -= 10) {\n\
@@ -908,34 +2417,51 @@ function demo() {\n\
       right(36);\n\
    }\n\
 }\n\
+\n\
+function spinningSquare() {\n\
+  var steps = 100\n\
+  var stepSize = 200/steps\n\
+  color("blue");\n\
+  for (var i=0; i<steps; i=i+1) {\n\
+    square(stepSize*i);\n\
+    right(360/steps)\n\
+  }\n\
+}\n\
+\n\
+demo = spinningSquare\n\
 '
 spiral ='\
-// Squiggle -- draw a random squiggle\n\
+// Spiral -- demonstrate some simple spirals\n\
 \n\
-function squiggle(steps,angle) {\n\
-  widthInc = 5 / steps;\n\
-  distInc = 10 / steps;\n\
-  w = 0.1;\n\
-  repeat (steps, function () {\n\
-    width(w);\n\
-    forward(random(1,10));\n\
-    right(angle);\n\
-    angle = angle - 1;\n\
-    w = w + widthInc;\n\
-  })\n\
+function spiral1() {\n\
+  n=0\n\
+  while (n<400) {\n\
+    forward(n)\n\
+    right(90)\n\
+    n=n+3\n\
+  }\n\
 }\n\
 \n\
-function drawRandomSquiggle() {\n\
-  colour(random(16));\n\
-  goto(random(-150,150), random(-150, 150));\n\
-  angle(random(0,360));\n\
-  squiggle(random(100,1000), random(5,90));\n\
+function spiral2() {\n\
+  n=0\n\
+  while (n<75) {\n\
+    forward(n)\n\
+    right(90-n)\n\
+    n=n+1\n\
+  }\n\
 }\n\
 \n\
-function demo() {\n\
-  hideTurtle();\n\
-  drawRandomSquiggle();\n\
+\n\
+function spiral() {\n\
+  n=0\n\
+  while (n<40) {\n\
+    forward(n)\n\
+    right(15)\n\
+    n=n+.25\n\
+  }\n\
 }\n\
+\n\
+demo = spiral;\n\
 '
 squiggle ='\
 // Squiggle -- draw a random squiggle\n\
@@ -964,6 +2490,41 @@ function demo() {\n\
   hideTurtle();\n\
   drawRandomSquiggle();\n\
 }\n\
+'
+stamps ='\
+// Stamps -- demonstrate stamping of a star design multiple times\n\
+\n\
+function star (side) {\n\
+  penup()\n\
+  forward(.54*side)\n\
+  turn (180-18)\n\
+  pendown()\n\
+  var i=0\n\
+  while (i<5){\n\
+    forward(side)\n\
+    right(180-36)\n\
+    i = i + 1\n\
+  }\n\
+  turn (180+18)\n\
+}\n\
+\n\
+function stamps () {\n\
+  wrap(false)\n\
+  var x = minX()\n\
+  while (x <= maxX()) {\n\
+    var y = minY()\n\
+    while (y <= maxY()) {\n\
+      goto (x,y)\n\
+      angle (0);\n\
+      star (25);\n\
+      y = y+30\n\
+    }\n\
+    x = x+30\n\
+  }\n\
+}\n\
+\n\
+  \n\
+demo = stamps\n\
 '
 tree ='\
 // Tree Symmetrical -- draw a symmetrical tree\n\
@@ -1016,5 +2577,42 @@ function demo() {\n\
   backward(150);\n\
   pendown();\n\
   drawTree(6,4)\n\
+}\n\
+'
+triangleTunnel ='\
+// Triangle Tunnel -- animate a set of mesmerizing nested triangle for a tunnel effect\n\
+reset()\n\
+hideTurtle()\n\
+\n\
+function triangle (side) {\n\
+  home()\n\
+  penup();\n\
+  forward (side/2);\n\
+  right(150);\n\
+  pendown();\n\
+  for (var i=0; i<3; i++) {\n\
+    forward(side);\n\
+    right(120);\n\
+  }\n\
+}\n\
+\n\
+var sides = 40;\n\
+var tColor = [];\n\
+\n\
+for (var i=0; i<sides; i++) {\n\
+  tColor [i] = random (15)\n\
+}\n\
+\n\
+function nestTri () {\n\
+  tColor.push(random (15));\n\
+  tColor.shift();\n\
+  for (var i=0; i<sides; i++) {\n\
+    color (tColor[i]);\n\
+    triangle (i*15);\n\
+  }\n\
+}\n\
+\n\
+function demo () {\n\
+  animate (nestTri,1);\n\
 }\n\
 '

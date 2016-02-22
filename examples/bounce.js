@@ -1,12 +1,19 @@
 // Bouncing Rectangles -- rectagles which bounce off the side of the canvas
+
+  var maxX =  imageContext.canvas.width/2;
+  var maxY =  imageContext.canvas.height/2;
+  var minX =  -maxX;
+  var minY =  -maxY;
+  var maxVelocity = 12;
+
 function init_drops(n) {
    var drops = new Array(n);
    for (var i = 0; i < n; i++) {
       drops[i] = { // each drop is an object with a set of properties
-         x: random(-150, 150),
-         y: random(-150, 150),
-         velocityX: random(-6,6),
-         velocityY: random(-6,6),
+         x: random(minX, maxX),
+         y: random(minY, maxY),
+         velocityX: random(-maxVelocity, maxVelocity),
+         velocityY: random(-maxVelocity, maxVelocity),
          size: random(20,300),
          red:random(0,255),
          green:random(0,255),
@@ -24,16 +31,16 @@ function rain (drops, n) {
       // access each drop object
       var d = drops[i]; // access each drop object and react with it
       // if the drop hits a wall, reverse its motion direction (velocity)
-      if (d.y < -150) {
+      if (d.y < minY) {
          d.velocityY = -d.velocityY;
       }
-      else if (d.y + d.size > 150 && d.velocityY > 0) {
+      else if (d.y + d.size > maxY && d.velocityY > 0) {
          d.velocityY = -d.velocityY;
       }
-      if (d.x - d.width/2 < -150) {
+      if (d.x - d.width/2 < minX) {
          d.velocityX = -d.velocityX;
       }
-      else if (d.x + d.width/2 > 150) {
+      else if (d.x + d.width/2 > maxX) {
          d.velocityX = -d.velocityX;
       }
       // paint the drop
@@ -55,5 +62,5 @@ function let_them_drop (n) {
 }
 
 function demo() {
-  let_them_drop (5);
+  let_them_drop (Math.floor(maxX * maxY/2000));
 }

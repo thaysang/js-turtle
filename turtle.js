@@ -352,7 +352,6 @@ seth = angle;
 function width(w) {
    turtle.width = w;
    imageContext.lineWidth = w;
-   imageContext.lineWidth = turtle.width;
 }
 
 pensize = width;
@@ -419,7 +418,7 @@ function random(low, high) {
 // Repeat some action n times
 function repeat(n, action) {
    for (var count = 1; count <= n; count++) {
-      action();
+      eval (action);
    }
 }
 

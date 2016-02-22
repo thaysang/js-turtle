@@ -540,6 +540,12 @@
            The <strong>Stop</strong> button stops animation.
            </p>
          </span>
+         <button id="clearButton">Clear Def</button>
+         <span class='help_text' id='clearButton_help_text'>
+           <p>
+           The <strong>Clear Def</strong> button clears the definitions text area to allow entry of new programs.
+           </p>
+         </span>
       </div> <!-- midcolumn -->
       <div id="rightcolumn">
         <label id="examplesLabel" for=#examples>Examples</label>
@@ -548,9 +554,14 @@
           <option value=bounce>Bouncing Rectangles</option>
           <option value=circle_eye>Circle Eye</option>
           <option value=clock>Clock</option>
+          <option value=colorChangingDots>Color Changing Dots</option>
+          <option value=coordinates>Canvas Coordinates</option>
           <option value=dividing_circle>Dividing a Circle</option>
+          <option value=flag>Flag</option>
           <option value=hexTesselation>Hexagon Tessalation</option>
+          <option value=intersectionSimulator>Intersection Simulator</option>
           <option value=jumping_jack>Jumping Jack</option>
+          <option value=kochLine>Koch Line</option>
           <option value=koch_snowflake>Koch Snowflakes</option>
           <option value=nested_hexagons>Nested Hexagons</option>
           <option value=nested_squares>Nested Squares</option>
@@ -559,9 +570,11 @@
           <option value=randstripe>Graphitti</option>
           <option value=sierpinski>Sierpinski Curve</option>
           <option value=spinning_squares>Spinning Squares</option>
-          <option value=spiral>Squiggle</option>
+          <option value=spiral>Spiral</option>
           <option value=squiggle>Squiggle</option>
+          <option value=stamps>Stamps</option>
           <option value=tree>Tree Symmetrical</option>
+          <option value=triangleTunnel>Triangle Tunnel</option>
         </select>
         <span class='left_help_text' id='examples_help_text'>
           <p>
@@ -573,8 +586,10 @@
           </p>
         </span>
       <textarea id="definitions">
-// Define helper functions here.
-// For example:
+/* Define helper functions here
+or write your own functions
+
+For example:    */
 
 function square(side) {
   repeat(4, function () {
@@ -617,6 +632,9 @@ function demo() {
       <li id=viewDefinitionsItem class=checked>
         <a href="#" id="viewDefinitions">View Examples and Definitions</a>
       </li>
+      <li id=viewHelpTextItem class=checked>
+        <a href="#" id="viewHelpText">Enable Pop-up Help Text</a>
+      </li>
       <li>
         <a href="#basic grammar" id="basicGrammarMenu">Basic Javascript Grammar</a>         
       </li>
@@ -637,7 +655,7 @@ function demo() {
       </li>
     </ul>
   </div> <!-- end of menu -->
-  <div class="tutorial" id="tutorial">
+  <div id="tutorial" class="closed">
     <button id="tutorialClose">
       <svg class="fi" viewBox="0 0 64 64">
         <line x1="2" y1="2" x2="62" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
@@ -1053,7 +1071,7 @@ kochForward(maxX() + maxX() - 40); // draw a Koch line most of the width of the 
          to Javascript projects.
        </p>
     </div>
-  </div> <!-- end of help -->
+  </div> <!-- end of tutorial -->
 
 <!-- scripts -->
    <script type="text/javascript" src="examples.js"></script>

@@ -1,15 +1,15 @@
 // Spinning Squares -- draw some square of increasing size and angle.
-// Define helper functions here.
-// For example:
 
-function square(side) {
-   repeat(4, function () {
-      forward(side);
-      right(90);
-   });
+function square (side) {
+  var i=0
+  while (i<4) {
+    forward( side)
+    turn(90)
+    i=i+1
+  }
 }
 
-function demo() {
+function spinningSquare2() {
    hideTurtle();
    color("blue");
    for(s = 100; s > 0; s -= 10) {
@@ -17,3 +17,15 @@ function demo() {
       right(36);
    }
 }
+
+function spinningSquare() {
+  var steps = 100
+  var stepSize = 200/steps
+  color("blue");
+  for (var i=0; i<steps; i=i+1) {
+    square(stepSize*i);
+    right(360/steps)
+  }
+}
+
+demo = spinningSquare

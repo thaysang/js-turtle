@@ -18,8 +18,8 @@ function kochLine (length, order) {
 }
 
 function kochSnowflake (length, order) {
-  angle (150);
-  goto (0,120);
+  angle (30);
+  goto (-length/2,-.3 * length);
   kochLine (length, order);
   right(120);
   kochLine (length, order);
@@ -42,31 +42,27 @@ function kochLines () {
   }
 }
 
-function demo() {
-  hideturtle();
-  i = 0;
-  kochSnowflakeDelay();
-}
-
 function kochSnowflakeDelay() {
-   var maxX = imageContext.canvas.width / 2;
-   var minX = -imageContext.canvas.width / 2;
-   var maxY = imageContext.canvas.height / 2;
-   var minY = -imageContext.canvas.height / 2;
 
   clear();
-  var side = maxY - minY;
-  if (side > maxX - minX) {
-    side = maxX - minX
+  var side = maxY() - minY();
+  if (side > maxX() - minX()) {
+    side = maxX() - minX()
   }
   kochSnowflake (.8 * side,i);
-  goto(minX,minY);
+  goto(minX(),minY());
   angle(90);
   setfont("Helvetica,san-serif 12pt")
   write ("Koch snowflake of order " +i);
   draw();
-  i = i+1;
+  i = i + 1;
   if (i < steps) {
     delay (kochSnowflakeDelay, 2000);
   }
+}
+
+function demo() {
+  hideturtle();
+  i = 0;
+  kochSnowflakeDelay();
 }

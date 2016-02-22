@@ -1,9 +1,13 @@
 /************************************************************************
 *  turtleConsole -- javascript for the turtle graphic language console
 *
-*  Copyright (c) 2015 Kirk Carlson
+*  Copyright (c) 2015-2016 Kirk Carlson
 *  MIT license
 ************************************************************************/
+
+//**GLOBALS***
+var helpTextActive = true;
+
 
 //SUPPORT FUNCTIONS
 function cmd (text) {
@@ -45,13 +49,18 @@ function runClicked() {
   stopAnimation();
   cmd ("demo()");
   eval (document.getElementById("definitions").value);
-  eval ("demo();");
+  if (demo !== undefined) {
+    eval ("demo();");
+  }
+}
+
+function clearClicked() {
+  document.getElementById("definitions").value = "";
 }
 
 // Set up all reference code elements to be linked and have onclick functionality
 var codeElements = document.querySelectorAll ("#reference code");
 for (var i=0; i< codeElements.length; i++) {
-  //console.log ("element id: " + codeElements[0].id);
   codeElements[i].className = "linked";
   codeElements[i].onclick = function () {
     eval (this.innerHTML + ";");
@@ -62,7 +71,6 @@ for (var i=0; i< codeElements.length; i++) {
 // Set up all color button elements to be linked and have onclick functionality
 var codeElements = document.querySelectorAll ("button");
 for (var i=0; i< codeElements.length; i++) {
-  //console.log ("element id: " + codeElements[0].id);
   codeElements[i].onclick = function () {
     eval ("color(\"" + this.id +"\")");
     cmd ("color(\"" + this.id +"\");");
@@ -99,7 +107,6 @@ function commandChanged () {
     color("red");
     setfont ("14pt bold Helvetica, sans-serif")
     write(e.name + ": " + e.message);
-    //alert('Exception thrown, please see console');
     color("blue");
     setfont ("10pt bold Helvetica, sans-serif")
     goto (minX()+8, minY()+4);
@@ -114,6 +121,7 @@ function commandChanged () {
 // set up the control buttons
 document.getElementById("resetButton").onclick=reset;
 document.getElementById("runButton").onclick=runClicked;
+document.getElementById("clearButton").onclick=clearClicked;
 
 var STOP = document.getElementById("stopButton")
 STOP.onclick=stopClicked;
@@ -322,6 +330,17 @@ document.getElementById("viewDefinitions").onclick = function () {
   closeMenu();
 }
 
+document.getElementById("viewHelpText").onclick = function () {
+  if (helpTextActive === true) {
+    document.getElementById("viewHelpTextItem").className = "";
+    helpTextActive = false;
+  } else {
+    document.getElementById("viewHelpTextItem").className = "checked";
+    helpTextActive = true;
+  }
+  closeMenu();
+}
+
 /*
 document.getElementById("definitionsClose").onclick = function () {
   closeDefinitionsDrawer();
@@ -329,7 +348,7 @@ document.getElementById("definitionsClose").onclick = function () {
 */
   
 mouseOverElementIds = ["reference","turtlecanvas", "examples", "definitions",
-                       "command", "resetButton", "runButton", "stopButton",
+                       "command", "resetButton", "runButton", "stopButton", "clearButton",
                        "hamburger"];
 var helpTextTimer; // global for delaying all help text
 var helpDelay = 1000; // global delay in milliseconds for all help text
@@ -340,10 +359,8 @@ var bottomY = (window.innerHeight // global for lowest Y on page for tool tip
 
 for (var i=0; i < mouseOverElementIds.length; i++) {
   element = document.getElementById(mouseOverElementIds[i]);
-  console.log ("Found div with id=" + element.id)
   element.onmouseenter = function (event) {
     var tooltip = document.getElementById(this.id + "_help_text");
-    //console.log ("mouseover for "+ this.id + " at x:" + event.clientX + " y:" + event.clientY)
     onHelpEnter(tooltip);
     if (event.clientY < bottomY) {
       tooltip.style.top = event.clientY + "px";
@@ -363,7 +380,7 @@ for (var i=0; i < mouseOverElementIds.length; i++) {
 }
 
 function onHelpEnter (helpTextElement) {
-  if (helpTextTimer === undefined) {
+  if (helpTextActive && helpTextTimer === undefined) {
     helpTextTimer = setTimeout(onHelpTimeout,helpDelay, helpTextElement);
   }
 }
@@ -393,7 +410,9 @@ function closeMenu() {
 
 function openMenu() {
   document.getElementById("menu").className="";
+  document.getElementById("menu").onBlur=closeMenu;
 }
+
 
 tutorialMenuIds = [ "basicGrammarMenu", "basicConceptsMenu",
                    "advancedConceptsMenu", "animationMenu", "underHoodMenu",
@@ -401,7 +420,6 @@ tutorialMenuIds = [ "basicGrammarMenu", "basicConceptsMenu",
 
 for (var i=0; i < tutorialMenuIds.length; i++) {
   element = document.getElementById(tutorialMenuIds[i]);
-  console.log ("Found menu with id=" + element.id)
   element.onclick = function (event) {
     openTutorial();
     window.location.hash = this.href;

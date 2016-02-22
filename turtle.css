@@ -219,6 +219,10 @@ h4, label {
   background-color:whitesmoke;
 }
 
+#clearButton{
+  float:right;
+}
+
 #github a {
   text-decoration:none;
 }
@@ -532,7 +536,7 @@ code.linked {
   border:none;
   background-color:white;
   position:fixed;
-  right:9%; // relative to window, not div
+  right:10%; // relative to window, not div
   top:10%;
 }
 /*
@@ -565,6 +569,13 @@ code.linked {
 }
 
 #stop_help_text {
+  #bottom: -210px;
+  left: 230px;
+  width: 200px;
+  margin-left: 5px;
+}
+
+#clear_help_text {
   #bottom: -210px;
   left: 230px;
   width: 200px;

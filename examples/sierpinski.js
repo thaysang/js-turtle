@@ -17,7 +17,7 @@ In this example, a part() function is
 created when either the sierpinski or
 halfSierpinski functions are invoked.
 Recursion is a function that calls
-itself. Recurive functions must include
+itself. Recursive functions must include
 some test to stop the recursion to
 prevent the dreaded infinite loop.
 */
@@ -63,7 +63,7 @@ function delayed() {
     // move start point so figure stays centered
     penup();
     angle(0);
-    var side = 64/Math.pow(2,i);
+    var side = 64/(i * i);
     left(45);
     forward(side * Math.sqrt(2) / 2);
     right(45);

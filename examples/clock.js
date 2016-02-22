@@ -27,6 +27,7 @@ function ticks(x, y, radius) {
 function numbers(x, y, radius) {
    penup();
    setFont("20px sans-serif");
+   color("black");
    for (var hour = 1; hour <= 12; hour++) {
       goto(x,y);
       angle(hour * 30);
