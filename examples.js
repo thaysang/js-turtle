@@ -269,6 +269,307 @@ function demo() {\n\
    animate(clock,1000);\n\
 }\n\
 '
+clockBinary ='\
+// clock binary -- digital clock using binary digits\n\
+\n\
+//*** GLOBALS ***\n\
+\n\
+var hour10;\n\
+var hour1;\n\
+var minute10;\n\
+var minute1;\n\
+var second10;\n\
+var second1;\n\
+\n\
+var hourColor = "red"\n\
+var minuteColor = "green"\n\
+var secondColor = "blue"\n\
+var offColor = "lightgray"\n\
+\n\
+\n\
+//*** FUNCTIONS ***\n\
+\n\
+function tensDigit (number) {\n\
+  return Math.floor (number/10) % 10\n\
+}\n\
+\n\
+\n\
+function onesDigit (number) {\n\
+  return Math.floor (number % 10)\n\
+}\n\
+\n\
+\n\
+function getBinaryTime() {\n\
+  time = new Date\n\
+  hours = time.getHours()\n\
+  minutes = time.getMinutes()\n\
+  seconds = time.getSeconds()\n\
+\n\
+  // extract the digits\n\
+  hour10 = tensDigit(hours)\n\
+  hour1 =  onesDigit(hours)\n\
+  min10 =  tensDigit(minutes)\n\
+  min1 =   onesDigit(minutes)\n\
+  sec10 =  tensDigit(seconds)\n\
+  sec1 =   onesDigit(seconds)\n\
+\n\
+  //pad digits with leading 0s\n\
+  hour10 = "0000" + hour10.toString(2)\n\
+  hour1 =  "0000" + hour1.toString(2)\n\
+  min10 =  "0000" + min10.toString(2)\n\
+  min1 =   "0000" + min1.toString(2)\n\
+  sec1 =   "0000" + sec1.toString(2)\n\
+  sec10 =  "0000" + sec10.toString(2)\n\
+  sec1 =   "0000" + sec1.toString(2)\n\
+\n\
+  //use only 4 digits\n\
+  hour10 = hour10.slice(-4)\n\
+  hour1 =  hour1.slice(-4)\n\
+  min10 =  min10.slice(-4)\n\
+  min1 =   min1.slice(-4)\n\
+  sec1 =   sec1.slice(-4)\n\
+  sec10 =  sec10.slice(-4)\n\
+  sec1 =   sec1.slice(-4)\n\
+}\n\
+\n\
+\n\
+function displayBinary() {\n\
+  color(black)\n\
+  write (":"+\n\
+    hour10 + " " + hour1 +\n\
+    ":"+\n\
+    min10 +  " "  + min1 +\n\
+    ":"+\n\
+    sec10 +  " "  + sec1)\n\
+}\n\
+\n\
+\n\
+function drawDot (digit, onColor, offColor, step) {\n\
+  if (digit == 1) {\n\
+    color( onColor)\n\
+  } else {\n\
+    color( offColor)\n\
+  }\n\
+  dot ()\n\
+  forward (step)\n\
+}\n\
+\n\
+\n\
+function drawNumberDots (digitString, onColor, offColor) {\n\
+  drawDot( digitString[0], onColor, offColor, 15)\n\
+  drawDot( digitString[1], onColor, offColor, 15)\n\
+  drawDot( digitString[2], onColor, offColor, 15)\n\
+  drawDot( digitString[3], onColor, offColor, 15)\n\
+  backward (60)\n\
+}\n\
+\n\
+\n\
+function displayBinaryDots() {\n\
+  penup()\n\
+  right(90)\n\
+  forward(10)\n\
+  left(90)\n\
+  forward (15)\n\
+  right(90)\n\
+  drawNumberDots (hour10, hourColor, offColor)\n\
+\n\
+  left(90)\n\
+  forward (25)\n\
+  right(90)\n\
+  drawNumberDots (hour1, hourColor, offColor)\n\
+\n\
+  left(90)\n\
+  forward (25)\n\
+  right(90)\n\
+  drawNumberDots (min10, minuteColor, offColor)\n\
+\n\
+  left(90)\n\
+  forward (25)\n\
+  right(90)\n\
+  drawNumberDots (min1, minuteColor, offColor)\n\
+\n\
+  left(90)\n\
+  forward (25)\n\
+  right(90)\n\
+  drawNumberDots (sec10, secondColor, offColor)\n\
+\n\
+  left(90)\n\
+  forward (25)\n\
+  right(90)\n\
+  drawNumberDots (sec1, secondColor, offColor)\n\
+}\n\
+\n\
+\n\
+function displayTime() {\n\
+  clear()\n\
+  home()\n\
+  angle(90)\n\
+  hideturtle() \n\
+  getBinaryTime()\n\
+  displayBinary()\n\
+  displayBinaryDots()\n\
+}\n\
+\n\
+animate(displayTime, 1000)\n\
+'
+clockDigital ='\
+// clock digital -- digital clock using seven-segment displays\n\
+\n\
+//*** GLOBALS ***\n\
+\n\
+var hour1digit;\n\
+var hour10digit;\n\
+var min1digit;\n\
+var min10digit;\n\
+var sec10digit;\n\
+var sec1digit;\n\
+\n\
+//var hour10;\n\
+//var hour1;\n\
+//var min10;\n\
+//var min1;\n\
+//var sec10;\n\
+//var sec1;\n\
+\n\
+\n\
+//*** CONSTANTS ***\n\
+\n\
+/*\n\
+The seven-segment display is layed out as follows:\n\
+   --a--\n\
+  |      |\n\
+  f      b\n\
+  |      |\n\
+   --g--\n\
+  |      |\n\
+  e      c\n\
+  |      |\n\
+   --d--\n\
+*/\n\
+//segment strings are in the order: abcdefg\n\
+//  where 1 turns segment on\n\
+//    and 0 turns segment off\n\
+var segments = [ "1111110", //0\n\
+                 "0110000", //1\n\
+                 "1101101", //2\n\
+                 "1111--1", //3\n\
+                 "0110011", //4\n\
+                 "1011011", //5\n\
+                 "1011111", //6\n\
+                 "1110000", //7\n\
+                 "1111111", //8\n\
+                 "1110011"  //9\n\
+               ]\n\
+\n\
+var segSize = 30 // pixels\n\
+segAngle = 10 // degrees\n\
+segOnColor = "red"\n\
+segOffColor = "black"\n\
+digitSpacing = 1.4 * segSize\n\
+interdigitSpacing = 1.6 * digitSpacing\n\
+\n\
+\n\
+//*** FUNCTIONS ***\n\
+\n\
+function tensDigit (number) {\n\
+  return Math.floor (number/10) % 10\n\
+}\n\
+\n\
+\n\
+function onesDigit (number) {\n\
+  return Math.floor (number % 10)\n\
+}\n\
+\n\
+\n\
+function getTime() {\n\
+  time = new Date\n\
+  hours = time.getHours()\n\
+  minutes = time.getMinutes()\n\
+  seconds = time.getSeconds()\n\
+\n\
+  // extract the digits\n\
+  hour10digit = tensDigit(hours)\n\
+  hour1digit = onesDigit(hours)\n\
+  min10digit = tensDigit(minutes)\n\
+  min1digit = onesDigit(minutes)\n\
+  sec10digit = tensDigit(seconds)\n\
+  sec1digit = onesDigit(seconds)\n\
+}\n\
+\n\
+\n\
+function segColor (bit) {\n\
+  if (bit == "1") {\n\
+    color( segOnColor)\n\
+  } else {\n\
+    color( segOffColor)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function display7segment(digit) {\n\
+  pendown()\n\
+  segColor (segments [digit].substr(0,1)) //a\n\
+  forward (segSize)\n\
+  right(90+segAngle)\n\
+  segColor (segments [digit].substr(1,1)) //b\n\
+  forward (segSize)\n\
+  segColor (segments [digit].substr(2,1)) //c\n\
+  forward (segSize)\n\
+  right (90-segAngle)\n\
+  segColor (segments [digit].substr(3,1)) //d\n\
+  forward (segSize)\n\
+  right (90+segAngle)\n\
+  segColor (segments [digit].substr(4,1)) //e\n\
+  forward (segSize)\n\
+  right (90-segAngle)\n\
+  segColor (segments [digit].substr(6,1)) //g\n\
+  forward (segSize)\n\
+  backward (segSize)\n\
+  left (90-segAngle)\n\
+  segColor (segments [digit].substr(5,1)) //f\n\
+  forward (segSize)\n\
+  right (90-segAngle)\n\
+  penup()\n\
+}\n\
+\n\
+\n\
+function displaySegTime() {\n\
+  // black out background\n\
+  goto (minX(),0)\n\
+  angle (90)\n\
+  color(black)\n\
+  width (2*maxY())\n\
+  pendown()\n\
+  forward(2*maxX())\n\
+\n\
+  // draw the 6 digits of time\n\
+  goto (-4*segSize, segSize)\n\
+  width (6)\n\
+  display7segment(hour10digit)\n\
+  forward (digitSpacing)\n\
+  display7segment(hour1digit)\n\
+\n\
+  forward (interdigitSpacing)\n\
+  display7segment(min10digit)\n\
+  forward (digitSpacing)\n\
+  display7segment(min1digit)\n\
+\n\
+  forward (interdigitSpacing)\n\
+  display7segment(sec10digit)\n\
+  forward (digitSpacing)\n\
+  display7segment(sec1digit)\n\
+}\n\
+\n\
+\n\
+function displayTime() {\n\
+  hideturtle() \n\
+  getTime()\n\
+  displaySegTime()\n\
+}\n\
+\n\
+\n\
+animate(displayTime, 1000)\n\
+'
 colorChangingDots ='\
 //Color Changing Dots -- demonstrate the concept of changing the colors of a string of dots (lights?)\n\
 \n\
@@ -2396,6 +2697,71 @@ function demo () {\n\
   i = 1;\n\
   delayed ();\n\
 }\n\
+'
+snowman ='\
+// Snowman -- draw a simple snowman\n\
+\n\
+// draw the three cirles for the body\n\
+clear()\n\
+width(1)\n\
+goto (0,-100)\n\
+circle (80)\n\
+goto (0,60-20)\n\
+circle (60)\n\
+goto (0,60-20+60+40)\n\
+circle (40)\n\
+\n\
+// add the coal for the eyes, nose and mouth\n\
+goto (-15,160)\n\
+dot()\n\
+goto (15,160)\n\
+dot()\n\
+goto (0,140)\n\
+dot()\n\
+goto (0,120)\n\
+dot()\n\
+goto (15,125)\n\
+dot()\n\
+goto (-15,125)\n\
+dot()\n\
+\n\
+// add coal for the buttons\n\
+goto (0,60)\n\
+dot()\n\
+goto (0,40)\n\
+dot()\n\
+goto (0,20)\n\
+dot()\n\
+goto (0,0)\n\
+dot()\n\
+\n\
+// add stick for a right arm\n\
+goto (56,60)\n\
+angle (60)\n\
+width(3)\n\
+forward (40)\n\
+left(15)\n\
+forward (25)\n\
+backward (25)\n\
+right(20)\n\
+forward(30)\n\
+backward(30)\n\
+right(10)\n\
+forward(20)\n\
+\n\
+// add stick for a left arm\n\
+goto (-56,60)\n\
+angle (-60)\n\
+width(3)\n\
+forward (40)\n\
+left(15)\n\
+forward (25)\n\
+backward (25)\n\
+right(20)\n\
+forward(30)\n\
+backward(30)\n\
+right(10)\n\
+forward(20)\n\
 '
 spinning_squares ='\
 // Spinning Squares -- draw some square of increasing size and angle.\n\
