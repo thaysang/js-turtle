@@ -40,6 +40,11 @@ The following are features that should be implemented:
 	* spin star (dAngle)
 	* move and grow and spin star
 	* array of stars
+* digital clock with 7-segment display
+	* function to draw segmented display from segment map
+	* function to convert digit to segment map
+* digital clock with binary number display
+	* function to draw binary number with dots
 	
 #Turtle Lessons
 
