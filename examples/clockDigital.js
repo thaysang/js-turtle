@@ -1,4 +1,4 @@
-// clock digital -- digital clock using seven-segment displays
+// Clock, Digital -- digital clock using seven-segment displays
 
 //*** GLOBALS ***
 
@@ -8,13 +8,6 @@ var min1digit;
 var min10digit;
 var sec10digit;
 var sec1digit;
-
-//var hour10;
-//var hour1;
-//var min10;
-//var min1;
-//var sec10;
-//var sec1;
 
 
 //*** CONSTANTS ***

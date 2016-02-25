@@ -1,4 +1,4 @@
-// Clock -- draw and animate an analog clock
+// Clock, Analog -- draw and animate an analog clock
 
 //draw the tick marks around the edge of the clock
 function ticks(x, y, radius) {

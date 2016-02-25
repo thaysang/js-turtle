@@ -1,4 +1,4 @@
-// clock binary -- digital clock using binary digits
+// Clock, Binary -- digital clock using binary digits
 
 //*** GLOBALS ***
 
@@ -134,7 +134,7 @@ function displayTime() {
   angle(90)
   hideturtle() 
   getBinaryTime()
-  displayBinary()
+  //displayBinary()
   displayBinaryDots()
 }
 

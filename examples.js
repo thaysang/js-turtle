@@ -175,7 +175,7 @@ function demo () {\n\
 }\n\
 '
 clock ='\
-// Clock -- draw and animate an analog clock\n\
+// Clock, Analog -- draw and animate an analog clock\n\
 \n\
 //draw the tick marks around the edge of the clock\n\
 function ticks(x, y, radius) {\n\
@@ -270,7 +270,7 @@ function demo() {\n\
 }\n\
 '
 clockBinary ='\
-// clock binary -- digital clock using binary digits\n\
+// Clock, Binary -- digital clock using binary digits\n\
 \n\
 //*** GLOBALS ***\n\
 \n\
@@ -406,14 +406,14 @@ function displayTime() {\n\
   angle(90)\n\
   hideturtle() \n\
   getBinaryTime()\n\
-  displayBinary()\n\
+  //displayBinary()\n\
   displayBinaryDots()\n\
 }\n\
 \n\
 animate(displayTime, 1000)\n\
 '
 clockDigital ='\
-// clock digital -- digital clock using seven-segment displays\n\
+// Clock, Digital -- digital clock using seven-segment displays\n\
 \n\
 //*** GLOBALS ***\n\
 \n\
@@ -423,13 +423,6 @@ var min1digit;\n\
 var min10digit;\n\
 var sec10digit;\n\
 var sec1digit;\n\
-\n\
-//var hour10;\n\
-//var hour1;\n\
-//var min10;\n\
-//var min1;\n\
-//var sec10;\n\
-//var sec1;\n\
 \n\
 \n\
 //*** CONSTANTS ***\n\
