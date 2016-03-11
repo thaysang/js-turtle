@@ -418,7 +418,7 @@ function random(low, high) {
 // Repeat some action n times
 function repeat(n, action) {
    for (var count = 1; count <= n; count++) {
-      eval (action);
+      action();
    }
 }
 

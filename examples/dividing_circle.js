@@ -1,52 +1,50 @@
 // Dividing a Circle -- Divide a circle with other circles
 
-function divideCenter(radii,radius) {
-    left(60);
-    forward(radius);
+// *** GLOBALS ***
+var i; // loop variable
+
+
+// *** CONSTANTS ***
+rad = 50; // circle radius
+limit = 6; // times to loop
+delayTime = 1000; // milliseconds
+
+
+// *** FUNCTIONS ***
+
+function divideCenter(radii, radius) {
+  left(60);
+  forward(radius);
+  right(60);
+  var side = 0
+  while (side < 6) { // go to each side
     right(60);
-    repeat(6, function () {
-      right(60);
-      repeat(radii, function () {
-        forward(radius);
-        circle(radius);
-      });
-    });
+    var step = 0
+    while (step < radii) { // step off side
+      forward(radius);
+      circle(radius);
+      step = step + 1
+    };
+    side = side + 1;
+  };
 }
+
+
+function tier () {
+  divideCenter (i, rad)
+  i = i + 1
+  if (i < limit) {
+    delay (tier, delayTime)
+  }
+}
+
 
 function demo() {
   clear();
   home();
   penup();
   wrap(false);
-  circle (50);
-  delay (tier1, 1000);
-}
-
-function tier1 () {
-  divideCenter (1,50);
-  delay (tier2, 2000);
-}
-
-function tier2 () {
-  divideCenter (2,50);
-  delay (tier3, 2000);
-}
-
-function tier3 () {
-  divideCenter (3,50);
-  delay (tier4, 2000);
-}
-
-function tier4 () {
-  divideCenter (4,50);
-  delay (tier5, 2000);
-}
-
-function tier5 () {
-  divideCenter (5,50);
-  delay (tier6, 2000);
-}
-
-function tier6 () {
-  divideCenter (6,50);
+  circle (rad);
+  i = 1;
+  delay (tier, delayTime);
 }

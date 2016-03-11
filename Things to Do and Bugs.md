@@ -1,7 +1,6 @@
 #Things To Do
 The following are features that should be implemented:
 
-* A button to clear the defintions pane
 * make it more obvious that the definitions pane can be modified
 * A better way to control positioning of the three panels
 * Fix to the Run button
@@ -17,11 +16,17 @@ The following are features that should be implemented:
 * include the intersection simulator as an example of using the turtle.js as a library on a standalone page.
 
 #Bugs
-* help text is flashed on screen during load
 * make the run button better
 	* if demo() is undefined, just say "Run"
 	* make enter work all of the time on the command line
-* needs some protection from infinite loops
+	* demo() needs to be cleared when changing examples (e.g., flag to clock, binary)
+* need some protection from infinite loops (hard to do without injecting code somewhere)mo
+* arc and curve test is missing third example
+	* Should add example for rounded rectangles
+* hexagon tesselation is not working
+* circle eye could be bigger, maybe different colors for each inscribed circle
+* color changing dots is not working, should start with a clear
+* dividing a circle is not working *****Fixed without identifying problem**
 
  
 #Needed Examples
