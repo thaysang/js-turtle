@@ -670,55 +670,53 @@ function demo() {\n\
 dividing_circle ='\
 // Dividing a Circle -- Divide a circle with other circles\n\
 \n\
-function divideCenter(radii,radius) {\n\
-    left(60);\n\
-    forward(radius);\n\
+// *** GLOBALS ***\n\
+var i; // loop variable\n\
+\n\
+\n\
+// *** CONSTANTS ***\n\
+rad = 50; // circle radius\n\
+limit = 6; // times to loop\n\
+delayTime = 1000; // milliseconds\n\
+\n\
+\n\
+// *** FUNCTIONS ***\n\
+\n\
+function divideCenter(radii, radius) {\n\
+  left(60);\n\
+  forward(radius);\n\
+  right(60);\n\
+  var side = 0\n\
+  while (side < 6) { // go to each side\n\
     right(60);\n\
-    repeat(6, function () {\n\
-      right(60);\n\
-      repeat(radii, function () {\n\
-        forward(radius);\n\
-        circle(radius);\n\
-      });\n\
-    });\n\
+    var step = 0\n\
+    while (step < radii) { // step off side\n\
+      forward(radius);\n\
+      circle(radius);\n\
+      step = step + 1\n\
+    };\n\
+    side = side + 1;\n\
+  };\n\
 }\n\
+\n\
+\n\
+function tier () {\n\
+  divideCenter (i, rad)\n\
+  i = i + 1\n\
+  if (i < limit) {\n\
+    delay (tier, delayTime)\n\
+  }\n\
+}\n\
+\n\
 \n\
 function demo() {\n\
   clear();\n\
   home();\n\
   penup();\n\
   wrap(false);\n\
-  circle (50);\n\
-  delay (tier1, 1000);\n\
-}\n\
-\n\
-function tier1 () {\n\
-  divideCenter (1,50);\n\
-  delay (tier2, 2000);\n\
-}\n\
-\n\
-function tier2 () {\n\
-  divideCenter (2,50);\n\
-  delay (tier3, 2000);\n\
-}\n\
-\n\
-function tier3 () {\n\
-  divideCenter (3,50);\n\
-  delay (tier4, 2000);\n\
-}\n\
-\n\
-function tier4 () {\n\
-  divideCenter (4,50);\n\
-  delay (tier5, 2000);\n\
-}\n\
-\n\
-function tier5 () {\n\
-  divideCenter (5,50);\n\
-  delay (tier6, 2000);\n\
-}\n\
-\n\
-function tier6 () {\n\
-  divideCenter (6,50);\n\
+  circle (rad);\n\
+  i = 1;\n\
+  delay (tier, delayTime);\n\
 }\n\
 '
 flag ='\
