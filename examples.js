@@ -597,6 +597,668 @@ function colorChangingDots () {\n\
 \n\
 demo = colorChangingDots;\n\
 '
+conwayFractal ='\
+// Conway Fractal -- Conway\'s pinwheel tessellation as a fractal\n\
+// the British mathematician John Conway devised a tesselation using triagles\n\
+// that has no periodicity called the pinwheel tesselation.  This is a fractal\n\
+// form of that tessellation.\n\
+\n\
+/*\n\
+from a point can:\n\
+ - draw a triangle X\n\
+ - draw a triangle and 4 siblings as a newer larger triangle\n\
+ - divide a triangle into 5 offspring triangles\n\
+\n\
+Recursion for:\n\
+  expanding a set of triangles from a point\n\
+  dividing a set of triangles from a point.\n\
+\n\
+need routines for\n\
+  recursive expansion\n\
+  - expand, move to new base, change size\n\
+  move to 5 base points dividing a triangle\n\
+  move to 5 base points expanding a triangle\n\
+  conditionally draw triangle or subdivide\n\
+\n\
+  * optionally have a delay for animation\n\
+\n\
+  * options to grid certain triangles (all, none, prime, non-prime)\n\
+\n\
+  * option to change width of triangle outline (level, triangle)\n\
+*/\n\
+\n\
+\n\
+//*** GLOBALS ***\n\
+\n\
+var level = 0\n\
+var targetLevel = 5\n\
+var side = .80 * Math.min( maxY()*2, maxX()) // base of big triangle\n\
+var mainColor = "tan"\n\
+var subColor = "wheat"\n\
+var dividerColor = "black"\n\
+var stepsize = 1.5       //spacing between shading lines\n\
+var specialTriangle = 0  // triangle number selected for highlighting (1-5, 0 for none)\n\
+\n\
+\n\
+//*** CONSTANTS ***\n\
+\n\
+var targetLevel = 4\n\
+var root5 = Math.sqrt(5)\n\
+var anglea = Math.asin( 1 / root5) * 360 / 2 / Math.PI\n\
+var angleb = Math.asin( 2 / root5) * 360 / 2 / Math.PI\n\
+var CCW = false\n\
+var CW = true\n\
+\n\
+\n\
+//*** FUNCTIONS ***\n\
+\n\
+function dturn( dir, degrees) {\n\
+  if (dir) {\n\
+    right( degrees)\n\
+  } else {\n\
+    left ( degrees)\n\
+  }\n\
+}\n\
+\n\
+function drawTriangle (dir, side) {\n\
+  forward (2*side)\n\
+  dturn(dir, 180-anglea)\n\
+  forward (root5*side)\n\
+  dturn (dir, 180-angleb)\n\
+  forward (side)\n\
+  dturn (dir, 90)\n\
+}\n\
+\n\
+\n\
+function caption (message) {\n\
+  // save your current position, heading, etc.\n\
+  var savedX = turtle.pos.x\n\
+  var savedY = turtle.pos.y\n\
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees\n\
+  var savedColor = turtle.color\n\
+  var savedWidth = turtle.width\n\
+\n\
+  goto (minX()+10, minY()+10)\n\
+  setheading( 90)\n\
+\n\
+  // erase wha will be in the path\n\
+  color ("white")\n\
+  width (10)\n\
+  forward (maxY() * 2 - 12)\n\
+  goto (minX()+10, minY()+5)\n\
+  color ("black")\n\
+  write( message)\n\
+\n\
+  //go back from whence you came\n\
+  goto( savedX, savedY)\n\
+  setheading( savedHeading)\n\
+  color ( savedColor)\n\
+  width (savedWidth)\n\
+}\n\
+\n\
+\n\
+function shadeTriangle( dir, side, stepsize) {\n\
+  console.log( "sT: " + dir + " " + side + " " + stepsize)\n\
+  var x = turtle.pos.x\n\
+  var y = turtle.pos.y\n\
+  var steps = Math.floor( side/stepsize)\n\
+\n\
+  for (var i=0; i< steps; i++) {\n\
+     forward( 2*side * (steps-i)/steps)\n\
+     backward( 2*side * (steps-i)/steps)\n\
+     penup()\n\
+     dturn( dir, 90)\n\
+     forward( stepsize)\n\
+     dturn( !dir, 90)\n\
+     pendown()\n\
+  }\n\
+  //return to start\n\
+  penup()\n\
+  dturn( !dir, 90)\n\
+  forward( side)\n\
+  dturn( dir, 90)\n\
+  //goto(x,y) // cancel cumulative error\n\
+  pendown()\n\
+}\n\
+\n\
+function recursiveDivide( dir, side, level, triangle) {\n\
+  //console.log("rD: " + level + " " + triangle)\n\
+  if (level > 0) {\n\
+    side = 0. + side/root5\n\
+    var x = turtle.pos.x\n\
+    var y = turtle.pos.y\n\
+    \n\
+    //draw the first line to point A\n\
+    dturn( dir, angleb)\n\
+    pendown()\n\
+    forward (2*side)\n\
+\n\
+    //sub triangle 1\n\
+    right (180)\n\
+    recursiveDivide( !dir, side, level-1, 1)\n\
+    right (180)\n\
+\n\
+    //draw the second line to point B\n\
+    dturn( !dir, 180-angleb)\n\
+    pendown()\n\
+    forward (root5*side)\n\
+    \n\
+    //draw third line to point C\n\
+    dturn( dir, 180-angleb)\n\
+    forward(side)\n\
+    penup()\n\
+\n\
+i    //sub triangle 4\n\
+    dturn( dir, 90)\n\
+    recursiveDivide( dir, side, level-1, 4)\n\
+\n\
+    //sub triangle 5\n\
+    right( 180)\n\
+    recursiveDivide( !dir, side, level-1, 5)\n\
+    dturn( dir, 90)\n\
+    \n\
+    //retreat to point B\n\
+    backward(side)\n\
+    dturn( dir, 90)\n\
+    \n\
+    //draw fourth line to point D\n\
+    pendown()\n\
+    forward( 2*side)\n\
+    penup()\n\
+\n\
+    //sub triangle 2\n\
+    right( 180)\n\
+    recursiveDivide( !dir, side, level-1, 2)\n\
+\n\
+    //sub triangle 3\n\
+    recursiveDivide( dir, side, level-1, 3)\n\
+    \n\
+    //retreat to origin\n\
+    dturn( !dir, 90)\n\
+    penup()\n\
+    forward( side)\n\
+    pendown()\n\
+    dturn( dir, 180-angleb)\n\
+    //goto (x,y) //cancel cumulative error\n\
+//  } else {\n\
+    //if (triangle == 3) {\n\
+//    if (triangle == specialTriangle) {\n\
+//      shadeTriangle (dir, side, stepsize)\n\
+//    }\n\
+  }\n\
+}\n\
+\n\
+function recursiveDivideBlocks( dir, side, level, triangle, background, highlight) {\n\
+  //console.log( "rDB: " + level + " " + triangle + " " + background + " " + highlight)\n\
+  if (level > 0) {\n\
+    side = side/root5\n\
+    var x = turtle.pos.x\n\
+    var y = turtle.pos.y\n\
+\n\
+    //move to point A\n\
+    penup()\n\
+    dturn( dir, angleb)\n\
+    forward (2 * side)\n\
+\n\
+    //sub triangle 1\n\
+    right (180)\n\
+    pendown()\n\
+    recursiveDivideBlocks( !dir, side, level-1, 1, background, highlight)\n\
+    penup()\n\
+    right (180)\n\
+\n\
+    //move to pint B\n\
+    dturn( !dir, 180-angleb)\n\
+    forward (root5*side)\n\
+    \n\
+    //move to point C\n\
+    dturn( dir, 180-angleb)\n\
+    forward(side)\n\
+\n\
+    //sub triangle 4\n\
+    dturn( dir, 90)\n\
+    pendown()\n\
+    recursiveDivideBlocks( dir, side, level-1, 4, background, highlight)\n\
+    penup()\n\
+\n\
+    //sub triangle 5\n\
+    right( 180)\n\
+    pendown()\n\
+    recursiveDivideBlocks( !dir, side, level-1, 5, background, highlight)\n\
+    penup()\n\
+\n\
+    //retreat to point B\n\
+    dturn( dir, 90)\n\
+    backward(side)\n\
+\n\
+    //move to point B\n\
+    dturn( dir, 90)\n\
+    forward( 2*side)\n\
+\n\
+//sub triangle 2\n\
+    right( 180)\n\
+    pendown()\n\
+    recursiveDivideBlocks( !dir, side, level-1, 2, background, highlight)\n\
+\n\
+    //sub triangle 3\n\
+    recursiveDivideBlocks( dir, side, level-1, 3, highlight, highlight)\n\
+    penup()\n\
+\n\
+    //move to origin\n\
+    dturn( !dir, 90)\n\
+    forward (side)\n\
+\n\
+    dturn( dir, 180-angleb)\n\
+    goto (x,y) //cancel cumulative error\n\
+  } else {\n\
+    if (triangle == 3) {\n\
+    //if (triangle == specialTriangle) {\n\
+      color( highlight)\n\
+      console.log("shading " + highlight)\n\
+      shadeTriangle (dir, side, stepsize)\n\
+    } else {\n\
+      color( background)\n\
+      shadeTriangle (dir, side, stepsize)\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+function delayedDivide() {\n\
+  level = level + 1\n\
+  if (level <= targetLevel) {\n\
+    recursiveDivideBlocks( CCW, side, level, 0, mainColor, subColor)\n\
+    color(dividerColor)\n\
+    recursiveDivide( CCW, side, level, 0)\n\
+    drawTriangle( CCW, side)\n\
+    caption( "Fractal divide, generation " + level)\n\
+    delay( delayedDivide, 3000)\n\
+  }\n\
+}\n\
+\n\
+\n\
+//*** MAIN ***\n\
+\n\
+function demo() {\n\
+  // initialize\n\
+  reset()\n\
+  wrap(false)\n\
+  penup()\n\
+  backward (side/4)\n\
+  right(90)\n\
+  backward (side)\n\
+\n\
+  // label the sides of the triangle\n\
+  setfont("bold 14px sans-serif")\n\
+  left( anglea)\n\
+  forward( side+50)\n\
+  right( anglea)\n\
+  write( "√5")\n\
+  left( anglea)\n\
+  backward( side+50)\n\
+  right( anglea)\n\
+  right( 90)\n\
+  forward (20)\n\
+  left( 90)\n\
+  forward( side)\n\
+  write (2)\n\
+  backward( side+20)\n\
+  left( 90)\n\
+  forward( side/2 + 20)\n\
+  right( 90)\n\
+  write( 1)\n\
+  forward( 20)\n\
+  right(90)\n\
+  forward (side/2)\n\
+  left(90)\n\
+\n\
+  pendown()\n\
+  drawTriangle( CCW, side)\n\
+\n\
+  level = 0\n\
+\n\
+  delay( delayedDivide, 3000)\n\
+}\n\
+'
+conwayPinwheel ='\
+// Conway Pinwheel -- Conway\'s pinwheel tessellation\n\
+// the British mathematician John Conway devised a tesselation using triagles\n\
+// that has no periodicity called the pinwheel tesselation.\n\
+\n\
+/*\n\
+from a point can:\n\
+ - draw a triangle X\n\
+ - draw a triangle and 4 siblings as a newer larger triangle\n\
+ - divide a triangle into 5 offspring triangles\n\
+\n\
+Recursion for:\n\
+  expanding a set of triangles from a point\n\
+  dividing a set of triangles from a point.\n\
+\n\
+need routines for\n\
+  recursive expansion\n\
+  - expand, move to new base, change size\n\
+  move to 5 base points dividing a triangle\n\
+  move to 5 base points expanding a triangle\n\
+  conditionally draw triangle or subdivide\n\
+\n\
+  * optionally have a delay for animation\n\
+\n\
+  * options to grid certain triangles (all, none, prime, non-prime)\n\
+\n\
+  * option to change width of triangle outline (level, triangle)\n\
+*/\n\
+\n\
+\n\
+//*** GLOBALS ***\n\
+\n\
+var levels = 4\n\
+var targetSide = .80 * Math.min( maxY()*2, maxX()) // base of big encompassing triangle\n\
+var delayedSide = 0		// current side being worked\n\
+\n\
+var mainColor = "tan"\n\
+var subColor = "wheat"\n\
+var dividerColor = "black"\n\
+var stepsize = 1.5       //spacing between shading lines\n\
+var specialTriangle = 0  // triangle number selected for highlighting (1-5, 0 for none)\n\
+\n\
+\n\
+//*** CONSTANTS ***\n\
+\n\
+var root5 = Math.sqrt(5)\n\
+var anglea = Math.asin( 1 / root5) * 360 / 2 / Math.PI\n\
+var angleb = Math.asin( 2 / root5) * 360 / 2 / Math.PI\n\
+var CCW = false\n\
+var CW = true\n\
+\n\
+\n\
+//*** FUNCTIONS ***\n\
+\n\
+function dturn( dir, degrees) { // allows turning based on triangle type\n\
+  if (dir) {\n\
+    right( degrees)\n\
+  } else {\n\
+    left ( degrees)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function drawTriangle (dir, side) {\n\
+  forward (2*side)\n\
+  dturn(dir, 180-anglea)\n\
+  forward (root5*side)\n\
+  dturn (dir, 180-angleb)\n\
+  forward (side)\n\
+  dturn (dir, 90)\n\
+}\n\
+\n\
+\n\
+function caption (message) {\n\
+  // save your current position, heading, etc.\n\
+  var savedX = turtle.pos.x\n\
+  var savedY = turtle.pos.y\n\
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees\n\
+  var savedColor = turtle.color\n\
+  var savedWidth = turtle.width\n\
+\n\
+  goto (minX()+10, minY()+10)\n\
+  setheading( 90)\n\
+\n\
+  // erase wha will be in the path\n\
+  color ("white")\n\
+  width (10)\n\
+  forward (maxY() * 2 - 12)\n\
+  goto (minX()+10, minY()+5)\n\
+  color ("black")\n\
+  write( message)\n\
+\n\
+  //go back from whence you came\n\
+  goto( savedX, savedY)\n\
+  setheading( savedHeading)\n\
+  color ( savedColor)\n\
+  width (savedWidth)\n\
+}\n\
+\n\
+\n\
+\n\
+function shadeTriangle( dir, side, stepsize) {\n\
+  console.log( "sT: " + dir + " " + side + " " + stepsize)\n\
+  var x = turtle.pos.x\n\
+  var y = turtle.pos.y\n\
+  var steps = Math.floor( side/stepsize)\n\
+\n\
+  for (var i=0; i< steps; i++) {\n\
+     forward( 2*side * (steps-i)/steps)\n\
+     backward( 2*side * (steps-i)/steps)\n\
+     penup()\n\
+     dturn( dir, 90)\n\
+     forward( stepsize)\n\
+     dturn( !dir, 90)\n\
+     pendown()\n\
+  }\n\
+  //return to start\n\
+  penup()\n\
+  dturn( !dir, 90)\n\
+  forward( side)\n\
+  dturn( dir, 90)\n\
+  //goto(x,y) // cancel cumulative error\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function recursiveDivide( dir, side, level, triangle) {\n\
+  //console.log("rD: " + level + " " + triangle)\n\
+  if (level > 0) {\n\
+    side = 0. + side/root5\n\
+    var x = turtle.pos.x\n\
+    var y = turtle.pos.y\n\
+    \n\
+    //draw the first line to point A\n\
+    dturn( dir, angleb)\n\
+    pendown()\n\
+    forward (2*side)\n\
+\n\
+    //sub triangle 1\n\
+    right (180)\n\
+    recursiveDivide( !dir, side, level-1, 1)\n\
+    right (180)\n\
+\n\
+    //draw the second line to point B\n\
+    dturn( !dir, 180-angleb)\n\
+    pendown()\n\
+    forward (root5*side)\n\
+    \n\
+    //draw third line to point C\n\
+    dturn( dir, 180-angleb)\n\
+    forward(side)\n\
+    penup()\n\
+\n\
+i    //sub triangle 4\n\
+    dturn( dir, 90)\n\
+    recursiveDivide( dir, side, level-1, 4)\n\
+\n\
+    //sub triangle 5\n\
+    right( 180)\n\
+    recursiveDivide( !dir, side, level-1, 5)\n\
+    dturn( dir, 90)\n\
+    \n\
+    //retreat to point B\n\
+    backward(side)\n\
+    dturn( dir, 90)\n\
+    \n\
+    //draw fourth line to point D\n\
+    pendown()\n\
+    forward( 2*side)\n\
+    penup()\n\
+\n\
+    //sub triangle 2\n\
+    right( 180)\n\
+    recursiveDivide( !dir, side, level-1, 2)\n\
+\n\
+    //sub triangle 3\n\
+    recursiveDivide( dir, side, level-1, 3)\n\
+    \n\
+    //retreat to origin\n\
+    dturn( !dir, 90)\n\
+    penup()\n\
+    forward( side)\n\
+    pendown()\n\
+    dturn( dir, 180-angleb)\n\
+    //goto (x,y) //cancel cumulative error\n\
+//  } else {\n\
+//    if (triangle == 3) {\n\
+//    if (triangle == specialTriangle) {\n\
+//      shadeTriangle (dir, side, stepsize)\n\
+//    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+function moveToExpandOrigin (side) {\n\
+  penup()\n\
+  right( 90)\n\
+  forward( side)\n\
+  left( 180 - angleb)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function startDelayedDivide() {\n\
+  // move to the origin of the big triangle\n\
+  reset()\n\
+  color(mainColor)\n\
+  penup()\n\
+\n\
+  side = targetSide\n\
+  backward (side/2)\n\
+  right(90)\n\
+  backward (side)\n\
+  pendown()\n\
+\n\
+  iterations = 4\n\
+  level = 0\n\
+\n\
+  pendown()\n\
+  color("black")\n\
+  delayedDivide()\n\
+}\n\
+\n\
+\n\
+function delayedDivide() {\n\
+  //console.log ("dD: "+ side + " " + level)\n\
+  recursiveDivide( CCW, side, level, 0)\n\
+  drawTriangle( CCW, side)\n\
+  caption( "Division, generation " + level)\n\
+  level = level + 1\n\
+  if (level <= iterations) {\n\
+    delay( delayedDivide,1000)\n\
+  } else {\n\
+    delay( startDelayedExpansion, 3000)\n\
+  }\n\
+}\n\
+\n\
+function startDelayedExpansion() {\n\
+  //move to the origin of the big triangle\n\
+  reset ()\n\
+  wrap( false)\n\
+  color(mainColor)\n\
+  penup()\n\
+\n\
+  var tempSide = targetSide\n\
+  backward (side/2)\n\
+  right(90)\n\
+  backward (side)\n\
+\n\
+  iterations = 4\n\
+  depth = 0\n\
+  dir = CCW\n\
+\n\
+  // move the starting point so that it ends where it starts\n\
+  for (var i=0; i<iterations; i++) {\n\
+    tempSide = tempSide/root5\n\
+  }\n\
+  delayedSide = tempSide\n\
+  for (var i=0; i<iterations; i++) {\n\
+    tempSide = tempSide * root5\n\
+  }\n\
+  for (var i=0; i<iterations; i++) {\n\
+    pendown()\n\
+    drawTriangle( dir, tempSide)\n\
+    penup()\n\
+    dturn( dir, angleb)\n\
+    forward( tempSide/root5)\n\
+    dturn( !dir, 90)\n\
+    tempSide = tempSide / root5\n\
+    drawTriangle( tempSide) // really just for reference\n\
+    console.log(i)\n\
+  }\n\
+\n\
+  pendown()\n\
+  color ("blue")\n\
+  shadeTriangle( CCW, tempSide, stepsize)\n\
+  color("black")\n\
+  delay( delayedExpansion,1000)\n\
+}\n\
+\n\
+function delayedExpansion() {\n\
+  /* on entry\n\
+    delayedSide is the size of the base triangle.\n\
+    depth is how many generations to do.\n\
+  */\n\
+\n\
+  moveToExpandOrigin( delayedSide)\n\
+  delayedSide = delayedSide * root5\n\
+  //console.log( "dE: " + depth + " " + iterations + " " + delayedSide)\n\
+  recursiveDivide( CCW, delayedSide, depth+1, 0)\n\
+  drawTriangle( CCW, delayedSide)\n\
+  caption( "Expansion, generation " + (depth+1))\n\
+\n\
+  depth = depth + 1\n\
+  if (depth < iterations) {\n\
+    delay( delayedExpansion,1000)\n\
+  } else {\n\
+    delayedSide = targetSide\n\
+    delay( startDelayedDivide, 3000)\n\
+  }\n\
+}\n\
+\n\
+\n\
+//***MAIN***\n\
+\n\
+console.log ("Starting")\n\
+stepsize = 1.5\n\
+iterations = 4\n\
+iterations = 2\n\
+level = 1\n\
+depth = 0\n\
+CCW = false // triangle is to the left side of the right angle ( height, hypotenuse, base)\n\
+CW = true // triangle is to the right side of the right angle( height, hypotenuse, base)\n\
+mainColor = "tan"\n\
+subColor = "wheat"\n\
+specialTriangle = 0\n\
+\n\
+\n\
+function demo() {\n\
+  /* want demo to show a mix of divide and expand with animation\n\
+\n\
+basically:\n\
+  starts up with a delayed division set up\n\
+  when that is over\n\
+  continue with a delayed expansion\n\
+*/\n\
+  reset()\n\
+  side = targetSide\n\
+  wrap(false)\n\
+  color(mainColor)\n\
+  penup()\n\
+  backward (side/2)\n\
+  right(90)\n\
+  backward (side)\n\
+  pendown()\n\
+\n\
+  startDelayedExpansion()\n\
+}\n\
+'
 coordinates ='\
 //Canvas Coordinates -- draw the axes of the coordinate system on the canvas\n\
 \n\
@@ -718,6 +1380,102 @@ function demo() {\n\
   i = 1;\n\
   delay (tier, delayTime);\n\
 }\n\
+'
+dragonCurve ='\
+//  Dragon Curve -- a fractal curve formed by folding a shape onto itself\n\
+//  more infomration at wikipedia  https://en.wikipedia.org/wiki/Dragon_curve\n\
+\n\
+\n\
+//*** GLOBALS ***\n\
+var gen = 0\n\
+var side = 300\n\
+\n\
+\n\
+//*** CONSTANTS ***\n\
+\n\
+var root2 = Math.sqrt(2)\n\
+//  X ↦ X+YF+\n\
+//  Y ↦ −FX−Y.\n\
+// angle is 90\n\
+// start is order * 45°\n\
+\n\
+\n\
+//*** FUNCTIONS ***\n\
+\n\
+function caption (message) {\n\
+  // save your current position, heading, etc.\n\
+  var savedX = turtle.pos.x\n\
+  var savedY = turtle.pos.y\n\
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees\n\
+  var savedColor = turtle.color\n\
+  var savedWidth = turtle.width\n\
+\n\
+  goto (minX()+10, minY()+10)\n\
+  setheading( 90)\n\
+\n\
+  // erase wha will be in the path\n\
+  color ("white")\n\
+  width (10)\n\
+  forward (maxY() * 2 - 12)\n\
+  goto (minX()+10, minY()+5)\n\
+  color ("black")\n\
+  write( message)\n\
+\n\
+  //go back from whence you came\n\
+  goto( savedX, savedY)\n\
+  setheading( savedHeading)\n\
+  color ( savedColor)\n\
+  width (savedWidth)\n\
+}\n\
+\n\
+function X (side, gen) {\n\
+  if (gen <= 0) {\n\
+     forward (side)\n\
+  }\n\
+  else {\n\
+    X(side/root2, gen-1)\n\
+    left (90)\n\
+    Y(side/root2, gen-1)\n\
+    //forward(side/2)\n\
+    left (90)\n\
+  }\n\
+}\n\
+\n\
+function Y (side, gen) {\n\
+  if (gen <= 0) {\n\
+    forward (side)\n\
+  }\n\
+  else {\n\
+    right (90)\n\
+    //forward (side/root2)\n\
+    X (side/root2, gen-1)\n\
+    right (90)\n\
+    Y (side/root2, gen-1)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function delayedDragon () {\n\
+  reset()\n\
+  goto (-side/2, 0)\n\
+  setheading (90+ gen * 45)\n\
+  pendown()\n\
+  X (side, gen)\n\
+  caption( "Dragon curve, generation " + gen)\n\
+\n\
+  if (gen < 13) {\n\
+    gen = gen + 1\n\
+  } else {\n\
+    gen = 0\n\
+  }\n\
+  delay( delayedDragon, 3000)\n\
+}  \n\
+    \n\
+\n\
+function demo() {\n\
+  gen = 0\n\
+  delayedDragon()\n\
+}  \n\
 '
 flag ='\
 // Flag -- draw an American Flag\n\
@@ -847,6 +1605,115 @@ function flag() {\n\
   \n\
 demo = flag\n\
 '
+gosperCurve ='\
+// Gosper curve -- a is a space filling curve named after Bill Gosper\n\
+// also known as a flow snake (a Spoonerism on snow flake)\n\
+// more information at Wikipedia  https://en.wikipedia.org/wiki/Gosper_curve\n\
+\n\
+// A ↦ A − B − − B + A + + A A + B − \n\
+\n\
+//*** GLOBALS ***\n\
+\n\
+var gen = 0\n\
+var size = 0\n\
+\n\
+//*** FUNCTIONS ***\n\
+\n\
+function caption (message) {\n\
+  // save your current position, heading, etc.\n\
+  var savedX = turtle.pos.x\n\
+  var savedY = turtle.pos.y\n\
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees\n\
+  var savedColor = turtle.color\n\
+  var savedWidth = turtle.width\n\
+\n\
+  goto (minX()+10, minY()+10)\n\
+  setheading( 90)\n\
+\n\
+  // erase wha will be in the path\n\
+  color ("white")\n\
+  width (10)\n\
+  forward (maxY() * 2 - 12)\n\
+  goto (minX()+10, minY()+5)\n\
+  color ("black")\n\
+  write( message)\n\
+\n\
+  //go back from whence you came\n\
+  goto( savedX, savedY)\n\
+  setheading( savedHeading)\n\
+  color ( savedColor)\n\
+  width (savedWidth)\n\
+}\n\
+\n\
+\n\
+function A (side, gen) {\n\
+  if (gen ===0) {\n\
+    forward (side)\n\
+  }\n\
+  else {\n\
+    side = side / Math.sqrt(7)\n\
+    A (side, gen-1)\n\
+    left (60)\n\
+    B (side, gen-1)\n\
+    left (120)\n\
+    B (side, gen-1)\n\
+    right (60)\n\
+    A (side, gen-1)\n\
+    right (120)\n\
+    A (side, gen-1)\n\
+    A (side, gen-1)\n\
+    right (60)\n\
+    B (side, gen-1)\n\
+    left (60)\n\
+  }\n\
+}\n\
+\n\
+// B ↦ + A − B B − − B − A + + A + B \n\
+\n\
+function B (side, gen) {\n\
+  if (gen ===0) {\n\
+    forward (side)\n\
+  }\n\
+  else {\n\
+    side = side / Math.sqrt(7)\n\
+    right (60)\n\
+    A (side, gen-1)\n\
+    left (60)\n\
+    B (side, gen-1)\n\
+    B (side, gen-1)\n\
+    left (120)\n\
+    B (side, gen-1)\n\
+    left (60)\n\
+    A (side, gen-1)\n\
+    right (120)\n\
+    A (side, gen-1)\n\
+    right (60)\n\
+    B (side, gen-1)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function delayDemo () {\n\
+  reset()\n\
+  goto( size/2, -size/2+60*gen)\n\
+  A( size,gen)\n\
+  caption ("Gosper Curve generation " + gen)\n\
+  if (gen < 4) {\n\
+    gen = gen + 1\n\
+  } else {\n\
+    gen = 0\n\
+  }\n\
+  delay( delayDemo,3000)\n\
+}\n\
+\n\
+function demo () {\n\
+  reset()\n\
+  size = 350\n\
+  goto(size/2,-size/2+60*gen)\n\
+  gen = 0\n\
+  delayDemo()\n\
+}\n\
+'
 hexTesselation ='\
 // Hexagon Tessalation -- tile a surface with hexagons\n\
 \n\
@@ -915,6 +1782,133 @@ function demo() {\n\
     pendown();\n\
     draw();\n\
   }\n\
+}\n\
+'
+hilbertCurve ='\
+// Hilbert Curve -- a space filling fractal curve described by David Hilbert\n\
+// more information at Wikipedia  https://en.wikipedia.org/wiki/Hilbert_curve\n\
+\n\
+// A → − B F + A F A + F B −\n\
+\n\
+\n\
+//*** GLOBALS ***\n\
+var gen = 0\n\
+\n\
+\n\
+//*** FUNCTIONS ***\n\
+\n\
+function caption (message) {\n\
+  // save your current position, heading, etc.\n\
+  var savedX = turtle.pos.x\n\
+  var savedY = turtle.pos.y\n\
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees\n\
+  var savedColor = turtle.color\n\
+  var savedWidth = turtle.width\n\
+\n\
+  goto (minX()+10, minY()+10)\n\
+  setheading( 90)\n\
+\n\
+  // erase wha will be in the path\n\
+  color ("white")\n\
+  width (10)\n\
+  forward (maxY() * 2 - 12)\n\
+  goto (minX()+10, minY()+5)\n\
+  color ("black")\n\
+  write( message)\n\
+\n\
+  //go back from whence you came\n\
+  goto( savedX, savedY)\n\
+  setheading( savedHeading)\n\
+  color ( savedColor)\n\
+  width (savedWidth)\n\
+}\n\
+\n\
+\n\
+function A (side,gen) {\n\
+  if (gen === 0) {\n\
+    left (90)\n\
+    forward (side)\n\
+    right (90)\n\
+    forward (side)\n\
+    right (90)\n\
+    forward (side)\n\
+    left (90)\n\
+  }\n\
+  else {\n\
+    left (90)\n\
+    B (side, gen-1)\n\
+    forward (side)\n\
+    right (90)\n\
+    A (side, gen-1)\n\
+    forward (side)\n\
+    A (side, gen-1)\n\
+    right (90)\n\
+    forward (side)\n\
+    B (side, gen-1)\n\
+    left (90)\n\
+  }\n\
+}\n\
+//  B → + A F − B F B − F A +\n\
+//Here, "F" means "draw forward", "−" means "turn left 90°", "+" means "turn right 90°" (see turtle graphics), and "A" and "B" are ignored during drawing.\n\
+\n\
+function B (side,gen) {\n\
+  if (gen === 0) {\n\
+    right (90)\n\
+    forward (side)\n\
+    left (90)\n\
+    forward (side)\n\
+    left (90)\n\
+    forward (side)\n\
+    right (90)\n\
+  }\n\
+  else {\n\
+    right (90)\n\
+    A (side, gen-1)\n\
+    forward (side)\n\
+    left (90)\n\
+    B (side, gen-1)\n\
+    forward (side)\n\
+    B (side, gen-1)\n\
+    left (90)\n\
+    forward (side)\n\
+    A (side, gen-1)\n\
+    right (90)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function delayedHilbert () {\n\
+  reset()\n\
+  wrap(false)\n\
+\n\
+  // targeting 80% of window\n\
+  size = .80 * Math.min( maxX(),maxY())*2\n\
+  var side = 10\n\
+\n\
+  /*overall side seems to be: gen 0: 1\n\
+    gen 1: 3 (2*gen 0 + 1)\n\
+    gen 2: 7 (2*gen 1 + 1)\n\
+    gen 3: 15(2*gen 2 +1)\n\
+   */  var overallSides = 1\n\
+  for (i=1; i<=gen; i++)\n\
+    overallSides = 2*overallSides + 1\n\
+  side = size/overallSides\n\
+  goto( overallSides/2*side,-overallSides/2*side)\n\
+  A (side, gen)\n\
+  caption( "Hilbert curve, generation " + gen)\n\
+\n\
+  if (gen < 5) {\n\
+    gen = gen + 1\n\
+  } else {\n\
+    gen = 0\n\
+  }\n\
+  delay( delayedHilbert, 3000)\n\
+}\n\
+\n\
+\n\
+function demo () {\n\
+  gen = 0\n\
+  delayedHilbert()\n\
 }\n\
 '
 intersectionSimulator ='\
