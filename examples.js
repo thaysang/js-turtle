@@ -597,6 +597,416 @@ function colorChangingDots () {\n\
 \n\
 demo = colorChangingDots;\n\
 '
+compassRose ='\
+// Compass Rose -- Draw a compass rose with same triangles\n\
+\n\
+// The triangle functions could provide shading and color\n\
+\n\
+function triangle (side){\n\
+  forward (side)\n\
+  a = 45\n\
+  b = (180-a)/2\n\
+  right (180 - b)\n\
+  //forward (.748* side)\n\
+  forward (side * 2 * Math.sin(a/2/360*6.28))\n\
+  right (180 - b)\n\
+  forward (side)\n\
+  right (180-a)\n\
+}\n\
+\n\
+function triangleL (side){\n\
+  forward (side)\n\
+  a = 45\n\
+  b = (180-a)/2\n\
+  left (180 - b)\n\
+  forward (side * 2 * Math.sin(a/2/360*6.28))\n\
+  left (180 - b)\n\
+  forward (side)\n\
+  left (180-a)\n\
+}\n\
+\n\
+function halfTri(side) {\n\
+  triangle (side)\n\
+  forward(side)\n\
+  triangle (side)\n\
+  right(45+(180-45)/2)\n\
+  forward(side * 2 * Math.sin( 45/2/360*6.28))\n\
+  left(180-(180-45)/2)\n\
+  triangle(side)\n\
+  left(180-45)\n\
+  forward( side)\n\
+  right(180-45)\n\
+}\n\
+\n\
+function flipIt (side) {\n\
+  //not quite symmetrical...\n\
+  penup()\n\
+  forward( side*3)\n\
+  right( 45)\n\
+  forward(side*3)\n\
+  right(180-45)\n\
+  pendown()\n\
+  thirdTri(side)\n\
+  penup()\n\
+  right (45)\n\
+  forward(side*3)\n\
+  left(45)\n\
+  forward(side*3)\n\
+  left(180)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function flipHalf (side) {\n\
+  //not quite symmetrical...\n\
+  penup()\n\
+  forward( side*3)\n\
+  right( 45)\n\
+  forward(side*3)\n\
+  right(180-45)\n\
+  pendown()\n\
+  halfTri(side)\n\
+  penup()\n\
+  right (45)\n\
+  forward(side*3)\n\
+  left(45)\n\
+  forward(side*3)\n\
+  left(180)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function flipPoint (side) {\n\
+  //not quite symmetrical...\n\
+  penup()\n\
+  forward( side*3)\n\
+  right( 45)\n\
+  forward(side*3)\n\
+  right(180-45)\n\
+  pendown()\n\
+  //triangle(side/2)\n\
+  halfTri(side/2)\n\
+  penup()\n\
+  right (45)\n\
+  forward(side*3)\n\
+  left(45)\n\
+  forward(side*3)\n\
+  left(180)\n\
+  pendown()\n\
+}\n\
+\n\
+function thirdTri(side) {\n\
+  triangle (side)//1\n\
+  penup()\n\
+  forward(side)\n\
+  pendown()\n\
+  triangle (side)//2\n\
+  penup()\n\
+  forward(side)\n\
+  pendown()\n\
+  triangle (side)//3\n\
+  penup()\n\
+  right(45+(180-45)/2)\n\
+  forward(side * 2 * Math.sin( 45/2/360*6.28))\n\
+  left(180-(180-45)/2)\n\
+  pendown()\n\
+  triangle(side)//4\n\
+  penup()\n\
+  backward(side)\n\
+  pendown()\n\
+  triangle(side)//5\n\
+  penup()\n\
+  right(45)\n\
+  forward( side)\n\
+  left(45)\n\
+  pendown()\n\
+  triangle(side)//6\n\
+  penup()\n\
+  left(180-45)\n\
+  forward( side * 2)\n\
+  right(180-45)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function boxTheCompass() {\n\
+  penup()\n\
+  angle( 0)\n\
+  boxedCompass=["N", "NxE", "NNE", "NExN", "NE", "NExE", "ENE", "ExN", "E", "ExS", "ESE", "SExE", "SE", "SExS", "SSE", "SxE", "S", "SxW", "SSW", "SWxS", "SW", "SWxW", "WSW", "WxS", "W", "WxN", "WNW", "NWxW", "NW", "NWxN", "NNW", "NxW"]\n\
+  textRadius = side*5.7\n\
+  for (i=0; i<32; i++) {\n\
+  \n\
+    forward (textRadius)\n\
+    right(90)\n\
+    textLen = boxedCompass[i].length*10/2\n\
+    backward (textLen)\n\
+    fontSize = i % 4\n\
+    if (fontSize == 1 || fontSize == 3) {\n\
+      setfont("normal 10pt Helvetica")\n\
+    } else if (fontSize == 2) {\n\
+      setfont("bold 10pt Helvetica")\n\
+    } else {\n\
+      setfont("bold 14pt Helvetica")\n\
+    }\n\
+    write(boxedCompass[i])\n\
+    forward (textLen)\n\
+    left(90)\n\
+    backward (textRadius)\n\
+    right(360/32)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function demo () {\n\
+  reset()\n\
+  wrap(false)\n\
+  hideTurtle() // do not want it to show, so do this early\n\
+  redrawOnMove(false) // do not redraw image each move\n\
+  side = 40\n\
+  left(22.5)\n\
+  for (i=0; i<8; i++) {\n\
+    thirdTri (side)\n\
+    flipIt (side)\n\
+    right(45)\n\
+  }\n\
+  for (i=0; i<8; i++) {\n\
+    halfTri (side/2)\n\
+    right(45)\n\
+  }\n\
+  right(22.5)\n\
+  for (i=0; i<8; i++) {\n\
+    flipHalf (side)\n\
+    right(45)\n\
+  }\n\
+  right(11.25)\n\
+  for (i=0; i<16; i++) {\n\
+    flipPoint (side)\n\
+    right(22.5)\n\
+  }\n\
+\n\
+  boxTheCompass()\n\
+  //redrawOnMove(true)\n\
+  draw() // just to render the final product\n\
+}\n\
+\n\
+demo()\n\
+'
+compassRoseQuilt ='\
+// Compass Rose Quilt -- Compass Rose with Polygons\n\
+\n\
+//### CONTROLING VARIABLES\n\
+//number of main divisions of the directional triangles\n\
+mainDivisions = 4\n\
+//number of divisions in the most triangles\n\
+subDivisions8 = 3\n\
+//number of main divisions in 16th points\n\
+mainDivisions16 = 2\n\
+//number of subdivisions in 16th points\n\
+subDivisions16 = 2\n\
+//number of main divisions in 32nds points\n\
+mainDivisions32 = 1\n\
+//number of subdivisions in 32nds points\n\
+subDivisions32 = 3\n\
+\n\
+//color of background\n\
+backgroundColor = "blue"\n\
+//color of compass background\n\
+compassBackgroundColor = "black"\n\
+//color of text\n\
+compassTextColor = "white"\n\
+//color of inner direction background\n\
+inner8BackgroundColor = "black"\n\
+//color of inward direction (array)\n\
+inner8Colors = ["gold", "salmon"]\n\
+\n\
+//color of outer direction background\n\
+outer8BackgroundColor = "black"\n\
+//color of outer direction (array)\n\
+outer8Colors = ["yellow", "red"]\n\
+\n\
+\n\
+//background color of 16ths\n\
+background16Color = "gold"\n\
+//foreground color of 16ths\n\
+foreground16Color = "salmon"\n\
+//background color of 32nds\n\
+background32Color = "black"\n\
+//foreground color of 32nds\n\
+foreground32Color = "yellow"\n\
+\n\
+\n\
+function indexColor(index, colors) {\n\
+  var len = colors.length\n\
+  return colors[ index % len]\n\
+}\n\
+\n\
+\n\
+function triangle (side){\n\
+  forward (side)\n\
+  a = 45\n\
+  b = (180-a)/2\n\
+  right (180 - b)\n\
+  //forward (.748* side)\n\
+  forward (side * 2 * Math.sin(a/2/360*6.28))\n\
+  right (180 - b)\n\
+  forward (side)\n\
+  right (180-a)\n\
+}\n\
+\n\
+\n\
+function splitTri(outerSide, num, foreColor, triSide) {\n\
+  var i, j\n\
+  \n\
+  if (triSide == undefined) {\n\
+    triSide = outerSide\n\
+  }\n\
+  innerSide = triSide / num\n\
+  for (j = num; j >0; j -= 1) {\n\
+     for (i = 0; i <j; i += 1) {\n\
+        beginShape()\n\
+        triangle (innerSide)\n\
+        fillShape(foreColor)\n\
+        penup()\n\
+        forward(innerSide)\n\
+        pendown()\n\
+     }\n\
+    penup()\n\
+    backward( j * innerSide)\n\
+    right(45)\n\
+    forward( innerSide)\n\
+    left(45)\n\
+    pendown()\n\
+  }\n\
+  penup()\n\
+  right(45)\n\
+  backward( innerSide * num)\n\
+  left(45)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function flipSplitTri( outerSide, num, foreColor, triSide) {\n\
+  penup()\n\
+  forward( outerSide)\n\
+  right( 45)\n\
+  forward( outerSide)\n\
+  right( 180-45)\n\
+  pendown()\n\
+  splitTri( outerSide, num, foreColor, triSide)\n\
+  penup()\n\
+  right( 45)\n\
+  forward( outerSide)\n\
+  left( 45)\n\
+  forward( outerSide)\n\
+  left( 180)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function labelPoints(col) {\n\
+  penup()\n\
+  angle( 0)\n\
+  boxedCompass=["N", "NxE", "NNE", "NExN", "NE", "NExE", "ENE", "ExN", "E", "ExS", "ESE", "SExE", "SE", "SExS", "SSE", "SxE", "S", "SxW", "SSW", "SWxS", "SW", "SWxW", "WSW", "WxS", "W", "WxN", "WNW", "NWxW", "NW", "NWxN", "NNW", "NxW"]\n\
+\n\
+  // fill in the compass background\n\
+\n\
+  //textRadius = side*5.7\n\
+  textRadius = side*1.9\n\
+  color( compassTextColor)\n\
+\n\
+  for (i=0; i<32; i++) {\n\
+  \n\
+    forward (textRadius)\n\
+    right(90)\n\
+    textLen = boxedCompass[i].length*10/2\n\
+    backward (textLen)\n\
+    fontSize = i % 4\n\
+    if (fontSize == 1 || fontSize == 3) {\n\
+      setfont("normal 10pt Helvetica")\n\
+    } else if (fontSize == 2) {\n\
+      setfont("bold 10pt Helvetica")\n\
+    } else {\n\
+      setfont("bold 14pt Helvetica")\n\
+    }\n\
+    write(boxedCompass[i])\n\
+    forward (textLen)\n\
+    left(90)\n\
+    backward (textRadius)\n\
+    right(360/32)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function demo () {\n\
+  side = 120\n\
+  reset()\n\
+  wrap(false)\n\
+  hideTurtle() // don"t want it to show,  do this early\n\
+  redrawOnMove(false) // don"t redraw image each move\n\
+\n\
+  // fill in the background\n\
+  goto( minX()+1, maxY()-1)\n\
+  right( 90)\n\
+  beginShape()\n\
+  forward( 2 * maxX()-2)\n\
+  right( 90)\n\
+  forward( 2 * maxY()-2)\n\
+  right( 90)\n\
+  forward( 2 * maxX()-2)\n\
+  right( 90)\n\
+  forward( 2 * maxY()-2)\n\
+  fillShape( backgroundColor)\n\
+\n\
+  //fill in the compass background\n\
+  goto(0,0)\n\
+  color( compassBackgroundColor)\n\
+  beginShape()\n\
+  circle (side * 2.1)\n\
+  fillShape( \n\
+     compassBackgroundColor)\n\
+\n\
+  //fill in the eight compass major points\n\
+  goto(0,0)\n\
+  angle(0)\n\
+  left(22.5)\n\
+  for (i=0; i<8; i++) {\n\
+    splitTri (side, mainDivisions, indexColor( i, inner8Colors))\n\
+    flipSplitTri( side, mainDivisions, indexColor( i, outer8Colors))\n\
+    right(45)\n\
+  }\n\
+\n\
+  //ornament the center\n\
+  for (i=0; i<8; i++) {\n\
+    splitTri (side/mainDivisions, subDivisions8, "yellow")\n\
+    right(45)\n\
+  }\n\
+\n\
+ //place the sixteenth points\n\
+  right(22.5)\n\
+  for (i=0; i<8; i++) {\n\
+    flipSplitTri (side, 1, background16Color,\n\
+        side * mainDivisions16/mainDivisions)\n\
+    flipSplitTri (side, subDivisions16, foreground16Color,\n\
+        side * mainDivisions16/mainDivisions)\n\
+    right(45)\n\
+  }\n\
+\n\
+   //place the thirty-second points\n\
+  right(11.25)\n\
+  for (i=0; i<16; i++) {\n\
+    flipSplitTri (side, 1, background32Color,\n\
+        side * mainDivisions32/mainDivisions)\n\
+    flipSplitTri (side, subDivisions32, foreground32Color,\n\
+        side * mainDivisions32/mainDivisions)\n\
+    right(22.5)\n\
+  }\n\
+\n\
+  labelPoints()\n\
+\n\
+  //redrawOnMove(true)\n\
+  draw() // just to render the final product\n\
+}\n\
+'
 conwayFractal ='\
 // Conway Fractal -- Conway\'s pinwheel tessellation as a fractal\n\
 // the British mathematician John Conway devised a tesselation using triagles\n\
@@ -1381,6 +1791,56 @@ function demo() {\n\
   delay (tier, delayTime);\n\
 }\n\
 '
+dodecahedronGraph ='\
+// Dodecahedron Graph -- 2-dimentional graph of a dodecahedron\n\
+\n\
+//   This would be easier to draw to points on concentric circles\n\
+//   This is just lines and not shadable polygons\n\
+\n\
+function pent(side) {\n\
+  var angle2=72-(360-108)/2\n\
+  // the sides below are really trigonometric conversions\n\
+  // without the trig functions\n\
+  var side2 = .4*side\n\
+  var angle3 = 80\n\
+  var side3 = 1.05 * side\n\
+  var angle4 = 40\n\
+  var side4 = .5 * side\n\
+  var angle5 = 129\n\
+  var side5 = 2.65 * side\n\
+  for (var i=0; i<5; i++) {\n\
+    forward (side)\n\
+      right(angle2)\n\
+      forward (side2)\n\
+        right(angle3)\n\
+        forward(side3)\n\
+          left(angle4)\n\
+          forward(side4)\n\
+            left(angle5)\n\
+            forward(side5)\n\
+            backward(side5)\n\
+            right(angle5)\n\
+          backward(side4)\n\
+          right(angle4)\n\
+        backward(side3)\n\
+        left(angle3)\n\
+        left(angle3)\n\
+        forward(side3)\n\
+        backward(side3)\n\
+        right(angle3)\n\
+      backward (side2)\n\
+      left(angle2)\n\
+    right(72)\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+  goto (-50,-22)\n\
+  right(17)\n\
+  pent(50)\n\
+  hideturtle()\n\
+}\n\
+'
 dragonCurve ='\
 //  Dragon Curve -- a fractal curve formed by folding a shape onto itself\n\
 //  more infomration at wikipedia  https://en.wikipedia.org/wiki/Dragon_curve\n\
@@ -1909,6 +2369,78 @@ function delayedHilbert () {\n\
 function demo () {\n\
   gen = 0\n\
   delayedHilbert()\n\
+}\n\
+'
+icosahedronGraph ='\
+// Icosahedron Graph -- two-dimensional graph of an icodahedron\n\
+\n\
+\n\
+\n\
+function pent(side) {\n\
+  // the below side variable are doing trigonometry without\n\
+  // the trig functions. Values found emperically.\n\
+  var angle2=180-(180-72)/2\n\
+  var side2 = 1.18*side\n\
+  var angle3 = 60\n\
+  var side3 = side2\n\
+  var angle4 = 156.5\n\
+  var side4 = 2.15 * side\n\
+  var angle5 = 30\n\
+  var side5 = 1.27 * side\n\
+  for (var i=0; i<5; i++) {3\n\
+    color("black")\n\
+    forward (side)\n\
+      left(angle2)\n\
+\n\
+      color("red")\n\
+      right(angle3)\n\
+      forward(side3)\n\
+      backward(side3)\n\
+      left(angle3)\n\
+\n\
+      color ("black")\n\
+      forward(side2)\n\
+\n\
+      color("blue")\n\
+      right(180-angle3)\n\
+      forward(side3)\n\
+\n\
+        left(angle4)\n\
+\n\
+        right(angle5)\n\
+        forward(side5)\n\
+        backward(side5)\n\
+        left(angle5)\n\
+\n\
+        forward(side4)\n\
+ \n\
+        right(180-angle5)\n\
+        forward(side5)\n\
+        backward(side5)\n\
+        left(180-angle5)\n\
+\n\
+\n\
+        backward(side4)\n\
+        right(angle4)\n\
+\n\
+      backward(side3)\n\
+      left(180-angle3)\n\
+\n\
+      color ("black")\n\
+      backward(side2)\n\
+      right(angle2)\n\
+\n\
+    backward(side)\n\
+    turn(72)\n\
+  }\n\
+  circle(2.13*side)\n\
+}\n\
+\n\
+function demo() {\n\
+  goto (-50,-22)\n\
+  right(17)\n\
+  pent(50)\n\
+  hideturtle()\n\
 }\n\
 '
 intersectionSimulator ='\
@@ -3515,6 +4047,35 @@ function demo() {\n\
    polygon(random(3,10),20);\n\
 }\n\
 '
+randomStars ='\
+// Random Stars -- draw stars randomly on the canvas\n\
+\n\
+function star (side, sColor) {\n\
+  penup()\n\
+  forward(.54*side)\n\
+  turn (180-18)\n\
+  pendown()\n\
+  var i=0\n\
+  beginShape()\n\
+  while (i<5){\n\
+    forward(side)\n\
+    right(180-36)\n\
+    i = i + 1\n\
+  }\n\
+  fillShape(sColor)\n\
+  turn (180+18)\n\
+}\n\
+\n\
+\n\
+function demo () {\n\
+  for (i=1; i< 150; i=i+1) {\n\
+    goto (random(minX(),maxX()), random( minY(),maxY()))\n\
+    left(random(359))\n\
+    star (random(2,15), random(15))\n\
+  }\n\
+  hideTurtle()\n\
+}\n\
+'
 random_stick_men ='\
 //Random Stick Men -- draw stick men randomly on the canvas\n\
 \n\
@@ -3748,6 +4309,97 @@ backward(30)\n\
 right(10)\n\
 forward(20)\n\
 '
+snubIcosidodecahedron ='\
+// Snub Icosidodecahedron Half Pattern -- half pattern for model of snub icosidodecahedron\n\
+\n\
+/*\n\
+Print two copies of this.\n\
+Score the lines to make it easier to fold.\n\
+Fold and glue the tabs together, so they\n\
+are inside the model. Mind the overlaps (10) and\n\
+the inner single tabs (5).\n\
+\n\
+Have fun.\n\
+*/\n\
+\n\
+function leftTriangle(side) {\n\
+  for (var i=0; i<3; i++) {\n\
+    forward (side)\n\
+    left(120)\n\
+  }\n\
+}\n\
+\n\
+function leftTab( side) {\n\
+  var x = turtle.pos.x\n\
+  var y = turtle.pos.y\n\
+  left( 180 - 45)\n\
+  forward( side * .2)\n\
+  left( 45)\n\
+  forward( side * .72)\n\
+  left( 45)\n\
+  forward( side * .2)\n\
+  left( 180 - 45)\n\
+  forward( side)\n\
+  goto( x, y)\n\
+}\n\
+\n\
+\n\
+function rightTriangle(side, tabs) {\n\
+  for (var i=0; i<3; i++) {\n\
+    forward (side)\n\
+    if (tabs.includes (""+i)) {\n\
+      leftTab(side)\n\
+    }\n\
+    right(120)\n\
+  }\n\
+}\n\
+\n\
+function leftPentagon(side) {\n\
+  for (var i=0; i<5; i++) {\n\
+    forward (side)\n\
+    left(72)\n\
+    if (i  == 0) {\n\
+      rightTriangle(side, "1")\n\
+    }\n\
+    if (i  == 1 || i == 2) {\n\
+      rightTriangle(side, "1,2")\n\
+    }\n\
+    if (i == 3) {\n\
+      rightTriangle(side, "1")\n\
+      right(60)\n\
+      //beginShape()\n\
+      rightTriangle(side, "1,2")\n\
+      //fillShape("red")\n\
+      left(60)\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+function rightPentagon(side) {\n\
+  for (var i=0; i<5; i++) {\n\
+    left(120)\n\
+    forward(side)\n\
+    right(120)\n\
+    leftPentagon(side) // outer pentagon\n\
+    left(120)\n\
+    backward (side)\n\
+    right(120)\n\
+    forward (side)\n\
+    left(120)\n\
+    rightTriangle(side, "")\n\
+    right(120)\n\
+    right(72)\n\
+    leftTriangle(side)\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  goto (-50,-22)\n\
+  rightPentagon(76) // inner pentagon\n\
+  hideturtle()\n\
+}\n\
+'
 spinning_squares ='\
 // Spinning Squares -- draw some square of increasing size and angle.\n\
 \n\
@@ -3876,6 +4528,31 @@ function stamps () {\n\
 \n\
   \n\
 demo = stamps\n\
+'
+star ='\
+// Star -- draw a simple star\n\
+\n\
+function star (side) {\n\
+  penup()\n\
+  forward(.54*side)\n\
+  turn (180-18)\n\
+  pendown()\n\
+  var i=0\n\
+  while (i<5){\n\
+    forward(side)\n\
+    right(180-36)\n\
+    i = i + 1\n\
+  }\n\
+  turn (180+18)\n\
+}\n\
+\n\
+\n\
+function demo () {\n\
+  //beginShape()\n\
+  star (100)\n\
+  //fillShape("white")\n\
+  hideTurtle()\n\
+}\n\
 '
 tree ='\
 // Tree Symmetrical -- draw a symmetrical tree\n\
