@@ -1,9 +1,11 @@
 /************************************************************************
 *  turtleConsole -- javascript for the turtle graphic language console
 *
-*  Copyright (c) 2015-2016 Kirk Carlson
+*  Copyright (c) 2015-2018 Kirk Carlson
 *  MIT license
 ************************************************************************/
+
+//console.log("Starting up")
 
 //**GLOBALS***
 var helpTextActive = true;
@@ -15,8 +17,281 @@ function cmd (text) {
 }
 
 
+if (window.addEventListener) {              
+    window.addEventListener("resize", fixDragButton);
+} else if (window.attachEvent) {                 
+    window.attachEvent("onresize", fixDragButton);
+}
+
+
+
+var draggingleft = false;
+var draggingright = false;
+
+function fixDragButton() {
+  //console.log("fixDragButton")
+
+  var w = window.innerWidth
+  || document.documentElement.clientWidth
+  || document.body.clientWidth; // variations for cross browser support
+  
+  var h = window.innerHeight
+  || document.documentElement.clientHeight
+  || document.body.clientHeight; // variations for cross browser support
+
+  if (w < 12000) {
+    var overallWidth = w;
+  } else {
+    var overallWidth = 1200;
+  }
+
+  // work area height
+  var overallHeight = h /* guessed margin */;
+  var workAreaHeight = h ; /* - 50 /*top displacement* / - 17 /* guessed margin? */;
+  if (workAreaHeight < 400) {
+    var canvasHeight = 300;
+  } else {
+    var canvasHeight = workAreaHeight - 140 /* APPROXIMATION space for controls */;
+  }
+  
+  var wrapWidth = overallWidth - 2; //leftcolWidth + midcolWidth + rightcolWidth;
+  
+
+  var referencewidth, refLeftPadding , dragleft, containertop, dropbarwidthleft, dropbarwidthright
+
+  var containertop = Number(getStyleValue(document.getElementById("container"), "top").replace("px", ""));
+
+  var wrapElement = document.getElementById("wrap");
+  wrapElement.style.width = wrapWidth + "px";
+  wrapElement.style.height = overallHeight + "px";
+
+  /* dragbar setup*/
+
+  /* left setup */
+  //referenceHeight = getStyleValue(document.getElementById("referencewrapper"), "height").replace("px", ""));
+  //var refTitleElement = document.getElementById("referenceTitle");
+  var refElement = document.getElementById("reference");
+  var leftcolElement = document.getElementById("leftcolumn")
+
+  referenceWidth = Number(getStyleValue(document.getElementById("referencewrapper"), "width").replace("px", ""));
+  var refTitleHeight = Number(getStyleValue(document.getElementById("referenceTitle"), "height").replace("px", ""));
+  var refLeftPadding = Number(getStyleValue(document.getElementById("reference"), "padding-left").replace("px", ""));
+
+  /* center setup */
+  midWidth = getStyleValue(document.getElementById("canvaswrapper"), "width").replace("px","");
+  midContainerHeight = getStyleValue(document.getElementById("midcolumncontainer"), "height").replace("px","");
+  midLeftPadding = getStyleValue(document.getElementById("canvaswrapper"), "padding-left").replace("px","");
+  midRightPadding = getStyleValue(document.getElementById("canvaswrapper"), "padding-right").replace("px","");
+  canvasTitleHeight = getStyleValue(document.getElementById("canvastitle"), "height").replace("px","");
+  commandWrapperHeight = getStyleValue(document.getElementById("commandwrapper"), "height").replace("px","");
+  var canvasHeight = midContainerHeight - canvasTitleHeight - commandWrapperHeight -20;
+  var canvasWidth = midWidth - midLeftPadding - midRightPadding;
+
+  /* right setup */
+  exampleWidth = Number(getStyleValue(document.getElementById("examplewrapper"), "width").replace("px", ""));
+  examplesHeight = Number(getStyleValue(document.getElementById("examples"), "height").replace("px", "")); // basically the select height
+  examplesMarginTop = Number(getStyleValue(document.getElementById("examples"), "margin-top").replace("px", "")); // around select height
+  examplesMarginBottom = Number(getStyleValue(document.getElementById("examples"), "margin-bottom").replace("px", "")); // around select height
+
+  var rightcolElement = document.getElementById("rightcolumn");
+  var definitionsElement = document.getElementById("definitions");
+  var definitionsRightPadding = Number(getStyleValue(document.getElementById("definitions"), "padding-right").replace("px", ""));
+
+  /* dragbar attribute setting */
+  document.getElementById("dragbarleft").style.width = "5px";    
+  document.getElementById("dragbarright").style.width = "5px";    
+
+  dropbarwidthleft = Number(getStyleValue(document.getElementById("dragbarleft"), "width").replace("px", ""));
+  dropbarwidthright = Number(getStyleValue(document.getElementById("dragbarright"), "width").replace("px", ""));
+
+  dragleft = referenceWidth + refLeftPadding + (refLeftPadding / 2) - (dropbarwidthleft / 2);
+  dragright = exampleWidth + definitionsRightPadding + (definitionsRightPadding / 2) + (dropbarwidthright / 2);
+
+  document.getElementById("dragbarleft").style.top = containertop + "px";
+  document.getElementById("dragbarleft").style.left = dragleft + "px";
+  document.getElementById("dragbarleft").style.height = workAreaHeight + "px";/*referenceheight;*/
+  document.getElementById("dragbarleft").style.cursor = "col-resize";
+
+  document.getElementById("dragbarright").style.top = containertop + "px";
+  document.getElementById("dragbarright").style.right = dragright + "px";
+  document.getElementById("dragbarright").style.height = workAreaHeight + "px";/*referenceheight;*/
+  document.getElementById("dragbarright").style.cursor = "col-resize";
+
+
+
+  /* unknown */
+
+  /* left attribute setting */
+
+  refElement.style.height = workAreaHeight - refTitleHeight -10 + "px";
+  //leftcolElement.style.width = leftcolWidth + "px";
+  leftcolElement.style.height = workAreaHeight + "px";
+  //console.log ("overallheight",overallHeight, "workAreaHeight", workAreaHeight)
+
+  /* center attribute setting */
+  imagecanvas.width = canvasWidth;
+  imagecanvas.height = canvasHeight;
+  turtlecanvas.width = canvasWidth;
+  turtlecanvas.height = canvasHeight;
+  document.getElementById("canvaswrapper").style.height = canvasHeight +8+ "px";
+  //console.log("midWidth:", midWidth, midLeftPadding, midRightPadding);
+
+  var midcolElement = document.getElementById("midcolumn")
+  //midcolElement.style.width = (midcolWidth) + "px";
+  //midcolElement.style.left = (leftcolWidth + 5) + "px";
+  midcolElement.style.height = workAreaHeight + "px";
+
+
+  /* right attribute setting */
+
+  //rightcolElement.style.left = (leftcolWidth +5 + midcolWidth +5 ) + "px";
+  //rightcolElement.style.width = (rightcolWidth - 20 ) + "px";
+  rightcolElement.style.height = workAreaHeight + "px";
+  definitionsElement.style.height = (workAreaHeight - examplesHeight - examplesMarginTop - examplesMarginBottom - 10) + "px";
+  //console.log("right examples height", examplesHeight + examplesMarginTop + examplesMarginBottom -10);
+
+
+  /* junk, holding for now */
+/*
+  document.getElementById("imagecanvas").style.width = midWidth;
+  document.getElementById("turtlecanvas").style.width = midWidth;
+// refresh canvases
+  imageContext.lineWidth = turtle.width;
+  imageContext.strokeStyle = turtle.color;
+  imageContext.strokeRect(0,0,canvasWidth,canvasHeight);
+
+  turtleContext.lineWidth = "1px";
+  turtleContext.strokeStyle = "lightgray";
+  turtleContext.strokeRect(0,0,canvasWidth,canvasHeight);
+*/
+
+  //var leftcolElement = document.getElementById("leftcolumn")
+  //var rightcolElement = document.getElementById("rightcolumn")
+  //var midcolElement = document.getElementById("midcolumn")
+
+/*
+  // left column resized for language reference or for drawer handle
+  if (refElement.className == "closed") {
+    var leftcolWidth = 10;
+  } else {
+    var leftcolWidth = 300;
+  }
+   
+  // right column resized for examples if active
+  if (document.getElementById("examplesLabel").className != "closed") {
+    var rightcolWidth = Math.min(300, .32* overallWidth);
+  } else {
+    var rightcolWidth = 10;
+  }
+  // mid column resized for space available
+  var midcolWidth = overallWidth - leftcolWidth - rightcolWidth;
+  if (midcolWidth < 300) {
+    midcolWidth = 300;
+  }
+  var canvasWidth = midcolWidth - 5; // removes space for margins
+*/
+
+ 
+  //reference.style.height = (workAreaHeight -37) + "px";
+
+
+// refresh canvases
+/*
+  imageContext.lineWidth = turtle.width;
+  imageContext.strokeStyle = turtle.color;
+  imageContext.strokeRect(0,0,canvasWidth,canvasHeight);
+
+  turtleContext.lineWidth = "1px";
+  turtleContext.strokeStyle = "lightgray";
+  turtleContext.strokeRect(0,0,canvasWidth,canvasHeight);
+*/
+ 
+}
+
+function dragstartleft(e) {
+  e.preventDefault();
+  draggingleft = true;
+}
+
+function dragstartright(e) {
+  e.preventDefault();
+  draggingright = true;
+}
+
+function dragmove(e) {
+  if (draggingleft) 
+  {
+    var rect = document.getElementById("dragbarright").getBoundingClientRect();
+    //console.log("dragBarRight:", rect.top, rect.right, rect.bottom, rect.left);
+    //console.log("window width:", window.innerWidth);
+    var rightPercentage = 100 - (rect.left / window.innerWidth) * 100;
+
+    leftPercentage = (e.pageX / window.innerWidth) * 100;
+    if (leftPercentage > 1 && leftPercentage < 98) {
+      var centerPercentage = 100-leftPercentage-rightPercentage;
+      //console.log("left:", leftPercentage, centerPercentage, rightPercentage);
+      document.getElementById("leftcolumncontainer").style.width = leftPercentage + "%";
+      document.getElementById("midcolumncontainer").style.width = centerPercentage + "%";
+      fixDragButton();
+    }
+  }
+
+  if (draggingright) 
+  {
+    var rect = document.getElementById("dragbarleft").getBoundingClientRect();
+    //console.log("dragBarLeft:", rect.top, rect.right, rect.bottom, rect.left);
+    //console.log("width:", window.innerWidth);
+    var leftPercentage = (rect.right / window.innerWidth) * 100;
+    //console.log("leftPercentage:", leftPercentage);
+
+    var rightPercentage = 100 - (e.pageX / window.innerWidth) * 100;
+    //console.log("rightPercentage:", rightPercentage);
+
+    if (rightPercentage > 1 && rightPercentage < 98 - leftPercentage) {
+      var centerPercentage = 100-rightPercentage-leftPercentage;
+      //console.log("right:", leftPercentage, centerPercentage, rightPercentage);
+      document.getElementById("rightcolumncontainer").style.width = rightPercentage + "%";
+      document.getElementById("midcolumncontainer").style.width = centerPercentage + "%";
+      fixDragButton();
+    }
+  }
+}
+
+
+function dragend() {
+  draggingleft = false;
+  draggingright = false;
+  if (window.editor) {
+    window.editor.refresh();
+  }
+}
+
+
+if (window.addEventListener) {              
+  document.getElementById("dragbarleft").addEventListener("mousedown", function(e) {dragstartleft(e);});
+  document.getElementById("dragbarleft").addEventListener("touchstart", function(e) {dragstartleft(e);});
+  document.getElementById("dragbarright").addEventListener("mousedown", function(e) {dragstartright(e);});
+  document.getElementById("dragbarright").addEventListener("touchstart", function(e) {dragstartright(e);});
+  window.addEventListener("mousemove", function(e) {dragmove(e);});
+  window.addEventListener("touchmove", function(e) {dragmove(e);});
+  window.addEventListener("mouseup", dragend);
+  window.addEventListener("touchend", dragend);
+  window.addEventListener("load", fixDragButton);
+}
+
+
+function getStyleValue(elmnt,style) {
+    if (window.getComputedStyle) {
+        return window.getComputedStyle(elmnt,null).getPropertyValue(style);
+    } else {
+        return elmnt.currentStyle[style];
+    }
+}
+
+
 //EVENT PROCESSING FUNCTIONS
 function stopClicked() {
+  //console.log("stop clicked")
   if (intervals.length > 0) {
     clearInterval(intervals.pop());
   }
@@ -55,7 +330,19 @@ function runClicked() {
 }
 
 function clearClicked() {
+  //console.log("clear clicked")
   document.getElementById("definitions").value = "";
+}
+
+function infoClicked() {
+  helpTextActive = !helpTextActive;
+  if (helpTextActive) {
+    document.getElementById("infoButton").style.color = "blue";
+    document.getElementById("infoButton").style.borderColor = "blue";
+  } else {
+    document.getElementById("infoButton").style.color = "gray";
+    document.getElementById("infoButton").style.borderColor = "gray";
+  }
 }
 
 // Set up all reference code elements to be linked and have onclick functionality
@@ -69,12 +356,13 @@ for (var i=0; i< codeElements.length; i++) {
 }
 
 // Set up all color button elements to be linked and have onclick functionality
-var codeElements = document.querySelectorAll ("button");
+var codeElements = document.querySelectorAll ("#reference button");
 for (var i=0; i< codeElements.length; i++) {
-  codeElements[i].onclick = function () {
-    eval ("color(\"" + this.id +"\")");
-    cmd ("color(\"" + this.id +"\");");
-  }
+    //console.log(codeElements[i].id)
+    codeElements[i].onclick = function () {
+      eval ("color(\"" + this.id +"\")");
+      cmd ("color(\"" + this.id +"\");");
+    }
 }
 
 
@@ -120,134 +408,21 @@ function commandChanged () {
 
 // set up the control buttons
 document.getElementById("resetButton").onclick=reset;
-document.getElementById("runButton").onclick=runClicked;
+document.getElementById("runButton").onclick=runClicked
 document.getElementById("clearButton").onclick=clearClicked;
-
-var STOP = document.getElementById("stopButton")
-STOP.onclick=stopClicked;
-STOP.hidden=true;
-
-
-/* functions or whatever to do reactive design stuff
-1. Expand to fill given area
- - is there some minimum width? maybe of the canvas itself.
-2. Allow language reference to be opened and closed
-3. Allow examples to be hidden (mainly for display or printing purposes)
+document.getElementById("infoButton").onclick=infoClicked;
+document.getElementById("body").onresize=fixDragButton;
+document.getElementById("stopButton").onclick=stopClicked;
+document.getElementById("stopButton").hidden=true;
 
 
-  var width = window.innerWidth - 20;
-  var height = window.innerHeight - 20;
-  if (width > height)
-  {
-    width = height;
-  }
-  else
-  {
-    height = width;
-  }
-i
-
-*/
-
-function resizeColumns () {
-
-  var w = window.innerWidth
-  || document.documentElement.clientWidth
-  || document.body.clientWidth; // variations for cross browser support
-  
-  var h = window.innerHeight
-  || document.documentElement.clientHeight
-  || document.body.clientHeight; // variations for cross browser support
-
-  if (w < 1200) {
-    var overallWidth = w;
-  } else {
-    var overallWidth = 1200;
-  }
-  if (w < 450) {
-    document.getElementById("title").innerHTML = "Turtle Graphics"
-  } else {
-    document.getElementById("title").innerHTML = "Javascript Turtle Graphics"
-  }
-  var refElement = document.getElementById("reference");
-  var leftcolElement = document.getElementById("leftcolumn")
-  var rightcolElement = document.getElementById("rightcolumn")
-
-  // left column resized for language reference or for drawer handle
-  if (refElement.className == "closed") {
-    var leftcolWidth = 10;
-  } else {
-    var leftcolWidth = 300;
-  }
-   
-  // right column resized for examples if active
-  if (document.getElementById("examplesLabel").className != "closed") {
-    var rightcolWidth = Math.min(300, .32* overallWidth);
-  } else {
-    var rightcolWidth = 10;
-  }
-  // mid column resized for space available
-  var midcolWidth = overallWidth - leftcolWidth - rightcolWidth;
-  if (midcolWidth < 300) {
-    midcolWidth = 300;
-  }
-  var canvasWidth = midcolWidth - 5; // removes space for margins
-
-  // work area height
-  var overallHeight = h - 3 /* guessed margin */;
-  var workAreaHeight = h - 50 /*top displacement*/ - 17 /* guessed margin? */;
-  if (workAreaHeight < 400) {
-    var canvasHeight = 300;
-  } else {
-    var canvasHeight = workAreaHeight - 140 /* space for controls */;
-  }
-  
-  var wrapWidth = overallWidth - 2; //leftcolWidth + midcolWidth + rightcolWidth;
-  
- 
-  var turtleCanvasElement = document.getElementById("turtlecanvas")
-  var imageCanvasElement = document.getElementById("imagecanvas")
-
-  var wrapElement = document.getElementById("wrap");
-  wrapElement.style.width = wrapWidth + "px";
-  wrapElement.style.height = overallHeight + "px";
-  reference.style.height = (workAreaHeight -37) + "px";
-
-  leftcolElement.style.width = leftcolWidth + "px";
-  leftcolElement.style.height = workAreaHeight + "px";
-
-  var midcolElement = document.getElementById("midcolumn")
-  midcolElement.style.width = (midcolWidth) + "px";
-  midcolElement.style.left = (leftcolWidth + 5) + "px";
-  midcolElement.style.height = workAreaHeight + "px";
-
-  turtleCanvasElement.width = canvasWidth;
-  turtleCanvasElement.height = canvasHeight;
-  imageCanvasElement.width = canvasWidth;
-  imageCanvasElement.height = canvasHeight;
-
-  var rightcolElement = document.getElementById("rightcolumn");
-  var definitionsElement = document.getElementById("definitions");
-  rightcolElement.style.left = (leftcolWidth +5 + midcolWidth +5 ) + "px";
-  rightcolElement.style.width = (rightcolWidth - 20 ) + "px";
-  rightcolElement.style.height = workAreaHeight + "px";
-  definitionsElement.style.height = (workAreaHeight -37) + "px";
-
-// refresh canvases
-  imageContext.lineWidth = turtle.width;
-  imageContext.strokeStyle = turtle.color;
-  imageContext.strokeRect(0,0,canvasWidth,canvasHeight);
-
-  turtleContext.lineWidth = "1px";
-  turtleContext.strokeStyle = "lightgray";
-  turtleContext.strokeRect(0,0,canvasWidth,canvasHeight);
-}
 
 
 //window.addEventListener("resize", resizeColumns());
-resizeColumns();
+//resizeColumns();
 
 
+/*
 function openReferenceDrawer() {
   document.getElementById("reference").className = "open";
   document.getElementById("referenceTitle").className = "open";
@@ -267,7 +442,7 @@ function closeReferenceDrawer() {
 
 function openDefinitionsDrawer() {
   document.getElementById("definitions").className = "open";
-  document.getElementById("examples").className = "open";
+  //kirk document.getElementById("examples").className = "open";
   document.getElementById("examplesLabel").className = "open";
   document.getElementById("viewDefinitionsItem").className = "checked";
 //  document.getElementById("hamburger").className = "open";
@@ -295,6 +470,7 @@ function closeTutorial() {
 }
 
 closeTutorial();
+*/
 
 /*
 referenceDrawerHandle = document.getElementById("lefthandle")
@@ -308,9 +484,11 @@ referenceDrawerHandle.onclick = function () {
 */
 
 
+/*
 document.getElementById("referenceClose").onclick = function () {
   closeReferenceDrawer();
 }
+*/
 
 document.getElementById("viewReference").onclick = function () {
   if (document.getElementById("reference").className == "closed") {
@@ -348,8 +526,13 @@ document.getElementById("definitionsClose").onclick = function () {
 */
   
 mouseOverElementIds = ["reference","turtlecanvas", "examples", "definitions",
-                       "command", "resetButton", "runButton", "stopButton", "clearButton",
-                       "hamburger"];
+                       "command", "infoButton",
+                       "resetButton", "runButton", "stopButton", "clearButton",
+                       "dragbarright","dragbarleft"
+                       ];
+/*
+"hamburger"
+*/
 var helpTextTimer; // global for delaying all help text
 var helpDelay = 1000; // global delay in milliseconds for all help text
 var bottomY = (window.innerHeight // global for lowest Y on page for tool tip
@@ -380,7 +563,9 @@ for (var i=0; i < mouseOverElementIds.length; i++) {
 }
 
 function onHelpEnter (helpTextElement) {
-  if (helpTextActive && helpTextTimer === undefined) {
+  if ((helpTextActive ||
+       (helpTextElement == document.getElementById("infoButton_help_text"))) && 
+       helpTextTimer === undefined) {
     helpTextTimer = setTimeout(onHelpTimeout,helpDelay, helpTextElement);
   }
 }
@@ -427,6 +612,7 @@ for (var i=0; i < tutorialMenuIds.length; i++) {
   }
 }
   
+/*
 document.getElementById("hamburger").onclick = function () {
   if ( document.getElementById("menu").className === "closed") {
     openMenu();
@@ -434,8 +620,11 @@ document.getElementById("hamburger").onclick = function () {
     closeMenu();
   }
 }
+*/
   
 document.getElementById("tutorialClose").onclick = function () {
   closeTutorial();
   document.getElementById("menu").className="closed";
 }
+
+//console.log ("Ending Startup")

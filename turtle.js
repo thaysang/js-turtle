@@ -215,6 +215,7 @@ function clearContext(context) {
  * returns: None
  ******************************************************************************/
 function reset() {
+   //console.log(document.getElementById("stopButton").onClick)
    initialize();
    clear();
    draw();

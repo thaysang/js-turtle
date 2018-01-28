@@ -5,9 +5,6 @@ html {
   background-color:#FFF8FF;
 }
 
-body{
-}
-
 h1 {
   position:absolute;
   top:0;
@@ -15,7 +12,7 @@ h1 {
   text-align:center;
   margin-bottom:8px;
   margin-top:12px;
-  //border-bottom: blue 4px solid;
+  /*border-bottom: blue 4px solid;*/
 }
 
 #hamburger {
@@ -55,19 +52,20 @@ h4, label {
   position:relative;
   top:0;
   margin:0 auto 0 auto;
+  height:100%;
 }
 
-#leftcolumn {
+#old-leftcolumn {
   position:absolute;
   top:58px;
   left:0;
   width:32%;
-  //border: green 1px dotted;
+  /*border: green 1px dotted;*/
   margin:2px 2px 2px 2px;
-  //width:300px;
+  /*width:300px;*/
 }
 
-#midcolumn {
+#old-midcolumn {
   position:absolute;
   top:58px;
   left:33%;
@@ -76,25 +74,116 @@ h4, label {
   border:none;
 }
 
-#rightcolumn {
+#old-rightcolumn {
   position:absolute;
   top:50px;
   left:66%;
-  //float:right;
+  /*float:right; */
   width:32%;
-  //border: green 1px dotted;
+  /*border: green 1px dotted; */
   margin:2px 2px 2px 2px;
 }
+/*
+new stuff
+ container overall
 
+ leftcolumncontainer
+ leftcolumn
+ referencewrapper
+
+ midcolumncontainer
+ midcolumn
+ canvaswrapper
+
+ rightcolumncontainer
+ rightcolumn examplewrapper
+*/
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#dragbarleft{
+  position:absolute;
+  cursor: col-resize;
+  z-index:3;
+  padding:3px;
+}
+#dragbarright{
+  position:absolute;
+  cursor: col-resize;
+  z-index:3;
+  padding:3px;
+}
+#container {
+  background-color:#f1f1f1;
+  width:100%;
+  overflow:auto;
+  position:absolute;
+  top:0;
+  bottom:0;
+  height:100%;
+  /* height:200px; not right, place holder for now */
+}
+
+#leftcolumncontainer, #midcolumncontainer, #rightcolumncontainer {
+  float:left;
+  height:100%;
+  width:33%;
+  z-index:1;
+}
+#rightcolumn, #midcolumn, #leftcolumn {
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
+#reference, #canvas, #code, #dumbcanvas {
+  height:100%;
+  width:100%;
+  padding-bottom:10px;
+  padding-top:1px;
+  z-index:1;
+}
 #reference {
-  //float:left;
+  margin-right:6px;
+}
+#referencewrapper, #canvaswrapper, #examplewrapper  {
+  width:100%;
+  height:100%;
+  padding:4px;
+  z-index:1;
+}
+
+#referencewrapper {
+  padding-right:5px;
+  background-color: #ffffff;
+  position:relative;
+  box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+#canvaswrapper {
+  padding-left:4px;
+  padding-right:7px;
+  -webkit-overflow-scrolling: touch;
+  background-color: #ffffff;
+  box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+#examplewrapper {
+  padding-left:5px;
+  -webkit-overflow-scrolling: touch;
+  background-color: #ffffff;
+  box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+/* end of new stuff */
+#reference {
+  /*float:left; */
   position:relative;
   top:0;
   left:0;
-  width:97%;
+  width:100%;
   margin:2px 2px 2px 2px;
-  //height:600px;
-  //height:95%;
+  /*height:600px; */
+  /*height:95%; */
   border: lightgray 1px solid;
   overflow:auto;
 }
@@ -106,7 +195,7 @@ h4, label {
 }
 
 #reference.closed {
-  display:hidden;
+  display:none;
   border: none;
   width:0;
 }
@@ -135,6 +224,11 @@ h4, label {
   width:25px;
   height:25px;
   padding:0;
+}
+
+#examples {
+  width:200px;
+  margin-left:5px;
 }
 
 #examples.closed {
@@ -168,31 +262,31 @@ h4, label {
 #turtlecanvas {
   background:#fff;
   border: none;
-  width:auto;
-  height:auto;
   border: 2px solid lightgray;
 }
 
 #imagecanvas {
   display:none;
-  width:auto;
-  height:auto;
   border: 2px solid lightgray;
 }
 
 #command, 
-#definitions { //input and text area
+#definitions { /*input and text area */
   background-color:whitesmoke;
   font-family: Courier New,Courier,monospace;
-  //height:400px;
+  /*height:400px;*/
   height:90%;
   border:1px solid lightgray;
   resize:none;
 }
 
+#commandwrapper {
+  margin-top:6px;
+}
 #command {
   height:20px;
-  width:90%;
+  width:97%;
+  margin:5px;
   border: 1px solid lightgray;
 }
 
@@ -201,15 +295,19 @@ h4, label {
 }
   
 #definitions {
-  width:90%;
+  width:100%;
   border: 1px solid lightgray;
+  overflow:auto;
+  position:relative;
+  top:0;
+  left:0;
 }
 
 #definitions:focus {
   border: 2px solid lightgray;
 }
   
-#midcolumn button {
+#resetButton, #runButton, #clearButton, #stopButton {
   margin:8px;
   padding:3px;
   font-weight:bold;
@@ -217,6 +315,18 @@ h4, label {
   border-radius:5px;
   border:black solid 2px;
   background-color:whitesmoke;
+}
+
+#infoButton{
+  margin:8px;
+  padding-left:6px;
+  padding-right:6px;
+  font-weight:bold;
+  font-size:80%;
+  background-color:whitesmoke;
+  color:blue;
+  border-radius:20px;
+  border:blue solid 2px;
 }
 
 #clearButton{
@@ -244,7 +354,7 @@ h4, label {
   margin:0;
   padding:5px;
   background-color:whitesmoke;
-  //border:solid darkgray 1px;
+  /*border:solid darkgray 1px;*/
 }
 
 #reference p {
@@ -259,13 +369,12 @@ h4, label {
   font-size:80%;
 }
 
-#reference button { // mostly the color buttons
-  display: block;
+#reference button { /* mostly the color buttons */
+  //display: block;
   width: 7em;
   border:black solid 2px;
   padding: 2px;
   color:black;
-  padding: 2px;
   margin:2px;
 }
 
@@ -360,11 +469,11 @@ code.linked {
   
   position: absolute;
   position: fixed;
-  //left: 100%;
+  /*left: 100%; */
   width: 210px;
   margin-left: 5px;
   display: none;
-  //display: block;
+  /*display: block; */
   z-index:50;
 }
 
@@ -376,7 +485,7 @@ code.linked {
 .help_text:before,
 .help_text:after {
   content: "";
-  //position: absolute;
+  /*position: absolute;*/
   position: fixed;
   width: 0;
   height: 0;
@@ -405,13 +514,13 @@ code.linked {
   padding: 10px;
   font: normal 70% sans-serif;
   
-  //position: absolute;
+  /*position: absolute;*/
   position: fixed;
-  //left: -100%;
+  /*left: -100%;*/
   width: 210px;
   margin-right: 5px;
   display: none;
-  //display: block;
+  /*display: block;*/
   z-index:50;
 }
 
@@ -463,9 +572,9 @@ code.linked {
 
 #menu li {
   list-style:none;
-  //margin:0;
+  /*margin:0;*/
   font-family:Arial,helvetica,sans-serif;
-  font-weight_bold;
+  font-weight:bold;
 }
 
 #menu li.checked {
@@ -489,8 +598,8 @@ code.linked {
 */
 
 #menu li a {
-  width:17em-12px;
-  //width:100%;
+  width:15em; /* want 17em-12px */
+  /*width:100%;*/
   color: black;
   text-decoration:none;
   padding:3px 3px 3px 0;
@@ -536,7 +645,7 @@ code.linked {
   border:none;
   background-color:white;
   position:fixed;
-  right:10%; // relative to window, not div
+  right:10%; /* relative to window, not div */
   top:10%;
 }
 /*

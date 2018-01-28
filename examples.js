@@ -4244,6 +4244,95 @@ function demo () {\n\
   delayed ();\n\
 }\n\
 '
+simpleStory ='\
+// Simple Story -- Simple framework for story frames\n\
+\n\
+\n\
+//**** GLOBALS ****\n\
+\n\
+var frameNumber = 0\n\
+var frameDelay = 0\n\
+\n\
+\n\
+//**** FUNCTIONS ****\n\
+\n\
+function explain( text) {\n\
+  reset();\n\
+  var width = 2* maxX();\n\
+  var height = 2* maxY();\n\
+  var lineNumber = 0;\n\
+  goto(-.90 * width + maxX(), .9 * height - maxY());\n\
+  angle(90);\n\
+  setfont("bold 20px arial,sans-serif");\n\
+\n\
+  var lines = text.split("\n");\n\
+  for (var i=0; i<lines.length; i++) {\n\
+    console.log( lines[i])\n\
+    goto (-.90 * width + maxX(), maxY() -(i+1) * .1 * height)\n\
+    write (lines[i]);\n\
+    lineNumber = lineNumber + 1;\n\
+  }\n\
+  hideTurtle();\n\
+}\n\
+\n\
+function textDemo () {\n\
+  explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a battle\nthat changed the history\nof the entire\nuniverse.");\n\
+}\n\
+\n\
+function frame() {\n\
+  switch (frameNumber) {\n\
+  case 0:\n\
+    frameDelay = 1000;\n\
+    explain ("\n\n\n\nProduced by Turtle Graphics")\n\
+    break;\n\
+  case 1:\n\
+    explain ("\n\n\n\nDistributed by JavaScript and HTML")\n\
+    frameDelay = 1500;\n\
+    break;\n\
+  case 2:\n\
+    explain ("")\n\
+    frameNumber = 9;\n\
+    frameDelay = 1000;\n\
+    break;\n\
+  case 10:\n\
+    explain ("In a time");\n\
+    break;\n\
+  case 11:\n\
+    explain ("In a time\nlong, long ago");\n\
+    break;\n\
+  case 12:\n\
+    explain ("In a time\nlong, long ago\nand a place far, far away");\n\
+    break;\n\
+  case 13:\n\
+    explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a software program");\n\
+    break;\n\
+  case 14:\n\
+    explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a software program\nthat changed the history");\n\
+    break;\n\
+  case 15:\n\
+    explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a software program\nthat changed the history\nof the entire");\n\
+    break;\n\
+  case 16:\n\
+    explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a software program\nthat changed the history\nof the entire\nuniverse.");\n\
+    break;\n\
+  default:\n\
+    explain("\n\n\n\n\nThe end.")\n\
+    frameNumber = -1;\n\
+    break;\n\
+  }\n\
+  if (frameNumber >= 0) {\n\
+    frameNumber = frameNumber + 1;\n\
+    delay(frame, frameDelay)\n\
+  }\n\
+}\n\
+  \n\
+function demo() {\n\
+  // show three text frames\n\
+  frameDelay = 1000;\n\
+  frameNumber = 0;\n\
+  frame();\n\
+}\n\
+'
 snowman ='\
 // Snowman -- draw a simple snowman\n\
 \n\
@@ -4528,31 +4617,6 @@ function stamps () {\n\
 \n\
   \n\
 demo = stamps\n\
-'
-star ='\
-// Star -- draw a simple star\n\
-\n\
-function star (side) {\n\
-  penup()\n\
-  forward(.54*side)\n\
-  turn (180-18)\n\
-  pendown()\n\
-  var i=0\n\
-  while (i<5){\n\
-    forward(side)\n\
-    right(180-36)\n\
-    i = i + 1\n\
-  }\n\
-  turn (180+18)\n\
-}\n\
-\n\
-\n\
-function demo () {\n\
-  //beginShape()\n\
-  star (100)\n\
-  //fillShape("white")\n\
-  hideTurtle()\n\
-}\n\
 '
 tree ='\
 // Tree Symmetrical -- draw a symmetrical tree\n\

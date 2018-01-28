@@ -5,8 +5,22 @@
    <meta charset="utf-8">
    <link type="text/css" rel="stylesheet" href="turtle.css" />
 </head>
-<body onresize="resizeColumns();">
+<!--body onresize="resizeColumns();"> -->
+<body id="body">
+  <a href="javascript:void(0)" id="dragbarleft"></a>
+    <span class='help_text' id='dragbarleft_help_text'>
+      <p>
+      Click and drag on the drag bar to resize columns.
+      </p>
+    </span>
+  <a href="javascript:void(0)" id="dragbarright"></a>
+    <span class='help_text' id='dragbarright_help_text'>
+      <p>
+      Click and drag on the drag bar to resize columns.
+      </p>
+    </span>
   <div id="wrap">
+<!--
     <div id="hamburger-div">
       <button id="hamburger">
         <svg class="fi" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
@@ -19,17 +33,27 @@
         tutorials.
         </p>
     </span>
-    </div>  <!-- end of hamburger-div -->
-    <h1 id=title>Javascript Turtle Graphics</h1>
+    </div>  < !-- end of hamburger-div -- >
+-->
+    <div id="container">
+    <div id="leftcolumncontainer">
     <div id="leftcolumn">
+    <div id="referencewrapper">
       <h4 id="referenceTitle">
         Language Reference
+<!--
         <button id="referenceClose">
           <svg class="fi" viewBox="0 0 64 64">
             <line x1="2" y1="2" x2="62" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
             <line x1="62" y1="2" x2="2" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
           </svg>
         </button>
+-->
+<!--
+add a menu .. sort of a table of contents to jump to contents
+       <a href="#color">jump to color</a>
+also roll in the tutorial stuff
+-->
       </h4>
       <div id="reference">
        <ul>
@@ -193,6 +217,9 @@
            </p>
          </li>
          <li>
+<!--
+<a name="color"></a>
+-->
            color(<em>colorcode</em>)
            <p>
              Change the color of the turtle pen. The <em>colorcode</em> may be a number
@@ -350,6 +377,29 @@
            </p>
          </li>
          <li>
+           beginShape()
+           <p>
+              Marks the begining of a shape to be filled. The shape consists of a
+              set of line segments (forward, backward, right, left, curveright, curveleft).
+              The set should be continuous and begin and end at the same point.
+           </p>
+           <p>
+             Example: <code>beginShape()</code>
+           </p>
+         </li>
+         <li>
+           fillShape([styl])
+           <p>
+              Fills the shape begun with the last beginShape() directive.
+              The shape is filled with <em>styl</em>, which may be a logo color number,
+              a normal HTML color definition (see color above), a gradient or
+              a pattern. This defaults to the turtle color.
+           </p>
+           <p>
+             Example: <code>fillShape("blue")</code>
+           </p>
+         </li>
+         <li>
            n = random([<em>low,</em>]<em>high</em>)
            <p>
              Pick a random number between <em>low</em> and <em>high</em> -1.
@@ -480,8 +530,10 @@
            </p>
          </li>
        </ul>
-        </div> <!-- reference -->
+      </div> <!-- reference -->
+      </div> <!-- referencewrapper -->
       </div> <!-- leftcolumn -->
+      </div> <!-- leftcolumncontainer -->
          <span class='help_text' id='reference_help_text'>
            <p>
            The language reference lists the available functions for turtle graphics.
@@ -500,10 +552,21 @@
             to immediately execute it to see what it does.
            </p>
          </span>
+      <div id="midcolumncontainer">
       <div id="midcolumn">
-        <h4>Canvas</h4>
+        <h4 id=canvastitle>Canvas
+         <button id="infoButton">i</button>
+         <span class='help_text' id='infoButton_help_text'>
+           <p>
+           The <strong>i</strong> button toggles the rollover help text.
+           </p>
+         </span>
+        </h4>
+<!--
           <canvas2 id="turtlecanvas2" width="300" height="300"></canvas2>
           <canvas2 id="imagecanvas2" width="300" height="300" style="display:none"></canvas2>
+-->
+      <div id="canvaswrapper">
           <canvas id="turtlecanvas"></canvas>
           <canvas id="imagecanvas"></canvas>
          <span class='help_text' id='turtlecanvas_help_text'>
@@ -512,6 +575,8 @@
            The turtle is the green triangle pointing in its direction of travel.
            </p>
          </span>
+      </div> <!-- canvaswrapper -->
+      <div id=commandwrapper> <!-- commandwrapper -->
         <label id="commandLabel" for=#command>Command</label>
         <input type="text" id="command" />
          <span class='help_text' id='command_help_text'>
@@ -520,7 +585,6 @@
            the ENTER (Return) key.
            </p>
          </span>
-         <br/>
          <button id="resetButton">Reset</button>
          <span class='help_text' id='resetButton_help_text'>
            <p>
@@ -541,14 +605,18 @@
            The <strong>Stop</strong> button stops animation.
            </p>
          </span>
-         <button id="clearButton">Clear Def</button>
+         <button id="clearButton">Clear</button>
          <span class='help_text' id='clearButton_help_text'>
            <p>
-           The <strong>Clear Def</strong> button clears the definitions text area to allow entry of new programs.
+           The <strong>Clear</strong> button clears the definitions text area to allow entry of new programs.
            </p>
          </span>
+        </div> <!-- commandwrapper -->
       </div> <!-- midcolumn -->
+      </div> <!-- midcolumncontainer -->
+      <div id="rightcolumncontainer">
       <div id="rightcolumn">
+      <div id="examplewrapper">
         <label id="examplesLabel" for=#examples>Examples</label>
         <select id=examples>
           <option value=arc_test>Arc and Curve Test</option>
@@ -582,13 +650,13 @@
           <option value=random_stick_men>Random Stick Men</option>
           <option value=randstripe>Graphitti</option>
           <option value=sierpinski>Sierpinski Curve</option>
+          <option value=simpleStory>Simple Story</option>
           <option value=snowman>Snowman</option>
           <option value=snubIcosidodecahedron>Snub Icosidodecahedron Half Pattern</option>
           <option value=spinning_squares>Spinning Squares</option>
           <option value=spiral>Spiral</option>
           <option value=squiggle>Squiggle</option>
           <option value=stamps>Stamps</option>
-          <option value=star>Star</option>
           <option value=tree>Tree Symmetrical</option>
           <option value=triangleTunnel>Triangle Tunnel</option>
         </select>
@@ -636,7 +704,12 @@ function demo() {
            <strong>Command</strong> area (for example: <code>demo()</code>) and pressing ENTER.
            </p>
         </span>
+<!--
+-->
+      </div> <!-- examplewrapper -->
       </div> <!-- rightcolumn -->
+      </div> <!-- rightcolumncontainer -->
+   </div> <!-- container-->
    </div> <!-- wrap-->
 
 
