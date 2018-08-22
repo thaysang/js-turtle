@@ -771,14 +771,41 @@ setY = sety;
  *
  * returns: None
  ******************************************************************************/
-function angle(angle) {
-   turtle.angle = degToRad(angle);
+function angle(ang) {
+   turtle.angle = degToRad(ang);
    drawIf();
 }
 
 setheading = angle;
 setHeading = angle;
 seth = angle;
+
+
+/*******************************************************************************
+ * background -- set the background color
+ *
+ * arguments:
+ *   styl: fill style (color, gradient, or pattern), defaulting to turtle color
+ *
+ * returns: None
+ ******************************************************************************/
+
+function background(bColor) {
+    if (styl == undefined) {
+       styl = turtle.color;
+    }
+    if (typeof(styl) === "number") {
+      if (styl < 16) { // assume standard logo turtle color
+        styl = logoColors [styl];
+      } //else {
+        //color is assumed to be a 32-bit color value
+      //}
+    } else if (typeof(styl) != "string") { // col is not a supported type
+      styl = "black";
+    }
+    imageContext.fillStyle = styl;
+    imageContext.fillRect(0, 0, imageCanvas.width, imageCanvas.height);
+}
 
 
 /*******************************************************************************
