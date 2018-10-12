@@ -55,12 +55,12 @@ to repeat in 100 ms. You could change the time to make it faster or slower.
 
 
 // GLOBALS
-  var height = 40;
-  var headDiameter = .25 * height;
-  var torsoLength = .3 * height;
-  var neckLength = .5 * torsoLength;
-  var armLength = .4 * height;
-  var legLength = .5 * height;
+var height;
+var headDiameter;
+var torsoLength;
+var neckLength;
+var armLength;
+var legLength;
 
 /*
   The body parts are drawn with the following asumptions
@@ -158,17 +158,18 @@ function drawBody(armAngle, legAngle) {
 var n = 0;
 var direction = +1;
 
-function demo () {
-  clear();
-  home();
-  hideturtle();
-  n = 0;
-  direction = +1;
-  moveBody();
-}
 
 function moveBody () {
   clear();
+  height = 40;
+  height = 1.5 * Math.min( maxX(), maxY())
+  headDiameter = .25 * height;
+  torsoLength = .3 * height;
+  neckLength = .5 * torsoLength;
+  armLength = .4 * height;
+  legLength = .5 * height;
+  width( .05*height)
+
   drawBody(45 + n * (175-45)/4,
     45 - n * (45-5)/4);
   n = n + direction;
@@ -176,4 +177,13 @@ function moveBody () {
     direction = -direction;
   }
   delay(moveBody,100);
+}
+
+
+function demo () {
+  reset();
+  hideturtle();
+  n = 0;
+  direction = +1;
+  moveBody();
 }

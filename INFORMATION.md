@@ -8,33 +8,32 @@ substantial portion of this project, and overall had brilliant ideas.
 ##File Structure
 This project consists of several files which are used for a single HTML page.
 
-examples		jsTojsString		turtle (original).js	turtle.html		turtleConsole.js
-- **turtle.html** is the main HTML page for this project. It includes the platform layout and the
-content of the language reference.
-- **turtle.css** controls the formatting and styling of the project.
+- **turtle.html** is the basic HTML page. It includes the platform layout and the content of the language reference.
+- **turtle.css** controls the formatting and styling of the page.
 - **turtle.js** contains the Javascript code for the Logo Turtle Javascript functions. This code could
-be included in other projects that want turtle graphics.
+be included in other projects that want turtle graphics without the console functions.
 - **turtleConsole.js** contains the Javascript code for the platform controls (e.g., language reference
 clickons, **Command** box, **RESET** button, **RUN DEMO** button, **STOP** button)
 - **examples** is a directory the contains example code in both a native form (e.g., example.js) and
 in a string assignment (e.g., example.str.js) form where the
 native form is passed as a Javascript string variable to be included in the platform.
+- **examples.js** is the file containing the processed example code for inclusion in the console. It is built with the **make** command (see below).
 - **Makefile** used for maintaining the example Javascript code files for inclusion into the
-platform page.
-- **jsTojsString** is an executable shell script for converting a Javascript example program into a
-Javascript string which can be dynamically loaded into the **Example** box.
+platform page (see below).
+- **jsTojsString** is an executable shell script for converting a Javascript example programs into a
+Javascript string which can be loaded into the **Example** box (see below).
 - **README.md** is the general read me documentation file for this project and includes a basic user manual.
 - **INFORMATION.md** is this documentation file.
 
 ##Example Code Processing
-Javascript does not have functions that allow it to read files on the computer where it is
-being executed. This protects the user from mischeivious code, but makes it somewhat difficult
-to load files dynamically. Toward this end, the Javascript examples are converted to strings
+JavaScript does not have functions that allow it to read files on the computer where it is
+being executed. This protects the user from mischievous code, but makes it somewhat difficult
+to load files dynamically. Toward this end, the JavaScript examples are converted to strings
 that can be loaded as text into the **Example** box. This processing does two things. First it
-makes the lines of the program into a Javasscript string and assigns that string to a Javascript
-variable. It appends a backslash '/' character to the end of each line which tells Javascript that
+makes the lines of the program into a JavaScript string and assigns that string to a JavaScript
+variable. It appends a backslash '/' character to the end of each line which tells JavaScript that
 the line is continued on the next line. The second thing it does is to inject a '\n' at the end
-of each line so that when Javascript loads the string into the **Example** box, it know where the
+of each line so that when JavaScript loads the string into the **Example** box, it know where the
 original lines ended.
 
 This processing is done with a Linux shell program. This was developed on a Macintosh and should
@@ -49,6 +48,7 @@ so that the strings are accessible to Javascript.
 ##Initial Enhancements
 
 The following are the initial enhancements to the forked project:
+
 * re-formatted the language reference to use and unordered list and paragraph tags.
 * dropped jQuery thinking that it really wasn't needed and wanted the code to be "easier"
 to read in the sence that one would have to know less to read it. With the number of onclick
@@ -82,29 +82,170 @@ its errors. This implements red text on a white background
 - [X] make the design responsive to work on smaller screens.
 - [X] added a drawer handle to the **language reference** to allow it to be closed and give
 more room to the canvas.
-- [ ] allow the examples select and **definitions** box to be hidden to give more room to the canvas.
-- [ ] make the command box execute on a second ENTER without other changes (onkeypress?)
+- [x] allow the examples select and **definitions** box to be hidden to give more room to the canvas.
+- [x] make the command box execute on a second ENTER without other changes (onkeypress?)
 - [X] delay() needs to have a way to turn off the **Stop** button. Perhaps it could include this in
 the delayed function mechanism.
+- [ ] add a page of example outputs
+     - [ ] make each output the same size
+     - [ ] make each example fill the canvas
+     - [ ] create a make file to process the .png's (especially creating .gif's)
+     - [ ] example page should be auto generated and fully responsive
+- [ ] link the examples to the IDE with the example loaded
 - [ ] add more examples:
- - [ ] Sierpinski triangles
- - [ ] Sierpinski carpet
- - [x] Koch snowflake
- - [x] circle eye
- - [ ] dividing a circle
- - [x] random stick men
- - [ ] jumping jack
- - [ ] walking stick man
- - [ ] hexagon tesselation
+
+     - [x] fix arc and cirle test to test 360 degree arcs from various angles and rotations
+     - [x] fix arc and cirle test to be proportional for the turbine
+     - [x] Koch snowflake
+     - [x] circle eye
+     - [x] dividing a circle
+     - [x] random stick men
+     - [x] jumping jack
+     - [ ] walking stick man
+     - [x] hexagon tesselation
+     - [x] simple traffic light simulator
+     - [x] integrate intersection simulator
+     - [x] more fractal examples
+
+        - [x] Sierpinski triangle
+        - [x] dragon curve
+        - [x] Hilbert curve
+        - [x] Gosper curve
+        - [x] Conway pinwheel
+     - [ ] asymmetric tree
+     - [ ] more tessellation examples
+	   - [x] pentagons 
+	   - [ ] herring bone
+	   - [ ] squares
+	   - [ ] shifted squares
+	   - [ ] two square sizes
+	   - [ ] triangles
+	   - [ ] shifted trangles
+	   - [x] two triangle size
+	   
+ - [x] Conway Pinwheel
+ - [x] star evolution
+
+	 - [x] basic 5-pointed star
+	 - [x] open up points
+	 - [x] move star (dx, dy)
+	 - [x] grow star (dSize)
+	 - [x] spin star (dAngle)
+	 - [x] move and grow and spin star
+	 - [x] acceleration
+	 - [x] array of stars
+- [ ] star burst... just lines that emanate from the center
+- [ ] interconnected points moving at different velocities
+- [x] digital clock with 7-segment display
+	 - [x] function to draw segmented display from segment map
+	 - [x] function to convert digit to segment map
+- [x] digital clock with binary number display
+	 - [x] function to draw binary number with dots
+	 - [ ] Do year (hundreds), month, day, hour, minute, sec, 1/100 sec
+	 - [ ] Add field labels
+- [ ] re-label current binary clock as a BCD clock and maybe add year month day + field labels
+- [x] compass rose
+- [x] circle limit compass rose
+- [ ] want to add something to make the project more interactive
+	 - [ ] buttons
+	 - [ ] values
+	 - [ ] slider values
 - [X] development tools to automatically add examples to the code by placing a '.js' file in 
 'examples' directory with the Linux 'make' command. This is partially done, but needs improvements.
 It would be better to combine all of the outputs into a single .js file. Perhaps that file could
 also configure the examples select.
-- [ ] develop lessons to lead a student throught some basic programming concepts. [This may be a
+- [x] develop lessons to lead a student throught some basic programming concepts. [This may be a
 separate selector from the example selector].
- - [ ] moving the turtle and executing a command
- - [ ] drawing a square
- - [ ] using iteration to draw a square
- - [ ] using a function to draw many squares
- - [ ] using recursion to do something repeatedly (Koch snowflake)
- - [ ] animating a function
+ - [x] moving the turtle and executing a command
+ - [x] drawing a square
+ - [x] using iteration to draw a square
+ - [x] using a function to draw many squares
+ - [x] using recursion to do something repeatedly (Koch snowflake)
+ - [x] animating a function
+
+ - [ ] make the definitions pane stand out more by moving the examples select to the bottom of that pane
+ - [ ] make it more obvious that the definitions pane can be modified
+ - [ ] A better way to control positioning of the three panels, like some sort of sliding division
+ - [ ] Get more error messages to show up, especially when pressing "RUN"
+ - [ ] Fix the Run button, so that it executes the command line also.
+ - [ ] A way to fill a closed polygon
+	 - [ ] this may be a mode that turns off the incremental drawing: fillStart, fillEnd
+	 - [ ] such a feature may be great for drawing the fractals also
+ - [ ]Better integration of an instructional pane
+	 - [ ] It should have a lesson: some instruction and some things to do
+	 - [ ] It should have a ghost outline of something to draw
+	 - [ ] It should make sure that the student has accomplised the task.
+	 - [ ] This really duplicates what is done on the Kahn code academy... is this what you want to do??
+ - [ ] should have load and save capability to encourage program development
+ - [ ] maybe record things clicked on the language reference to build programs more easily
+ - [ ] do you need lint? would that be easy to add?
+ - [ ] do you need syntax highlighting? or at least discuss it.
+ - [ ] include the intersection simulator as an example of using the turtle.js as a library on a standalone page.
+ - [ ] figure out how to load examples on the fly.
+ - [ ] figure out a way to display examples hierarchically
+ - [ ] bring in bitsbox style commands (more like javascript)
+ - [ ] display the cursor x, y coordinates somewhere
+
+
+#Bugs
+* make the run button better
+	- [ ] if demo() is undefined, just say "Run"
+	* make enter work all of the time on the command line
+	* demo() needs to be cleared when changing examples (e.g., flag to clock, binary)
+	* demo() may be should be called automatically when the example is loaded
+* add a visible version number to this thing somewhere
+* need some protection from infinite loops (hard to do without injecting code somewhere)mo
+* arc and curve test is missing third example
+	* Should add example for rounded rectangles
+* hexagon tesselation is not working
+* circle eye could be bigger, maybe different colors for each inscribed circle
+* color changing dots is not working, should start with a clear
+* dividing a circle is not working *****Fixed without identifying problem**
+* Add tag //*sourceURL=foo.js to bottom of all examples for debugging purposes (or just add ~=definitions.js via the exec command?) <--alternate is better because it works for user entered code
+* optionally 
+* curveRight and curveLeft are not working from all start angles
+
+#Proposed Turtle Graphics Lesson Outline
+
+- Environment
+	- The panes
+	- The buttons
+	- Help
+- First steps, basic drawing
+    - Forward
+    - Backward
+    - Right
+    - Left
+    - Write (Hello World)
+- Repeat loop
+    - Drawing a square
+    - Repeat
+	- While
+	- for
+- then add size
+- Pen control
+    - Pen up
+    - Pen down
+    - Color
+    - Pen size/width
+- Function
+    - Random
+	- variables… show polygon functions. first #sides - Stamping
+    - Goto (x,y)
+    - Set heading/angle
+    - Setx
+    - Sety
+- Variables
+- Parameters
+- Arcs and curves
+    - Curveleft
+    - Curveright
+    - Circle
+    - Dot
+- Conditionals
+- Recursion
+    - Koch snowflake
+    - Sierpinski triangle
+- Animation
+    - Animate
+    - Delay

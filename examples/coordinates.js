@@ -1,4 +1,4 @@
-//Canvas Coordinates -- draw the axes of the coordinate system on the canvas
+// Coordinates -- Draw the axes of the coordinate system on the canvas
 
 function lines () {
   clear()

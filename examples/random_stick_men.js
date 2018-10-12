@@ -1,4 +1,4 @@
-//Random Stick Men -- draw stick men randomly on the canvas
+// Random Stick Men -- draw stick men randomly on the canvas
 
 // stick man
 function stickMan (height) {
@@ -44,10 +44,11 @@ function stickMan (height) {
 }
 
 function demo () {
-  clear();
+  reset();
   hideturtle();
-  for (i=0; i<20; i++) {
-    goto (random(-120,120),random(-120,120));
+  number = 0.0005 *  maxX() * maxY() // uniform density no matter size
+  for (i=0; i<number; i++) {
+    goto (random( minX()+20, maxX()-20),random( minY()+20, maxY()-20));
     color(random(16));
     stickMan(random (30,60));
   }

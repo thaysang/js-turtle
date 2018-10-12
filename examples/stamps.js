@@ -15,6 +15,7 @@ function star (side) {
 }
 
 function stamps () {
+  reset()
   wrap(false)
   var x = minX()
   while (x <= maxX()) {

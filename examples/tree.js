@@ -1,5 +1,9 @@
 // Tree Symmetrical -- draw a symmetrical tree
 
+//GLOBALS
+var scale // varible to influence overall tree size
+
+
 //  code inspired from a code.org lesson
 function drawTree(depth, branches) {
   var spread = 120;	//spread is angle of left to right branches
@@ -9,7 +13,7 @@ function drawTree(depth, branches) {
    color( random( 16));
    pendown();
    width (depth + random(0,2));
-   forward(ratio * depth);
+   forward(scale* ratio * depth);
    left(tilt + spread/2 + spread/branches/2);
    repeat(branches, function () {
      right(spread/branches);
@@ -17,7 +21,7 @@ function drawTree(depth, branches) {
    });
    left(spread - tilt - spread/2 - spread/branches/2); // return to start angle
    penup();
-   backward (ratio * depth); // backup to start point
+   backward (scale * ratio * depth); // backup to start point
   }
 }
 
@@ -30,7 +34,7 @@ function drawRTree(depth, branches) {
    color( random( 16));
    pendown();
    width (depth + random(0,2));
-   forward(ratio * depth);
+   forward(scale * ratio * depth);
    left(tilt + spread/2 + spread/branches/2);
    repeat(branches, function () {
      right(spread/branches);
@@ -38,14 +42,16 @@ function drawRTree(depth, branches) {
    });
    left(spread - tilt - spread/2 - spread/branches/2); // return to start angle
    penup();
-   backward (ratio * depth); // backup to start point
+   backward (scale * ratio * depth); // backup to start point
   }
 }
 
 function demo() {
   reset();
+  hideturtle();
+  scale = .01 * Math.min( maxX(), maxY())
   penup();
-  backward(150);
+  backward(scale * 70);
   pendown();
-  drawTree(6,4)
+  drawRTree(6,4)
 }

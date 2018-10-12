@@ -1,5 +1,5 @@
 // Arc and Curve Test -- test of arcs and curves
-// this draws three figures
+// this draws five figures
 
 function radialArc (x, y, startRadius, armAngle, tangentAngle, arcRadius, extent, dir) {
   goto(x,y);
@@ -38,43 +38,134 @@ function roundedOctogonL (side, radius) {
 }
 
 
+function circleEyeR (x, y, n, outerRadius) {
+  goto (x, y);
+  circle (outerRadius); //outer circle
+
+  for (var i=0; i<n; i++) {
+    goto (x, y);
+    angle (i/n * 360);
+    penup();
+    forward (outerRadius);
+    right(90)
+    pendown();
+    write(i)
+    curveRight(outerRadius/2) // one inscribed circle
+  }
+}
+
+function circleEyeL (x, y, n, outerRadius) {
+  goto (x, y);
+  circle (outerRadius); //outer circle
+
+  for (var i=0; i<n; i++) {
+    goto (x, y);
+    angle (i/n * 360);
+    penup();
+    forward (outerRadius);
+    pendown();
+    left(90)
+    write(i)
+    curveLeft(outerRadius/2); // one inscribed circle
+  }
+}
+
+
 function demo () {
   var CW = true;
   var CCW = false;
+  var size = 2 * Math.min(maxX(), maxY())
+  var cellSize = size/3
+
+  //divide area into 6 cells: 2 vertical, 3 horizontal
+  // centers are:
+  v1 = +1/4 * size
+  v2 = -1/4 * size
+  h1 = -2/6 * size
+  h2 = 0
+  h3 = +2/6 * size
 
   reset();
   hideturtle();
 
-  turbine (-80, 30, 10, 8, CW);
-  turbine (-80, 30, 25, 16, CCW);
-  turbine (-80, 30, 40, 32, CW);
-  turbine (-80, 30, 55, 64, CCW);
+  tSize = cellSize/2 * .90
+// turbine(x,y, radius, pedals, dir) {
+  turbine (h1, v1, 10/55*tSize, 8, CW);
+  turbine (h1, v1, 25/55*tSize, 16, CCW);
+  turbine (h1, v1, 40/55*tSize, 32, CW);
+  turbine (h1, v1, 55/55*tSize, 64, CCW);
 
 
-  var x= 60;
-  var y=30;
   var pedals = 8;
+  tSize = cellSize/2 * .90
   for (i=0; i<pedals; i++) {
-    radialArc (x, y, 10, 360*i/pedals, -45, 10, 180, CW);
-    radialArc (x, y, 40, 360*i/pedals, -125, 15, 110, CCW);
-    radialArc (x, y, 40, 360*i/pedals, -85, 18, 170, CW);
-    radialArc (x, y, 41, 360*i/pedals, 0, 10, 360, CW);
+//radialArc (x, y, startRadius, armAngle, tangentAngle, arcRadius, extent, dir)
+    radialArc (h2, v1, 10/60*tSize, 360*i/pedals, -45, 10/60*tSize, 180, CW); // inner shell
+    radialArc (h2, v1, 40/60*tSize, 360*i/pedals, -125, 15/60*tSize, 110, CCW); //inside arc
+    radialArc (h2, v1, 40/60*tSize, 360*i/pedals, -85, 18/60*tSize, 170, CW); //outside arcs
+    radialArc (h2, v1, 41/60*tSize, 360*i/pedals, 0, 10/60*tSize, 360, CW); // radial circles
   }
+  
 
-  goto(x, y);
-  circle(60);
+  goto(h2, v1);
+  circle(60/60 * tSize);
 
-  goto (-110,-100);
-  angle(0);
-  roundedOctogon (10,20);
-  goto (-40,-100);
-  angle(0);
-  roundedOctogonL (15,20);
+  goto( h1, v2)
+  angle(0)
+  oRadius = cellSize/2 * .9
+  cRadius = .3 * oRadius
+  curveLoss = cRadius * Math.tan( degToRad( 22.5))
+  side = 2 * oRadius * Math.sin( degToRad(22.5)) -  2* curveLoss
+  height = oRadius * Math.cos( degToRad( 22.5))
+  penup()
+  forward (height)
+  pendown()
+  right(90)
+  backward(side/2)
+  roundedOctogon( side, cRadius)
 
-  goto (-35,-125);
-  angle(22.5);
-  roundedOctogonL (25,20);
-  goto (-115,-120);
-  angle(-22.5);
-  roundedOctogon (20,20);
+  goto( h1, v2)
+  angle(0)
+  oRadius = cellSize/2 * .8
+  cRadius = .3 * oRadius
+  curveLoss = cRadius * Math.tan( degToRad( 22.5))
+  side = 2 * oRadius * Math.sin( degToRad(22.5)) -  2* curveLoss
+  height = oRadius * Math.cos( degToRad( 22.5))
+  penup()
+  forward (height)
+  pendown()
+  right(90)
+  backward(side/2)
+  roundedOctogon( side, cRadius)
+
+  goto( h1, v2)
+  angle(22.5)
+  oRadius = cellSize/2 * .7
+  cRadius = .3 * oRadius
+  curveLoss = cRadius * Math.tan( degToRad( 22.5))
+  side = 2 * oRadius * Math.sin( degToRad(22.5)) -  2* curveLoss
+  height = oRadius * Math.cos( degToRad( 22.5))
+  penup()
+  forward (height)
+  pendown()
+  right(90)
+  backward(side/2)
+  roundedOctogon( side, cRadius)
+
+  goto( h1, v2)
+  angle(22.5)
+  oRadius = cellSize/2 * .6
+  cRadius = .3 * oRadius
+  curveLoss = cRadius * Math.tan( degToRad( 22.5))
+  side = 2 * oRadius * Math.sin( degToRad(22.5)) -  2* curveLoss
+  height = oRadius * Math.cos( degToRad( 22.5))
+  penup()
+  forward (height)
+  pendown()
+  right(90)
+  backward(side/2)
+  roundedOctogon( side, cRadius)
+
+  circleEyeR( h2, v2, 16, cellSize/2 * .8);
+  circleEyeL( h3, v2, 16, cellSize/2 * .8);
 }

@@ -526,6 +526,7 @@ function curveleft (radius, extent) {
   counterclockwise = !counterclockwise;
   startAngle = -startAngle;
   stopAngle = -stopAngle;
+	//write(startAngle + "  " + stopAngle + "  " + startAngle-degToRad(extent))
   imageContext.save();
   centerCoords(imageContext);
   imageContext.beginPath();
@@ -567,6 +568,7 @@ function curveright (radius, extent) {
   counterclockwise = !counterclockwise;
   startAngle = -startAngle;
   stopAngle = -stopAngle;
+    //write(startAngle + "  " + stopAngle + "  " + startAngle+degToRad(extent))
   imageContext.save();
   centerCoords(imageContext);
   imageContext.beginPath();
@@ -790,7 +792,7 @@ seth = angle;
  * returns: None
  ******************************************************************************/
 
-function background(bColor) {
+function background(styl) {
     if (styl == undefined) {
        styl = turtle.color;
     }
@@ -805,6 +807,7 @@ function background(bColor) {
     }
     imageContext.fillStyle = styl;
     imageContext.fillRect(0, 0, imageCanvas.width, imageCanvas.height);
+    //imageContext.fill;
 }
 
 

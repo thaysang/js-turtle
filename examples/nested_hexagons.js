@@ -10,10 +10,14 @@ function polygon(sides,side) {
 
 // draw a set of nested hexagons
 function demo() {
-   clear();
-   goto(0,0);
+   size = maxY()
+   if (maxX() < size) {
+     size = maxX()
+   }
+   steps = size/10 // 10 is the step size
+   reset();
    hideTurtle();
-   for(step=1; step<10; step=step+1) {
+   for(step=1; step < steps; step=step+1) {
       color (random(16));
       polygon(6,step*10);
       penup();

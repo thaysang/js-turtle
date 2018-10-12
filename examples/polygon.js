@@ -11,6 +11,12 @@ function polygon(sides,side) {
 // draw a random polygon
 function demo() {
    reset();
+   side = maxY()
+   if (maxX() < side) {
+     side = maxX()
+   }
+   side = .4 *side
+   goto(-.4 * side, -.5 * side)
    hideTurtle();
-   polygon(random(3,10),20);
+   polygon( random( 3,10), side);
 }

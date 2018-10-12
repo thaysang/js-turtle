@@ -5,9 +5,9 @@ clear()
 width(1)
 goto (0,-100)
 circle (80)
-goto (0,60-20)
+goto (0,-100+80+60)
 circle (60)
-goto (0,60-20+60+40)
+goto (0,-100+80+60+60+40)
 circle (40)
 
 // add the coal for the eyes, nose and mouth

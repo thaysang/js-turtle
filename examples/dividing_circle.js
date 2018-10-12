@@ -1,4 +1,4 @@
-// Dividing a Circle -- Divide a circle with other circles
+// Dividing a Circle -- divide a circle with other circles
 
 // *** GLOBALS ***
 var i; // loop variable
@@ -41,6 +41,7 @@ function tier () {
 
 function demo() {
   clear();
+  hideTurtle();
   home();
   penup();
   wrap(false);

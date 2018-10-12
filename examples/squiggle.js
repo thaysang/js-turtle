@@ -15,7 +15,7 @@ function squiggle(steps,angle) {
 
 function drawRandomSquiggle() {
   colour(random(16));
-  goto(random(-150,150), random(-150, 150));
+  goto(random(minX(), maxX()), random(minY(), maxY()));
   angle(random(0,360));
   squiggle(random(100,1000), random(5,90));
 }

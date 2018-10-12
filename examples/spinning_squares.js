@@ -19,8 +19,14 @@ function spinningSquare2() {
 }
 
 function spinningSquare() {
+  reset()
   var steps = 100
-  var stepSize = 200/steps
+  stepSize = 2 * maxX()
+  if (1.5 * maxY() < stepSize) {
+    stepSize = 1.5 * maxY()
+  }
+  stepSize = .5 * stepSize/steps
+  //var stepSize = 200/steps
   color("blue");
   for (var i=0; i<steps; i=i+1) {
     square(stepSize*i);

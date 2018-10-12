@@ -1,4 +1,4 @@
-// Circle Eye -- draws a set of n inscribedcircles within circle
+// Circle Eye -- draws a set of n inscribed circles within circle
 
 function circleEye (x, y, n, outerRadius) {
   goto (x, y);
@@ -18,7 +18,8 @@ function circleEye (x, y, n, outerRadius) {
 
 function demo () {
   reset();
+  size = Math.min( maxX(), maxY()) * .9
   hideturtle();
-  color(random(16));
-  circleEye (0,0,16,120);
+  color( random(16));
+  circleEye( 0, 0, 16, size);
 }

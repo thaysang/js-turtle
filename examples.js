@@ -1,6 +1,6 @@
 arc_test ='\
 // Arc and Curve Test -- test of arcs and curves\n\
-// this draws three figures\n\
+// this draws five figures\n\
 \n\
 function radialArc (x, y, startRadius, armAngle, tangentAngle, arcRadius, extent, dir) {\n\
   goto(x,y);\n\
@@ -39,45 +39,235 @@ function roundedOctogonL (side, radius) {\n\
 }\n\
 \n\
 \n\
+function circleEyeR (x, y, n, outerRadius) {\n\
+  goto (x, y);\n\
+  circle (outerRadius); //outer circle\n\
+\n\
+  for (var i=0; i<n; i++) {\n\
+    goto (x, y);\n\
+    angle (i/n * 360);\n\
+    penup();\n\
+    forward (outerRadius);\n\
+    right(90)\n\
+    pendown();\n\
+    write(i)\n\
+    curveRight(outerRadius/2) // one inscribed circle\n\
+  }\n\
+}\n\
+\n\
+function circleEyeL (x, y, n, outerRadius) {\n\
+  goto (x, y);\n\
+  circle (outerRadius); //outer circle\n\
+\n\
+  for (var i=0; i<n; i++) {\n\
+    goto (x, y);\n\
+    angle (i/n * 360);\n\
+    penup();\n\
+    forward (outerRadius);\n\
+    pendown();\n\
+    left(90)\n\
+    write(i)\n\
+    curveLeft(outerRadius/2); // one inscribed circle\n\
+  }\n\
+}\n\
+\n\
+\n\
 function demo () {\n\
   var CW = true;\n\
   var CCW = false;\n\
+  var size = 2 * Math.min(maxX(), maxY())\n\
+  var cellSize = size/3\n\
+\n\
+  //divide area into 6 cells: 2 vertical, 3 horizontal\n\
+  // centers are:\n\
+  v1 = +1/4 * size\n\
+  v2 = -1/4 * size\n\
+  h1 = -2/6 * size\n\
+  h2 = 0\n\
+  h3 = +2/6 * size\n\
 \n\
   reset();\n\
   hideturtle();\n\
 \n\
-  turbine (-80, 30, 10, 8, CW);\n\
-  turbine (-80, 30, 25, 16, CCW);\n\
-  turbine (-80, 30, 40, 32, CW);\n\
-  turbine (-80, 30, 55, 64, CCW);\n\
+  tSize = cellSize/2 * .90\n\
+// turbine(x,y, radius, pedals, dir) {\n\
+  turbine (h1, v1, 10/55*tSize, 8, CW);\n\
+  turbine (h1, v1, 25/55*tSize, 16, CCW);\n\
+  turbine (h1, v1, 40/55*tSize, 32, CW);\n\
+  turbine (h1, v1, 55/55*tSize, 64, CCW);\n\
 \n\
 \n\
-  var x= 60;\n\
-  var y=30;\n\
   var pedals = 8;\n\
+  tSize = cellSize/2 * .90\n\
   for (i=0; i<pedals; i++) {\n\
-    radialArc (x, y, 10, 360*i/pedals, -45, 10, 180, CW);\n\
-    radialArc (x, y, 40, 360*i/pedals, -125, 15, 110, CCW);\n\
-    radialArc (x, y, 40, 360*i/pedals, -85, 18, 170, CW);\n\
-    radialArc (x, y, 41, 360*i/pedals, 0, 10, 360, CW);\n\
+//radialArc (x, y, startRadius, armAngle, tangentAngle, arcRadius, extent, dir)\n\
+    radialArc (h2, v1, 10/60*tSize, 360*i/pedals, -45, 10/60*tSize, 180, CW); // inner shell\n\
+    radialArc (h2, v1, 40/60*tSize, 360*i/pedals, -125, 15/60*tSize, 110, CCW); //inside arc\n\
+    radialArc (h2, v1, 40/60*tSize, 360*i/pedals, -85, 18/60*tSize, 170, CW); //outside arcs\n\
+    radialArc (h2, v1, 41/60*tSize, 360*i/pedals, 0, 10/60*tSize, 360, CW); // radial circles\n\
   }\n\
+  \n\
 \n\
-  goto(x, y);\n\
-  circle(60);\n\
+  goto(h2, v1);\n\
+  circle(60/60 * tSize);\n\
 \n\
-  goto (-110,-100);\n\
-  angle(0);\n\
-  roundedOctogon (10,20);\n\
-  goto (-40,-100);\n\
-  angle(0);\n\
-  roundedOctogonL (15,20);\n\
+  goto( h1, v2)\n\
+  angle(0)\n\
+  oRadius = cellSize/2 * .9\n\
+  cRadius = .3 * oRadius\n\
+  curveLoss = cRadius * Math.tan( degToRad( 22.5))\n\
+  side = 2 * oRadius * Math.sin( degToRad(22.5)) -  2* curveLoss\n\
+  height = oRadius * Math.cos( degToRad( 22.5))\n\
+  penup()\n\
+  forward (height)\n\
+  pendown()\n\
+  right(90)\n\
+  backward(side/2)\n\
+  roundedOctogon( side, cRadius)\n\
 \n\
-  goto (-35,-125);\n\
-  angle(22.5);\n\
-  roundedOctogonL (25,20);\n\
-  goto (-115,-120);\n\
-  angle(-22.5);\n\
-  roundedOctogon (20,20);\n\
+  goto( h1, v2)\n\
+  angle(0)\n\
+  oRadius = cellSize/2 * .8\n\
+  cRadius = .3 * oRadius\n\
+  curveLoss = cRadius * Math.tan( degToRad( 22.5))\n\
+  side = 2 * oRadius * Math.sin( degToRad(22.5)) -  2* curveLoss\n\
+  height = oRadius * Math.cos( degToRad( 22.5))\n\
+  penup()\n\
+  forward (height)\n\
+  pendown()\n\
+  right(90)\n\
+  backward(side/2)\n\
+  roundedOctogon( side, cRadius)\n\
+\n\
+  goto( h1, v2)\n\
+  angle(22.5)\n\
+  oRadius = cellSize/2 * .7\n\
+  cRadius = .3 * oRadius\n\
+  curveLoss = cRadius * Math.tan( degToRad( 22.5))\n\
+  side = 2 * oRadius * Math.sin( degToRad(22.5)) -  2* curveLoss\n\
+  height = oRadius * Math.cos( degToRad( 22.5))\n\
+  penup()\n\
+  forward (height)\n\
+  pendown()\n\
+  right(90)\n\
+  backward(side/2)\n\
+  roundedOctogon( side, cRadius)\n\
+\n\
+  goto( h1, v2)\n\
+  angle(22.5)\n\
+  oRadius = cellSize/2 * .6\n\
+  cRadius = .3 * oRadius\n\
+  curveLoss = cRadius * Math.tan( degToRad( 22.5))\n\
+  side = 2 * oRadius * Math.sin( degToRad(22.5)) -  2* curveLoss\n\
+  height = oRadius * Math.cos( degToRad( 22.5))\n\
+  penup()\n\
+  forward (height)\n\
+  pendown()\n\
+  right(90)\n\
+  backward(side/2)\n\
+  roundedOctogon( side, cRadius)\n\
+\n\
+  circleEyeR( h2, v2, 16, cellSize/2 * .8);\n\
+  circleEyeL( h3, v2, 16, cellSize/2 * .8);\n\
+}\n\
+'
+basket_weave_tesselation ='\
+// Basket Weave Tesselation -- tile a space using basket weave pattern\n\
+\n\
+// this assumes that the smaller square is 1/2 of the larger square.\n\
+// that need not be the case\n\
+\n\
+small = 20\n\
+sSide = 2.5 * small\n\
+lSide = sSide + 2 * small\n\
+\n\
+function vRect( sSide, lSide, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<2; i++) {\n\
+    forward( sSide)\n\
+    right(90)\n\
+    forward( lSide)\n\
+    right(90)\n\
+  }\n\
+  fillShape( fColor)\n\
+  forward( sSide)\n\
+}\n\
+\n\
+function hRect( sSide, lSide, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<2; i++) {\n\
+    forward( lSide)\n\
+    right(90)\n\
+    forward( sSide)\n\
+    right(90)\n\
+  }\n\
+  fillShape( fColor)\n\
+  forward( lSide)\n\
+}\n\
+\n\
+function square ( side, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<4; i++) {\n\
+    forward( side)\n\
+    right(90)\n\
+  }\n\
+  fillShape( fColor)\n\
+  forward( side)\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  count = 0\n\
+  yB = maxY() + small\n\
+  xB = minX()\n\
+  wrap(false)\n\
+  right( 90)\n\
+\n\
+  s = 50\n\
+  while( turtle.pos.y > minY()) {\n\
+    goto (xB, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      square(small, "yellow")\n\
+      penup()\n\
+      forward( sSide)\n\
+      pendown()\n\
+      square(small, "yellow")\n\
+      vRect(sSide, lSide, "lightblue")\n\
+    }\n\
+    yB = yB - small\n\
+\n\
+    goto (xB, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      hRect(sSide, lSide, "red")\n\
+      penup()\n\
+      forward( sSide)\n\
+    }\n\
+    yB = yB - sSide\n\
+\n\
+    goto (xB, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      square(small, "yellow")\n\
+      vRect(sSide, lSide, "lightblue")\n\
+      square(small, "yellow")\n\
+      penup()\n\
+      forward( sSide)\n\
+      pendown()\n\
+    }\n\
+    yB = yB - small\n\
+\n\
+    goto (xB- lSide +small, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      hRect(sSide, lSide, "red")\n\
+      penup()\n\
+      forward(sSide)\n\
+    }\n\
+    yB = yB - sSide\n\
+  }\n\
 }\n\
 '
 bounce ='\
@@ -148,8 +338,67 @@ function demo() {\n\
   let_them_drop (Math.floor(maxX * maxY/2000));\n\
 }\n\
 '
+brick_tesselation ='\
+// Brick Tesselation -- tile a space using a basic brick laying pattern\n\
+\n\
+sSide = 15\n\
+lSide = 2* sSide \n\
+\n\
+function vRect( sSide, lSide, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<2; i++) {\n\
+    forward( sSide)\n\
+    right(90)\n\
+    forward( lSide)\n\
+    right(90)\n\
+  }\n\
+  fillShape( fColor)\n\
+  forward( sSide)\n\
+}\n\
+\n\
+function hRect( sSide, lSide, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<2; i++) {\n\
+    forward( lSide)\n\
+    right(90)\n\
+    forward( sSide)\n\
+    right(90)\n\
+  }\n\
+  fillShape( fColor)\n\
+  forward( lSide)\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  count = 0\n\
+  yB = maxY()\n\
+  xB = minX()\n\
+  wrap(false)\n\
+  right( 90)\n\
+  color("white")\n\
+\n\
+  s = 50\n\
+  while( turtle.pos.y > minY()) {\n\
+    goto (xB, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      hRect(sSide, lSide, "darkred")\n\
+      penup()\n\
+    }\n\
+    yB = yB - sSide\n\
+\n\
+    goto (xB - lSide/2, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      hRect(sSide, lSide, "darkred")\n\
+      penup()\n\
+    }\n\
+    yB = yB - sSide\n\
+  }\n\
+}\n\
+'
 circle_eye ='\
-// Circle Eye -- draws a set of n inscribedcircles within circle\n\
+// Circle Eye -- draws a set of n inscribed circles within circle\n\
 \n\
 function circleEye (x, y, n, outerRadius) {\n\
   goto (x, y);\n\
@@ -169,108 +418,14 @@ function circleEye (x, y, n, outerRadius) {\n\
 \n\
 function demo () {\n\
   reset();\n\
+  size = Math.min( maxX(), maxY()) * .9\n\
   hideturtle();\n\
-  color(random(16));\n\
-  circleEye (0,0,16,120);\n\
+  color( random(16));\n\
+  circleEye( 0, 0, 16, size);\n\
 }\n\
 '
-clock ='\
-// Clock, Analog -- draw and animate an analog clock\n\
-\n\
-//draw the tick marks around the edge of the clock\n\
-function ticks(x, y, radius) {\n\
-   var tickLen = 7;\n\
-   var gap = radius - tickLen;\n\
-   color("blue");\n\
-   width(1);\n\
-   for (var theta = 0; theta < 360; theta += 6) {\n\
-      // Thicken hour marks\n\
-      if (theta % 30 != 0) {\n\
-         width(1);\n\
-      } else {\n\
-         width(3);\n\
-      }\n\
-      penup();\n\
-      goto(0,0);\n\
-      angle(theta);\n\
-      forward(gap);\n\
-      pendown();\n\
-      forward(tickLen);\n\
-   }\n\
-}\n\
-\n\
-\n\
-// draw the hour numbers on the clock face\n\
-function numbers(x, y, radius) {\n\
-   penup();\n\
-   setFont("20px sans-serif");\n\
-   color("black");\n\
-   for (var hour = 1; hour <= 12; hour++) {\n\
-      goto(x,y);\n\
-      angle(hour * 30);\n\
-      forward(radius); // to center of digit\n\
-      angle(180);\n\
-      forward(10); // vertical correction to baseline\n\
-      right(90);\n\
-      if (hour < 10) {\n\
-        forward(6); // horizontal correction to lower left corner\n\
-      } else {\n\
-        forward (10)\n\
-      }\n\
-      right(180);\n\
-      write(hour);\n\
-   }\n\
-   pendown();\n\
-}\n\
-\n\
-// draw one of the clock hands\n\
-function hand (theta, w, length, col) {\n\
-   var stepSize = 5;\n\
-   var widthDelta = w / (length / stepSize);\n\
-   goto(0, 0);\n\
-   angle(theta);\n\
-   color(col);\n\
-   for (var step = 0; step < length; step += stepSize) {\n\
-      width(w);\n\
-      forward(stepSize);\n\
-      w -= widthDelta;\n\
-   }\n\
-}\n\
-\n\
-function hands(hours, minutes, seconds) {\n\
-    // draw seconds hand\n\
-    var secDegreesPerSecond = 6;	// = 360 degrees/60 seconds /minute\n\
-    hand(seconds * secDegreesPerSecond, 4, 100, "red");\n\
-    // draw minutes hand \n\
-    var minDegreePerSecond = 0.1;	// = 360 degrees /3600 seconds /hour\n\
-    var minutesInSeconds = minutes * 60 + seconds;\n\
-    hand(minutesInSeconds * minDegreePerSecond, 10, 100, "blue");\n\
-    // draw hours hand\n\
-    var hourDegreePerSecond = .1/12;	// = 360 degrees /3600 seconds per hour /12 hours per half day /half day\n\
-    var hoursInSeconds = ((hours % 12) * 3600) + minutesInSeconds;\n\
-    hand(hoursInSeconds * hourDegreePerSecond, 10, 60, "blue");\n\
-}\n\
-\n\
-// refresh the entire clock\n\
-function clock() {\n\
-   clear();\n\
-   numbers(0, 0, 110);\n\
-   color("lightgreen");\n\
-   goto (0,0);\n\
-   circle(130);\n\
-   ticks(0, 0, 130);\n\
-   var d = new Date();\n\
-   hands(d.getHours(), d.getMinutes(), d.getSeconds());\n\
-}\n\
-\n\
-function demo() {\n\
-   hideTurtle();\n\
-   // refresh the clock every second\n\
-   animate(clock,1000);\n\
-}\n\
-'
-clockBinary ='\
-// Clock, Binary -- digital clock using binary digits\n\
+clock_BCD ='\
+// Clock, BCD -- digital clock using Binary Coded Decimal (BCD) digits\n\
 \n\
 //*** GLOBALS ***\n\
 \n\
@@ -280,6 +435,8 @@ var minute10;\n\
 var minute1;\n\
 var second10;\n\
 var second1;\n\
+var hSpacing;\n\
+var vSpacing;\n\
 \n\
 var hourColor = "red"\n\
 var minuteColor = "green"\n\
@@ -306,41 +463,33 @@ function getBinaryTime() {\n\
   seconds = time.getSeconds()\n\
 \n\
   // extract the digits\n\
-  hour10 = tensDigit(hours)\n\
-  hour1 =  onesDigit(hours)\n\
-  min10 =  tensDigit(minutes)\n\
-  min1 =   onesDigit(minutes)\n\
-  sec10 =  tensDigit(seconds)\n\
-  sec1 =   onesDigit(seconds)\n\
+  //hour10 =   hour1 =  onesDigit(hours)\n\
+  //min10 =  tensDigit(minutes)\n\
+  //min1 =   onesDigit(minutes)\n\
+  //sec10 =  tensDigit(seconds)\n\
+  //sec1 =   onesDigit(seconds)\n\
 \n\
   //pad digits with leading 0s\n\
-  hour10 = "0000" + hour10.toString(2)\n\
-  hour1 =  "0000" + hour1.toString(2)\n\
-  min10 =  "0000" + min10.toString(2)\n\
-  min1 =   "0000" + min1.toString(2)\n\
-  sec1 =   "0000" + sec1.toString(2)\n\
-  sec10 =  "0000" + sec10.toString(2)\n\
-  sec1 =   "0000" + sec1.toString(2)\n\
+  //hour10 = "0000" + hour10.toString(2)\n\
+  //hour1 =  "0000" + hour1.toString(2)\n\
+  //min10 =  "0000" + min10.toString(2)\n\
+  //min1 =   "0000" + min1.toString(2)\n\
+  //sec10 =  "0000" + sec10.toString(2)\n\
+  //sec1 =   "0000" + sec1.toString(2)\n\
 \n\
   //use only 4 digits\n\
-  hour10 = hour10.slice(-4)\n\
-  hour1 =  hour1.slice(-4)\n\
-  min10 =  min10.slice(-4)\n\
-  min1 =   min1.slice(-4)\n\
-  sec1 =   sec1.slice(-4)\n\
-  sec10 =  sec10.slice(-4)\n\
-  sec1 =   sec1.slice(-4)\n\
-}\n\
-\n\
-\n\
-function displayBinary() {\n\
-  color(black)\n\
-  write (":"+\n\
-    hour10 + " " + hour1 +\n\
-    ":"+\n\
-    min10 +  " "  + min1 +\n\
-    ":"+\n\
-    sec10 +  " "  + sec1)\n\
+  //hour10 = hour10.slice(-4)\n\
+  //hour1 =  hour1.slice(-4)\n\
+  //min10 =  min10.slice(-4)\n\
+  //min1 =   min1.slice(-4)\n\
+  //sec10 =  sec10.slice(-4)\n\
+  //sec1 =   sec1.slice(-4)\n\
+  hour10 = ("0000" + tensDigit(hours).toString(2)).slice(-4)\n\
+  hour1 =  ("0000" + onesDigit(hours).toString(2)).slice(-4)\n\
+  min10 =  ("0000" + tensDigit(minutes).toString(2)).slice(-4)\n\
+  min1 =   ("0000" + onesDigit(minutes).toString(2)).slice(-4)\n\
+  sec10 =  ("0000" + tensDigit(seconds).toString(2)).slice(-4)\n\
+  sec1 =   ("0000" + onesDigit(seconds).toString(2)).slice(-4)\n\
 }\n\
 \n\
 \n\
@@ -355,64 +504,55 @@ function drawDot (digit, onColor, offColor, step) {\n\
 }\n\
 \n\
 \n\
-function drawNumberDots (digitString, onColor, offColor) {\n\
-  drawDot( digitString[0], onColor, offColor, 15)\n\
-  drawDot( digitString[1], onColor, offColor, 15)\n\
-  drawDot( digitString[2], onColor, offColor, 15)\n\
-  drawDot( digitString[3], onColor, offColor, 15)\n\
+function drawNumberDots (digitString, onColor, offColor, spacing) {\n\
+  drawDot( digitString[0], onColor, offColor, spacing)\n\
+  drawDot( digitString[1], onColor, offColor, spacing)\n\
+  drawDot( digitString[2], onColor, offColor, spacing)\n\
+  drawDot( digitString[3], onColor, offColor, spacing)\n\
   backward (60)\n\
 }\n\
 \n\
 \n\
-function displayBinaryDots() {\n\
+function displayBinaryDots(hSpacing, vSpacing) {\n\
+  bottom = vSpacing * 1.5\n\
+  leftSide = -hSpacing * 2.5\n\
   penup()\n\
-  right(90)\n\
-  forward(10)\n\
-  left(90)\n\
-  forward (15)\n\
-  right(90)\n\
-  drawNumberDots (hour10, hourColor, offColor)\n\
+  goto (leftSide + hSpacing *0, bottom)\n\
+  drawNumberDots (hour10, hourColor, offColor, vSpacing)\n\
 \n\
-  left(90)\n\
-  forward (25)\n\
-  right(90)\n\
-  drawNumberDots (hour1, hourColor, offColor)\n\
+  goto (leftSide + hSpacing *1, bottom)\n\
+  drawNumberDots (hour1, hourColor, offColor, vSpacing)\n\
 \n\
-  left(90)\n\
-  forward (25)\n\
-  right(90)\n\
-  drawNumberDots (min10, minuteColor, offColor)\n\
+  goto (leftSide + hSpacing *2, bottom)\n\
+  drawNumberDots (min10, minuteColor, offColor, vSpacing)\n\
 \n\
-  left(90)\n\
-  forward (25)\n\
-  right(90)\n\
-  drawNumberDots (min1, minuteColor, offColor)\n\
+  goto (leftSide + hSpacing *3, bottom)\n\
+  drawNumberDots (min1, minuteColor, offColor, vSpacing)\n\
 \n\
-  left(90)\n\
-  forward (25)\n\
-  right(90)\n\
-  drawNumberDots (sec10, secondColor, offColor)\n\
+  goto (leftSide + hSpacing *4, bottom)\n\
+  drawNumberDots (sec10, secondColor, offColor, vSpacing)\n\
 \n\
-  left(90)\n\
-  forward (25)\n\
-  right(90)\n\
-  drawNumberDots (sec1, secondColor, offColor)\n\
+  goto (leftSide + hSpacing *5, bottom)\n\
+ drawNumberDots (sec1, secondColor, offColor, vSpacing)\n\
 }\n\
 \n\
 \n\
 function displayTime() {\n\
   clear()\n\
-  home()\n\
-  angle(90)\n\
-  hideturtle() \n\
+  angle(180)\n\
+  spacing = Math.min(maxX(), maxY()) *1.8/6\n\
+  hSpacing = spacing\n\
+  vSpacing = spacing\n\
+  width (spacing/10)\n\
+  hideturtle()\n\
   getBinaryTime()\n\
-  //displayBinary()\n\
-  displayBinaryDots()\n\
+  displayBinaryDots(hSpacing, vSpacing)\n\
 }\n\
 \n\
+demo = displayTime\n\
 animate(displayTime, 1000)\n\
 '
-clockDigital ='\
+clock_digital ='\
 // Clock, Digital -- digital clock using seven-segment displays\n\
 \n\
 //*** GLOBALS ***\n\
@@ -423,6 +563,15 @@ var min1digit;\n\
 var min10digit;\n\
 var sec10digit;\n\
 var sec1digit;\n\
+\n\
+var segSize;\n\
+var horizontalElements\n\
+var digitSpacing\n\
+var interdigitSpacing\n\
+var segWidth\n\
+var segAngle = 10 // degrees\n\
+var segOnColor = "red"\n\
+var segOffColor = "black"\n\
 \n\
 \n\
 //*** CONSTANTS ***\n\
@@ -453,13 +602,6 @@ var segments = [ "1111110", //0\n\
                  "1111111", //8\n\
                  "1110011"  //9\n\
                ]\n\
-\n\
-var segSize = 30 // pixels\n\
-segAngle = 10 // degrees\n\
-segOnColor = "red"\n\
-segOffColor = "black"\n\
-digitSpacing = 1.4 * segSize\n\
-interdigitSpacing = 1.6 * digitSpacing\n\
 \n\
 \n\
 //*** FUNCTIONS ***\n\
@@ -495,7 +637,7 @@ function segColor (bit) {\n\
     color( segOnColor)\n\
   } else {\n\
     color( segOffColor)\n\
-  }\n\
+  }10\n\
 }\n\
 \n\
 \n\
@@ -534,10 +676,10 @@ function displaySegTime() {\n\
   width (2*maxY())\n\
   pendown()\n\
   forward(2*maxX())\n\
-\n\
+101010\n\
   // draw the 6 digits of time\n\
-  goto (-4*segSize, segSize)\n\
-  width (6)\n\
+  goto (-horizontalElements/2*segSize, segSize)\n\
+  width (segWidth)\n\
   display7segment(hour10digit)\n\
   forward (digitSpacing)\n\
   display7segment(hour1digit)\n\
@@ -555,16 +697,122 @@ function displaySegTime() {\n\
 \n\
 \n\
 function displayTime() {\n\
+  horizontalElements = 6 + 3*.4 + 2*1.24\n\
+  segSize = Math.min (maxY(), 2* maxX()/horizontalElements) * .9\n\
+  digitSpacing = 1.4 * segSize\n\
+  interdigitSpacing = 2.24 * segSize\n\
+  segWidth = segSize/6\n\
   hideturtle() \n\
   getTime()\n\
   displaySegTime()\n\
 }\n\
 \n\
-\n\
+//demo = displayTime\n\
 animate(displayTime, 1000)\n\
 '
-colorChangingDots ='\
-//Color Changing Dots -- demonstrate the concept of changing the colors of a string of dots (lights?)\n\
+clock ='\
+// Clock, Analog -- draw and animate an analog clock\n\
+\n\
+//GLOBALS\n\
+var size;\n\
+\n\
+//draw the tick marks around the edge of the clock\n\
+function ticks(x, y, radius) {\n\
+   var tickLen = 7;\n\
+   var gap = radius - tickLen;\n\
+   color("blue");\n\
+   width(1);\n\
+   for (var theta = 0; theta < 360; theta += 6) {\n\
+      // Thicken hour marks\n\
+      if (theta % 30 != 0) {\n\
+         width(1/130* size);\n\
+      } else {\n\
+         width(3/130* size);\n\
+      }\n\
+      penup();\n\
+      goto(0,0);\n\
+      angle(theta);\n\
+      forward(gap);\n\
+      pendown();\n\
+      forward(tickLen);\n\
+   }\n\
+}\n\
+\n\
+\n\
+// draw the hour numbers on the clock face\n\
+function numbers(x, y, radius) {\n\
+   penup();\n\
+   fontSize = 20/130 * size\n\
+   setFont(fontSize+"px sans-serif");\n\
+   color("black");\n\
+   for (var hour = 1; hour <= 12; hour++) {\n\
+      goto(x,y);\n\
+      angle(hour * 30);\n\
+      forward(radius); // to center of digit\n\
+      angle(180);\n\
+      forward(10/130 * size); // vertical correction to baseline\n\
+      right(90);\n\
+      if (hour < 10) {\n\
+        forward(6/130 * size); // horizontal correction to lower left corner\n\
+      } else {\n\
+        forward (10/130 * size)\n\
+      }\n\
+      right(180);\n\
+      write(hour);\n\
+   }\n\
+   pendown();\n\
+}\n\
+\n\
+// draw one of the clock hands\n\
+function hand (theta, w, length, col) {\n\
+   var stepSize = 5;\n\
+   var widthDelta = w / (length / stepSize);\n\
+   goto(0, 0);\n\
+   angle(theta);\n\
+   color(col);\n\
+   for (var step = 0; step < length; step += stepSize) {\n\
+      width(w);\n\
+      forward(stepSize);\n\
+      w -= widthDelta;\n\
+   }\n\
+}\n\
+\n\
+function hands(hours, minutes, seconds) {\n\
+    // draw seconds hand\n\
+    var secDegreesPerSecond = 6;	// = 360 degrees/60 seconds /minute\n\
+    hand(seconds * secDegreesPerSecond, 4, 100/130 * size, "red");\n\
+    // draw minutes hand \n\
+    var minDegreePerSecond = 0.1;	// = 360 degrees /3600 seconds /hour\n\
+    var minutesInSeconds = minutes * 60 + seconds;\n\
+    hand(minutesInSeconds * minDegreePerSecond, 10, 100/130 * size, "blue");\n\
+    // draw hours hand\n\
+    var hourDegreePerSecond = .1/12;	// = 360 degrees /3600 seconds per hour /12 hours per half day /half day\n\
+    var hoursInSeconds = ((hours % 12) * 3600) + minutesInSeconds;\n\
+    hand(hoursInSeconds * hourDegreePerSecond, 10, 60/130 * size, "blue");\n\
+}\n\
+\n\
+// refresh the entire clock\n\
+function clock() {\n\
+   clear();\n\
+   size = .9 *  Math.min( maxX(), maxY())\n\
+  numbers(0, 0, 110/130 * size);\n\
+   color("lightgreen");\n\
+   goto (0,0);\n\
+   width(1/130* size)\n\
+   circle(130/130 * size );\n\
+   ticks(0, 0, 130/130 * size );\n\
+   var d = new Date();\n\
+   hands(d.getHours(), d.getMinutes(), d.getSeconds());\n\
+}\n\
+\n\
+function demo() {\n\
+   hideTurtle();\n\
+   // refresh the clock every second\n\
+   animate(clock,1000);\n\
+}\n\
+'
+color_changing_dots ='\
+// Color Changing Dots -- demonstrate the concept of changing the colors of a string of dots (lights?)\n\
 \n\
 /*\n\
 Maybe you can adapt to make a traffic light simulator or Christmas light\n\
@@ -583,6 +831,7 @@ function drawRowOfDots () {\n\
 }\n\
 \n\
 function colorChangingDots () {\n\
+  reset()\n\
   wrap(false)\n\
   setpos(minX(),0)\n\
   angle(90)\n\
@@ -597,8 +846,8 @@ function colorChangingDots () {\n\
 \n\
 demo = colorChangingDots;\n\
 '
-compassRose ='\
-// Compass Rose -- Draw a compass rose with same triangles\n\
+compass_rose ='\
+// Compass Rose -- draw a compass rose with the same triangles\n\
 \n\
 // The triangle functions could provide shading and color\n\
 \n\
@@ -729,24 +978,33 @@ function thirdTri(side) {\n\
 }\n\
 \n\
 \n\
-function boxTheCompass() {\n\
+function boxTheCompass(size) {\n\
   penup()\n\
   angle( 0)\n\
   boxedCompass=["N", "NxE", "NNE", "NExN", "NE", "NExE", "ENE", "ExN", "E", "ExS", "ESE", "SExE", "SE", "SExS", "SSE", "SxE", "S", "SxW", "SSW", "SWxS", "SW", "SWxW", "WSW", "WxS", "W", "WxN", "WNW", "NWxW", "NW", "NWxN", "NNW", "NxW"]\n\
-  textRadius = side*5.7\n\
+  textRadius = size/14  * 5.6\n\
   for (i=0; i<32; i++) {\n\
   \n\
     forward (textRadius)\n\
     right(90)\n\
-    textLen = boxedCompass[i].length*10/2\n\
-    backward (textLen)\n\
+    //textLen = boxedCompass[i].length*10/2\n\
+   // backward (textLen)\n\
     fontSize = i % 4\n\
     if (fontSize == 1 || fontSize == 3) {\n\
-      setfont("normal 10pt Helvetica")\n\
+      pointSize = size/48\n\
+      textLen = boxedCompass[i].length*pointSize/2\n\
+      backward (textLen)\n\
+      setfont("normal " + pointSize + "pt Helvetica")\n\
     } else if (fontSize == 2) {\n\
-      setfont("bold 10pt Helvetica")\n\
+      pointSize = size/48\n\
+      textLen = boxedCompass[i].length*pointSize/2\n\
+      backward (textLen)\n\
+      setfont("bold " + pointSize + "pt Helvetica")\n\
     } else {\n\
-      setfont("bold 14pt Helvetica")\n\
+      pointSize = size/40\n\
+      textLen = boxedCompass[i].length*pointSize/2\n\
+      backward (textLen)\n\
+      setfont("bold " + pointSize + "pt Helvetica")\n\
     }\n\
     write(boxedCompass[i])\n\
     forward (textLen)\n\
@@ -762,7 +1020,8 @@ function demo () {\n\
   wrap(false)\n\
   hideTurtle() // do not want it to show, so do this early\n\
   redrawOnMove(false) // do not redraw image each move\n\
-  side = 40\n\
+  size = 2* Math.min(maxX(), maxY())\n\
+  side = size/14\n\
   left(22.5)\n\
   for (i=0; i<8; i++) {\n\
     thirdTri (side)\n\
@@ -774,25 +1033,26 @@ function demo () {\n\
     right(45)\n\
   }\n\
   right(22.5)\n\
-  for (i=0; i<8; i++) {\n\
+  for (i=0; i<84; i++) {\n\
     flipHalf (side)\n\
     right(45)\n\
   }\n\
   right(11.25)\n\
+  side = size/14\n\
   for (i=0; i<16; i++) {\n\
     flipPoint (side)\n\
     right(22.5)\n\
   }\n\
 \n\
-  boxTheCompass()\n\
+  boxTheCompass(size)\n\
   //redrawOnMove(true)\n\
   draw() // just to render the final product\n\
 }\n\
 \n\
 demo()\n\
 '
-compassRoseQuilt ='\
-// Compass Rose Quilt -- Compass Rose with Polygons\n\
+compass_rose_quilt ='\
+// Compass Rose Quilt -- draw a compass rose quilt\n\
 \n\
 //### CONTROLING VARIABLES\n\
 //number of main divisions of the directional triangles\n\
@@ -903,7 +1163,7 @@ function flipSplitTri( outerSide, num, foreColor, triSide) {\n\
 }\n\
 \n\
 \n\
-function labelPoints(col) {\n\
+function labelPoints(size) {\n\
   penup()\n\
   angle( 0)\n\
   boxedCompass=["N", "NxE", "NNE", "NExN", "NE", "NExE", "ENE", "ExN", "E", "ExS", "ESE", "SExE", "SE", "SExS", "SSE", "SxE", "S", "SxW", "SSW", "SWxS", "SW", "SWxW", "WSW", "WxS", "W", "WxN", "WNW", "NWxW", "NW", "NWxN", "NNW", "NxW"]\n\
@@ -911,22 +1171,29 @@ function labelPoints(col) {\n\
   // fill in the compass background\n\
 \n\
   //textRadius = side*5.7\n\
-  textRadius = side*1.9\n\
+  textRadius = size*.88\n\
   color( compassTextColor)\n\
 \n\
   for (i=0; i<32; i++) {\n\
   \n\
     forward (textRadius)\n\
     right(90)\n\
-    textLen = boxedCompass[i].length*10/2\n\
-    backward (textLen)\n\
     fontSize = i % 4\n\
     if (fontSize == 1 || fontSize == 3) {\n\
-      setfont("normal 10pt Helvetica")\n\
+      pointSize = size *.04\n\
+      textLen = boxedCompass[i].length * pointSize/2\n\
+      backward (textLen)\n\
+      setfont("normal " + pointSize + "pt Helvetica")\n\
     } else if (fontSize == 2) {\n\
-      setfont("bold 10pt Helvetica")\n\
+      pointSize = size *.04\n\
+      textLen = boxedCompass[i].length * pointSize/2\n\
+      backward (textLen)\n\
+      setfont("bold " + pointSize + "pt Helvetica")\n\
     } else {\n\
-      setfont("bold 14pt Helvetica")\n\
+      pointSize = size *.06\n\
+      textLen = boxedCompass[i].length * pointSize/2\n\
+      backward (textLen)\n\
+      setfont("bold " + pointSize + "pt Helvetica")\n\
     }\n\
     write(boxedCompass[i])\n\
     forward (textLen)\n\
@@ -938,13 +1205,16 @@ function labelPoints(col) {\n\
 \n\
 \n\
 function demo () {\n\
-  side = 120\n\
   reset()\n\
+  size = .9 * Math.min( maxX(), maxY()) //120\n\
+console.log("size "+ size)\n\
   wrap(false)\n\
   hideTurtle() // don"t want it to show,  do this early\n\
   redrawOnMove(false) // don"t redraw image each move\n\
 \n\
   // fill in the background\n\
+  background( backgroundColor)\n\
+/*\n\
   goto( minX()+1, maxY()-1)\n\
   right( 90)\n\
   beginShape()\n\
@@ -956,19 +1226,21 @@ function demo () {\n\
   right( 90)\n\
   forward( 2 * maxY()-2)\n\
   fillShape( backgroundColor)\n\
+*/\n\
 \n\
   //fill in the compass background\n\
   goto(0,0)\n\
   color( compassBackgroundColor)\n\
   beginShape()\n\
-  circle (side * 2.1)\n\
-  fillShape( \n\
-     compassBackgroundColor)\n\
+  circle (size)\n\
+  fillShape( compassBackgroundColor)\n\
+\n\
 \n\
   //fill in the eight compass major points\n\
   goto(0,0)\n\
   angle(0)\n\
   left(22.5)\n\
+  side = size * .47\n\
   for (i=0; i<8; i++) {\n\
     splitTri (side, mainDivisions, indexColor( i, inner8Colors))\n\
     flipSplitTri( side, mainDivisions, indexColor( i, outer8Colors))\n\
@@ -1001,13 +1273,13 @@ function demo () {\n\
     right(22.5)\n\
   }\n\
 \n\
-  labelPoints()\n\
+  labelPoints( size)\n\
 \n\
   //redrawOnMove(true)\n\
   draw() // just to render the final product\n\
 }\n\
 '
-conwayFractal ='\
+conway_fractal ='\
 // Conway Fractal -- Conway\'s pinwheel tessellation as a fractal\n\
 // the British mathematician John Conway devised a tesselation using triagles\n\
 // that has no periodicity called the pinwheel tesselation.  This is a fractal\n\
@@ -1293,6 +1565,7 @@ function demo() {\n\
   // initialize\n\
   reset()\n\
   wrap(false)\n\
+  hideTurtle()\n\
   penup()\n\
   backward (side/4)\n\
   right(90)\n\
@@ -1330,7 +1603,7 @@ function demo() {\n\
   delay( delayedDivide, 3000)\n\
 }\n\
 '
-conwayPinwheel ='\
+conway_pinwheel ='\
 // Conway Pinwheel -- Conway\'s pinwheel tessellation\n\
 // the British mathematician John Conway devised a tesselation using triagles\n\
 // that has no periodicity called the pinwheel tesselation.\n\
@@ -1657,6 +1930,7 @@ basically:\n\
   continue with a delayed expansion\n\
 */\n\
   reset()\n\
+  hideTurtle()\n\
   side = targetSide\n\
   wrap(false)\n\
   color(mainColor)\n\
@@ -1670,7 +1944,7 @@ basically:\n\
 }\n\
 '
 coordinates ='\
-//Canvas Coordinates -- draw the axes of the coordinate system on the canvas\n\
+// Coordinates -- Draw the axes of the coordinate system on the canvas\n\
 \n\
 function lines () {\n\
   clear()\n\
@@ -1740,7 +2014,7 @@ function demo() {\n\
 }\n\
 '
 dividing_circle ='\
-// Dividing a Circle -- Divide a circle with other circles\n\
+// Dividing a Circle -- divide a circle with other circles\n\
 \n\
 // *** GLOBALS ***\n\
 var i; // loop variable\n\
@@ -1783,6 +2057,7 @@ function tier () {\n\
 \n\
 function demo() {\n\
   clear();\n\
+  hideTurtle();\n\
   home();\n\
   penup();\n\
   wrap(false);\n\
@@ -1791,8 +2066,10 @@ function demo() {\n\
   delay (tier, delayTime);\n\
 }\n\
 '
-dodecahedronGraph ='\
-// Dodecahedron Graph -- 2-dimentional graph of a dodecahedron\n\
+dodecahedron_graph ='\
+// Dodecahedron Graph -- draw a 2-dimentional graph of a dodecahedron\n\
+// graph here describes the connections between vertices, more at\n\
+// Wikipedia.com\n\
 \n\
 //   This would be easier to draw to points on concentric circles\n\
 //   This is just lines and not shadable polygons\n\
@@ -1841,14 +2118,14 @@ function demo() {\n\
   hideturtle()\n\
 }\n\
 '
-dragonCurve ='\
-//  Dragon Curve -- a fractal curve formed by folding a shape onto itself\n\
+dragon_curve ='\
+//  Dragon Curve -- draw a fractal curve formed by folding a shape onto itself\n\
 //  more infomration at wikipedia  https://en.wikipedia.org/wiki/Dragon_curve\n\
 \n\
 \n\
 //*** GLOBALS ***\n\
 var gen = 0\n\
-var side = 300\n\
+var side\n\
 \n\
 \n\
 //*** CONSTANTS ***\n\
@@ -1873,12 +2150,14 @@ function caption (message) {\n\
   goto (minX()+10, minY()+10)\n\
   setheading( 90)\n\
 \n\
-  // erase wha will be in the path\n\
+  // erase what will be in the path\n\
   color ("white")\n\
   width (10)\n\
   forward (maxY() * 2 - 12)\n\
   goto (minX()+10, minY()+5)\n\
   color ("black")\n\
+\n\
+  setfont( "bold 12px Helvitica,sans-serif")\n\
   write( message)\n\
 \n\
   //go back from whence you came\n\
@@ -1917,7 +2196,8 @@ function Y (side, gen) {\n\
 \n\
 function delayedDragon () {\n\
   reset()\n\
-  goto (-side/2, 0)\n\
+  hideTurtle()\n\
+  goto (-side * .4, +side *.2)\n\
   setheading (90+ gen * 45)\n\
   pendown()\n\
   X (side, gen)\n\
@@ -1933,140 +2213,136 @@ function delayedDragon () {\n\
     \n\
 \n\
 function demo() {\n\
+  side = .9 * Math.min(maxX(), 2*maxY())\n\
   gen = 0\n\
   delayedDragon()\n\
 }  \n\
 '
-flag ='\
-// Flag -- draw an American Flag\n\
+fibinoucci ='\
+// Fibanochi sequence -- draw a set of squares illustrating a Figanochi sequence\n\
+// a Fibanochi sequence is the series 1,1,2,3,5,8,13,21,...\n\
+// This defines the Golden Ratio phi.\n\
+// it appears in nature as in the nautilus shell, pineapple, sunflower,\n\
+// pine cones.\n\
+// Originally it was thought to be the rate of reproduction of rabbits.\n\
+// More at Wikipedia.com\n\
 \n\
-\n\
-function star (size) {\n\
-  penup()\n\
-  forward(.54*size)\n\
-  turn (180-18)\n\
-  pendown()\n\
-  var i=0\n\
-  while (i<5){\n\
-    forward(size)\n\
-    right(180-36)\n\
-    i = i + 1\n\
+function box (side) {\n\
+  for (var i = 0; i<4; i++) {\n\
+    forward( side)\n\
+    right( 90)\n\
   }\n\
-  turn (180+18)\n\
-  backward(.54*size)\n\
+  forward( side)\n\
+  right( 90)\n\
+  forward( side)\n\
 }\n\
 \n\
-\n\
-function starLine(count, size, sep) {\n\
-  while (count > 0) {\n\
-    star(size)\n\
-    penup()\n\
-    right(90)\n\
-    forward (sep)\n\
-    left(90)\n\
-    pendown()\n\
-    count = count -1;\n\
-  }\n\
-}\n\
-\n\
-\n\
-function rectangle (width, height) {\n\
-  // assume x, y at upper right hand corner in and out\n\
-  // assume angle is 90 in and out\n\
-  angle (90)\n\
-  forward (width)\n\
-  right(90)\n\
-  forward (height)\n\
-  right (90)\n\
-  forward (width)\n\
-  right (90)\n\
-  forward (height)\n\
-  right (90)\n\
-}\n\
-\n\
-\n\
-function stripes (width, spacing, number) {\n\
-  //assume x, y is at right side of stripe\n\
-  //assume angle is -90\n\
-  var i = 0\n\
-  while (i<number) {\n\
-    pendown()\n\
-    forward (width)\n\
-    penup()\n\
-    // make the turn\n\
-    if (i%2 == 0) {\n\
-      left(90)\n\
-      forward(spacing)\n\
-      left(90)\n\
-    } else {\n\
-      right(90)\n\
-      forward(spacing)\n\
-      right(90)\n\
+function fib(count, side) {\n\
+  var fiblist = [1,1]\n\
+  var fibcount = 1\n\
+  while (fibcount <= count) {\n\
+    console.log("fig " + fibcount + " " + fiblist[0] + "," + fiblist[1])\n\
+    if (fibcount == 1) {\n\
+      box( side)\n\
+      console.log("box1")\n\
     }\n\
-    i = i + 1\n\
+    if (fibcount == 2) {\n\
+      box( side)\n\
+      console.log("box2")\n\
+    }\n\
+    if (fibcount >=3 ) {\n\
+      foo = fiblist[0] + fiblist[1]\n\
+      box( side * foo)\n\
+      fiblist =[fiblist[1], foo]\n\
+      console.log("box3")\n\
+    }\n\
+    fibcount = fibcount + 1\n\
   }\n\
 }\n\
 \n\
 \n\
-function flag() {\n\
-  //***Constants\n\
-  var xBase = -200 // base is upper left corner\n\
-  var yBase = 200\n\
-  var flagHeight = 250 // everything else is proportional to flagHeight\n\
-  var stripeWidth = flagHeight/13\n\
-  var flagWidth = 1.9 * flagHeight\n\
-  var fieldWidth = .76 * flagHeight\n\
-  var fieldHeight = 7 * stripeWidth\n\
-  var xSeparation = .063 * flagHeight\n\
-  var ySeparation = .054 * flagHeight\n\
-  starSize = .06 *flagHeight // star size\n\
-    \n\
-  //outline flag and field\n\
-  wrap(false)\n\
+function demo() {\n\
+  reset()\n\
+  goto(150,60)\n\
+  angle(90)\n\
   hideTurtle()\n\
-  goto (xBase, yBase)\n\
-  angle (90)\n\
-  color("black")\n\
-  width(1)\n\
-  rectangle (flagWidth, flagHeight)\n\
-  rectangle (fieldWidth, fieldHeight)\n\
+  fib( 11,4)\n\
+}\n\
+'
+first ='\
+// First Programs -- first programs in learning turtle graphics\n\
 \n\
-  //  draw stripes\n\
-  color("red");\n\
-  width(stripeWidth);\n\
-  goto (xBase+flagWidth, yBase-stripeWidth/2)\n\
-  angle (-90)\n\
-  stripes (flagWidth-fieldWidth, 2*stripeWidth, 4)\n\
-  stripes (flagWidth, 2*stripeWidth, 3)\n\
+//traditional first program, Hello World\n\
+function hi ()\n\
+{\n\
+  reset()\n\
+  write ("Hello World")\n\
+}\n\
 \n\
-  //draw field\n\
-  color("blue")\n\
-  goto (xBase+fieldWidth, yBase-stripeWidth/2)\n\
-  angle (-90)\n\
-  stripes (fieldWidth, stripeWidth, 7)\n\
 \n\
-  //draw field of stars\n\
-  angle(0)\n\
-  width (2)\n\
-  color("white")\n\
-  pendown()\n\
-  var row = 0\n\
-  while (row<9) {\n\
-   if (row % 2 == 0) {\n\
-      goto (xBase + xSeparation, yBase - (row +1) * ySeparation)\n\
-      starLine(6, starSize, xSeparation*2)\n\
-    } else {\n\
-      goto (xBase + 2* xSeparation, yBase - (row +1) * ySeparation)\n\
-      starLine(5, starSize, xSeparation * 2)\n\
-    }\n\
-    row = row + 1;\n\
+// first readable program\n\
+function hi2 ()\n\
+{\n\
+  reset()\n\
+  turn (90)\n\
+  write ("Hello World")\n\
+}\n\
+\n\
+// simple square function\n\
+function square1 ()\n\
+{\n\
+  reset()\n\
+  forward (100)\n\
+  turn(90)\n\
+  forward (100)\n\
+  turn(90)\n\
+  forward (100)\n\
+  turn(90)\n\
+  forward (100)\n\
+  turn(90)\n\
+}\n\
+\n\
+\n\
+// square with repeat\n\
+function el ()\n\
+{\n\
+  forward (100)\n\
+  turn(90)\n\
+}\n\
+\n\
+function square2 ()\n\
+{\n\
+  reset()\n\
+  repeat (4, el)\n\
+}\n\
+\n\
+// square with a while loop\n\
+function square3 () {\n\
+  var i = 0\n\
+  while (i<4) {\n\
+    forward( 100)\n\
+    turn( 90)\n\
+    i = i + 1\n\
   }\n\
 }\n\
-  \n\
-demo = flag\n\
+\n\
+// square with a for loop\n\
+// the control part of the for loop includes\n\
+// the initialization part: i = 0\n\
+// the conditional part: i<4\n\
+// the iteration part: i = i + 1 or abbreviated as i++\n\
+function square4() {\n\
+  for( var i=0; i<4; i++) {\n\
+    forward( 100)\n\
+    turn( 90)\n\
+  }\n\
+}\n\
+\n\
+// change the following to map different functions to the demo function\n\
+demo = hi\n\
 '
-gosperCurve ='\
-// Gosper curve -- a is a space filling curve named after Bill Gosper\n\
+gosper_curve ='\
+// Gosper Curve -- draw a space filling curve named after Bill Gosper\n\
 // also known as a flow snake (a Spoonerism on snow flake)\n\
 // more information at Wikipedia  https://en.wikipedia.org/wiki/Gosper_curve\n\
 \n\
@@ -2090,12 +2366,13 @@ function caption (message) {\n\
   goto (minX()+10, minY()+10)\n\
   setheading( 90)\n\
 \n\
-  // erase wha will be in the path\n\
+  // erase what will be in the path\n\
   color ("white")\n\
   width (10)\n\
   forward (maxY() * 2 - 12)\n\
   goto (minX()+10, minY()+5)\n\
   color ("black")\n\
+  setfont( "bold 12px Helvitica,sans-serif")\n\
   write( message)\n\
 \n\
   //go back from whence you came\n\
@@ -2155,10 +2432,12 @@ function B (side, gen) {\n\
 \n\
 function delayDemo () {\n\
   reset()\n\
-  goto( size/2, -size/2+60*gen)\n\
+  hideTurtle()\n\
+  size = 1.5 * Math.min(maxX(), maxY())\n\
+  goto( .5* size, (.2*gen -.6) * size)\n\
   A( size,gen)\n\
   caption ("Gosper Curve generation " + gen)\n\
-  if (gen < 4) {\n\
+  if (gen < 5) {\n\
     gen = gen + 1\n\
   } else {\n\
     gen = 0\n\
@@ -2167,15 +2446,841 @@ function delayDemo () {\n\
 }\n\
 \n\
 function demo () {\n\
-  reset()\n\
-  size = 350\n\
-  goto(size/2,-size/2+60*gen)\n\
   gen = 0\n\
   delayDemo()\n\
 }\n\
 '
-hexTesselation ='\
-// Hexagon Tessalation -- tile a surface with hexagons\n\
+graphitti ='\
+// Graphitti -- draw randomly placed coloured stripes\n\
+\n\
+//** Globals **\n\
+\n\
+var maxX =  imageContext.canvas.width/2;\n\
+var maxY =  imageContext.canvas.height/2;\n\
+var minX =  -maxX;\n\
+var minY =  -maxY;\n\
+var maxVelocity = 12;\n\
+\n\
+\n\
+function plotOne() {\n\
+  goto(random(minX, maxX), random(minY, maxY));\n\
+  color(random(16));\n\
+  angle(random(0, 180));\n\
+  width(random(1, 20));\n\
+  forward(random(10, 30));\n\
+}\n\
+\n\
+function demo () {\n\
+  reset()\n\
+  animate (plotOne, 20);\n\
+}\n\
+'
+heart ='\
+// Heart -- draw open or filled hearts\n\
+/*\n\
+algorithm:\n\
+  start with a square at 45 degrees\n\
+  add two half circles on the two upper segments\n\
+  clean up the lines\n\
+\n\
+to make invarient:\n\
+  move down 1/(square root 2) or (square root 2)/2\n\
+  draw it\n\
+  move up by same amount\n\
+\n\
+to make solid:\n\
+  fill the two half circles.\n\
+  fill the square by drawing it on one shot\n\
+*/\n\
+\n\
+function oheart(size)\n\
+{\n\
+  color("red")\n\
+  width(4)\n\
+  penup()\n\
+  backward(.707*size)\n\
+  pendown()\n\
+  left (45)\n\
+  forward(size)\n\
+  right (90)\n\
+  penup()\n\
+  forward (size/2)\n\
+  pendown()\n\
+  circle(size/2,180,false)\n\
+  penup()\n\
+  forward (size/2)\n\
+  right(90)\n\
+  forward (size/2)\n\
+  pendown()\n\
+  circle(size/2,180,false)\n\
+  penup()\n\
+  forward (size/2)\n\
+  pendown()\n\
+  right(90)\n\
+  forward (size)\n\
+  right(135)\n\
+  penup()\n\
+  forward(.707*size)\n\
+  pendown()\n\
+}\n\
+\n\
+function fheart(size, fcolor)\n\
+{\n\
+  color(fcolor)\n\
+  backward(.707*size)\n\
+  left (45)\n\
+  forward(size)\n\
+  right (90)\n\
+  forward (size/2)\n\
+  beginShape()\n\
+  circle(size/2,180,false)\n\
+  fillShape(fcolor)\n\
+  forward (size/2)\n\
+  right(90)\n\
+  forward (size/2)\n\
+  beginShape()\n\
+  circle(size/2,180,false)\n\
+  fillShape(fcolor)\n\
+  forward (size/2)\n\
+  right(90)\n\
+  forward (size)\n\
+  beginShape()\n\
+  for (i=0;i<4;i++)\n\
+  {\n\
+    right(90)\n\
+    forward(size)\n\
+  }\n\
+  fillShape(fcolor)\n\
+  right(135)\n\
+  forward(.707*size)\n\
+}\n\
+\n\
+function heart(size)\n\
+{\n\
+  color("red")\n\
+  width(4)\n\
+  penup()\n\
+  backward(.707*size)\n\
+  pendown()\n\
+  left (45)\n\
+  forward(size)\n\
+  right (90)\n\
+  penup()\n\
+  forward (size/2)\n\
+  pendown()\n\
+  beginShape()\n\
+  circle(size/2,180,false)\n\
+  fillShape("red")\n\
+  penup()\n\
+  forward (size/2)\n\
+  right(90)\n\
+  forward (size/2)\n\
+  pendown()\n\
+  beginShape()\n\
+  circle(size/2,180,false)\n\
+  fillShape("red")\n\
+  penup()\n\
+  forward (size/2)\n\
+  pendown()\n\
+  right(90)\n\
+  forward (size)\n\
+  beginShape()\n\
+  for (i=0;i<4;i++)\n\
+  {\n\
+    right(90)\n\
+    forward(size)\n\
+  }\n\
+  fillShape()\n\
+  right(135)\n\
+  penup()\n\
+  forward(.707*size)\n\
+  pendown()\n\
+}\n\
+\n\
+function demo()\n\
+{\n\
+  reset()\n\
+\n\
+  size = 50\n\
+  oheart(5 * size)\n\
+  fheart(4 * size,"red")\n\
+  fheart(3 * size,"white")\n\
+  oheart(2 * size)\n\
+  fheart(1 * size, "red")\n\
+}\n\
+'
+herring_bone_tesselation ='\
+// Herring Bone Tesselation -- tile a space using a herring bone brick laying pattern\n\
+\n\
+sSide = 15\n\
+lSide = 2* sSide \n\
+\n\
+function vRect( sSide, lSide, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<2; i++) {\n\
+    forward( sSide)\n\
+    right(90)\n\
+    forward( lSide)\n\
+    right(90)\n\
+  }\n\
+  fillShape( fColor)\n\
+  forward( sSide)\n\
+}\n\
+\n\
+function hRect( sSide, lSide, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<2; i++) {\n\
+    forward( lSide)\n\
+    right(90)\n\
+    forward( sSide)\n\
+    right(90)\n\
+  }\n\
+  fillShape( fColor)\n\
+  forward( lSide)\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  count = 0\n\
+  yB = maxY() + sSide\n\
+  xB = minX()\n\
+  wrap(false)\n\
+  right( 90)\n\
+  color("white")\n\
+\n\
+  s = 50\n\
+  while( turtle.pos.y > minY()) {\n\
+    goto (xB, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      hRect(sSide, lSide, "darkred")\n\
+      vRect(sSide, lSide, "darkred")\n\
+      penup()\n\
+      forward( sSide)\n\
+    }\n\
+    yB = yB - sSide\n\
+\n\
+    goto (xB - lSide/2, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      hRect(sSide, lSide, "darkred")\n\
+      vRect(sSide, lSide, "darkred")\n\
+      penup()\n\
+      forward( sSide)\n\
+    }\n\
+    yB = yB - sSide\n\
+\n\
+    goto (xB - lSide, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      hRect(sSide, lSide, "darkred")\n\
+      vRect(sSide, lSide, "darkred")\n\
+      penup()\n\
+      forward( sSide)\n\
+    }\n\
+    yB = yB - sSide\n\
+\n\
+    goto (xB - 3/2 * lSide, yB)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      hRect(sSide, lSide, "darkred")\n\
+      vRect(sSide, lSide, "darkred")\n\
+      penup()\n\
+      forward( sSide)\n\
+    }\n\
+    yB = yB - sSide\n\
+  }\n\
+}\n\
+'
+hexapentakis_truncated_icosahedron_asymmetric_full ='\
+// Hexapentakis-Truncated-Icosahedron-Asymmetric full -- full model for glue up\n\
+/*\n\
+this draws a model for full exapentakis truncated icosahedron.\n\
+Print this on card stock. When cutting out leave glue tabs where\n\
+appropriate, as they are not shown.\n\
+more at Wikipedia.com\n\
+*/\n\
+\n\
+//Global constants\n\
+var  centralPentaAngle = 70.72\n\
+var  basePentaAngle = 90 - centralPentaAngle/2\n\
+var  centralHexaAngle = 58.58\n\
+var  baseHexaAngle = 90 - centralHexaAngle/2\n\
+\n\
+\n\
+function penta (side, faceColor) {\n\
+  //assume pointing in direction of base and center is above\n\
+  // move around point CW\n\
+  var pentaSide = .8639 * side\n\
+\n\
+  for( i=0; i<5; i++) {\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 180-basePentaAngle)\n\
+    forward( pentaSide)\n\
+    right( 180-centralPentaAngle)\n\
+    forward( pentaSide)\n\
+    right( 180-basePentaAngle)\n\
+    fillShape(faceColor)\n\
+    forward( side)\n\
+    right( 180-(2*basePentaAngle))\n\
+  }\n\
+}\n\
+\n\
+function hexa (side, faceColor) {\n\
+  //assume pointing in direction of base and center is above\n\
+  // move around point CW\n\
+  var hexaSide = 1.022 * side\n\
+\n\
+  for( var i=0; i<6; i++) {\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 180-baseHexaAngle)\n\
+    forward( hexaSide)\n\
+    right( 180-centralHexaAngle)\n\
+    forward( hexaSide)\n\
+    right( 180-baseHexaAngle)\n\
+    fillShape(faceColor)\n\
+    forward( side)\n\
+    right( 180-(2*baseHexaAngle))\n\
+  }\n\
+}\n\
+\n\
+px = 0\n\
+py = 0\n\
+pangle = 0\n\
+\n\
+function savePos () {\n\
+  px = turtle.pos.x\n\
+  py = turtle.pos.y\n\
+  pangle = turtle.angle\n\
+}\n\
+\n\
+function restorePos() {\n\
+  turtle.pos.x = px\n\
+  turtle.pos.y = py\n\
+  turtle.angle = pangle\n\
+}\n\
+\n\
+p2x = 0\n\
+p2y = 0\n\
+p2angle = 0\n\
+\n\
+function savePos2 () {\n\
+  p2x = turtle.pos.x\n\
+  p2y = turtle.pos.y\n\
+  p2angle = turtle.angle\n\
+}\n\
+\n\
+function restorePos2() {\n\
+  turtle.pos.x = p2x\n\
+  turtle.pos.y = p2y\n\
+  turtle.angle = p2angle\n\
+}\n\
+\n\
+p3x = 0\n\
+p3y = 0\n\
+p3angle = 0\n\
+\n\
+function savePos3 () {\n\
+  p3x = turtle.pos.x\n\
+  p3y = turtle.pos.y\n\
+  p3angle = turtle.angle\n\
+}\n\
+\n\
+function restorePos3() {\n\
+  turtle.pos.x = p3x\n\
+  turtle.pos.y = p3y\n\
+  turtle.angle = p3angle\n\
+}\n\
+\n\
+p4x = 0\n\
+p4y = 0\n\
+p4angle = 0\n\
+\n\
+function savePos4 () {\n\
+  p4x = turtle.pos.x\n\
+  p4y = turtle.pos.y\n\
+  p4angle = turtle.angle\n\
+}\n\
+\n\
+function restorePos4() {\n\
+  turtle.pos.x = p4x\n\
+  turtle.pos.y = p4y\n\
+  turtle.angle = p4angle\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  side = .13* Math.min(maxX(), maxY())\n\
+  goto (1.8*side,0)\n\
+  right(80)\n\
+  penta (side, "green")\n\
+  right( (2*basePentaAngle))\n\
+  for (var i=0; i<5; i++) {\n\
+    savePos()\n\
+    // start with the base opposite of where you are now\n\
+    right(2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    right(180)\n\
+\n\
+    // draw another hexa out from where the first will be\n\
+    savePos2()\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    right(180)\n\
+    savePos3()\n\
+    hexa (side, "red")\n\
+    restorePos3()\n\
+\n\
+    //draw a penta outside of the last hexa\n\
+    forward(side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180)\n\
+    savePos4()\n\
+    penta( side, "green")\n\
+\n\
+    // draw a hexa touching last penta\n\
+\n\
+    restorePos3()\n\
+    forward( side)\n\
+    left(180-2*basePentaAngle-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180)\n\
+    hexa( side, "yellow")\n\
+\n\
+    if (i == 0) {\n\
+    restorePos4()\n\
+    forward( side)\n\
+    left( 180 - 2* baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180 - 2*baseHexaAngle)\n\
+    forward( side)\n\
+    right( 180)\n\
+    savePos4()\n\
+    hexa( side, "lightblue")\n\
+   \n\
+\n\
+    // draw a penta to oppose first\n\
+      left(-2*baseHexaAngle)\n\
+      forward( side)\n\
+      left( 180-2*baseHexaAngle)\n\
+      savePos4()\n\
+      penta(side, "green")\n\
+      restorePos4()\n\
+      forward(side)\n\
+      savePos4()\n\
+      for (var j=1; j<5; j++) {\n\
+         restorePos4()\n\
+         right( 180 - 2*basePentaAngle)\n\
+         forward( side)\n\
+         savePos4()\n\
+         left(180 - 2* baseHexaAngle)\n\
+         forward( side)\n\
+         left(180)\n\
+         hexa( side, "lightblue")\n\
+      }\n\
+\n\
+    }\n\
+\n\
+\n\
+    restorePos2()\n\
+\n\
+    // draw a penta on the free face one away\n\
+    forward( side)\n\
+    right( 180-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180)\n\
+    penta(side, "green")\n\
+    restorePos2()\n\
+\n\
+    hexa (side, "blue")\n\
+    restorePos()\n\
+    forward( side)\n\
+    left(180-(2*basePentaAngle))\n\
+  }\n\
+}\n\
+'
+hexapentakis_truncated_icosahedron_symmetric_full ='\
+// Hexapentakis-Truncated-Icosahedron Symmetric full -- full model for glue up\n\
+/*\n\
+this draws a modle for full hexapentakis truncated icosahedron\n\
+Print this on card stock. When cutting out leave glue tabs where appropriate,\n\
+as they are not shown.\n\
+more at Wikipedia.com\n\
+*/\n\
+\n\
+//Global constants\n\
+var centralPentaAngle = 70.72\n\
+var basePentaAngle = 90 - centralPentaAngle/2\n\
+var centralHexaAngle = 58.58\n\
+var baseHexaAngle = 90 - centralHexaAngle/2\n\
+var baseAngle = 90 - centralPentaAngle/2\n\
+\n\
+\n\
+function penta (side, faceColor) {\n\
+  //assume pointing in direction of base and center is above\n\
+  // move around point CW\n\
+  var pentaSide = .8639 * side\n\
+\n\
+  for( i=0; i<5; i++) {\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 180-baseAngle)\n\
+    forward( pentaSide)\n\
+    right( 180-centralPentaAngle)\n\
+    forward( pentaSide)\n\
+    right( 180-basePentaAngle)\n\
+    fillShape(faceColor)\n\
+    forward( side)\n\
+    right( 180-(2*basePentaAngle))\n\
+  }\n\
+}\n\
+\n\
+function hexa (side, faceColor) {\n\
+  //assume pointing in direction of base and center is above\n\
+  // move around point CW\n\
+  var hexaSide = 1.022 * side\n\
+\n\
+  for( var i=0; i<6; i++) {\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 180-baseHexaAngle)\n\
+    forward( hexaSide)\n\
+    right( 180-centralHexaAngle)\n\
+    forward( hexaSide)\n\
+    right( 180-baseHexaAngle)\n\
+    fillShape(faceColor)\n\
+    forward( side)\n\
+    right( 180-(2*baseHexaAngle))\n\
+  }\n\
+}\n\
+\n\
+px = 0\n\
+py = 0\n\
+pangle = 0\n\
+\n\
+function savePos () {\n\
+  px = turtle.pos.x\n\
+  py = turtle.pos.y\n\
+  pangle = turtle.angle\n\
+}\n\
+\n\
+function restorePos() {\n\
+  turtle.pos.x = px\n\
+  turtle.pos.y = py\n\
+  turtle.angle = pangle\n\
+}\n\
+\n\
+p2x = 0\n\
+p2y = 0\n\
+p2angle = 0\n\
+\n\
+function savePos2 () {\n\
+  p2x = turtle.pos.x\n\
+  p2y = turtle.pos.y\n\
+  p2angle = turtle.angle\n\
+}\n\
+\n\
+function restorePos2() {\n\
+  turtle.pos.x = p2x\n\
+  turtle.pos.y = p2y\n\
+  turtle.angle = p2angle\n\
+}\n\
+\n\
+p3x = 0\n\
+p3y = 0\n\
+p3angle = 0\n\
+\n\
+function savePos3 () {\n\
+  p3x = turtle.pos.x\n\
+  p3y = turtle.pos.y\n\
+  p3angle = turtle.angle\n\
+}\n\
+\n\
+function restorePos3() {\n\
+  turtle.pos.x = p3x\n\
+  turtle.pos.y = p3y\n\
+  turtle.angle = p3angle\n\
+}\n\
+\n\
+p4x = 0\n\
+p4y = 0\n\
+p4angle = 0\n\
+\n\
+function savePos4 () {\n\
+  p4x = turtle.pos.x\n\
+  p4y = turtle.pos.y\n\
+  p4angle = turtle.angle\n\
+}\n\
+\n\
+function restorePos4() {\n\
+  turtle.pos.x = p4x\n\
+  turtle.pos.y = p4y\n\
+  turtle.angle = p4angle\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  side = .13* Math.min(maxX(), maxY())\n\
+  goto (0,0)\n\
+  right(80)\n\
+  penta (side, "green")\n\
+  right( (2*basePentaAngle))\n\
+  for (var i=0; i<5; i++) {\n\
+    savePos()\n\
+    // start with the base opposite of where you are now\n\
+    right(2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    right(180)\n\
+\n\
+    // draw another hexa out from where the first will be\n\
+    savePos2()\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    right(180)\n\
+    savePos3()\n\
+    hexa (side, "red")\n\
+    restorePos3()\n\
+\n\
+    //draw a penta outside of the last hexa\n\
+    forward(side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180)\n\
+    savePos4()\n\
+    penta( side, "green")\n\
+\n\
+    // draw a hexa touching last penta\n\
+\n\
+    restorePos3()\n\
+    forward( side)\n\
+    left(180-2*basePentaAngle-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180)\n\
+    hexa( side, "yellow")\n\
+\n\
+    restorePos4()\n\
+    forward( side)\n\
+    left( 180 - 2* baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180 - 2*baseHexaAngle)\n\
+    forward( side)\n\
+    right( 180)\n\
+    savePos4()\n\
+    hexa( side, "lightblue")\n\
+   \n\
+\n\
+    // draw a penta to oppose first\n\
+    //restorePos4()\n\
+    if (i == 0) {\n\
+      left(-2*baseHexaAngle)\n\
+      forward( side)\n\
+      left( 180-2*baseHexaAngle)\n\
+      //forward( side)\n\
+      //right( 180-2*baseHexaAngle)\n\
+      //forward(side)\n\
+      penta(side, "green")\n\
+    }\n\
+\n\
+\n\
+    restorePos2()\n\
+\n\
+    // draw a penta on the free face one away\n\
+    forward( side)\n\
+    right( 180-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180)\n\
+    penta(side, "green")\n\
+    restorePos2()\n\
+\n\
+    hexa (side, "blue")\n\
+    restorePos()\n\
+    forward( side)\n\
+    left(180-(2*basePentaAngle))\n\
+  }\n\
+}\n\
+'
+hexapentakis_truncated_icosahedron_symmetric_half ='\
+// Hexapentakis Truncated Icosahedron half -- half model for glue up\n\
+/*\n\
+This draws a model for half a hexapentakis truncated icosahedron\n\
+Print two of these on card stock. When cutting out, leave glue tabs\n\
+where appropriate, as they are not shown.\n\
+More at Wikipedia.com\n\
+*/\n\
+\n\
+\n\
+//Global constants\n\
+var  centralPentaAngle = 70.72\n\
+var  basePentaAngle = 90 - centralPentaAngle/2\n\
+var  centralHexaAngle = 58.58\n\
+var  baseHexaAngle = 90 - centralHexaAngle/2\n\
+\n\
+\n\
+function penta (side, faceColor) {\n\
+  //assume pointing in direction of base and center is above\n\
+  // move around point CW\n\
+  var pentaSide = .8639 * side\n\
+\n\
+  for( i=0; i<5; i++) {\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 180-basePentaAngle)\n\
+    forward( pentaSide)\n\
+    right( 180-centralPentaAngle)\n\
+    forward( pentaSide)\n\
+    right( 180-basePentaAngle)\n\
+    fillShape(faceColor)\n\
+    forward( side)\n\
+    right( 180-(2*basePentaAngle))\n\
+  }\n\
+}\n\
+\n\
+function hexa (side, faceColor) {\n\
+  //assume pointing in direction of base and center is above\n\
+  // move around point CW\n\
+  var hexaSide = 1.022 * side\n\
+\n\
+  for( var i=0; i<6; i++) {\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 180-baseHexaAngle)\n\
+    forward( hexaSide)\n\
+    right( 180-centralHexaAngle)\n\
+    forward( hexaSide)\n\
+    right( 180-baseHexaAngle)\n\
+    fillShape(faceColor)\n\
+    forward( side)\n\
+    right( 180-(2*baseHexaAngle))\n\
+  }\n\
+}\n\
+\n\
+px = 0\n\
+py = 0\n\
+pangle = 0\n\
+\n\
+function savePos () {\n\
+  px = turtle.pos.x\n\
+  py = turtle.pos.y\n\
+  pangle = turtle.angle\n\
+}\n\
+\n\
+function restorePos() {\n\
+  turtle.pos.x = px\n\
+  turtle.pos.y = py\n\
+  turtle.angle = pangle\n\
+}\n\
+\n\
+p2x = 0\n\
+p2y = 0\n\
+p2angle = 0\n\
+\n\
+function savePos2 () {\n\
+  p2x = turtle.pos.x\n\
+  p2y = turtle.pos.y\n\
+  p2angle = turtle.angle\n\
+}\n\
+\n\
+function restorePos2() {\n\
+  turtle.pos.x = p2x\n\
+  turtle.pos.y = p2y\n\
+  turtle.angle = p2angle\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  hideturtle()\n\
+  side = .23 * Math.min(maxX(), maxY())\n\
+  goto (-.6* side, -.5* side)\n\
+  right(18)\n\
+  penta (side, "green")\n\
+  right( (2*basePentaAngle))\n\
+  for (var i=0; i<5; i++) {\n\
+    savePos()\n\
+    // start with the base opposite of where you are now\n\
+    right(2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    right(180)\n\
+\n\
+    // draw another hexa out from where the first will be\n\
+    savePos2()\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    left(180-2*baseHexaAngle)\n\
+    forward(side)\n\
+    right(180)\n\
+    hexa (side, "red")\n\
+\n\
+    restorePos2()\n\
+\n\
+    // draw a penta on the free face one away\n\
+    forward( side)\n\
+    right( 180-2*baseHexaAngle)\n\
+    forward( side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180-2*basePentaAngle)\n\
+    forward(side)\n\
+    left( 180)\n\
+    penta(side, "green")\n\
+    restorePos2()\n\
+\n\
+    hexa (side, "blue")\n\
+    restorePos()\n\
+    forward( side)\n\
+    left(180-(2*basePentaAngle))\n\
+  }\n\
+}\n\
+'
+hex_tesselation ='\
+// Hexagon Tesselation -- tile a surface with hexagons\n\
 \n\
 function hexagon (side) {\n\
   penup();\n\
@@ -2244,8 +3349,8 @@ function demo() {\n\
   }\n\
 }\n\
 '
-hilbertCurve ='\
-// Hilbert Curve -- a space filling fractal curve described by David Hilbert\n\
+hilbert_curve ='\
+// Hilbert Curve -- draw a space filling fractal curve described by David Hilbert\n\
 // more information at Wikipedia  https://en.wikipedia.org/wiki/Hilbert_curve\n\
 \n\
 // A → − B F + A F A + F B −\n\
@@ -2274,6 +3379,7 @@ function caption (message) {\n\
   forward (maxY() * 2 - 12)\n\
   goto (minX()+10, minY()+5)\n\
   color ("black")\n\
+  setfont("bold 12pt Ariel,sans-serif")\n\
   write( message)\n\
 \n\
   //go back from whence you came\n\
@@ -2371,10 +3477,464 @@ function demo () {\n\
   delayedHilbert()\n\
 }\n\
 '
-icosahedronGraph ='\
-// Icosahedron Graph -- two-dimensional graph of an icodahedron\n\
+hirschhorn_rotational_symmetry_pentagonal_tiling ='\
+// Hirshhorn -- Hirchshorn 6-fold-rotational symmetry pentagonal tiling\n\
 \n\
 \n\
+// CONSTRAINTS\n\
+// six ang0 = 360\n\
+//ang0 + ang1 + ang4 = 360\n\
+//ang1 + ang3 + ang3 = 360\n\
+//ang2 + ang4 + ang4 = 360\n\
+//ang0 + ang3 = ang1 ... about the inner circle\n\
+//ang2+ ang3 + ang2 + ang3 = 360\n\
+//  restated: ang2 + ang3 = 180\n\
+//\n\
+//ang0 = 60\n\
+//ang1 = ang3 + 60\n\
+//3*ang3 = 300\n\
+//ang3 = 100\n\
+//ang2 = 180 - ang3 = 180-100 = 80\n\
+//ang1 = 360 - 2*ang3 = 360 - 200 = 160\n\
+//ang4 = 360 - ang0 = ang1 = 360 - 60 - 160 = 140\n\
+\n\
+//sides\n\
+//side0 = side4\n\
+//side0 = side3\n\
+//side1 = side4\n\
+//side2 = side3\n\
+//side1 = side3\n\
+// this means that\n\
+// side0 = side4 = side3 = side2 = side1... equalateral\n\
+\n\
+ang0 = 360/6 //point angle\n\
+ang1 = 160\n\
+ang2 = 80\n\
+ang3 = 100\n\
+ang4 = 140\n\
+CCW = true\n\
+CW = false\n\
+\n\
+angles = [ang0, ang1, ang2, ang3, ang4 ]\n\
+//angles = [60, 160, 80, 100, 140 ]\n\
+\n\
+fColors = [\n\
+           "yellow",\n\
+           "orange",\n\
+           "lime",\n\
+           "red",\n\
+           "purple",\n\
+           "cyan",\n\
+           "cyan",\n\
+           "blue",\n\
+           "blue",\n\
+           "brown",\n\
+           "brown",\n\
+           "brown",\n\
+           "tan",\n\
+           "tan",\n\
+           "tan",\n\
+           "aqua",\n\
+           "aqua",\n\
+           "aqua",\n\
+           "aqua",\n\
+           "salmon",\n\
+           "salmon",\n\
+           "salmon",\n\
+           "salmon",\n\
+           "gray",\n\
+           "gray",\n\
+           "gray",\n\
+           "gray",\n\
+           "gray",\n\
+           "black",\n\
+           "black",\n\
+           "black",\n\
+           "black",\n\
+           "black",\n\
+           ]\n\
+/*\n\
+fColors = [\n\
+           "wheat",\n\
+           "tan",\n\
+           "tan",\n\
+           "wheat",\n\
+           "tan",\n\
+           "wheat",\n\
+           "wheat",\n\
+           "tan",\n\
+           "tan",\n\
+           "wheat",\n\
+           "wheat",\n\
+           "wheat",\n\
+           "tan",\n\
+           "tan",\n\
+           "tan",\n\
+           "wheat",\n\
+           "wheat",\n\
+           "wheat",\n\
+           "wheat",\n\
+           "tan",\n\
+           "tan",\n\
+           "tan",\n\
+           "tan",\n\
+           "gray",\n\
+           "gray",\n\
+           "gray",\n\
+           "gray",\n\
+           "gray",\n\
+           "black",\n\
+           "black",\n\
+           "black",\n\
+           "black",\n\
+           "black",\n\
+           ]\n\
+*/\n\
+colorlayer = 0\n\
+\n\
+function pentagon(side, fColor) {\n\
+  // direction of the point\n\
+  // invariant\n\
+  beginShape()\n\
+  left( ang0/2)\n\
+  forward( side)\n\
+  right( 180 - ang1)\n\
+  forward( side)\n\
+  right( 180 - ang2)\n\
+  forward( side)\n\
+  right( 180 - ang3)\n\
+  forward( side)\n\
+  right( 180 - ang4)\n\
+  forward( side)\n\
+  right( 180 - ang0/2)\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+function p(pNum, ccw, side, fColor) {\n\
+  if (ccw) {\n\
+    r = -1\n\
+  } else {\n\
+    r = 1\n\
+  }\n\
+  beginShape()\n\
+  left( angles[pNum]/2)\n\
+  for (var i=1; i<5; i++) {\n\
+    forward( side)\n\
+    //write( angles[(i+pNum)%5])\n\
+    right( 180 - angles[(5+r*i+pNum)%5])  \n\
+  }\n\
+  forward( side)\n\
+  right( 180 - angles[pNum]/2)\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+function hirchhorn(side) {\n\
+  for (var i=0; i<6; i++) {\n\
+    //pentagon( s, fColors[colorlayer])\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    left( 60)\n\
+  }\n\
+  colorlayer++\n\
+\n\
+  left(30)\n\
+  for (var i=0; i<6; i++) {\n\
+    forward( side)\n\
+    left( 10)\n\
+    //pentagon( s, fColors[colorlayer])\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    right( 10)\n\
+    backward( side)\n\
+    left( 60)\n\
+  }\n\
+  colorlayer++\n\
+\n\
+  for (var i=0; i<6; i++) {\n\
+    forward( side)\n\
+    right( 180 - ang1)\n\
+    forward( side)\n\
+    left( 180 - ang4 - ang4/2 )\n\
+\n\
+    p ( 4, 0, side, fColors[colorlayer])\n\
+    right( 180 - ang4 - ang4/2 )\n\
+    backward( side)\n\
+    left( 180 - ang1)\n\
+    backward(side)\n\
+    left( 60)\n\
+  }\n\
+  colorlayer++\n\
+  \n\
+  forward( side)\n\
+  right( 180 - ang1)\n\
+  forward( side)\n\
+  left( 180 - ang4)\n\
+  forward( side)\n\
+  left( 180 - ang3 - ang0/2)\n\
+  \n\
+  cl = colorlayer\n\
+  for( var i=0; i<18; i++) {\n\
+    colorlayer = cl\n\
+    p( 0, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+    right( ang0/2)\n\
+    forward( side)\n\
+    left( 180 - ang1 - ang3/2)\n\
+    p( 3, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+    right( ang3/2)\n\
+\n\
+    forward(side)\n\
+    left( 180- ang4 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    left( 180 - ang0)\n\
+    forward( side)\n\
+    right( 180 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])//purple\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    right( 180- ang1)\n\
+    forward( side)\n\
+    right( 180 - ang2 - ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    left( ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    left( 180 - ang3)\n\
+    forward( side)\n\
+    left( 180 - ang4 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    left( 180 - ang0)\n\
+    forward( side)\n\
+    right( 180 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    left( 180 - ang0)\n\
+    forward( side)\n\
+    right( 180 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    right( 180 - ang1)\n\
+    forward( side)\n\
+    right( 180 - ang2 - ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    left( ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    left( ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    left( ang2)\n\
+    forward( side)\n\
+    left( 180 - ang4 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    left( 180 - ang0)\n\
+    forward( side)\n\
+    right( 180 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    left( 180 - ang0)\n\
+    forward( side)\n\
+    right( 180 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    left( 180 - ang0)\n\
+    forward( side)\n\
+    right( 180 - ang0/2)\n\
+    p( 0, CW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    left( ang0/2)\n\
+    forward( side)\n\
+    right( 180 - ang1)\n\
+    forward( side)\n\
+    right( 180 - ang2 - ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    left( ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    left( ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    left( ang2/2)\n\
+    p( 2, CCW, side, fColors[colorlayer])\n\
+    colorlayer++\n\
+\n\
+    // and back again\n\
+    right( ang2/2)\n\
+    forward( side)\n\
+    right( 180 - ang3)\n\
+\n\
+    forward( side)\n\
+    right( 180 - ang4)\n\
+    forward( side)\n\
+\n\
+    right( 180 - ang0 - ang4)\n\
+    forward( side)\n\
+    right( 180 - ang3 - ang3)\n\
+    forward( side)\n\
+    right( 180 - ang4)\n\
+    forward( side)\n\
+\n\
+    right( 180 - ang0 - ang4)\n\
+    forward( side)\n\
+    right( 180 - ang3 - ang3)\n\
+    forward( side)\n\
+    right( 180 - ang4)\n\
+    forward( side)\n\
+\n\
+    right( 180 - ang0 - ang4)\n\
+    forward( side)\n\
+\n\
+    right( 180 - ang3 - ang1)\n\
+    forward( side)\n\
+\n\
+    right( 180 - ang0)\n\
+    forward( side)\n\
+    right( 180 - ang4 - ang0/2)\n\
+\n\
+  }\n\
+  \n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  size = .07* Math.min(maxX(), maxY())\n\
+  hirchhorn(size)\n\
+}\n\
+'
+home_plate_tesselation ='\
+// Home Plate Tesselation -- tile a space using simple pentagon\n\
+//\n\
+// this pattern could be the same as a hexagonal pattern with the hexagons\n\
+// split into two halves\n\
+//\n\
+// For more pentagonal tesselations see wikipedia\n\
+\n\
+colors = ["red", "white", "blue", "yellow", "green"]\n\
+\n\
+function pentUp( side, fColor) {\n\
+  beginShape()\n\
+  forward( side)\n\
+  left( 90)\n\
+  forward( side/2)\n\
+  left( 45)\n\
+  forward( side * .5 * Math.sqrt(2))\n\
+  left( 90)\n\
+  forward( side * .5 * Math.sqrt(2))\n\
+  left( 45)\n\
+  forward( side/2)\n\
+  left(90)\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+\n\
+function pentDown( side, fColor) {\n\
+  beginShape()\n\
+  forward( side)\n\
+  right( 90)\n\
+  forward( side/2)\n\
+  right( 45)\n\
+  forward( side * .5 * Math.sqrt(2))\n\
+  right( 90)\n\
+  forward( side * .5 * Math.sqrt(2))\n\
+  right( 45)\n\
+  forward( side/2)\n\
+  right(90)\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+\n\
+// nextColor could be completely random, if desired\n\
+function nextColor() { \n\
+  c = colors[ count % colors.length]\n\
+  count = count + 1\n\
+  return c\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  count = 0\n\
+  s = 50\n\
+  rowOffset = s/3 // offset between rows\n\
+  wrap(false)\n\
+  goto (minX(), maxY())\n\
+  right( 90)\n\
+\n\
+  s = 50\n\
+  while (turtle.pos.y > minY()) {\n\
+  while (turtle.pos.x < maxX()) {\n\
+    pentDown(s, nextColor())\n\
+    forward(s)\n\
+  }\n\
+  right(90)\n\
+  forward( 3/2*s)\n\
+  right(90)\n\
+  backward(s/2)\n\
+  while (turtle.pos.x > minX()) {\n\
+    pentDown(s, nextColor())\n\
+    forward(s)\n\
+  }\n\
+  left(180)\n\
+  }\n\
+}\n\
+'
+icosahedron_graph ='\
+// Icosahedron Graph -- draw a two-dimensional graph of an icodahedron\n\
+// graph here describes the connections between vertices, more at\n\
+// Wikipedia.com\n\
 \n\
 function pent(side) {\n\
   // the below side variable are doing trigonometry without\n\
@@ -2385,9 +3945,9 @@ function pent(side) {\n\
   var side3 = side2\n\
   var angle4 = 156.5\n\
   var side4 = 2.15 * side\n\
-  var angle5 = 30\n\
+  var angle5 = 31\n\
   var side5 = 1.27 * side\n\
-  for (var i=0; i<5; i++) {3\n\
+  for (var i=0; i<5; i++) {\n\
     color("black")\n\
     forward (side)\n\
       left(angle2)\n\
@@ -2437,13 +3997,15 @@ function pent(side) {\n\
 }\n\
 \n\
 function demo() {\n\
-  goto (-50,-22)\n\
-  right(17)\n\
-  pent(50)\n\
+  reset()\n\
+  size = .4 * Math.min( maxX(), maxY())\n\
+  //goto (-50,-22)\n\
+  //right(17)\n\
+  pent(size)\n\
   hideturtle()\n\
 }\n\
 '
-intersectionSimulator ='\
+intersection_simulator ='\
 // Intersection Simulator -- simulates a traffic intersection and its lights\n\
 /*\n\
 current problems to be fixed\n\
@@ -3648,7 +5210,9 @@ function loop() {\n\
   safetyCheck();\n\
 }\n\
  \n\
-animate(loop, 100);\n\
+function demo() {\n\
+  animate(loop, 100);\n\
+}\n\
 '
 jumping_jack ='\
 // Jumping Jack -- stick man doing jumping jacks\n\
@@ -3708,12 +5272,12 @@ to repeat in 100 ms. You could change the time to make it faster or slower.\n\
 \n\
 \n\
 // GLOBALS\n\
-  var height = 40;\n\
-  var headDiameter = .25 * height;\n\
-  var torsoLength = .3 * height;\n\
-  var neckLength = .5 * torsoLength;\n\
-  var armLength = .4 * height;\n\
-  var legLength = .5 * height;\n\
+var height;\n\
+var headDiameter;\n\
+var torsoLength;\n\
+var neckLength;\n\
+var armLength;\n\
+var legLength;\n\
 \n\
 /*\n\
   The body parts are drawn with the following asumptions\n\
@@ -3811,17 +5375,18 @@ function drawBody(armAngle, legAngle) {\n\
 var n = 0;\n\
 var direction = +1;\n\
 \n\
-function demo () {\n\
-  clear();\n\
-  home();\n\
-  hideturtle();\n\
-  n = 0;\n\
-  direction = +1;\n\
-  moveBody();\n\
-}\n\
 \n\
 function moveBody () {\n\
   clear();\n\
+  height = 40;\n\
+  height = 1.5 * Math.min( maxX(), maxY())\n\
+  headDiameter = .25 * height;\n\
+  torsoLength = .3 * height;\n\
+  neckLength = .5 * torsoLength;\n\
+  armLength = .4 * height;\n\
+  legLength = .5 * height;\n\
+  width( .05*height)\n\
+\n\
   drawBody(45 + n * (175-45)/4,\n\
     45 - n * (45-5)/4);\n\
   n = n + direction;\n\
@@ -3830,9 +5395,18 @@ function moveBody () {\n\
   }\n\
   delay(moveBody,100);\n\
 }\n\
+\n\
+\n\
+function demo () {\n\
+  reset();\n\
+  hideturtle();\n\
+  n = 0;\n\
+  direction = +1;\n\
+  moveBody();\n\
+}\n\
 '
-kochLine ='\
-// Koch Line -- draw an animated set of Koch lines\n\
+koch_line ='\
+// Koch Lines -- draw an animated set of Koch lines\n\
 \n\
 function kochLine (length, order) {\n\
   //assume drawn on the current angle\n\
@@ -3850,23 +5424,21 @@ function kochLine (length, order) {\n\
   }\n\
 }\n\
 \n\
-function kochLines (side, steps) {\n\
-  goto (-side/2, 0);\n\
-  angle(90);\n\
-  kochLine (side, i);\n\
-}\n\
-\n\
-//*** Globals ***\n\
-var i = 0;\n\
-var steps = 6;\n\
-var size = 0;\n\
 \n\
 function kochLineDelay() {\n\
+;\n\
   clear();\n\
-  kochLines (size, i);\n\
-  goto(minX(), minY());\n\
+  var side = maxY() - minY();\n\
+  if (side > maxX() - minX()) {\n\
+    side = maxX() - minX()\n\
+  }\n\
+  angle(90)\n\
+  side = .9 * side\n\
+  goto (-side/2, -1/4 * side)\n\
+  kochLine (side, i);\n\
+  goto(minX(),minY());\n\
   angle(90);\n\
-  setfont("Helvetica,san-serif 12pt")\n\
+  setfont("bold 12pt Ariel,san-serif")\n\
   write ("Koch line of order " +i);\n\
   draw();\n\
   i = i + 1;\n\
@@ -3876,15 +5448,12 @@ function kochLineDelay() {\n\
 }\n\
 \n\
 function demo() {\n\
-  size = maxY();\n\
-  if (size > maxX()) {\n\
-    size = maxX();\n\
-  }\n\
-  size = 1.6 * size; // really 80% of twice the half width\n\
-\n\
   reset();\n\
   hideturtle();\n\
+  steps = 6;\n\
+  span = 240;\n\
   i = 0;\n\
+\n\
   kochLineDelay();\n\
 }\n\
 '
@@ -3958,6 +5527,887 @@ function demo() {\n\
   kochSnowflakeDelay();\n\
 }\n\
 '
+kochTrianglesStacked ='\
+// Koch Snowflakes, Stacked -- draw an set of stacked Koch snowflakes\n\
+\n\
+\n\
+function kochLine (length, order) {\n\
+  //assume drawn on the current angle\n\
+  if (order == 0) {\n\
+    forward (length);\n\
+  } else {\n\
+    //break line and bump out to the left\n\
+    kochLine (length/3, order-1);\n\
+    left(60); \n\
+    kochLine (length/3, order-1);\n\
+    right(120); \n\
+    kochLine (length/3, order-1);\n\
+    left(60); \n\
+    kochLine (length/3, order-1);\n\
+  }\n\
+}\n\
+\n\
+\n\
+function kochSnowflake (length, order) {\n\
+  angle (30);\n\
+  goto (-length/2,-.3 * length);\n\
+  kochLine (length, order);\n\
+  right(120);\n\
+  kochLine (length, order);\n\
+  right(120);\n\
+  kochLine (length, order);\n\
+  right(120);\n\
+}\n\
+  \n\
+\n\
+function demo() {\n\
+  reset()\n\
+  size = .045* Math.min(maxX(), maxY())\n\
+  hideturtle();\n\
+  for (var i=0; i<6; i++) {\n\
+    kochSnowflake( size*(i+1)*(i+1), i)\n\
+  }\n\
+}\n\
+'
+naifeh_ajlun ='\
+// Naifah Ajlun -- inspired by the art of Steven Naifeh of the same name\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+// kite has side b and h, square has side s\n\
+// b = s + h\n\
+// either vary the angle or vary the sides\n\
+// try calulating the angle\n\
+\n\
+\n\
+function quadrangle( ){\n\
+  // start at lower left corner of outer square\n\
+  beginShape()\n\
+  forward(longSide)\n\
+  right( 180 - angleA)\n\
+  forward (longSide)\n\
+  right(90)\n\
+  forward( shortSide)\n\
+  right(180 - angleC)\n\
+  forward(shortSide)\n\
+  right(90)\n\
+  penup()\n\
+  forward( longSide + shortSide)\n\
+  right(90)\n\
+  pendown()\n\
+  fillShape("lightblue")\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  rows = 4\n\
+  columns = 5\n\
+\n\
+  side = 1.7 * Math.min(maxX()/(columns*3+1), maxY()/(rows*3+1))\n\
+console.log ("side:"+side)\n\
+\n\
+  // sides and angles of the quadrangle\n\
+  shortSide = side  // matter of convenience, could be something else\n\
+  longSide = side*2 // matter of convenience\n\
+  angleA = 2* radToDeg(Math.atan(shortSide/longSide))\n\
+  angleC = 180 - angleA\n\
+  offsetAngle = radToDeg( Math.atan( side/(shortSide + longSide)))\n\
+\n\
+  // center this more or less\n\
+  goto(-.5 * columns * (shortSide + longSide) + .4 *side, .5 * (rows-2) * (shortSide + longSide) + .4*side)\n\
+  left( offsetAngle)\n\
+  for (var k=0; k<rows; k++) {\n\
+    for (var j=0; j<columns; j++) { // across row\n\
+      for (var i=0; i<4; i++) { // around inner square\n\
+        quadrangle()\n\
+      }\n\
+      penup()\n\
+      right(90)\n\
+      forward( shortSide + longSide)\n\
+      right(90)\n\
+      forward( side)\n\
+      left(180)\n\
+      pendown()\n\
+    }\n\
+    penup()\n\
+    left( 90- offsetAngle)\n\
+    forward( columns * (shortSide + longSide)/Math.sin( degToRad( 90-offsetAngle)))\n\
+    left( offsetAngle)\n\
+    forward( side)\n\
+    left(90)\n\
+    forward( shortSide + longSide)\n\
+    left( 180)\n\
+    pendown()\n\
+    hideTurtle()\n\
+  }\n\
+}\n\
+'
+naifeh_cyrene ='\
+// Naifah Cyrene -- inspired by the art of Steven Naifeh of the same name.\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+/* need to focus on the kites to form bow ties, rather than the squares.\n\
+this may be a little harder to do, but\n\
+easier to rasterize\n\
+row of bowties\n\
+row of up and down kites\n\
+etc.\n\
+\n\
+The quadrangle must be symmetrical, in that the short sides are equal and\n\
+the long sides are equal. The ratio between the two may vary.\n\
+*/\n\
+\n\
+function bowties (count, back){\n\
+  //assume on left edge pointing up, moving to right\n\
+  // routine has invariance\n\
+  // back = 0 big end first, =1 small end first\n\
+  right( 90)\n\
+  for (var i=0; i<count; i++) {\n\
+    pendown()\n\
+    if (i % 2 == back) {\n\
+      downKite()\n\
+    } else {\n\
+      upKite()\n\
+    }\n\
+    penup()\n\
+    forward( hypoteneuse)\n\
+  }\n\
+  left(180)\n\
+  penup()\n\
+  forward( count * hypoteneuse)\n\
+  pendown()\n\
+  right(90)\n\
+}\n\
+\n\
+\n\
+function upKite() {\n\
+  //assume direction is in the axis of the kite\n\
+  beginShape()\n\
+  right( shortAngle)\n\
+  forward( longSide)\n\
+  left( 90)\n\
+  forward( shortSide)\n\
+  left( 180 - 2 * longAngle)\n\
+  forward( shortSide)\n\
+  left( 90)\n\
+  forward( longSide)\n\
+  right(180+ shortAngle)\n\
+  fillShape("lightblue")\n\
+}\n\
+\n\
+function downKite() {\n\
+  //assume direction is in the axis of the kite\n\
+  beginShape()\n\
+  right( longAngle)\n\
+  forward( shortSide)\n\
+  left( 90)\n\
+  forward( longSide)\n\
+  left(180 - 2 * shortAngle)\n\
+  forward( longSide)\n\
+  left( 90)\n\
+  forward( shortSide)\n\
+  right( 180 + longAngle)\n\
+  fillShape("lightblue")\n\
+}\n\
+\n\
+function kites( count, back) {\n\
+  //assume pointing up, perpendicular to flow\n\
+  // routine has invariance\n\
+  left(180)\n\
+  for( var i=0; i<count; i++) {\n\
+    pendown()\n\
+    if (i % 2 == back) {\n\
+      downKite()\n\
+    } else {\n\
+      upKite()\n\
+    }\n\
+\n\
+    penup()\n\
+    left(90)\n\
+    forward( hypoteneuse)\n\
+    right(90)\n\
+    pendown()\n\
+  }\n\
+  penup()\n\
+  right(90)\n\
+  forward( count * hypoteneuse)\n\
+  right(90)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  hideturtle()\n\
+  side = 2.5 * Math.min( maxX()/9, maxY()/8)\n\
+\n\
+  //side = 50 // size of the basic block not the inner square\n\
+  ratio = 2 // ratio of long side to short side of the quadragon.\n\
+  verticalCount = 7\n\
+  horizontalCount = 8\n\
+\n\
+  longSide = side * ratio / (1 + ratio)\n\
+  shortSide = side - longSide\n\
+\n\
+  hypoteneuse = Math.sqrt(longSide * longSide + shortSide * shortSide)\n\
+\n\
+  shortAngle = radToDeg(Math.atan(shortSide/longSide))\n\
+  longAngle = 90 - shortAngle\n\
+\n\
+  // center the figure\n\
+  penup()\n\
+  forward (side * horizontalCount * 1.3 / 4)\n\
+  left(90)\n\
+  forward (side * verticalCount * 1.7 /4)\n\
+  right(90)\n\
+  pendown()\n\
+\n\
+  for (var i=0; i<verticalCount; i++) {\n\
+    bowties( horizontalCount, i % 2)\n\
+    kites( horizontalCount+1, 1 - (i % 2)) // change 1 to 0 and 0 to 1\n\
+    penup()\n\
+    right(180)\n\
+    forward( hypoteneuse)\n\
+    right(180)\n\
+    pendown()\n\
+  }\n\
+  bowties( horizontalCount,i%2) // row across bottom to be neat\n\
+}\n\
+'
+naifeh_jeresh ='\
+// Naifah Jeresh -- inspired by the art of Steven Naifeh of the same name\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+// this figure has some issues. To get the line weights to change\n\
+// you must stroke the entire figure after it is filled.\n\
+\n\
+\n\
+// GLOBALS\n\
+// \n\
+var sColor = "black"  // stroke color\n\
+var sWidth = 3        // stroke width\n\
+var fColor = "white"  // fill color\n\
+var bColor = "green"  // background color\n\
+\n\
+// FUNCTIONS\n\
+//\n\
+function tri( side, pointAngle, fill) {\n\
+  if (fill) {\n\
+    beginShape()\n\
+  }\n\
+  for (var i=0; i<3; i++) {\n\
+    forward( side)\n\
+    left(60 - pointAngle)\n\
+    forward( side)\n\
+    right( 180 - pointAngle)\n\
+  }\n\
+  if (fill) {\n\
+    fillShape(fColor)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function jeresh (sid, pAngle, fill) {\n\
+  for (var i=0;i<6;i++) {\n\
+    pendown()\n\
+    tri( sid, pAngle, fill)\n\
+\n\
+    var tx = turtle.pos.x\n\
+    var ty = turtle.pos.y\n\
+    var tHeading = turtle.angle\n\
+    penup()\n\
+    forward( sid)\n\
+    left( 60 - pAngle)\n\
+    forward( sid)\n\
+    right( 180 - pAngle)\n\
+    forward( sid)\n\
+    left( 60)\n\
+\n\
+    for (var j=0; j<3; j++) {\n\
+      pendown()\n\
+      tri(sid, pAngle, fill)\n\
+      penup()\n\
+      forward(sid)\n\
+      left(60)\n\
+    }\n\
+    goto(tx,ty)\n\
+\n\
+    turtle.angle=tHeading\n\
+    penup()\n\
+    forward( sid)\n\
+    left(60)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  /* can vary point angle.\n\
+  0 and 120 is a hex tesselation\n\
+  60 and 180 are triangles\n\
+  90\n\
+  negative numbers have overlap, so\n\
+  something is not quite right\n\
+  */\n\
+  reset()\n\
+  penup()\n\
+  var pointAngle = 30\n\
+  var side = 60\n\
+  side = .2* Math.min( maxX(), maxY())\n\
+  //center a bit\n\
+  goto (side, -.3 * side)\n\
+\n\
+  background(bColor)\n\
+  color( sColor)\n\
+  width( 1)\n\
+  jeresh( side, pointAngle, true)\n\
+  width( 3)\n\
+  jeresh( side, pointAngle, false)\n\
+\n\
+  hideTurtle()\n\
+}\n\
+'
+naifeh_mamluk ='\
+// Naifeh Mamluk -- inspired by the art of Steven Naifeh of same name\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+\n\
+function decagon(s, fcolor) {\n\
+  // position at base of the decagon  parallel to bottom\n\
+  // invariant\n\
+  // note:\n\
+  //   this shape basically replaces a hexagon,\n\
+  //   but only with two sides.\n\
+  //   the cutouts are for an outscribed rectangle\n\
+  //   2*side by sqrt(3)*side\n\
+\n\
+  beginShape()\n\
+  forward( s)\n\
+  left( 120)\n\
+  forward( d1)\n\
+  right( 90)\n\
+  forward( d2)\n\
+  left( 120)\n\
+  forward( d2)\n\
+  right(90)\n\
+  forward(d1)\n\
+  left(120)\n\
+  forward( s)\n\
+\n\
+  left( 120)\n\
+  forward( d1)\n\
+  right( 90)\n\
+  forward( d2)\n\
+  left( 120)\n\
+  forward( d2)\n\
+  right(90)\n\
+  forward(d1)\n\
+  left(120)\n\
+  fillShape( fcolor)\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap( false)\n\
+  right(90)\n\
+  side = 40\n\
+  side = .25 * Math.min( maxX(), maxY())\n\
+  goto (-.5* side, side)\n\
+\n\
+  //derived distances\n\
+  d1 = side/2\n\
+  d2 = side * Math.sqrt(3)/2\n\
+\n\
+  for( var i=0; i<6; i++) {\n\
+    decagon( side, "blue")\n\
+\n\
+    penup()\n\
+    left(90)\n\
+    forward( Math.sqrt(3) * side)\n\
+    left(30)\n\
+    pendown()\n\
+\n\
+    decagon( side, "blue")\n\
+\n\
+    penup()\n\
+    left(150)\n\
+    forward( Math.sqrt(3) * side)\n\
+    left( 90)\n\
+    pendown()\n\
+\n\
+    forward( side)\n\
+    right( 60)\n\
+  }\n\
+  hideturtle()\n\
+}\n\
+'
+naifeh_mizen6 ='\
+// Naifeh Mizen Six -- inspired by the art of Steven Naifeh of the same name\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+function v (side, fColor) {\n\
+  // assume pointing up at upper left corner\n\
+  // invariant\n\
+  if (fColor != "") {\n\
+    beginShape()\n\
+  }\n\
+  left( 30)\n\
+  forward( 3*side)\n\
+  right( 120)\n\
+  forward( side)\n\
+  right(60)\n\
+  forward(side)\n\
+  left( 120)\n\
+  forward( side)\n\
+  right(60)\n\
+  forward( side)\n\
+  right( 120)\n\
+  forward( 3*side)\n\
+  right(150)\n\
+  if (fColor != "") {\n\
+    fillShape(fColor)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function mizen( side, lColor, fColor) {\n\
+  // assume pointing up at upper left corner\n\
+  // ends up rotated 120 CW at same point\n\
+  color(lColor)\n\
+  right(120)\n\
+  for (var i=0; i<6; i++) {\n\
+    v( side, fColor)\n\
+    penup()\n\
+    right(30)\n\
+    forward( side)\n\
+    left( 60)\n\
+    forward( 2*side)\n\
+    left(30)\n\
+    pendown()\n\
+    v( side, fColor)\n\
+\n\
+    penup()\n\
+    right(30)\n\
+    forward( 2*side)\n\
+    right( 150)\n\
+    pendown()\n\
+    v( side, fColor)\n\
+\n\
+    penup()\n\
+    right(30)\n\
+    forward( side)\n\
+    right(120)\n\
+    forward( 4*side)\n\
+    right(150)\n\
+    pendown()\n\
+  }\n\
+}\n\
+\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  //center canvas more or less\n\
+  side = 10 // 1/2 basic face of hexagon, width...\n\
+  side = .08 * Math.min( maxX(), maxY())\n\
+  penup()\n\
+  goto (-8*side, 9*side)\n\
+  //angle(120)\n\
+  for (var j=0; j<6; j++) {\n\
+    mx = turtle.pos.x\n\
+    my = turtle.pos.y\n\
+    ma = turtle.angle\n\
+    penwidth(0)\n\
+    mizen( side, "white", "blue")\n\
+\n\
+    // do it again for the border lines\n\
+    goto( mx, my)\n\
+    angle( radToDeg( ma))\n\
+    penwidth(.1 * side)\n\
+    mizen( side, "white", "")\n\
+\n\
+    penup()\n\
+    left(30)\n\
+    forward (13 * side)\n\
+    left(120)\n\
+    forward( 3*side)\n\
+    right(90)\n\
+    pendown()\n\
+  }\n\
+  //hideturtle()\n\
+}\n\
+'
+naifeh_mizen ='\
+// Naifeh Mizen Simple -- inspired by the are of Steven Naifeh of the same name\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+\n\
+function v (side, fColor) {\n\
+  // assume pointing up at upper left corner\n\
+  // invariant\n\
+  if (fColor != "") {\n\
+    beginShape()\n\
+  }\n\
+  left( 30)\n\
+  forward( 3*side)\n\
+  right( 120)\n\
+  forward( side)\n\
+  right(60)\n\
+  forward(side)\n\
+  left( 120)\n\
+  forward( side)\n\
+  right(60)\n\
+  forward( side)\n\
+  right( 120)\n\
+  forward( 3*side)\n\
+  right(150)\n\
+  if (fColor != "") {\n\
+    fillShape(fColor)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function mizen( side, lColor, fColor) {\n\
+  color(lColor)\n\
+  right(120)\n\
+  for (var i=0; i<6; i++) {\n\
+    v( side, fColor)\n\
+    penup()\n\
+    right(30)\n\
+    forward( side)\n\
+    left( 60)\n\
+    forward( 2*side)\n\
+    left(30)\n\
+    pendown()\n\
+    v( side, fColor)\n\
+\n\
+    penup()\n\
+    right(30)\n\
+    forward( 2*side)\n\
+    right( 150)\n\
+    pendown()\n\
+    v( side, fColor)\n\
+\n\
+    penup()\n\
+    right(30)\n\
+    forward( side)\n\
+    right(120)\n\
+    forward( 4*side)\n\
+    right(150)\n\
+    pendown()\n\
+  }\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  side = 40 // 1/2 basic face of hexagon, width...\n\
+  side = .15 * Math.min( maxX(), maxY())\n\
+  bColor = "red"\n\
+  lColor = "white"\n\
+  width = 3\n\
+\n\
+  //center canvas more or less\n\
+  goto(-5*side, 3.5*side)\n\
+  angle(0)\n\
+  mizen( side, "black", "red")\n\
+\n\
+  // do again to make lines stand out\n\
+  goto(-5*side, 3.5*side)\n\
+  angle(0)\n\
+  mizen( side, "white", "")\n\
+\n\
+\n\
+  hideturtle()\n\
+}\n\
+'
+naifeh_petra ='\
+// Naifeh Petra -- inspired by the art of Steven Naifeh of the same name\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+/* want to do this in a rasterized way\n\
+row of backslashs\n\
+row of dashs\n\
+row of slashes\n\
+\n\
+This does not support using a wider pen width.\n\
+*/\n\
+\n\
+function backslash (fColor) {\n\
+  // assume pointing up at upper left corner\n\
+  // invariant\n\
+  beginShape()\n\
+  right( 150)\n\
+  forward( 2*size)\n\
+  left( 120)\n\
+  forward( size)\n\
+  left( 60)\n\
+  forward( 2* size)\n\
+  left( 120)\n\
+  forward( size)\n\
+  right( 150)\n\
+  fillShape(fColor)\n\
+}\n\
+\n\
+function slash (fColor) {\n\
+  // assume pointing up at upper left corner\n\
+  // invariant\n\
+  beginShape()\n\
+  left( 150)\n\
+  forward( 2*size)\n\
+  left( 120)\n\
+  forward( size)\n\
+  left( 60)\n\
+  forward( 2* size)\n\
+  left( 120)\n\
+  forward( size)\n\
+  right( 90)\n\
+  fillShape(fColor)\n\
+}\n\
+\n\
+function dash () {\n\
+  // assume pointing up at upper left corner\n\
+  // invariant\n\
+  beginShape()\n\
+  right( 150)\n\
+  forward( size)\n\
+  left( 60)\n\
+  forward( 2*size)\n\
+  left( 120)\n\
+  forward( size)\n\
+  left( 60)\n\
+  forward( 2*size)\n\
+  right( 90)\n\
+  fillShape(fColor)\n\
+}\n\
+\n\
+function dashBackslashes(count, mode, fColor) {\n\
+  // assume pointing up at upper left corner\n\
+  // mode = 0 normal; mode =1 skip first\n\
+  // invariant\n\
+  backup = 0\n\
+  for (var i=0; i<count; i++) {\n\
+    pendown()\n\
+    if (i % 2 == 0) {\n\
+      if (mode == 0 || i != 0){\n\
+        dash()\n\
+      }\n\
+      penup()\n\
+      right(90)\n\
+      forward( 2*size)\n\
+      left(90)\n\
+      pendown()\n\
+      backup = backup + 2\n\
+    } else {\n\
+      backslash(fColor)\n\
+      penup()\n\
+      right(90)\n\
+      forward( size)\n\
+      left(90)\n\
+      pendown()\n\
+      backup = backup + 1\n\
+    }\n\
+  }\n\
+  penup()\n\
+  left(90)\n\
+  forward(backup * size)\n\
+  right(90)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function slashes(count, fColor) {\n\
+  // assume pointing up at upper left corner\n\
+  // invariant\n\
+  for (var i=0; i<count; i++) {\n\
+    slash( fColor)\n\
+    penup()\n\
+    right(90)\n\
+    forward( 3*size)\n\
+    left(90)\n\
+    pendown()\n\
+  }\n\
+  penup()\n\
+  left(90)\n\
+  forward(count * 3 * size)\n\
+  right(90)\n\
+  pendown()\n\
+  penup()\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  fColor = "blue"\n\
+  size = .17 * Math.min( maxX(), maxY())\n\
+  color("white")\n\
+  //penwidth(.1* size)\n\
+\n\
+  //center canvas more or less\n\
+  pointUp = false\n\
+  if (pointUp) {\n\
+    angle(90)\n\
+    goto (4*size, 3.5*size)\n\
+  } else {\n\
+    angle(-60)\n\
+    goto (-5.5*size, -1*size)\n\
+  }\n\
+  hideTurtle()\n\
+\n\
+  dashBackslashes(4, 0, fColor)\n\
+\n\
+  right(150)\n\
+  forward( size)\n\
+  left(150)\n\
+  slashes( 3, fColor)\n\
+\n\
+  left(150)\n\
+  forward(2*size)\n\
+  right(60)\n\
+  forward(size)\n\
+  right(90)\n\
+  dashBackslashes(6, 0, fColor)\n\
+\n\
+  right(150)\n\
+  forward(size)\n\
+  left(150)\n\
+  slashes(4, fColor)\n\
+\n\
+  left(150)\n\
+  forward(2*size)\n\
+  right(60)\n\
+  forward(size)\n\
+  right(90)\n\
+  dashBackslashes(7, 1, fColor)\n\
+\n\
+  penup()\n\
+  right(90)\n\
+  forward(3*size)\n\
+  right( 60)\n\
+  forward( size)\n\
+  left(150)\n\
+  pendown()\n\
+  slashes(3, fColor)\n\
+  \n\
+  left(150)\n\
+  forward(2*size)\n\
+  right(60)\n\
+  forward(size)\n\
+  right(90)\n\
+  dashBackslashes(5, 1, fColor)\n\
+}\n\
+'
+naifeh_saida_inverse ='\
+// Naifeh Saida Inverse -- draws the inverse of the Steven Naifeh Saida sculpture\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+\n\
+function antilayer (side, innerSide, offset) {\n\
+  left( offset)\n\
+  for (var i=0; i<8; i++){\n\
+    penup()\n\
+    forward( side)\n\
+    pendown()\n\
+  \n\
+    beginShape()\n\
+    left(45 + 22.5)\n\
+    forward(innerSide)\n\
+    left(90)\n\
+    forward(innerSide)\n\
+    left(180)\n\
+    forward(innerSide)\n\
+    right(90)\n\
+    forward(innerSide)\n\
+    left(180-22.5)\n\
+\n\
+    forward (side)\n\
+    left(135)\n\
+    forward( side)\n\
+    left(45)\n\
+    fillShape("black")\n\
+    penup()\n\
+    forward( side)\n\
+    pendown()\n\
+    left(180)\n\
+  }\n\
+  right(offset)\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  hideTurtle()\n\
+  side = .023 * Math.min( maxX(), maxY())\n\
+\n\
+  factor = Math.sqrt( 2+ Math.sqrt(2))\n\
+  //side = 10\n\
+  outside = factor * side\n\
+  antilayer( outside, side, 22.5)\n\
+  side = outside\n\
+  outside = factor * side\n\
+  antilayer( outside, side, 0)\n\
+  side = outside\n\
+  outside = factor * side\n\
+  antilayer( outside, side, 22.5)\n\
+  side = outside\n\
+  outside = factor * side\n\
+  antilayer( outside, side, 0)\n\
+  side = outside\n\
+  outside = factor * side\n\
+  antilayer( outside, side, 22.5)\n\
+}\n\
+'
+naifeh_saida ='\
+// Naifeh Saida -- inspired by the art of Steven Naifeh with the same name\n\
+// for more information see https://stevennaifeh.com\n\
+\n\
+\n\
+function square (side) {\n\
+  beginShape()\n\
+  for (var i=0; i<4; i++){\n\
+    forward(side)\n\
+    right(90)\n\
+  }\n\
+  fillShape("blue")\n\
+}\n\
+\n\
+\n\
+function layer (side, offsetAngle) {\n\
+  left( offsetAngle)\n\
+  for (var i=0; i<8; i++){\n\
+    penup()\n\
+    forward( side)\n\
+    left(45)\n\
+    pendown()\n\
+    square(side)\n\
+    penup()\n\
+    right(45)\n\
+    backward( side)\n\
+    right(45)\n\
+  }\n\
+  right(offsetAngle)\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  side = 14\n\
+  side = .033 * Math.min( maxX(), maxY())\n\
+  factor = Math.sqrt(2 + Math.sqrt( 2))\n\
+  //    side, radius, offsetAngle\n\
+  layer(      side, 0)\n\
+  side = side * factor\n\
+  layer( side, 22.5)\n\
+  side = side * factor\n\
+  layer( side, 0)\n\
+  side = side * factor\n\
+  layer( side,   22.5)\n\
+  side = side * factor\n\
+  layer( side,   0)\n\
+  hideTurtle()\n\
+}\n\
+'
 nested_hexagons ='\
 // Nested Hexagons -- draw a set of nested hexagons\n\
 \n\
@@ -3971,10 +6421,14 @@ function polygon(sides,side) {\n\
 \n\
 // draw a set of nested hexagons\n\
 function demo() {\n\
-   clear();\n\
-   goto(0,0);\n\
+   size = maxY()\n\
+   if (maxX() < size) {\n\
+     size = maxX()\n\
+   }\n\
+   steps = size/10 // 10 is the step size\n\
+   reset();\n\
    hideTurtle();\n\
-   for(step=1; step<10; step=step+1) {\n\
+   for(step=1; step < steps; step=step+1) {\n\
       color (random(16));\n\
       polygon(6,step*10);\n\
       penup();\n\
@@ -4000,7 +6454,7 @@ function square(side) {\n\
 // draw some nested squares\n\
 function nestedSquares(count) {\n\
   clear();\n\
-  home();\n\
+  goto(0,0);\n\
   hideturtle();\n\
   for (s=1; s<count*4; s=s+4) {\n\
     penup();\n\
@@ -4017,16 +6471,28 @@ function nestedSquares(count) {\n\
 }\n\
 \n\
 function demo1() {\n\
+  reset()\n\
+  size = 2* maxY()\n\
+  if (2* maxX() < size) {\n\
+    size = 2*maxX()\n\
+  }\n\
+  number = .9 * size /4  // 4 is the difference in square size\n\
   function nest25 () {\n\
-    nestedSquares (25);\n\
+    nestedSquares (size);\n\
   }\n\
   // animate a simple parameterless function\n\
-  animate( nest25 ,100);\n\
+  animate( nest25, 200);\n\
 }\n\
 \n\
 function demo() {\n\
   // animate with function needing a parameter passed\n\
-  animate( function () { nestedSquares(25)} ,100);\n\
+  reset()\n\
+  size = 2* maxY()\n\
+  if (2* maxX() < size) {\n\
+    size = 2*maxX()\n\
+  }\n\
+  number = .9 * size /4  // 4 is the difference in square size\n\
+  animate( function () { nestedSquares(number)} ,200);\n\
 }\n\
 '
 polygon ='\
@@ -4043,11 +6509,17 @@ function polygon(sides,side) {\n\
 // draw a random polygon\n\
 function demo() {\n\
    reset();\n\
+   side = maxY()\n\
+   if (maxX() < side) {\n\
+     side = maxX()\n\
+   }\n\
+   side = .4 *side\n\
+   goto(-.4 * side, -.5 * side)\n\
    hideTurtle();\n\
-   polygon(random(3,10),20);\n\
+   polygon( random( 3,10), side);\n\
 }\n\
 '
-randomStars ='\
+random_stars ='\
 // Random Stars -- draw stars randomly on the canvas\n\
 \n\
 function star (side, sColor) {\n\
@@ -4068,6 +6540,7 @@ function star (side, sColor) {\n\
 \n\
 \n\
 function demo () {\n\
+  reset()\n\
   for (i=1; i< 150; i=i+1) {\n\
     goto (random(minX(),maxX()), random( minY(),maxY()))\n\
     left(random(359))\n\
@@ -4077,7 +6550,7 @@ function demo () {\n\
 }\n\
 '
 random_stick_men ='\
-//Random Stick Men -- draw stick men randomly on the canvas\n\
+// Random Stick Men -- draw stick men randomly on the canvas\n\
 \n\
 // stick man\n\
 function stickMan (height) {\n\
@@ -4123,40 +6596,45 @@ function stickMan (height) {\n\
 }\n\
 \n\
 function demo () {\n\
-  clear();\n\
+  reset();\n\
   hideturtle();\n\
-  for (i=0; i<20; i++) {\n\
-    goto (random(-120,120),random(-120,120));\n\
+  number = 0.0005 *  maxX() * maxY() // uniform density no matter size\n\
+  for (i=0; i<number; i++) {\n\
+    goto (random( minX()+20, maxX()-20),random( minY()+20, maxY()-20));\n\
     color(random(16));\n\
     stickMan(random (30,60));\n\
   }\n\
 }\n\
 '
-randstripe ='\
-// Graphitti -- draw randomly placed coloured stripes\n\
-\n\
-//** Globals **\n\
-\n\
-var maxX =  imageContext.canvas.width/2;\n\
-var maxY =  imageContext.canvas.height/2;\n\
-var minX =  -maxX;\n\
-var minY =  -maxY;\n\
-var maxVelocity = 12;\n\
-\n\
-\n\
-function plotOne() {\n\
-  goto(random(minX, maxX), random(minY, maxY));\n\
-  color(random(16));\n\
-  angle(random(0, 180));\n\
-  width(random(1, 20));\n\
-  forward(random(10, 30));\n\
-}\n\
-\n\
+serendipitous ='\
+// Serendipitous Circles -- draw ellipses with quadratic equation\n\
+// from Byte magazine Aug 1977\n\
 function demo () {\n\
-  animate (plotOne, 20);\n\
+  reset()\n\
+  x1 = random(minX(),maxX())\n\
+  y1 = random(minY(),maxY())\n\
+  i = 0\n\
+  color ("blue")\n\
+  while (i < 100) {\n\
+    i++\n\
+    //write (x + " " + y)\n\
+    x2 = x1 - y1/2\n\
+    y2 = y1 + x2/2\n\
+    len = Math.sqrt( ((y2-y1)*(y2-y1)) + ((x2-x1)*(x2-x1)))\n\
+    dir = Math.asin( (y2-y1) / len) + Math.PI / 2\n\
+    if ( (x2-x1) < 0) {\n\
+      dir = (2 * Math.PI) - dir\n\
+    }\n\
+    //x1 = Math.floor( x2)\n\
+    //y1 = Math.floor( y2)\n\
+    x1 = x2\n\
+    y1 = y2\n\
+    angle (360 * dir / 2 / Math.PI)\n\
+    forward (len)\n\
+  }\n\
 }\n\
 '
-sierpinski ='\
+sierpinski_curve ='\
 // Sierpinski Curve -- draw a set of Sierpinski curves\n\
 \n\
 /* A Sierpinski curve is a symmetric\n\
@@ -4217,21 +6695,25 @@ function delayed() {\n\
     clear();\n\
     hideTurtle();\n\
     redrawOnMove(true);\n\
-    goto(0,-120);\n\
+    goto(0,.9*minY());\n\
 \n\
     // move start point so figure stays centered\n\
     penup();\n\
     angle(0);\n\
-    var side = 64/(i * i);\n\
-    left(45);\n\
-    forward(side * Math.sqrt(2) / 2);\n\
-    right(45);\n\
-    forward(side);\n\
+\n\
+    size = 1.8 * Math.min( maxX(), maxY())\n\
+    var sides = 4 * 2**i -3 // number of sides\n\
+    var side = size/sides;\n\
+    left(90)\n\
+    forward(side/2)\n\
+    right(90)\n\
+\n\
     pendown();\n\
 \n\
     sierpinski(side, i);\n\
-    goto (-150,-150);\n\
+    goto (minX(),minY());\n\
     angle(90);\n\
+    setfont("bold 12pt Ariel,sans-serif")\n\
     write ("Sierpinski curve of order "+ i);\n\
     draw();\n\
     i = i + 1;\n\
@@ -4240,13 +6722,82 @@ function delayed() {\n\
 }\n\
 \n\
 function demo () {\n\
-  i = 1;\n\
+  i = 0;\n\
   delayed ();\n\
 }\n\
 '
-simpleStory ='\
-// Simple Story -- Simple framework for story frames\n\
+sierpinski_triangle ='\
+// Sierpinski Triangle -- draw a recursive triangular fractal\n\
+// a recursive function is one that calls itself\n\
+function sierpinski (order, side) {\n\
+    if (order == 0) {\n\
+        beginShape()\n\
+        forward (side)\n\
+        left (120)\n\
+        forward (side)\n\
+        left (120)\n\
+        forward (side)\n\
+        left (120)\n\
+        fillShape("red")\n\
+    } else {\n\
+        penup()\n\
+        forward (side/2)\n\
+        pendown()\n\
+        sierpinski( order-1, side/2) // bottom right\n\
+        penup()\n\
+        left (120)\n\
+        forward (side/2)\n\
+        right(120)\n\
+        pendown()\n\
+        sierpinski( order-1, side/2) // top center\n\
+        penup()\n\
+        right (120)\n\
+        forward (side/2)\n\
+        left (120)\n\
+        pendown()\n\
+        sierpinski( order-1, side/2) // bottom left\n\
+    }\n\
+}\n\
 \n\
+\n\
+function delayed() {\n\
+    if (i < 7) {\n\
+        sier( i)\n\
+        i = i+1\n\
+        delay( delayed, 2000)\n\
+    }\n\
+}\n\
+\n\
+\n\
+function sier (order) {\n\
+    reset()\n\
+    hideturtle()\n\
+    side = 2* Math.min(maxX(),maxY()) -20\n\
+    penup()\n\
+    goto(-side/2, -side/2+20)\n\
+    right(90)\n\
+    pendown()\n\
+    sierpinski( order, side)\n\
+\n\
+    goto (0+10- side/2,minY()+10)\n\
+    setfont("bold 16px helvitica,sans-serif")\n\
+    write ("Sierpinski triangle of order " + order)  \n\
+}\n\
+\n\
+var i ; //global iteration variable\n\
+\n\
+function demo() {\n\
+    reset()\n\
+    i = 0\n\
+    delayed()\n\
+}\n\
+'
+simple_story ='\
+// Simple Story -- simple framework for story frames\n\
+// shows how to construct a story using frames. There is a text generator,\n\
+// "explain" that puts text on the screen, but a frame can be anything:\n\
+// a drawing, a turtle graphics image, or a turtle graphics animation\n\
+// (hopefully of a finite duration).\n\
 \n\
 //**** GLOBALS ****\n\
 \n\
@@ -4257,6 +6808,7 @@ var frameDelay = 0\n\
 //**** FUNCTIONS ****\n\
 \n\
 function explain( text) {\n\
+  // lines within the text string are separated with an at "@" character.\n\
   reset();\n\
   var width = 2* maxX();\n\
   var height = 2* maxY();\n\
@@ -4265,7 +6817,7 @@ function explain( text) {\n\
   angle(90);\n\
   setfont("bold 20px arial,sans-serif");\n\
 \n\
-  var lines = text.split("\n");\n\
+  var lines = text.split("@");\n\
   for (var i=0; i<lines.length; i++) {\n\
     console.log( lines[i])\n\
     goto (-.90 * width + maxX(), maxY() -(i+1) * .1 * height)\n\
@@ -4276,47 +6828,90 @@ function explain( text) {\n\
 }\n\
 \n\
 function textDemo () {\n\
-  explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a battle\nthat changed the history\nof the entire\nuniverse.");\n\
+  explain ("In a time@long, long ago@and a place far, far away@there was a battle@that changed the history@of the entire@universe.");\n\
 }\n\
 \n\
 function frame() {\n\
   switch (frameNumber) {\n\
   case 0:\n\
     frameDelay = 1000;\n\
-    explain ("\n\n\n\nProduced by Turtle Graphics")\n\
+    explain ("@@@@A Simple Story")\n\
     break;\n\
   case 1:\n\
-    explain ("\n\n\n\nDistributed by JavaScript and HTML")\n\
-    frameDelay = 1500;\n\
+    explain ("@@@@By a Wacky Programmer")\n\
     break;\n\
   case 2:\n\
+    explain ("@@@@Produced by Turtle Graphics")\n\
+    break;\n\
+  case 3:\n\
+    explain ("@@@@Distributed by JavaScript and HTML")\n\
+    frameDelay = 1500;\n\
+    break;\n\
+  case 4:\n\
     explain ("")\n\
     frameNumber = 9;\n\
     frameDelay = 1000;\n\
     break;\n\
   case 10:\n\
-    explain ("In a time");\n\
+    explain ("@@@@@@@@@@In a time");\n\
     break;\n\
   case 11:\n\
-    explain ("In a time\nlong, long ago");\n\
+    explain ("@@@@@@@@@In a time@long, long ago");\n\
     break;\n\
   case 12:\n\
-    explain ("In a time\nlong, long ago\nand a place far, far away");\n\
+    explain ("@@@@@@@@In a time@long, long ago@and a place far, far away");\n\
     break;\n\
   case 13:\n\
-    explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a software program");\n\
+    explain ("@@@@@@@In a time@long, long ago@and a place far, far away@there was a software program");\n\
     break;\n\
   case 14:\n\
-    explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a software program\nthat changed the history");\n\
+    explain ("@@@@@@In a time@long, long ago@and a place far, far away@there was a software program@that changed the history");\n\
     break;\n\
   case 15:\n\
-    explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a software program\nthat changed the history\nof the entire");\n\
+    explain ("@@@@@In a time@long, long ago@and a place far, far away@there was a software program@that changed the history@of the entire");\n\
     break;\n\
   case 16:\n\
-    explain ("In a time\nlong, long ago\nand a place far, far away\nthere was a software program\nthat changed the history\nof the entire\nuniverse.");\n\
+    explain ("@@@@In a time@long, long ago@and a place far, far away@there was a software program@that changed the history@of the entire@(yes, the ENTIRE).");\n\
+    break;\n\
+  case 17:\n\
+    explain ("@@@In a time@long, long ago@and a place far, far away@there was a software program@that changed the history@of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 18:\n\
+    explain ("@@In a time@long, long ago@and a place far, far away@there was a software program@that changed the history@of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 19:\n\
+    explain ("@In a time@long, long ago@and a place far, far away@there was a software program@that changed the history@of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 20:\n\
+    explain ("In a time@long, long ago@and a place far, far away@there was a software program@that changed the history@of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 21:\n\
+    explain ("long, long ago@and a place far, far away@there was a software program@that changed the history@of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 22:\n\
+    explain ("and a place far, far away@there was a software program@that changed the history@of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 23:\n\
+    explain ("there was a software program@that changed the history@of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 24:\n\
+    explain ("that changed the history@of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 25:\n\
+    explain ("of the entire@(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 26:\n\
+    explain ("(yes, the ENTIRE)@universe.");\n\
+    break;\n\
+  case 27:\n\
+    explain ("universe.");\n\
+    break;\n\
+  case 28:\n\
+    explain ("");\n\
+    frameDelay = 2000;\n\
     break;\n\
   default:\n\
-    explain("\n\n\n\n\nThe end.")\n\
+    explain("@@@@@The end.")\n\
     frameNumber = -1;\n\
     break;\n\
   }\n\
@@ -4341,9 +6936,9 @@ clear()\n\
 width(1)\n\
 goto (0,-100)\n\
 circle (80)\n\
-goto (0,60-20)\n\
+goto (0,-100+80+60)\n\
 circle (60)\n\
-goto (0,60-20+60+40)\n\
+goto (0,-100+80+60+60+40)\n\
 circle (40)\n\
 \n\
 // add the coal for the eyes, nose and mouth\n\
@@ -4398,11 +6993,11 @@ backward(30)\n\
 right(10)\n\
 forward(20)\n\
 '
-snubIcosidodecahedron ='\
-// Snub Icosidodecahedron Half Pattern -- half pattern for model of snub icosidodecahedron\n\
+snub_icosidodecahedron ='\
+// Snub Icosidodecahedron Half -- half pattern for model of snub icosidodecahedron\n\
 \n\
 /*\n\
-Print two copies of this.\n\
+Print two copies of this on card stock.\n\
 Score the lines to make it easier to fold.\n\
 Fold and glue the tabs together, so they\n\
 are inside the model. Mind the overlaps (10) and\n\
@@ -4482,10 +7077,12 @@ function rightPentagon(side) {\n\
   }\n\
 }\n\
 \n\
+\n\
 function demo() {\n\
   reset()\n\
-  goto (-50,-22)\n\
-  rightPentagon(76) // inner pentagon\n\
+  side = .25 * Math.min( maxX(), maxY())\n\
+  goto (-.666 * side, - .333 * side)\n\
+  rightPentagon(side) // inner pentagon\n\
   hideturtle()\n\
 }\n\
 '
@@ -4511,8 +7108,14 @@ function spinningSquare2() {\n\
 }\n\
 \n\
 function spinningSquare() {\n\
+  reset()\n\
   var steps = 100\n\
-  var stepSize = 200/steps\n\
+  stepSize = 2 * maxX()\n\
+  if (1.5 * maxY() < stepSize) {\n\
+    stepSize = 1.5 * maxY()\n\
+  }\n\
+  stepSize = .5 * stepSize/steps\n\
+  //var stepSize = 200/steps\n\
   color("blue");\n\
   for (var i=0; i<steps; i=i+1) {\n\
     square(stepSize*i);\n\
@@ -4526,6 +7129,7 @@ spiral ='\
 // Spiral -- demonstrate some simple spirals\n\
 \n\
 function spiral1() {\n\
+  reset()\n\
   n=0\n\
   while (n<400) {\n\
     forward(n)\n\
@@ -4535,6 +7139,7 @@ function spiral1() {\n\
 }\n\
 \n\
 function spiral2() {\n\
+  reset()\n\
   n=0\n\
   while (n<75) {\n\
     forward(n)\n\
@@ -4544,7 +7149,9 @@ function spiral2() {\n\
 }\n\
 \n\
 \n\
-function spiral() {\n\
+function spiral3() {\n\
+  reset()\n\
+  wrap(false)\n\
   n=0\n\
   while (n<40) {\n\
     forward(n)\n\
@@ -4553,7 +7160,209 @@ function spiral() {\n\
   }\n\
 }\n\
 \n\
+function spiral() {\n\
+  reset()\n\
+  wrap(false)\n\
+  n=0\n\
+  while (n<1000) {\n\
+    forward(n)\n\
+    right(15)\n\
+    n=n+.25\n\
+    // turtle.pos.x is the x position of the turtle\n\
+    // turtle.pos.y is the y position of the turtle\n\
+    x = turtle.pos.x\n\
+    y = turtle.pos.y\n\
+console.log("x:"+x+" y:"+y)\n\
+    // "||" means "or", so the following statement checks for out of bounds\n\
+    if (x>maxX() || x<minX() || y>maxY() ||y<minY()) {\n\
+console.log("exiting:")\n\
+      break; // exit the loop early\n\
+    }\n\
+  }\n\
+}\n\
+\n\
 demo = spiral;\n\
+\n\
+'
+square_lines ='\
+// Square Lines -- draw a set of overlapping squares without turns\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  side = 30\n\
+  side2 = side + side\n\
+  offset = true\n\
+  for (var i=minY(); i<maxY(); i = i + side) {\n\
+    goto(minX(),i)\n\
+    angle(90)\n\
+    if (offset) {\n\
+      penup()\n\
+      forward( side)\n\
+      pendown()\n\
+    }\n\
+    offset = !offset\n\
+    for (var j=minX(); j<maxX(); j = j + 3*side) {\n\
+      forward( side2)\n\
+      penup()\n\
+      forward( side)\n\
+      pendown()\n\
+    }\n\
+  }\n\
+\n\
+  offset = true\n\
+  for (var i=minX(); i<maxX(); i = i + side) {\n\
+    goto(i, minY())\n\
+    angle(0)\n\
+    if (offset) {\n\
+      forward( side)\n\
+    }\n\
+    offset = !offset\n\
+    for (var j=maxY(); j>minY(); j = j - 3*side) {\n\
+      penup()\n\
+      forward( side)\n\
+      pendown()\n\
+      forward( side2)\n\
+    }\n\
+  }\n\
+}\n\
+'
+square_series ='\
+// Square Series -- draw a set of overlapping squares\n\
+\n\
+// lower right is not quite right, it gets left out.\n\
+\n\
+function paddle (side) {\n\
+  side2 = side + side\n\
+  forward( side2)\n\
+  right( 90)\n\
+  forward( side)\n\
+  left( 90)\n\
+  forward( side2)\n\
+  left( 90)\n\
+  forward( side2)\n\
+  left( 90)\n\
+  forward( side2)\n\
+  left( 90)\n\
+  forward( side)\n\
+  penup()\n\
+  right( 90)\n\
+  forward( side2)\n\
+  right( 180)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function cwGroup( side) {\n\
+  for( var i=0; i<4; i++) {\n\
+    paddle( side)\n\
+    penup()\n\
+    forward( side)\n\
+    right( 90)\n\
+    pendown()\n\
+  }\n\
+}\n\
+\n\
+\n\
+function ccwGroup( side) {\n\
+  for( var i=0; i<4; i++) {\n\
+    paddle( side)\n\
+    penup()\n\
+    forward( side)\n\
+    left( 90)\n\
+    pendown()\n\
+  }\n\
+}\n\
+\n\
+\n\
+function cwRow( side) {\n\
+  for (var i=minX(); i<maxX(); i = i + 6*side) {\n\
+    setx(i)\n\
+    cwGroup( side)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function ccwRow( side) {\n\
+  for (var i=minX() + 4*side; i<maxX(); i = i + 6*side) {\n\
+                     // offset row 3 sides + 1 for cw/ccw flip\n\
+    setx(i)\n\
+    ccwGroup( side)\n\
+  }\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  wrap(false)\n\
+  side = 30\n\
+  for (var i=minY(); i<maxY(); i = i + 6*side) {\n\
+    sety(i)\n\
+    cwRow( side)\n\
+    sety(i + 3*side)\n\
+    color("red")\n\
+    ccwRow( side)\n\
+    color("black")\n\
+  }\n\
+}\n\
+'
+square_tesselation ='\
+// Square Tesselation -- tile a space using squares\n\
+\n\
+colors = ["red", "white", "blue","yellow", "green"]\n\
+\n\
+function squ( side, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<4; i++) {\n\
+    forward( side)\n\
+    right( 90)\n\
+  }\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+function squLeft( side, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<4; i++) {\n\
+    forward( side)\n\
+    left( 90)\n\
+  }\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+// nextColor could be a random function or use less colors\n\
+function nextColor() {\n\
+  c = colors[ count % colors.length]\n\
+  count = count + 1\n\
+  return c\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  count = 0\n\
+  rowOffset = s/3\n\
+  wrap(false)\n\
+  goto (minX(), maxY())\n\
+  right( 90)\n\
+\n\
+  s = 50\n\
+  while (turtle.pos.y > minY()) {\n\
+    while (turtle.pos.x < maxX()) {\n\
+      squ(s, nextColor())\n\
+      forward(s)\n\
+    }\n\
+    right(90)\n\
+    forward( s)\n\
+    right(90)\n\
+    backward(rowOffset)\n\
+    while (turtle.pos.x > minX()) {\n\
+      squLeft(s, nextColor())\n\
+      forward(s)\n\
+    }\n\
+    left(90)\n\
+    forward(s)\n\
+    left(90)\n\
+    forward(rowOffset)\n\
+  }\n\
+}\n\
 '
 squiggle ='\
 // Squiggle -- draw a random squiggle\n\
@@ -4573,7 +7382,7 @@ function squiggle(steps,angle) {\n\
 \n\
 function drawRandomSquiggle() {\n\
   colour(random(16));\n\
-  goto(random(-150,150), random(-150, 150));\n\
+  goto(random(minX(), maxX()), random(minY(), maxY()));\n\
   angle(random(0,360));\n\
   squiggle(random(100,1000), random(5,90));\n\
 }\n\
@@ -4601,6 +7410,7 @@ function star (side) {\n\
 }\n\
 \n\
 function stamps () {\n\
+  reset()\n\
   wrap(false)\n\
   var x = minX()\n\
   while (x <= maxX()) {\n\
@@ -4618,8 +7428,68 @@ function stamps () {\n\
   \n\
 demo = stamps\n\
 '
+star_burst ='\
+// Starburst -- simple example of while statement and colors\n\
+\n\
+function starburst () {\n\
+  var steps = 1000\n\
+  var len = maxX()\n\
+  if (len < maxY()) {\n\
+    len = maxY()\n\
+  }\n\
+  len = 1.5 * len\n\
+  var i = 0\n\
+  while ( i < steps) {\n\
+    goto ( 0,0)\n\
+    angle( 360/steps*i)\n\
+    color( random (16))\n\
+    //color ("hsl("+ 360 * i/steps + ", 100%, 50%)") // color wheel\n\
+    //color (i%16)\n\
+    //color (Math.floor(16 * i/steps)) // logo colors\n\
+    forward (len)\n\
+    i = i + 1\n\
+  }\n\
+}\n\
+\n\
+function demo () {\n\
+  reset()\n\
+  wrap( false)\n\
+  starburst()\n\
+} \n\
+'
+star ='\
+// Star -- draw a simple star\n\
+\n\
+function star (side) {\n\
+  penup()\n\
+  forward(.54*side)\n\
+  turn (180-18)\n\
+  pendown()\n\
+  var i=0\n\
+  while (i<5){\n\
+    forward(side)\n\
+    right(180-36)\n\
+    i = i + 1\n\
+  } \n\
+  turn (180+18)\n\
+}   \n\
+    \n\
+    \n\
+function demo () {\n\
+  reset()\n\
+  side =  1.8* Math.min( maxX(), maxY())\n\
+  beginShape()\n\
+  star ( side)\n\
+  fillShape("gold")\n\
+  hideTurtle()\n\
+}\n\
+'
 tree ='\
 // Tree Symmetrical -- draw a symmetrical tree\n\
+\n\
+//GLOBALS\n\
+var scale // varible to influence overall tree size\n\
+\n\
 \n\
 //  code inspired from a code.org lesson\n\
 function drawTree(depth, branches) {\n\
@@ -4630,7 +7500,7 @@ function drawTree(depth, branches) {\n\
    color( random( 16));\n\
    pendown();\n\
    width (depth + random(0,2));\n\
-   forward(ratio * depth);\n\
+   forward(scale* ratio * depth);\n\
    left(tilt + spread/2 + spread/branches/2);\n\
    repeat(branches, function () {\n\
      right(spread/branches);\n\
@@ -4638,7 +7508,7 @@ function drawTree(depth, branches) {\n\
    });\n\
    left(spread - tilt - spread/2 - spread/branches/2); // return to start angle\n\
    penup();\n\
-   backward (ratio * depth); // backup to start point\n\
+   backward (scale * ratio * depth); // backup to start point\n\
   }\n\
 }\n\
 \n\
@@ -4651,7 +7521,7 @@ function drawRTree(depth, branches) {\n\
    color( random( 16));\n\
    pendown();\n\
    width (depth + random(0,2));\n\
-   forward(ratio * depth);\n\
+   forward(scale * ratio * depth);\n\
    left(tilt + spread/2 + spread/branches/2);\n\
    repeat(branches, function () {\n\
      right(spread/branches);\n\
@@ -4659,43 +7529,101 @@ function drawRTree(depth, branches) {\n\
    });\n\
    left(spread - tilt - spread/2 - spread/branches/2); // return to start angle\n\
    penup();\n\
-   backward (ratio * depth); // backup to start point\n\
+   backward (scale * ratio * depth); // backup to start point\n\
   }\n\
 }\n\
 \n\
 function demo() {\n\
   reset();\n\
+  hideturtle();\n\
+  scale = .01 * Math.min( maxX(), maxY())\n\
   penup();\n\
-  backward(150);\n\
+  backward(scale * 70);\n\
   pendown();\n\
-  drawTree(6,4)\n\
+  drawRTree(6,4)\n\
 }\n\
 '
-triangleTunnel ='\
+triangle_tesselation ='\
+// Triangle Tesselation -- tile a space using triangles\n\
+\n\
+colors = ["red", "white", "blue", "yellow", "green"]\n\
+\n\
+function triUp( side, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<3; i++) {\n\
+    forward( side)\n\
+    left( 120)\n\
+  }\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+function triDown( side, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<3; i++) {\n\
+    forward( side)\n\
+    right( 120)\n\
+  }\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+// nextColor could be completely random, if desired\n\
+function nextColor() { \n\
+  c = colors[ count % colors.length]\n\
+  count = count + 1\n\
+  return c\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  count = 0\n\
+  rowOffset = s/3 // offset between rows\n\
+  wrap(false)\n\
+  goto (minX(), maxY())\n\
+  right( 90)\n\
+\n\
+  s = 50\n\
+  while (turtle.pos.y > minY()) {\n\
+  while (turtle.pos.x < maxX()) {\n\
+    triDown(s, nextColor())\n\
+    forward(s)\n\
+  }\n\
+  right(120)\n\
+  forward( s)\n\
+  right(60)\n\
+  while (turtle.pos.x > minX()) {\n\
+    triDown(s, nextColor())\n\
+    forward(s)\n\
+  }\n\
+  left(180)\n\
+  forward(rowOffset)\n\
+  }\n\
+}\n\
+'
+triangle_tunnel ='\
 // Triangle Tunnel -- animate a set of mesmerizing nested triangle for a tunnel effect\n\
-reset()\n\
-hideTurtle()\n\
+// this uses an array to hold the colors of the current triangles\n\
+\n\
+// GLOBALS\n\
+var sides = 80;\n\
+\n\
 \n\
 function triangle (side) {\n\
-  home()\n\
-  penup();\n\
-  forward (side/2);\n\
-  right(150);\n\
-  pendown();\n\
-  for (var i=0; i<3; i++) {\n\
-    forward(side);\n\
-    right(120);\n\
+  if (side < maxSide) {\n\
+    home()\n\
+    penup();\n\
+    forward (side/2);\n\
+    right(150);\n\
+    pendown();\n\
+    for (var i=0; i<3; i++) {\n\
+      forward(side);\n\
+      right(120);\n\
+    }\n\
   }\n\
 }\n\
 \n\
-var sides = 40;\n\
-var tColor = [];\n\
-\n\
-for (var i=0; i<sides; i++) {\n\
-  tColor [i] = random (15)\n\
-}\n\
 \n\
 function nestTri () {\n\
+  console.log("one more" + tColor + " sides:"+ sides)\n\
   tColor.push(random (15));\n\
   tColor.shift();\n\
   for (var i=0; i<sides; i++) {\n\
@@ -4704,7 +7632,620 @@ function nestTri () {\n\
   }\n\
 }\n\
 \n\
+\n\
 function demo () {\n\
+  reset()\n\
+  hideTurtle()\n\
+\n\
+  maxSide = 1.8* Math.min( maxX(), maxY())\n\
+  tColor = []\n\
+  for (var i=0; i<sides; i++) {\n\
+    tColor [i] = random (15)\n\
+  }\n\
   animate (nestTri,1);\n\
+}\n\
+\n\
+'
+two_square_tesselation ='\
+// Two Square Tesselation -- tile a space using two sizes of squares\n\
+\n\
+// this assumes that the smaller square is 1/2 of the larger square.\n\
+// that need not be the case\n\
+\n\
+colors = ["red", "blue", "yellow", "green"]\n\
+offsets = [0, -1, -2, -.5, -1.5]\n\
+\n\
+function squ( side, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<4; i++) {\n\
+    forward( side)\n\
+    right( 90)\n\
+  }\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+function squLeft( side, fColor) {\n\
+  beginShape()\n\
+  for (var i=0; i<4; i++) {\n\
+    forward( side)\n\
+    left( 90)\n\
+  }\n\
+  fillShape( fColor)\n\
+}\n\
+\n\
+function nextColor() {\n\
+  c = colors[ count % colors.length]\n\
+  count = count + 1\n\
+  return c\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  count = 0\n\
+  rowCount = 0\n\
+  column = minX()\n\
+  row = maxY()\n\
+  wrap(false)\n\
+  right( 90)\n\
+\n\
+  s = 50\n\
+  while( turtle.pos.y > minY()) {\n\
+    goto(minX()+offsets[ rowCount % offsets.length]*s, maxY()-rowCount*s/2+s/2)\n\
+    while( turtle.pos.x < maxX()) {\n\
+      pendown()\n\
+      squ(s, nextColor())\n\
+      penup()\n\
+      forward(s*2)\n\
+      pendown()\n\
+      squ( s/2, nextColor())\n\
+      forward( s/2)\n\
+    }\n\
+    rowCount = rowCount + 1\n\
+  }\n\
+}\n\
+'
+US_flag ='\
+// US Flag -- draw an American Flag\n\
+\n\
+function star (size) {\n\
+  penup()\n\
+  forward(.54*size)\n\
+  turn (180-18)\n\
+  pendown()\n\
+  var i=0\n\
+  beginShape()\n\
+  while (i<5){\n\
+    forward(size)\n\
+    right(180-36)\n\
+    i = i + 1\n\
+  }\n\
+  fillShape("white")\n\
+  turn (180+18)\n\
+  backward(.54*size)\n\
+}\n\
+\n\
+\n\
+function starLine(count, size, sep) {\n\
+  while (count > 0) {\n\
+    star(size)\n\
+    penup()\n\
+    right(90)\n\
+    forward (sep)\n\
+    left(90)\n\
+    pendown()\n\
+    count = count -1;\n\
+  }\n\
+}\n\
+\n\
+\n\
+function rectangle (width, height) {\n\
+  // assume x, y at upper right hand corner in and out\n\
+  // assume angle is 90 in and out\n\
+  angle (90)\n\
+  forward (width)\n\
+  right(90)\n\
+  forward (height)\n\
+  right (90)\n\
+  forward (width)\n\
+  right (90)\n\
+  forward (height)\n\
+  right (90)\n\
+}\n\
+\n\
+\n\
+function stripes (width, spacing, number) {\n\
+  //assume x, y is at right side of stripe\n\
+  //assume angle is -90\n\
+  var i = 0\n\
+  while (i<number) {\n\
+    pendown()\n\
+    forward (width)\n\
+    penup()\n\
+    // make the turn\n\
+    if (i%2 == 0) {\n\
+      left(90)\n\
+      forward(spacing)\n\
+      left(90)\n\
+    } else {\n\
+      right(90)\n\
+      forward(spacing)\n\
+      right(90)\n\
+    }\n\
+    i = i + 1\n\
+  }\n\
+}\n\
+\n\
+\n\
+function flag() {\n\
+  // ***Constants\n\
+  //var xBase = -200 // base is upper left corner\n\
+  //var yBase = 200\n\
+  //var flagHeight = 250 // everything else is proportional to flagHeight\n\
+ \n\
+  var flagHeight =  1.8 * Math.min(maxX()/1.9, maxY())\n\
+  var flagWidth = 1.9 * flagHeight\n\
+console.log("X="+2*maxX()+ " Y="+2*maxY() + " W="+flagWidth + "H="+flagHeight)\n\
+  var xBase = -flagWidth/2\n\
+  var yBase = flagHeight/2 \n\
+\n\
+  var stripeWidth = flagHeight/13\n\
+  var fieldWidth = .76 * flagHeight\n\
+  var fieldHeight = 7 * stripeWidth\n\
+  var xSeparation = .063 * flagHeight\n\
+  var ySeparation = .054 * flagHeight\n\
+  starSize = .05 *flagHeight // star size\n\
+  //outline flag and field\n\
+  reset()\n\
+  wrap(false)\n\
+  hideTurtle()\n\
+  goto (xBase, yBase)\n\
+  angle (90)\n\
+  color("black")\n\
+\n\
+  width(1)\n\
+  rectangle (flagWidth, flagHeight)\n\
+  rectangle (fieldWidth, fieldHeight)\n\
+\n\
+  //  draw stripes\n\
+  color("red");\n\
+  width(stripeWidth);\n\
+  goto (xBase+flagWidth, yBase-stripeWidth/2)\n\
+  angle (-90)\n\
+  stripes (flagWidth-fieldWidth, 2*stripeWidth, 4)\n\
+  stripes (flagWidth, 2*stripeWidth, 3)\n\
+\n\
+  //draw field\n\
+  color("blue")\n\
+  goto (xBase+fieldWidth, yBase-stripeWidth/2)\n\
+  angle (-90)\n\
+  stripes (fieldWidth, stripeWidth, 7)\n\
+\n\
+  //draw field of stars\n\
+  angle(0)\n\
+  width (2)\n\
+  color("white")\n\
+  pendown()\n\
+\n\
+  var row = 0\n\
+  while (row<9) {\n\
+   if (row % 2 == 0) {\n\
+      goto (xBase + xSeparation, yBase - (row +1) * ySeparation)\n\
+      starLine(6, starSize, xSeparation*2)\n\
+    } else {\n\
+      goto (xBase + 2* xSeparation, yBase - (row +1) * ySeparation)\n\
+      starLine(5, starSize, xSeparation * 2)\n\
+    }\n\
+    row = row + 1;\n\
+  }\n\
+}\n\
+  \n\
+demo = flag\n\
+'
+x_miura_origami ='\
+// miura origami -- fold pattern for the miura origami\n\
+\n\
+function horiz( size){\n\
+  hy = maxY()\n\
+  while (hy > minY()) {\n\
+    goto (minX(), hy)\n\
+    angle(90)\n\
+    forward( 2*maxX())\n\
+    hy = hy - size\n\
+  } \n\
+}\n\
+\n\
+function vert( size) {\n\
+  vx = minX()\n\
+  while ( vx < maxX()) {\n\
+    vy = maxY()\n\
+    while (vy > minY()) {\n\
+      goto( vx, vy)\n\
+      angle( 180 - 6)\n\
+      forward( size * Math.cos( degToRad(6)))\n\
+      right( 12)\n\
+      forward( size * Math.cos( degToRad(6)))\n\
+      vy = vy - 2 * size\n\
+\n\
+    }\n\
+    vx = vx + size\n\
+  }\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap( false)\n\
+  size = 160\n\
+  horiz( size)\n\
+  vert( size)\n\
+}\n\
+'
+x_mountain_tesselation ='\
+// mountain tesselation -- tesselation with a mountain shaped heptiamond\n\
+// a heptiamond is a shape composed of 7 equalateral triangles\n\
+//\n\
+//\n\
+//// Triangle Tesselation -- tile a space using triangles\n\
+\n\
+colors = ["red", "white", "blue", "yellow", "green"]\n\
+\n\
+function shapeUp (side) {\n\
+  // assume pointing in direction of base\n\
+  forward(3* side)\n\
+  left(120)\n\
+  forward(2*side)\n\
+  left( 120)\n\
+  forward(side)\n\
+  right( 120)\n\
+  forward( side)\n\
+  left( 120)\n\
+  forward( 2*side)\n\
+  left(120)\n\
+}\n\
+\n\
+function mu(side){ // mountain unit\n\
+  pendown()\n\
+  shapeUp(side)//1,1\n\
+  penup()\n\
+  left(60)\n\
+  forward(side)\n\
+  right(60)\n\
+  forward(5*side)\n\
+  right(180)\n\
+  pendown()\n\
+  shapeUp(side)//1,0\n\
+  penup()\n\
+\n\
+  forward(3*side)\n\
+  left(180)\n\
+  pendown()\n\
+  shapeUp(side) //0,0\n\
+\n\
+  penup()\n\
+  left(60)\n\
+  forward(2*side)\n\
+  left(120)\n\
+  pendown()\n\
+  shapeUp(side)//0,1\n\
+  forward( 3*side)\n\
+  left( 180)\n\
+  penup()\n\
+\n\
+}\n\
+\n\
+// nextColor could be completely random, if desired\n\
+function nextColor() {\n\
+  c = colors[ count % color.length]\n\
+  count = count + 1\n\
+  return c\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  side = 20\n\
+  xStart = 0\n\
+  yStart = -4.5*side\n\
+  while (turtle.pos.y < maxY()) {\n\
+    goto (maxX()+ xStart, minY()+ yStart)\n\
+    while (turtle.pos.x > minX()) {\n\
+      mu( side)\n\
+    }\n\
+    yStart = yStart + 4.5 * side\n\
+    xStart = xStart + Math.sqrt(3)/2 * side\n\
+  }\n\
+}\n\
+\n\
+'
+x_pentahexthing ='\
+// pentahex -- game pieces consisting of five hexagons in a 10x11 field\n\
+\n\
+// This sets up a pseudo interpreter. Each move is a right (r) or left (l)\n\
+// token. Each piece consists of a set of such moves to from the outline\n\
+// of the piece.\n\
+\n\
+function r() {\n\
+  forward( side)\n\
+  right( 60)\n\
+}\n\
+\n\
+function l() {\n\
+  forward( side)\n\
+  left( 60)\n\
+}\n\
+\n\
+  I5=[l,l,r,l,r,l,r,l,r,l,l,l,l,r,l,r,l,r,l,r,l,l]\n\
+  D5=[l,l,r,l,r,l,l,l,r,l,l,r,l,l,r,l]\n\
+  T5=[l,l,r,r,l,r,l,l,l,l,r,r,l,l,l,r,l,r,l,l]\n\
+  N5=[l,l,r,r,l,l,r,l,r,l,l,l,l,r,l,r,r,l,l,r,l,l]\n\
+  P5=[l,l,r,l,r,r,l,l,l,r,l,l,l,r,l,r,l,r,l,l]\n\
+  E5=[l,l,r,r,l,l,l,r,r,l,l,l,l,r,l,r,l,r,l,l]\n\
+  G5=[l,l,r,r,l,l,r,l,l,r,l,l,l,l,r,r,r,l,l,r,l,l]\n\
+  A5=[l,r,l,l,l,r,r,l,l,l,l,r,r,l,l,l,r,l]\n\
+  J5=[l,r,l,l,r,l,r,l,r,l,l,l,l,r,l,r,l,r,r,l,l,l]\n\
+  Y5=[l,l,r,l,r,r,l,l,l,l,r,r,l,l,l,l,r,r,l,r,l,l]\n\
+  X5=[l,l,r,r,l,l,l,r,l,l,l,r,r,l,l,l,r,l]\n\
+  y5=[l,l,r,r,l,l,l,l,r,r,r,l,l,l,l,r,l,l,r,r,l,l]\n\
+  u5=[l,l,r,l,r,l,l,r,l,l,l,l,r,r,r,l,l,l,r,l]\n\
+  V5=[l,l,r,l,r,l,l,l,l,r,r,r,l,l,l,l,r,l,r,l]\n\
+  U5=[l,r,l,l,r,l,l,l,l,r,r,r,r,l,l,l,l,r,l,l,r,l]\n\
+  C5=[l,l,l,r,r,l,r,r,l,l,l,l,r,l,l,r,l,r,l,l,r,l]\n\
+  q5=[l,l,r,r,l,r,l,l,l,r,l,l,l,r,r,l,l,r,l,l]\n\
+  r5=[l,l,r,l,r,r,r,l,l,l,l,r,l,l,r,l,l,r,l,r,l,l]\n\
+  L5=[l,r,l,r,l,l,l,l,r,l,r,r,l,r,l,l,l,l,r,l,r,l]\n\
+  W5=[l,l,r,r,l,l,r,r,l,l,l,l,r,l,l,r,r,l,l,r,l,l]\n\
+  S5=[l,l,l,r,r,l,r,l,l,r,l,l,l,l,r,r,l,r,l,l,r,l]\n\
+  p5=[l,l,r,l,r,l,l,r,l,l,l,r,l,l,r,r,l,l]\n\
+\n\
+function shape( bx, by, axis, turns   ) {\n\
+  // draw a shape at board position bx, by, with the piece oriented\n\
+  // on one of six axises. The shape consists of an array of turns.\n\
+  penup()\n\
+  goto( baseX, baseY)\n\
+  angle(0)\n\
+  forward( 2* by * side * Math.cos(degToRad(30)))\n\
+  right(60)\n\
+  forward( 2* bx * side * Math.cos(degToRad(30)))\n\
+  penup()\n\
+  dot()  //center of start cell\n\
+  angle(60 * axis )\n\
+  left( 180 - 30)\n\
+  forward( side)\n\
+  left (120) \n\
+  pendown()\n\
+  for (j=0; j< turns.length; j++) {\n\
+    turns[j]()\n\
+  }\n\
+  penup() // return to the start position, not really necessary\n\
+  left(60)\n\
+  forward( side)\n\
+  left( 30)\n\
+}\n\
+\n\
+function drawAll() {\n\
+  reset()\n\
+  side = 15\n\
+  baseX = -200\n\
+  baseY = -200\n\
+\n\
+  shape(0,0,0,D5)\n\
+  shape(3,0,0,u5)\n\
+  shape(6,0,0,V5)\n\
+  shape(9,0,0,r5)\n\
+  shape(12,0,0,y5)\n\
+  shape(15,0,0,L5)\n\
+  shape(0,4,0,U5)\n\
+  shape(3,4,0,Y5)\n\
+  shape(6,4,0,p5)\n\
+  shape(9,4,0,C5)\n\
+  shape(12,4,0,A5)\n\
+  shape(15,4,0,J5)\n\
+  shape(0,7,0,I5)\n\
+  shape(3,8,0,T5)\n\
+  shape(6,8,0,N5)\n\
+  shape(9,8,0,P5)\n\
+  shape(12,8,0,G5)\n\
+  shape(15,8,0,E5)\n\
+  shape(0,12,0,S5)\n\
+  shape(3,12,0,q5)\n\
+  shape(6,12,0,W5)\n\
+  shape(9,12,0,X5)\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  side = 20\n\
+  baseX = -200\n\
+  baseY = -200\n\
+\n\
+  shape(0,2,3,D5)\n\
+  shape(2,0,1,u5)\n\
+  shape(5,0,1,V5)\n\
+  shape(10,0,4,r5)\n\
+  shape(3,1,5,y5)\n\
+  shape(10,1,5,L5)\n\
+  shape(5,3,3,U5)\n\
+  shape(3,2,0,Y5)\n\
+  shape(1,3,0,X5)\n\
+  shape(0,5,0,W5)\n\
+  shape(9,2,4,q5)\n\
+  shape(5,4,5,p5)\n\
+  shape(9,3,5,S5)\n\
+  shape(10,5,4,C5)\n\
+  shape(8,6,1,A5)\n\
+  shape(8,5,4,J5)\n\
+  shape(3,7,1,I5)\n\
+  shape(0,7,0,T5)\n\
+  shape(1,9,1,N5)\n\
+  shape(3,9,1,P5)\n\
+  shape(7,8,1,G5)\n\
+  shape(7,9,1,E5)\n\
+}\n\
+'
+x_rhombic_star_tesselation ='\
+// Rhombic Star Tesselation -- a star tesselation using rhombus\n\
+\n\
+colors = ["red", "white", "blue", "yellow", "green"]\n\
+\n\
+function rh(side) {\n\
+  forward( side)\n\
+  left( 45)\n\
+  forward( side)\n\
+  left( 180-45)\n\
+  forward( side)\n\
+  left( 45)\n\
+  forward( side)\n\
+  left( 180-45)\n\
+}\n\
+\n\
+function sideBySide( count, side) {\n\
+  for( var j=0; j<count; j++) {\n\
+    pendown()\n\
+    rh( side)\n\
+    penup()\n\
+    right( (180-45)/2)\n\
+    forward( 2* side * Math.sin( degToRad( 22.5)))\n\
+    left( ( 180-45)/2)\n\
+  }\n\
+  left( ( 180-45)/2 + 45)\n\
+  forward( 2 * count * side * Math.sin( degToRad( 22.5)))\n\
+  right( (180-45)/2)\n\
+}\n\
+\n\
+function cent(side, count) {\n\
+  for( var i=0; i<8; i++) { // draw the center\n\
+    rh( side)\n\
+    left( 45)\n\
+  }\n\
+\n\
+  for( var i=0; i<8; i++) { // draw the second tier\n\
+    forward( side)\n\
+    rh( side)\n\
+    right( 45)\n\
+    rh( side)\n\
+    left(45)\n\
+    backward( side)\n\
+    left(45)\n\
+  }\n\
+\n\
+  for( var j=2; j<count; j++) { // draw the other tiers\n\
+    for( var i=0; i<8; i++) {\n\
+      forward( j*side)\n\
+      pendown()\n\
+      rh( side)\n\
+      right( 45)\n\
+      sideBySide(j, side)\n\
+      backward( j*side)\n\
+      left(45)\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+// nextColor could be completely random, if desired\n\
+function nextColor() { \n\
+  c = colors[ count % color.length]\n\
+  count = count + 1\n\
+  return c\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  cent( 20, 12)\n\
+}\n\
+'
+x_rice_penta_tesselation_1 ='\
+// rice penta tesselation 1 -- pentagon tesselation discovered by Margorie Rice\n\
+\n\
+function pr() {\n\
+  forward(sidea)\n\
+  left(180-angleB)\n\
+  forward(sideb)\n\
+  left(180-angleC)\n\
+  forward(sidec)\n\
+  left(180-angleD)\n\
+  forward(sided)\n\
+  left(180-angleE)\n\
+  forward(sidee)\n\
+  left(180-angleA)\n\
+}\n\
+\n\
+function pl() {\n\
+  forward(sidea)\n\
+  right(180-angleB)\n\
+  forward(sideb)\n\
+  right(180-angleC)\n\
+  forward(sidec)\n\
+  right(180-angleD)\n\
+  forward(sided)\n\
+  right(180-angleE)\n\
+  forward(sidee)\n\
+  right(180-angleA)\n\
+}\n\
+\n\
+\n\
+function pu() { // penta unit\n\
+  pr()\n\
+  pl()\n\
+\n\
+  forward( 2*sidea)\n\
+  left(180)\n\
+  pr()\n\
+  pl()\n\
+\n\
+\n\
+  left( angleA)\n\
+  forward( sidee)\n\
+  left( 180 - angleC)\n\
+  forward( sideb)\n\
+  left( 180- angleB)\n\
+  forward( sidea)\n\
+  right(180)\n\
+\n\
+  pl()\n\
+  pr()\n\
+\n\
+  forward( 2 * sidea)\n\
+  right(180)\n\
+  pr()\n\
+  pl()\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap( false)\n\
+  size = 10\n\
+/*\n\
+  sidea = size\n\
+  sideb = 4.9 * size\n\
+  sidec = 1.15 * size\n\
+  sided = 2 * sidea + sidec\n\
+  sidee = sided\n\
+*/\n\
+  sidea = size\n\
+  sideb = 5.9 * size // fudging to make work\n\
+  sidec = 2.8 * size // fudging to make work\n\
+  sided = sidec\n\
+  sidee = 2 * sidec\n\
+  angleA = 120\n\
+  angleB = 90\n\
+  angleC = 120\n\
+  angleD = 90\n\
+  angleE = 120\n\
+  goto (minX(), maxY())\n\
+  while (turtle.pos.y > minY()) {\n\
+    pu()\n\
+    left( angleA)\n\
+    forward( sidee)\n\
+    right( 180 - angleE)\n\
+    forward( 2* sidec)\n\
+    left( 180 - angleE)\n\
+    forward( sidec)\n\
+    right( 180 - angleD)\n\
+    forward( sided)\n\
+    left( 180- angleA)\n\
+    forward( 2* sidea)\n\
+    right( 180)\n\
+  }\n\
 }\n\
 '

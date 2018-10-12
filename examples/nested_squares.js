@@ -12,7 +12,7 @@ function square(side) {
 // draw some nested squares
 function nestedSquares(count) {
   clear();
-  home();
+  goto(0,0);
   hideturtle();
   for (s=1; s<count*4; s=s+4) {
     penup();
@@ -29,14 +29,26 @@ function nestedSquares(count) {
 }
 
 function demo1() {
+  reset()
+  size = 2* maxY()
+  if (2* maxX() < size) {
+    size = 2*maxX()
+  }
+  number = .9 * size /4  // 4 is the difference in square size
   function nest25 () {
-    nestedSquares (25);
+    nestedSquares (size);
   }
   // animate a simple parameterless function
-  animate( nest25 ,100);
+  animate( nest25, 200);
 }
 
 function demo() {
   // animate with function needing a parameter passed
-  animate( function () { nestedSquares(25)} ,100);
+  reset()
+  size = 2* maxY()
+  if (2* maxX() < size) {
+    size = 2*maxX()
+  }
+  number = .9 * size /4  // 4 is the difference in square size
+  animate( function () { nestedSquares(number)} ,200);
 }
