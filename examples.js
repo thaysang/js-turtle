@@ -722,7 +722,7 @@ function ticks(x, y, radius) {\n\
    var gap = radius - tickLen;\n\
    color("blue");\n\
    width(1);\n\
-   for (var theta = 0; theta < 360; theta += 6) {\n\
+   for (var theta = 0; theta < 360; theta = theta + 6) {\n\
       // Thicken hour marks\n\
       if (theta % 30 != 0) {\n\
          width(1/130* size);\n\
@@ -770,10 +770,10 @@ function hand (theta, w, length, col) {\n\
    goto(0, 0);\n\
    angle(theta);\n\
    color(col);\n\
-   for (var step = 0; step < length; step += stepSize) {\n\
+   for (var step = 0; step < length; step = step + stepSize) {\n\
       width(w);\n\
       forward(stepSize);\n\
-      w -= widthDelta;\n\
+      w = w - widthDelta;\n\
    }\n\
 }\n\
 \n\
@@ -1121,15 +1121,15 @@ function splitTri(outerSide, num, foreColor, triSide) {\n\
     triSide = outerSide\n\
   }\n\
   innerSide = triSide / num\n\
-  for (j = num; j >0; j -= 1) {\n\
-     for (i = 0; i <j; i += 1) {\n\
+  for (j = num; j >0; j = j - 1) {\n\
+     for (i = 0; i <j; i = i + 1) {\n\
         beginShape()\n\
         triangle (innerSide)\n\
         fillShape(foreColor)\n\
         penup()\n\
         forward(innerSide)\n\
         pendown()\n\
-     }\n\
+    }\n\
     penup()\n\
     backward( j * innerSide)\n\
     right(45)\n\
@@ -2217,6 +2217,36 @@ function demo() {\n\
   gen = 0\n\
   delayedDragon()\n\
 }  \n\
+'
+example ='\
+// example -- example of code\n\
+/* Define helper functions here\n\
+or write your own functions\n\
+including a demo() function\n\
+\n\
+For example:    */\n\
+\n\
+\n\
+function square (side) {\n\
+  var i=0\n\
+  while (i<4) {\n\
+    forward( side)\n\
+    turn(90)\n\
+    i=i+1\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+   reset();\n\
+   hideTurtle();\n\
+   color("blue");\n\
+   var side = 100;\n\
+   while (side > 0) {\n\
+      square(side);\n\
+      right(36);\n\
+      side = side - 10;\n\
+   }\n\
+}\n\
 '
 fibinoucci ='\
 // Fibanochi sequence -- draw a set of squares illustrating a Figanochi sequence\n\
@@ -7099,11 +7129,14 @@ function square (side) {\n\
 }\n\
 \n\
 function spinningSquare2() {\n\
+   reset();\n\
    hideTurtle();\n\
    color("blue");\n\
-   for(s = 100; s > 0; s -= 10) {\n\
-      square(s);\n\
+   var side = 100;\n\
+   while (side > 0) {\n\
+      square(side);\n\
       right(36);\n\
+      side = side - 10;\n\
    }\n\
 }\n\
 \n\
@@ -7123,7 +7156,7 @@ function spinningSquare() {\n\
   }\n\
 }\n\
 \n\
-demo = spinningSquare\n\
+demo = spinningSquare2 // set the demo function to be spinningSquare2\n\
 '
 spiral ='\
 // Spiral -- demonstrate some simple spirals\n\

@@ -36,24 +36,6 @@ The imageCanvas is not visable, only the turtleCanvas is visible.
 The "redraw" boolean function controls whether the turtle is drawn after each move.
 ##### this includes an image copy, which is the expensive operation, use layers instead!
 
-shapes...
-  want to be able to fill polygons
-  beginShape
-  fillShape(style), style can be color, gradient or pattern
-  need to be careful with beginPath, closePath. Again this is a major change so commit
-    beginPath
-      forward
-      curveRight
-      curveLeft
-      circle
-      dot
-    closePath
-      only in drawing the turtle
-    begin path seems to be need to get the penup/pendown stuff to work, so this means:
-      lets say we add beginShape, fillShape commands
-      they use beginPath and closePath for that shape
-      if beginPath has not been issued, other lines use beginPath for their segment
-
 "wrap" only works for straight lines, not curves, circles, or dots.
 
 *************************************************************************************/
@@ -511,7 +493,7 @@ lt = left;
  ******************************************************************************/
 function curveleft (radius, extent) {
   if (extent == undefined) {
-    extent = 360;
+    extent = 359.9999; // this doesn't work if closer to 360, don't know why
   }
   var startAngle = turtle.angle; // in radians from 12 o'clock .. heading is same as start
   var counterclockwise = true;
@@ -553,7 +535,7 @@ curveLeft = curveleft;
  ******************************************************************************/
 function curveright (radius, extent) {
   if (extent == undefined) {
-    extent = 360;
+    extent = 359.9999; // this doesn't work if closer to 360, don't know why
   }
   var startAngle = Math.PI + turtle.angle; // in radians .. heading is same as start
   var counterclockwise = false;

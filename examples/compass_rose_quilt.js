@@ -67,15 +67,15 @@ function splitTri(outerSide, num, foreColor, triSide) {
     triSide = outerSide
   }
   innerSide = triSide / num
-  for (j = num; j >0; j -= 1) {
-     for (i = 0; i <j; i += 1) {
+  for (j = num; j >0; j = j - 1) {
+     for (i = 0; i <j; i = i + 1) {
         beginShape()
         triangle (innerSide)
         fillShape(foreColor)
         penup()
         forward(innerSide)
         pendown()
-     }
+    }
     penup()
     backward( j * innerSide)
     right(45)

@@ -9,7 +9,7 @@ function ticks(x, y, radius) {
    var gap = radius - tickLen;
    color("blue");
    width(1);
-   for (var theta = 0; theta < 360; theta += 6) {
+   for (var theta = 0; theta < 360; theta = theta + 6) {
       // Thicken hour marks
       if (theta % 30 != 0) {
          width(1/130* size);
@@ -57,10 +57,10 @@ function hand (theta, w, length, col) {
    goto(0, 0);
    angle(theta);
    color(col);
-   for (var step = 0; step < length; step += stepSize) {
+   for (var step = 0; step < length; step = step + stepSize) {
       width(w);
       forward(stepSize);
-      w -= widthDelta;
+      w = w - widthDelta;
    }
 }
 

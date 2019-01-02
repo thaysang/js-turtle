@@ -10,11 +10,14 @@ function square (side) {
 }
 
 function spinningSquare2() {
+   reset();
    hideTurtle();
    color("blue");
-   for(s = 100; s > 0; s -= 10) {
-      square(s);
+   var side = 100;
+   while (side > 0) {
+      square(side);
       right(36);
+      side = side - 10;
    }
 }
 
@@ -34,4 +37,4 @@ function spinningSquare() {
   }
 }
 
-demo = spinningSquare
+demo = spinningSquare2 // set the demo function to be spinningSquare2

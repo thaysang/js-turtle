@@ -12,7 +12,8 @@ if [ ${1}NotSpecified =  NotSpecified ]; then
   exit
 fi
 
-rm -f tmp # in case it exists
+#rm -f tmp # in case it exists
+echo '          <option selected value='example'>Examples</option>' > tmp
 
 for fileName in `ls $directory` ; do
   optionName=`head -1 $directory/$fileName |sed "s/^\/\/ *\(.*\) --.*$/\1/"`

@@ -259,6 +259,7 @@ also roll in the tutorial stuff
                  "rgb(<em>RR</em>, <em>GG</em>, <em>BB</em>)"
                  where <em>RR</em>, <em>GG</em>, and <em>BB</em> is the decimal
                  amount of red, green and blue respectively.
+		 Each value is between 0 and 255.
                </li>
                <li>
                  "rgba(<em>RR</em>, <em>GG</em>, <em>BB</em>, <em>AA</em>)"
@@ -268,22 +269,20 @@ also roll in the tutorial stuff
                  opaque and 0.0 for totally transparent.
                </li>
                <li>
-                 "rbg(RR, BB, GG)"
+                 "hsl(<em>hue</em>, <em>saturation%</em>, <em>lightness%</em>, <em>AA</em>)"
+		 where the values are:
+		 <em>hue</em> is position on the color wheel (0 to 360),
+                 <em>saturation%</em> is the saturation percentage, and
+	         <em>lightness%</em> is the lightness percentage.
                </li>
                <li>
-                 "rgba(RR, GG, BB, AA)"
-               </li>
-               <li>
-                 "hsl(120, 100%, 50%)"
-                 where the values are hue is postion on the color wheel (0 to 360),
-                 saturation percentage, and lightness percentage.
-               </li>
-               <li>
-                 "hsl(120, 100%, 50%, 1)"
-                 where the values are hue is postion on the color wheel (0 to 360),
-                 saturation percentage, lightness percentage and alpha channel
-                 for transparancy between 1.0 for opaque and 0.0 for totally
-                 transparent.
+                 "hsl(<em>hue</em>, <em>saturation%</em>, <em>lightness%</em>, <em>AA</em>)"
+		 where the values are:
+		 <em>hue</em> is position on the color wheel (0 to 360),
+                 <em>saturation%</em> is the saturation percentage,
+	         <em>lightness%</em> is the lightness percentage, and 
+                 <em>AA</em> is the alpha channel for transparancy between
+		 1.0 for opaque and 0.0 for totally transparent.
                </li>
              </ul> 
            <p>
@@ -617,8 +616,10 @@ also roll in the tutorial stuff
       <div id="rightcolumncontainer">
       <div id="rightcolumn">
       <div id="examplewrapper">
-        <label id="examplesLabel" for=#examples>Examples</label>
+        <label id="examplesLabel" for=#examples>Code Area</label>
+	<!-- need to change name Examples to Code Area -->
         <select id=examples>
+          <option selected value=example>Examples</option>
           <option value=arc_test>Arc and Curve Test</option>
           <option value=basket_weave_tesselation>Basket Weave Tesselation</option>
           <option value=bounce>Bouncing Rectangles</option>
@@ -636,6 +637,7 @@ also roll in the tutorial stuff
           <option value=dividing_circle>Dividing a Circle</option>
           <option value=dodecahedron_graph>Dodecahedron Graph</option>
           <option value=dragon_curve>Dragon Curve</option>
+          <option value=example>example</option>
           <option value=fibinoucci>Fibanochi sequence</option>
           <option value=first>First Programs</option>
           <option value=gosper_curve>Gosper Curve</option>
@@ -720,9 +722,11 @@ function square(side) {
 function demo() {
   hideTurtle();
   color("blue");
-  for(s = 100; s > 0; s -= 10) {
+  var s = 100;
+  while (s > 0) {
     square(s);
     right(36);
+    s = s - 10;
   }
 }
          </textarea> <!-- definitions -->

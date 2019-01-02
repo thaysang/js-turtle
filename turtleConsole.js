@@ -323,10 +323,7 @@ else if (command.attachEvent)
 function runClicked() {
   stopAnimation();
   cmd ("demo()");
-  eval (document.getElementById("definitions").value);
-  if (demo !== undefined) {
-    eval ("demo();");
-  }
+  commandChanged();
 }
 
 function clearClicked() {
@@ -350,8 +347,8 @@ var codeElements = document.querySelectorAll ("#reference code");
 for (var i=0; i< codeElements.length; i++) {
   codeElements[i].className = "linked";
   codeElements[i].onclick = function () {
-    eval (this.innerHTML + ";");
     cmd (this.innerHTML + ";");
+    commandChanged();
   }
 }
 
@@ -360,8 +357,9 @@ var codeElements = document.querySelectorAll ("#reference button");
 for (var i=0; i< codeElements.length; i++) {
     //console.log(codeElements[i].id)
     codeElements[i].onclick = function () {
-      eval ("color(\"" + this.id +"\")");
+      //eval ("color(\"" + this.id +"\")");
       cmd ("color(\"" + this.id +"\");");
+      commandChanged();
     }
 }
 
