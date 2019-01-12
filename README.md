@@ -1,3 +1,25 @@
+# Turtle Graphics for JavaScript
+
+This repository holds the files for the TurtleGraphics.fun web site. So there is the IDE for developing
+Turtle Graphics code, but the documentation and lessons as well. You can visit the live site at
+[https://TurtleGraphics.fun](URL) for more information about Turtle Graphics itself.
+
+# Files
+
+***.html** are the .html files
+***.js** are the JavaScript files
+***.css** are the .css files
+
+**images/* **are the images used for the various .html files
+**image_series** holds the images that are made into the .gif animated pictures.
+**examples/* **is a repository of the example JavaScript source code files
+**examples.js** is a tool created JavaScript file where the example source code are passed as strings.
+
+# Tools
+**Makefile** is unified to make all of the tool created files for the website
+**bin/*/sh** has the .sh files used to manipulate files for production.
+
+
 # Turtle Graphics for Javascript
 
 This project provides Javascript functions based on Logo Turtle graphics that runs on common browsers.

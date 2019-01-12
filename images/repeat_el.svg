@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="348.51248mm"
+   height="236.48833mm"
+   viewBox="0 0 348.51248 236.48833"
+   version="1.1"
+   id="svg74"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="repeat_el.svg">
+  <defs
+     id="defs68" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.28083952"
+     inkscape:cx="1208.3913"
+     inkscape:cy="405.14694"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1012"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata71">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-26.27599,-13.036529)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:14.11111069px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="52.160713"
+       y="104.23215"
+       id="text78"><tspan
+         sodipodi:role="line"
+         x="52.160713"
+         y="104.23215"
+         style="stroke-width:0.26458332"
+         id="tspan80">function el () {</tspan><tspan
+         sodipodi:role="line"
+         x="52.160713"
+         y="121.87103"
+         style="stroke-width:0.26458332"
+         id="tspan84">  forward( 100)</tspan><tspan
+         sodipodi:role="line"
+         x="52.160713"
+         y="139.50992"
+         style="stroke-width:0.26458332"
+         id="tspan86">  right( 90)</tspan><tspan
+         sodipodi:role="line"
+         x="52.160713"
+         y="157.14882"
+         style="stroke-width:0.26458332"
+         id="tspan88">}</tspan><tspan
+         sodipodi:role="line"
+         x="52.160713"
+         y="174.7877"
+         style="stroke-width:0.26458332"
+         id="tspan90" /><tspan
+         sodipodi:role="line"
+         x="52.160713"
+         y="192.42659"
+         style="stroke-width:0.26458332"
+         id="tspan194" /><tspan
+         sodipodi:role="line"
+         x="52.160713"
+         y="210.06548"
+         style="stroke-width:0.26458332"
+         id="tspan196" /><tspan
+         sodipodi:role="line"
+         x="52.160713"
+         y="227.70436"
+         style="stroke-width:0.26458332"
+         id="tspan92">repeat (4, el)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="25.702381"
+       y="21.833332"
+       id="text98"><tspan
+         sodipodi:role="line"
+         id="tspan96"
+         x="25.702381"
+         y="21.833332"
+         style="stroke-width:0.26458332">Keyword &quot;function&quot;</tspan><tspan
+         sodipodi:role="line"
+         x="25.702381"
+         y="35.0625"
+         style="stroke-width:0.26458332"
+         id="tspan100">signals the beginning</tspan><tspan
+         sodipodi:role="line"
+         x="25.702381"
+         y="48.291664"
+         style="stroke-width:0.26458332"
+         id="tspan102">of a function definition</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 124.05193,91.380948 172.43288,38.464281"
+       id="path104"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="156.48215"
+       y="21.077381"
+       id="text108"><tspan
+         sodipodi:role="line"
+         id="tspan106"
+         x="156.48215"
+         y="21.077381"
+         style="stroke-width:0.26458332">Function is</tspan><tspan
+         sodipodi:role="line"
+         x="156.48215"
+         y="34.306549"
+         style="stroke-width:0.26458332"
+         id="tspan110">named &quot;el&quot;</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 139.92693,93.648805 81.3324,-50.744581"
+       id="path120"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="228.29761"
+       y="68.702377"
+       id="text124"><tspan
+         sodipodi:role="line"
+         x="228.29761"
+         y="68.702377"
+         style="stroke-width:0.26458332"
+         id="tspan128">Begin of block of code used</tspan><tspan
+         sodipodi:role="line"
+         x="228.29761"
+         y="81.931541"
+         style="stroke-width:0.26458332"
+         id="tspan130">for the function &quot;el.&quot;</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot140"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="scale(0.26458333)"><flowRegion
+         id="flowRegion142"><rect
+           id="rect144"
+           width="451.42856"
+           height="517.14288"
+           x="-1811.4286"
+           y="-428.90887" /></flowRegion><flowPara
+         id="flowPara146"></flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="227.54166"
+       y="107.25594"
+       id="text152"><tspan
+         sodipodi:role="line"
+         id="tspan150"
+         x="227.54166"
+         y="107.25594"
+         style="stroke-width:0.26458332">Turtle Graphics function</tspan><tspan
+         sodipodi:role="line"
+         x="227.54166"
+         y="120.48511"
+         style="stroke-width:0.26458332"
+         id="tspan154">to move forward 100 pixels.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="228.29759"
+       y="141.27382"
+       id="text158"><tspan
+         sodipodi:role="line"
+         id="tspan156"
+         x="228.29759"
+         y="141.27382"
+         style="stroke-width:0.26458332">Turtle Graphics function</tspan><tspan
+         sodipodi:role="line"
+         x="228.29759"
+         y="154.50299"
+         style="stroke-width:0.26458332"
+         id="tspan160">to turn right 90 degrees.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="227.91966"
+       y="222.91666"
+       id="text164"><tspan
+         sodipodi:role="line"
+         id="tspan162"
+         x="227.91966"
+         y="222.91666"
+         style="stroke-width:0.26458332">Turtle Graphics function</tspan><tspan
+         sodipodi:role="line"
+         x="227.91966"
+         y="236.14583"
+         style="stroke-width:0.26458332"
+         id="tspan166">to repeat the function</tspan><tspan
+         sodipodi:role="line"
+         x="227.91966"
+         y="249.37498"
+         style="stroke-width:0.26458332"
+         id="tspan168">&quot;el&quot; four times.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="73.327377"
+       y="169.24405"
+       id="text172"><tspan
+         sodipodi:role="line"
+         x="73.327377"
+         y="178.60782"
+         style="stroke-width:0.26458332"
+         id="tspan178" /></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot186"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="scale(0.26458333)"><flowRegion
+         id="flowRegion188"><rect
+           id="rect190"
+           width="571.42859"
+           height="157.14285"
+           x="-805.71429"
+           y="156.8054" /></flowRegion><flowPara
+         id="flowPara192"></flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="228.29762"
+       y="176.04762"
+       id="text206"><tspan
+         sodipodi:role="line"
+         id="tspan204"
+         x="228.29762"
+         y="176.04762"
+         style="stroke-width:0.26458332">End of block </tspan><tspan
+         sodipodi:role="line"
+         x="228.29762"
+         y="189.27679"
+         style="stroke-width:0.26458332"
+         id="tspan212">of code used for</tspan><tspan
+         sodipodi:role="line"
+         x="228.29762"
+         y="202.50595"
+         style="stroke-width:0.26458332"
+         id="tspan214">the function &quot;el.&quot;</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="253.24405"
+       y="297.75595"
+       id="text210"><tspan
+         sodipodi:role="line"
+         id="tspan208"
+         x="253.24405"
+         y="307.11972"
+         style="stroke-width:0.26458332" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="227.54166"
+       y="36.19643"
+       id="text230"><tspan
+         sodipodi:role="line"
+         id="tspan228"
+         x="227.54166"
+         y="36.19643"
+         style="stroke-width:0.26458332">The function &quot;el&quot; has no</tspan><tspan
+         sodipodi:role="line"
+         x="227.54166"
+         y="49.425598"
+         style="stroke-width:0.26458332"
+         id="tspan232">input parameters.</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 154.97024,104.23214 C 222.25,73.238094 222.25,73.238094 222.25,73.238094"
+       id="path234"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 159.50595,122.375 C 223.7619,105.74405 223.7619,105.74405 223.7619,105.74405"
+       id="path236"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 130.02381,139.7619 Z"
+       id="path238"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 130.02381,139.7619 h 91.47024"
+       id="path240"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 61.232142,154.125 C 223.7619,174.53571 223.7619,174.53571 223.7619,174.53571"
+       id="path242"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 146.65476,223.67262 c 78.61905,-4.53572 77.10714,-4.53572 77.10714,-4.53572"
+       id="path244"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 81.964069,93.502997 C 80.079838,52.992022 80.079838,52.992022 80.079838,52.992022"
+       id="path248"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

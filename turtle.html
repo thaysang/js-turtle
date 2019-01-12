@@ -604,12 +604,6 @@ also roll in the tutorial stuff
            The <strong>Stop</strong> button stops animation.
            </p>
          </span>
-         <button id="clearButton">Clear</button>
-         <span class='help_text' id='clearButton_help_text'>
-           <p>
-           The <strong>Clear</strong> button clears the definitions text area to allow entry of new programs.
-           </p>
-         </span>
         </div> <!-- commandwrapper -->
       </div> <!-- midcolumn -->
       </div> <!-- midcolumncontainer -->
@@ -617,7 +611,8 @@ also roll in the tutorial stuff
       <div id="rightcolumn">
       <div id="examplewrapper">
         <label id="examplesLabel" for=#examples>Code Area</label>
-	<!-- need to change name Examples to Code Area -->
+        <!-- need to change name Examples to Code Area -->
+        <!-- The select options are populated with a tool, DO NOT EDIT. -->
         <select id=examples>
           <option selected value=example>Examples</option>
           <option value=arc_test>Arc and Curve Test</option>
@@ -697,6 +692,7 @@ also roll in the tutorial stuff
           <option value=x_rhombic_star_tesselation>Rhombic Star Tesselation</option>
           <option value=x_rice_penta_tesselation_1>rice penta tesselation 1</option>
         </select>
+        <!-- The above select options are populated with a tool, DO NOT EDIT. -->
         <span class='left_help_text' id='examples_help_text'>
           <p>
           The <strong>Examples select</strong> is used to load an example into the
@@ -732,7 +728,7 @@ function demo() {
          </textarea> <!-- definitions -->
          <span class='left_help_text' id='definitions_help_text'>
            <p>
-           The definitions area is for the entry of multi-line programs and examples.
+           The code area is for the entry of multi-line programs and examples.
            </p>
            <p>
            The code can be examined or modified as desired.
@@ -740,9 +736,37 @@ function demo() {
            <p>
            Individual functions may be executed by typing their name and
            partheses into the
-           <strong>Command</strong> area (for example: <code>demo()</code>) and pressing ENTER.
+           <strong>Command</strong> line (for example: <code>demo()</code>) and pressing ENTER.
            </p>
         </span>
+      <div id=filenamewrapper> <!-- filenamewrapper -->
+              <label for="file-input">Upload</label>
+	      <input type="file" id="file-input" accept=".txt, .js" value="Upload" />
+         <span class='left_help_text' id='file-input_help_text'>
+           <p>
+           The <strong>Load</strong> button loads a named file into the code area. The file name is relative to the TurtleGraphics.html web root directory.
+           </p>
+         </span>
+         <button id="saveButton">Download</button>
+         <span class='left_help_text' id='saveButton_help_text'>
+           <p>
+           The <strong>Save</strong> button downloads the code in the code area to the filename in the download directory designated by the browser.
+           </p>
+         </span>
+         <input type="text" class="filename" id="code_filename" placeholder="turtleCode"/>.js</label>
+         <span class='help_text' id='code_filename_help_text'>
+           <p>
+              The <strong>Save</strong> text area accepts the name of a JavaScript file name to be saved.
+           </p>
+         </span>
+         <button id="clearButton">Clear</button>
+         <span class='left_help_text' id='clearButton_help_text'>
+           <p>
+           The <strong>Clear</strong> button clears the definitions text area to allow entry of new programs.
+           </p>
+         </span>
+        </div> <!-- filenamewrapper -->
+	
 <!--
 -->
       </div> <!-- examplewrapper -->
@@ -1205,6 +1229,7 @@ kochForward(maxX() + maxX() - 40); // draw a Koch line most of the width of the 
    <script type="text/javascript" src="examples.js"></script>
    <script type="text/javascript" src="turtle.js"></script>
    <script type="text/javascript" src="turtleConsole.js"></script>
+   <script type="text/javascript" src="FileSaver.min.js"></script>
   
 </body>
 </html>

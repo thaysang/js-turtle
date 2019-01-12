@@ -1,0 +1,435 @@
+body {
+  background: #33ffff url(http://newline-course-assets.s3.amazonawa.com/images/keytar/pattern.jpg);
+  color: #330099;
+  font-family: 'Roboto', sans-serif;
+  font-size: normal;
+  margin:0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #6f6f6f;
+  color: #330099;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  orphans: 3;
+}
+h1 {
+  font-size: 140%;
+  font-weight: extra-bold;
+}
+h2 {
+  font-size: 120%;
+}
+h3 {
+  font-size: 110%;
+}
+h4 {
+  font-size: 100%;
+}
+h5 {
+  font-size: 100%;
+}
+h5 {
+  font-size: 100%;
+}
+article {
+  display: block;
+  width:96%;
+  margin:2%;
+}
+img {
+  background: white;
+}
+strong{
+  color: #000066;
+  font-weight:bold;
+}
+tButton{ /* turtle console button */
+  color: #000066;
+  font-weight:bold;
+  font-translation: uppercase;
+}
+key{ /* a key on the keyboard */
+  color: #000066;
+  font-weight:bold;
+  font-translation: uppercase;
+}
+
+@media screen and (min-width:450pt) {
+  article {
+    width:450pt;
+    margin:9pt;
+  }
+}
+
+
+.cspan { /* code span, should have the same font as block code*/
+  background-color: lightgray;
+  font-family: Courier, monospace;
+  font-weight: bold;
+  font-size: 100%;
+  text-decoration: none;
+}
+
+code {
+  background-color: #f0f0f0;
+  font-family: Courier, monospace;
+  font-weight: bold;
+  text-decoration:none;
+}
+
+code,
+article code {
+  display:block;
+  margin: 6pt 3pt;
+  orphans: 5;
+  padding:5pt 5pt;
+  white-space: pre;
+  widows: 5;
+  word-break: normal;
+  word-wrap: normal;
+}
+
+/* inline code formatting */
+li code,
+p code {
+  display: inline;
+  margin:0;
+  padding:0;
+}
+
+.image {
+  border: 2pt solid black;
+  margin: 4pt;
+  padding: 4pt;
+  width: 362pt;
+}
+
+
+.floatleft {
+  float: left;
+}
+
+.floatright {
+  float: right;
+}
+
+div#image12 {
+  width: 362pt;
+}
+
+h1 {
+  font-size: 36px;
+  color: #330099;
+  margin:0;
+}
+
+h2 {
+  font-size: 26px;
+  color: #212a2d;
+}
+
+h3 {
+  font-size: 20px;
+  color: #855110;
+}
+
+h4 {
+  font-size: 14px;
+  color: #855110;
+}
+
+li, p {
+  background-color:white;
+  line-height: 24px;
+  margin: 8px 0;
+}
+
+strong {
+  color: #2a1c29;
+}
+
+a {
+  color: #330099;
+}
+
+.inline {
+  display: inline;
+}
+ 
+.clear {
+  clear: both;
+}
+
+
+header {
+  background: #212a2d;
+  background: #66ccff;
+}
+
+header h1 {
+  display: block;
+  margin: auto;
+  margin-bottom:8pt;
+  text-align: center;
+}
+  
+.navigation {
+  text-align: center;
+}
+
+.navigation ul {
+  display: block;
+  bottom: 2pt;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.navigation li {
+  display: inline;
+  list-style-type: none;
+  padding: 0 4pt;
+  position: relative;
+}
+
+.navigation li:first {
+  left: -60pt;
+}
+
+.navigation li a {
+  color: #f5eee0;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navigation li a.active,
+.navigation li a:hover {
+  border-bottom: 2px solid #ac43ec;
+}
+
+.hero {
+  padding: 20px;
+}
+
+.button {
+  background: #ac43ec;
+  border: 2pt solid black;
+  border-radius: 4pt;
+  color: #fff;
+  display: inline-block;
+  font-size: 12pt;
+  font-weight: bold;
+  letter-spacing: 1pt;
+  margin: 10pt 0pt;
+  padding: 8pt 20pt;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.main .primary {
+  float:left;
+  margin-right: 4%;
+  margin-left: 1%;
+  width: 60%;
+}
+
+.main .secondary {
+  float:left;
+  width: 35%;
+  margin-top: 50pt;
+}
+
+.main .keytar-review {
+  background: #ffffff;
+  border-left: 4px solid #ac43ec;
+  border-radius: 0 4px 4px 0;
+  margin: 40pt 0;
+  padding: 40px 28px 13px;
+  position: relative;
+}
+
+.main .keytar-review-inner {
+  overflow: auto; /*clearfix*/
+}
+
+.main .keytar-review .button {
+  float: right;
+}
+
+.main .keytar-review .keytar-rating {
+  background: #f9ecff;
+  border-left: 4px solid #eedbf7;
+  border-radius: 0 4px 4px 0;
+  color: #ac42ec;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 11px 14px;
+  position: absolute;
+  top:-20px;
+}
+
+.main .keytar-review .keytar-rating .keytar-rating-star {
+  vertical-align: bottom;
+}
+
+.main .keytar-review .keytar-rating .keytar-rating-text {
+  margin-left: 6px;
+}
+
+.main .keytar-review .keytar-picture {
+  float: left;
+  margin: 0 20px 20px 0;
+}
+
+.secondary .content-block {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 0 0 4px 4px;
+  border-top: 4px solid #eedbf7;
+  margin: 40px 0;
+}
+
+.secondary .customer-name {
+  border-top: 1px dashed #e0d9cf;
+  color: #ac43ec;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 10px 0;
+  padding-top: 20px;
+}
+
+.secondary .customer-title {
+  color: #d3a9e6;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.secondary .customer-picture {
+  background: #eedbf7;
+  border-radius: 50%;
+  display: block;
+  margin: -70px auto 20px;
+  padding: 4px;
+}
+
+.archive {
+  background: #212a2d;
+  display: inline;
+  margin: 80px 0 0 0;
+  overflow: auto;
+  position: relative;
+}
+
+.archive ul {
+  position: relative;
+  padding:0;
+}
+
+.archive li {
+  display: inline-block;
+  position: relative;
+  padding-right: 8pt;
+  padding-left: 8pt;
+  list-style-type: none;
+  width:96%;
+}
+
+.archive li a {
+  text-decoration: none;
+  position:relative;
+  top:0;
+}
+
+.archive li a h2 {
+  bottom:10pt;
+  color: #ffffff;
+  left:10pt;
+  position: absolute;
+  bottom:0;
+  width:60%;
+  z-index:+1;
+}
+
+.archive li a img {
+  left: 0;
+  opacity: 0.4;
+  position:relative;
+  top: 0;
+  width: 110%;
+  height: 100pt;
+}
+
+.archive li a:hover img {
+  opacity: 0.6;
+}
+
+table{
+  border: black 2pt solid;
+  border-collapse: collapse;
+}
+tr{
+}
+th, td{
+  padding: 6pt;
+  border: black 1pt solid;
+}
+th {
+  font-weight:bold;
+}
+.keyword {
+  color: orange;
+  font-weight: bold;
+}
+.keyboard {
+  border: black, solid, .5pt;
+  color: orange;
+  font-weight: bold;
+}
+p .button {
+  border: .5pt solid blue;
+  color: blue;
+  font-size: 80%;
+  font-weight: bold;
+  margin: 0;
+  padding: .5pt 3pt;
+}
+.var {
+  color: blue;
+  font-weight: bold;
+}
+
+@media screen and (min-width:400pt) {
+  .archive li {
+    width: 45%;
+  }
+
+  .archive li a img {
+    height: 150pt;
+  }
+}
+
+@media screen and (min-width:500pt) {
+  .archive li {
+    width: 28%;
+  }
+}
+
+
+@media screen and (min-width:450pt) {
+  article {
+    width:450pt;
+    margin:9pt;
+  }
+}
+
+@media print {
+  code {
+    background-color:#f0f0f0;
+    print-color-adjust:exact;
+    -webkit-print-color-adjust: exact;
+  }
+  header {
+    display: none;
+  }
+}

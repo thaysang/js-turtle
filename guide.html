@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+<head>
+  <title>JavaScript Turtle Graphics</title>
+  <link rel="stylesheet" href="turtleweb.css" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins|Roboto" rel="stylesheet">
+</head>
+<body>
+<header>
+<h1>JavaScript Turtle Graphics</h1>
+<div class="navigation">
+<ul>
+  <li><a href="overview.html" title="Overview of Turtle Graphics">Intro</a></li>
+  <li><a class="active" href="guide.html" title="User Guide for Turtle Graphics Integrated Development Environment">Guide</a></li>
+  <li><a href="turtle.html" title="Integrated Development Environment for Turtle Graphics">IDE</a></li>
+  <li><a href="javascript.html" title="Tutorial for Simple JavaScript">JavaScript</a></li>
+  <li><a href="tutorial.html" title="Tutorial for Basic Turtle Graphics">Tutorial</a></li>
+  <li><a href="animation.html" title="Tutorial for Animation with Turtle Graphics">Animation</a></li>
+  <li><a href="examples.html" title="Examples of Things Created with Turtle Graphics">Examples</a></li>
+  <li><a href="reference.html" title="Language Reference">Reference</a></li>
+  <li><a href="nerd.html" title="Nerd Links">Nerd</a></li>
+  <li><a href="about.html" title="About Turtle Graphics">About</a></li>
+</div>
+</header>
+<article>
+<h2>IDE User Guide</h2>
+<p>
+  IDEs or Integrated Development Environments allow a user to write and test
+  code on a single page.  This IDE allows a user to write JavaScript code with
+  Turtle Graphics functions and see the graphical results. code and test it on
+  a single web page. No other program is required. Just a modern browser that
+  can support HTML5 like Chrome or Firefox. Some older browsers may not work.
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_a9de272a811a4282.png"
+    alt="The JavaScript Turtle Graphics IDE with explanations">
+</div>
+<p>
+The IDE screen is divided into four main areas:
+<ul>
+  <li><a href="#Reference"><strong>Language Reference</strong></a> is a guide
+    to the Turtle Graphic functions that may be used to draw graphics on the
+    canvas. Underlined examples may be clicked upon to see there immediate
+    effect on the turtle and the canvas.
+  </li>
+  <li><a href="#Canvas"><strong>Canvas</strong></a> is the area where the
+    graphics are drawn.  The drawing is done by the turtle which
+    is modeled as a triangle pointing in the direction of travel.
+    Imagine that the turtle has a pen in its belly and that the pen
+    leaves a mark as the turtle moves.
+  </li>
+  <li><a href="#Command"><strong>Command</strong></a> is an area with
+    controls for entering simple JavaScript commands or to control
+    the examples.  There also are a
+    set of buttons that are used to reset the canvas and to control the
+    execution of the example code.
+  </li>
+  <li><a href="#Code"><strong>Code</strong></a> is an area for
+    loading, displaying, and editing JavaScript Turtle Graphic helper
+    functions or whole programs.
+    There are several examples which you can load with the example
+    selector above the code area.
+    Modified code can be downloaded to you computer and saved programs
+    can be loaded as well with buttons at the bottom of the code area.
+  </li>
+</ul>
+</p>
+<p>
+  Each of these areas is explained in more detail below.
+</p>
+<h2><a id="Reference"></a>Language Reference</h2>
+<p>
+The language reference lists the available functions for Turtle Graphics.
+</p>
+<p>
+  Parameters are <em>italicized</em> and enclosed within parentheses '('
+  and ')' characters.  Optional parameters and separating commas are
+  enclosed within square bracket '[' and ']' characters.
+  The square brackets are not used when invoking the function, but the
+  separating commas must be supplied.  So for the function template
+  <code>foo(<em>a</em> [,<em>b</em> [,<em>c</em>]])</code>, one can invoke 
+  oo as <code>foo(1)</code>, <code>foo(1,2)</code> or <code>foo(1,2,3)</code>.
+</p>
+<p>
+  Alternative forms of the functions are separated with the pipe '|'
+  character.  These forms provide some compatibility with other versions
+  of Turtle Graphics.  Each of the alternate forms is identical in function.
+</p>
+<p>
+  Examples are shown in <code>bold typewriter font</code>. Each example may
+  be clicked to immediately execute it to see what it does.  This allows
+  the reader to directly experiment with the function.  The user may edit
+  the parameters in the command box to see their effect.
+</p>
+<p>
+  This platform uses JavaScript and its syntax.  While many programs can be
+  written with the Logo Graphics functions alone, it is possible (and
+  sometime necessary or desirable) to use the full power of the JavaScript
+  language.  For a brief tutorial on JavaScript please
+  <a href="javascript.html">see separate page.</a>
+</p>
+
+<h2><a id="Canvas"></a>Canvas</h2>
+<p>
+  The canvas is the area where the graphics are drawn. When the platform is
+  started up or reset, the turtle is moved to the center of the canvas.
+  The turtle is represented as a triangle pointing in the direction that the
+  turtle will move if issued a <code>forward()</code> command.
+</p>
+
+<p>
+  The canvas is described with a coordinate system, which is like graph
+  paper where the lines are numbers.  The center is (0,0) or an X-coordinate
+  of zero and a Y-coordinate of 0.  Positive X-coordinates increase to the
+  right of center. Negative X-coordinates increase to the left of center.
+  Positive Y-coordinates increase from the center toward the top of the canvas.
+  Negative Y-coordinates increase from the center toward the bottom of the
+  canvas.  This mimics the Cartesian coordinate system used in algebra and
+  other mathematics.  Note that this coordinate system is different than the
+  normal JavaScript canvas coordinate system (origin at the top left and only
+  positive coordinates).  The Turtle Graphics functions hide these differences
+  and much of the mathematical complexity from the user.
+</p>
+<p>
+  Above the canvas is an <strong>Information</strong> or <strong>i</strong>
+  button which may be pressed to control the pop-up information which appears
+  when hoovering the mouse over a button or area of the IDE. When it is blue,
+  the pop-up help information is active. When it is red, the pop-up help
+  information is in-active.
+</p>
+<p>
+  Also above the canvas is an <strong>Home</strong> button which may be
+  pressed to return to the Turtle Graphic home page.
+</p>
+
+<h2><a id="Command"></a>Command Area</h2>
+<p>
+  The command area has a text box for entering a simple JavaScript code
+  statement to execute or to control execution of code in the code area.
+  A JavaScript statement including Logo Turtle Graphic functions may be
+  entered into the Command box.  Normally this is used to execute the
+  code in the code area, which is invoked with the <code>demo()</code>
+  function.  You can invoke Turtle Graphics functions, like
+  <code>forward(10)</code> to see how they work. Indeed most of the
+  functions described in the Language reference page do just that.  When
+  <span class="key">ENTER</span> or <span class="key">RETURN</span> key is
+  pressed, the statement is executed. Successful
+  graphic functions are immediately displayed on the canvas.  Syntax errors
+  (e.g., missing parentheses, unknown function name, unexpected end of program)
+  and other errors are also shown on the canvas.
+</p>
+<p>
+  The <span class="tButton">RESET</span> button can be used to clear the
+  canvas, move the turtle to the center of the canvas, and initialize the IDE.
+</p>
+<p>
+  Sometimes the IDE can get locked up and it is necessary to reload the web
+  page with the page reload function of the browser.  This can happen if you
+  mistakenly assign a function name to a value. The function will no longer
+  work as it is now a variable with a value.  For example, you have executed
+  the code <code>forward() = 10</code> and then try to execute
+  <code>forward(10)</code> you will get the error <strong>Forward is not a
+  function.</strong>. Reload the page with the browser (click on the
+  browser reload button) and all will be well.
+</p>
+<p>
+  The IDE may also need to be reloaded if the program gets stuck in an
+  infinite loop.
+</p>
+
+<p>
+  The <span class="tButton">RUN DEMO</span> button can be used to run code
+  in the Code box provided that the code includes a demo() function.
+  Syntax errors in the program may not be apparent. Some errors may be
+  visible on the canvas by invoking <code>demo()</code> from the command
+  text box.
+</p>
+
+<p>
+  The <span class="tButton">CLEAR</class> button can be used to clear the
+  code in the example area.
+</p>
+<p>
+  When the example code executes either <code>animate()</code> or
+  <code>delay()</code> functions, a <span class="tButton">STOP</class>
+  button will appear allowing the user to stop the animation in progress
+  without clearing the canvas. The <tButton>RESET</tButton> button will
+  also stop the animation, but it clears the canvas.
+</p>
+<p>
+  Any code in the <strong>Code area</strong> is evaluated when the
+  <span class="key">ENTER</span> or <span class="key">RETURN</span> key is
+  press with the cursor within the Command box. So the last line of the
+  example code could invoke any of its functions, (e.g., <code>demo();</code>)
+  which could in turn be executed when an <span class="key">ENTER</span> or <span class="key">RETURN</span> key is pressed with a cursor in an empty Command box.
+</p>
+
+<h2><a id="Code"></a>Code Area</h2>
+<p>
+  The example is an area for loading, displaying, and editing JavaScript Turtle
+  Graphic programs. Several examples are available in the select menu above
+  the  box. Selecting an example causes the example to be loaded, but not
+  executed. The user must press the <tButton>RUN DEMO</tButton> button to
+  execute the example code.
+</p>
+
+<p>
+  The user may edit the example code to make modifications or to try out
+  new code. Changes will survive reloading of the page, but will not be
+  saved in general. To save the modified code, select all of the code, paste
+  it into your favorite text editor, and save it. To load the saved code,
+  use the text editor to access the code, select all of the text, and then
+  paste the text into the <strong>Code area</strong>. JavaScript, in general,
+  does not access files on your local machine for security reasons.
+</p>
+<h2><a id="Limitations"></a>Limitations</h2>
+<p>
+  Not all errors are caught.  If the error is not apparent, more details
+  are usually available on the on the JavaScript console which is accessed
+  through the developer tools of the browser being used. This can be accessed
+  by pressing control- or command-shift-C or by finding "Developer Tools" or
+  "Web Developer" in the browser menus and selecting the "Console" or "Web
+  Console" functions.  The JavaScript
+  console is a very powerful tool that allows you to inspect various elements
+  of a web page and see their attributes, check performance, single step through
+  JavaScript code and other functions, we are only interested in the console
+  at this point. The rest of the console functions are worth exploring as you
+  become more familiar with web programming.
+</p>
+<p>
+  The Logo language is not implemented here, nor is its syntax. This
+  is only a set of JavaScript functions that mimic the Logo Turtle Graphics
+  part of the Logo language.
+</p>
+<h2><a id="Standalone"></a>Stand Alone Mode</h2>
+  The IDE can be used without a connection to the internet in what is called
+  a stand alone mode.  Download or clone the files from
+  https://github.com/kirkcarlson/js-tur into a dedicated directory.  Access
+  the files with your browser by opening the <strong>index.html</strong> file
+  in that directory.
+</article>

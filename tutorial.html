@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Tutorial on JavaScript Turtle Graphics</title>
+    <meta name="generator" content="LibreOffice 6.0.6.2 (Linux)"/>
+    <meta name="author" content="Kirk Carlson"/>
+    <meta name="created" content="2016-02-22T21:53:00"/>
+    <meta name="changed" content="2018-08-31T10:34:24.594316756"/>
+    <meta name="AppVersion" content="14.0000"/>
+    <meta name="DocSecurity" content="0"/>
+    <meta name="HyperlinksChanged" content="false"/>
+    <meta name="LinksUpToDate" content="false"/>
+    <meta name="ScaleCrop" content="false"/>
+    <meta name="ShareDoc" content="false"/>
+        <link type="text/css" rel="stylesheet" href="./turtleweb.css"/>
+<!--
+        <link type="text/css" rel="stylesheet" href="./tutorial.css"/>
+-->
+</head>
+<body>
+<header>
+<h1>JavaScript Turtle Graphics</h1>
+<div class="navigation">
+<ul>
+  <li><a href="overview.html" title="Overview of Turtle Graphics">Intro</a></li>
+  <li><a href="guide.html" title="User Guide for Turtle Graphics Integrated Development Environment">Guide</a></li>
+  <li><a href="turtle.html" title="Integrated Development Environment for Turtle Graphics">IDE</a></li>
+  <li><a href="javascript.html" title="Tutorial for Simple JavaScript">JavaScript</a></li>
+  <li><a class="active" href="tutorial.html" title="Tutorial for Basic Turtle Graphics">Tutorial</a></li>
+  <li><a href="animation.html" title="Tutorial for Animation with Turtle Graphics">Animation</a></li>
+  <li><a href="examples.html" title="Examples of Things Created with Turtle Graphics">Examples</a></li>
+  <li><a href="reference.html" title="Language Reference">Reference</a></li>
+  <li><a href="nerd.html" title="Nerd Links">Nerd</a></li>
+  <li><a href="about.html" title="About Turtle Graphics">About</a></li>
+</div>
+</header>
+<!--article tag is for the overall text, sections are blocks within the article.
+Section tags keep graphics and text that explains them together.
+A section in this document may have several section tags. -->
+<article>
+<h1>Tutorial for JavaScript Turtle Graphics</h1>
+<section>
+<h2>The Basics</h2>
+<p>
+JavaScript is an important language, because it is the language used in
+browsers to bring life to web pages. It dynamically resizes elements so that
+the same page can be used on a mobile phone or desktop computer. It dynamically
+loads data, like weather data or news stories, as it changes or as you
+move down on the page. It provides
+motion and interest to web pages. JavaScript also checks user inputs before
+a request is sent back to the server.
+</p>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_a9de272a811a4282.png" alt="">
+</div>
+</section>
+
+<p>
+Learning JavaScript programming in a graphics environment is an easy way to get
+introduced to JavaScript. The JavaScript Turtle Graphics page at
+<a href="http://turtlegraphics.fun">http://turtlegraphics.fun</a> is written in
+JavaScript and it provides an environment for exploring JavaScript and its use
+of graphics using traditional turtle graphics functions.
+</p>
+<p>
+This tutorial assumes that you have some basic knowledge.
+Go to <a href="./javascript.html">JavaScript Tutorial</a>
+or the <a href="./guide.html">Guide for the Integrated Development
+Environment (IDE)</a> if you need more information.
+</p>
+<p>
+In these lessons there are small programs to load and play with. It is
+important to type these programs in and to try them out. Typing reinforces
+the lesson with muscle memory of the act of typing and forcing you to
+recognize each character. Just reading the lesson is not enough. It is also
+necessary to play around with each lesson. Change some of the parameters or
+the way that the program works. You should be able to predict what will happen
+when you change things, so that you can change things to be the way you want
+them to be.
+</p>
+<section>
+<h2>Hello World</h2>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_b6424b9e9cd87037.png" alt="">
+</div>
+<p>
+When programmers are
+faced with a new language, the first thing that they do is to write
+a simple program that tests their understanding of the language,
+its syntax and the operation of the new language. Typically this is a
+&quot;Hello World&quot; program. For this environment such a program would
+be as follows:
+</p>
+<code>write (&quot;Hello World&quot;)
+</code>
+
+<p>
+Click on the <span class="button">Run Demo</span> button.
+</p>
+<p>
+What happened? You
+should see Hello World printed on the canvas, but printed sideways.
+Text is written along the direction that the turtle is pointing without
+moving the turtle.
+</p>
+</section>
+<p>
+<code>write()</code> is a
+A <strong>function</strong> perform a desired action and are composed of
+instructions and possibly other functions. Functions allow a programmer to
+use them without having to worry about all of the underlying
+details. Turtle Graphics is written using functions that hide the
+details from the user.
+</p>
+<h2>Syntax</h2>
+<p>
+<strong>Syntax</strong> is a funny word. No, it is not a tax on your sins.
+It is the mechanics of the language. It is how you string words and punctuation
+or symbols together so that the intent of the language can be understood by
+humans and computers. Just as English has its rules for putting sentences
+together, JavaScript has its rules. The only thing to know is that computers
+are not as flexible as humans in being able to figure out what is meant if
+the syntax isn't correct. Preciseness is the rule in computer languages.
+</p>
+<p>
+Case, as in upper case and lower case, is important to
+JavaScript, so <code>Write </code>is different than <code>write</code> and is
+different than <code>wriTe</code>. This property is called case sensitive. Most
+passwords are case sensitive. Can you think of other examples?
+</p
+<p>
+All functions in
+JavaScript are followed by open and close parentheses. This is
+the syntax that tells JavaScript that the preceding
+name is a function. If there is nothing between the parentheses, the function
+takes no <strong>parameters</strong>.
+The function <code>write(<em>string</em>)</code> does take a single parameter,
+a string that you want to put on the canvas, and that is put between the parentheses.
+Functions can take a number of parameters depending on the function. Any
+number of parameters is allowed, although it gets hard to remember the purpose
+of each parameter as the number increases.
+</p>
+<p>
+A <strong>string</strong> is a set of characters
+The syntax for a string is to enclose a set of characters with
+quotation marks. This distinguishes the string from other
+characters which could be a function name, variable name, or other value.
+In English we use quotation marks to set off the spoken words or special words
+from other words in a sentence. JavaScript sets off strings.
+Either single or double quotes are acceptable, as long
+as it is the same type is used on both ends. Just about any character can
+be included in a string, but including a quotation mark requires some
+consideration. A simple way is to enclose the string with a quotation mark
+is to use the other kind of quotation marks to enclose the string.
+So, you could use &quot;G'day world&quot;, if you want
+the Australian version of “Hello World.”
+</p>
+<section>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_fe08b6fc287c210d.png" alt="">
+</div>
+<p>
+The program as it is,
+isn't quite right. The <code>write()</code> function displays a text
+string in the direction that the turtle is moving without moving the
+turtle. We want the text to go horizontally to make it easier to read.
+We need to rotate the text 90° in a clockwise direction. We can do that
+by turning the turtle before invoking the <code>write()</code> function,
+by invoking a <code>right(90)</code> function to ask it to turn 90 degrees
+to its right.
+Because this programming has more than one line,
+lets use the coding area, so we can edit the programs and make
+changes to it as necessary. The resulting program for the
+coding area is:
+</p>
+<code>right (90)
+write (&quot;Hello World&quot;)
+</code>
+
+<p>
+Click on the <span class="button">Run Demo</span> button,
+you should see something like the figure on the right.
+</p>
+</section>
+
+<p>
+The <code>right()</code> function also takes a
+parameter like write, but right's parameter is the number of degrees
+to turn right. Look at the parameters of the two functions. Write takes
+a string of characters or more simply just a string. A string is enclosed in
+either 'single quotes' or "double quotes." If you need to enclose a quote mark or
+apostrophe in a string, just use the other type of quote. You may also "escape"
+the quote mark with a backslash character '\'. Escaping is fairly common in
+program languages to allow a character to be used as itself (or as something 
+completely different than its normal usage). As you learn programming you
+will probably encounter more examples of escaping or escape mechanisms.
+</p>
+<code>right (90)
+write ("That's fun! Don't forget to try this at \"home.\"")
+</code>
+<p>
+Part of JavaScript's
+syntax, is that <strong>white space</strong> is not too important so you can add
+spaces, tabs or carriage returns (sometimes called newlines) here or there to make
+the code easier to read. Each JavaScript statement is usually
+written in a single line, although an exceptions is made for long
+statements that read better with multiple lines. Each line in formal
+JavaScript must end in a semi-colon ';' as in:
+</p>
+
+<code>right( 90);
+write ( &quot;Hello World&quot;);
+</code>
+
+<p>
+We are writing in a
+more casual syntax that does not require this semi-colon. Just
+beware that some syntax checkers will require more semi-colons. If
+multiple codes statements are placed on one line, the code
+statements must be separated with semi-colons.
+</p>
+
+<p>
+<strong>Comments</strong> are important
+to remind you or the next reader what the code is attempting to do.
+(Sometimes the code misses the intent, so it is important to state
+the intent, and to keep that up to date as the code changes.).
+JavaScript has two types of comments. A comment that just tacks on
+the end of a line starts with a double slash <code>//</code> and goes to
+the end of the line. A multi-line comment starts with slash-star
+<code>/*</code> and ends with a star-slash <code>*/</code>. Multi-line comments
+may not be nested, because the comment ends with the scanning of
+the first star-slash after the first slash-star. The second slash-star
+isn't seen by JavaScript because it is in a comment. The second star-slash
+doesn't have a lead in slash-star as far as JavaScript is concerned so
+it is a syntax error.
+</p>
+
+<p>
+So both <code>right()</code> and <code>write()</code>,
+are functions. These hide the details of their implementation for
+their user. JavaScript allows its users to define their own
+functions. We can define a 'Hello World' function, ‘hi()’  as:
+</p>
+
+<code>function hi () {
+  right( 90);
+  write ( &quot;Hello World&quot;);
+}
+</code>
+
+<p>
+The word <span class="keyword">function</span> is a
+<strong>key word</strong> in JavaScript that tells it that you want to define a
+function. <strong>Key words</strong> are words reserved by a language, JavaScript
+in this case, to signal some intent to the programming language.
+Key words cannot be used for other purposes.
+The key word <span class="keyword">function</span> is followed by the name
+you want to give to the function. You should
+pick a unique name for the function, as this definition will
+override any previous definition. The open and close parentheses
+tell JavaScript that the function definition includes no parameters
+in this case. Even though there are no parameters, the parentheses
+are still needed. The open and close curly brace are used to mark the
+beginning and end of a block of statements to be executed when the
+<code>hi()</code> function is invoked.
+</p>
+
+<section>
+<h2>Debugging</h2>
+<p>
+Try to execute the program by pressing on the
+<span class="button">Run Demo</span>.
+You should get a error message about <strong>demo</strong> being undefined.
+This is because the <span class="button">Run Demo</span> tries to invoked the
+<code>demo()</code> function, and it isn't defined in the coding area.
+So let's adds a <code>demo()</code> function to the program:
+</p>
+
+<code>function hi () {
+  right( 90);
+  write ( &quot;Hello World&quot;);
+}
+
+function demo () {
+}
+</code>
+</section>
+
+<section>
+<p>
+Now try to execute the program again by pressing on the
+<span class="button">Run Demo</span>.
+The error has gone
+away, but nothing has executed. Why? We defined <code>demo()</code> as requested,
+but as defined, it does nothing.  The <code>hi()</code> function
+was never called or invoked. Let's add a call or invocation to the <code>hi()</code>
+function in the <code>demo()</code> function.
+</p>
+<code>function hi () {
+  right( 90);
+  write ( &quot;Hello World&quot;);
+}
+
+function demo () {
+  hi()
+}
+</code>
+
+<p>
+Now when you press the
+<span class="button">Run Demo</span> button, the turtle should print
+&quot;Hello World&quot; on the canvas.
+</p>
+</section>
+
+<section>
+<p>
+What happens if you
+press the <span class="button">Run Demo</span> button more than once? Why?
+</p>
+
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_9adb0f80a6146c6b.png" alt="">
+</div>
+
+<p>
+We can fix that by
+clearing the screen by invoking the <code>reset ()</code> function  before
+writing to the canvas.
+</p>
+<code>function hi () {
+  right( 90);
+  write ( &quot;Hello World&quot;);
+}
+
+function demo () {
+  reset()
+  helloWorld()
+}
+</code>
+You can try to introduce other syntax errors in the program to see the
+error message the JavaScript produces. Sometimes the message does not say
+exactly what the problem is, only what JavaScript perceives the problem to be.
+Think of it as more of a hint or suggestion, rather than something specific.
+It is good to get an idea of how JavaScript reports the syntax problems
+the it detects for a known problem so that you get a better idea of what
+it is trying to tell you for a random error.
+<ul>
+<li>
+Drop the leading or trailing quote mark from "Hello World").
+</li>
+<li>
+Drop the leading or trailing parentheses from a function invocation.
+</li>
+<li>
+Drop the leading or trailing parentheses from a function definition.
+</li>
+Drop the leading or trailing curly brace from a function definition.
+<li>
+Misspell the key word <span class="keyword">function</span> or change the
+case of one of the letters.
+</li>
+<li>
+Misspell a function name or change the case of one of the letters.
+</li>
+<li>
+Insert an <strong>operator</strong> like +, -, /, or * somewhere in the code.
+</li>
+</ul>
+</section>
+<section>
+<h2>Your First Graphic</h2>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_b3fc22dd53f0c1d6.png" alt="">
+</div>
+OK, but Turtle Graphics is a graphics program, shouldn’t we
+be doing some graphics? Let's see it draw some lines as sort of a
+graphical Hello World example. Let's try to do a simple square.
+
+<code>forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+forward(100)
+right(90)
+</code>
+</section>
+
+<section>
+<p>
+Ok, let’s do the same thing, but do it with by defining a function to draw the
+square, as we have learned previously.
+</p>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_2891944c53476dfe.png" alt="">
+</div>
+
+<code>function square1 () {
+  forward(100)
+  right(90)
+  forward(100)
+  right(90)
+  forward(100)
+  right(90)
+  forward(100)
+  right(90)
+}
+
+function demo () {
+  reset()
+  square1()
+}
+</code>
+</section>
+
+<section>
+<p>
+Let's see some of the power of a function with a simple change to draw three
+squares rotated 30° about the starting point. Change the <code>demo ()</code>
+function as follows:
+</p>
+
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_cae1dc59a219b5c6.png" alt="">
+</div>
+<code>function square1 () {
+  forward(100)
+  right(90)
+  forward(100)
+  right(90)
+  forward(100)
+  right(90)
+  forward(100)
+  right(90)
+}
+
+function demo () {
+  reset()
+  square1()
+  right(30)
+  square1()
+  right(30)
+  square1()
+}
+</code>
+</section>
+
+<section>
+<h2>Repeating </h2>
+<p>
+Great! Now looking at the function
+square1(), there is a lot of repetition. There are a couple of ways to
+do this. Using the Turtle Graphics function <code>repeat()</code>, the
+code would look something like:
+</p>
+<code>// square with repeat
+function el () {
+  forward (100)
+  right (90)
+}
+
+function square () {
+  repeat (4, el)
+}
+
+function demo () {
+  reset()
+  square()
+}
+</code>
+</section>
+<aside>
+<p>
+There is a method can get rid of the standalone <code>el()</code> function
+when using the <code>repeat()</code> function. The code is shown below.
+</p>
+<code>repeat( 4, function() {
+    forward( 100)
+    right( 90)}
+  )
+</code>
+<p>
+This works, but its syntax is hard to get right especially for beginners.
+All of the parentheses and curly braces have to be paired just right.
+This is called an <strong>anonymous function</strong> because it is a
+function without a name.
+</p>
+</aside>
+<p>
+But the repeat function is messy and not really the JavaScript way of doing
+things. Let's not use the <code>repeat()</code> function and use a with a
+<code>while</code> statement instead. The simplest JavaScript program using
+a <code>while</code> statement is something like:
+</p>
+<code>var i = 0;
+  while ( i &lt; 4) {
+    i = i + 1
+}
+</code>
+
+<p>
+What does this do? The key word <span class="keyword">var</span> is used
+to define a <strong>variable</strong>, or more specifically where a variable
+is defined.  <span class="var">i</span> is the name of a variable
+being declared. The <strong>statement</strong> <code>i = 0</code>, is an
+assignment of the value 0 to the variable <span class="var">i</span>. This
+could be read as: "set variable <span class="var">i</span> to 0."
+The JavaScript statement <code>i = 0</code> is just a short hand form of that.
+This is definitely not the way normal arithmetic symbols are used, because
+here '=' means 'assign' or 'set', even though after the assignment, i is
+equal to 0.
+</p>
+<p>
+Sometimes a variable is declared without setting it to an initial value, so
+its value would be <strong>undefined</strong>. In general this is
+a fairly bad idea. It is definitely an error to use a variable
+before its value is assigned.
+</p>
+<p>
+The next statement is
+the while statement. <span class="keyword">while</span> is a key word that
+signals to repeat the following statement or group of statements surrounded
+by an open and close curly brace, while the condition enclosed between the
+open and close parentheses evaluates to true. The only statement within the
+curly brackets is <code>i = i + 1</code>.
+</p>
+<p>
+So what happens when this is run.
+</p>
+<ul>
+  <li>
+    the variable <span class="var">i</span> is allocated and set to 0.</li>
+  <li>
+    since <span class="var">i</span> (being 0) is less than 4, the group of
+    statements is executed.
+  </li>
+  <li>
+    <span class="var">i</span> is set to <span class="var">i</span> + 1.
+    <span class="var">i</span> is now 1.
+  </li>
+  <li>
+    control returns to the <code>while</code> statement
+  </li>
+  <li>
+    since <span class="var">i</span> (being 1) is less than 4, the group of
+    statements is executed.
+  </li>
+  <li>
+    <span class="var">i</span> is set to <span class="var">i</span> + 1.
+    <span class="var">i</span> is now 2.
+  </li>
+  <li>
+    control returns to the <code>while</code> statement.
+  </li>
+  <li>
+    since <span class="var">i</span> (being 2) is less than 4, the group of
+    statements is executed.
+  </li>
+  <li>
+    <span class="var">i</span> is set to <span class="var">i</span> + 1.
+    <span class="var">i</span> is now 3.
+  </li>
+  <li>
+    control returns to the <code>while</code> statement.
+  </li>
+  <li>
+    since <span class="var">i</span> (being 3) is less than 4, the group
+    of statements is executed.
+  </li>
+  <li>
+    <span class="var">i</span> is set to <span class="var">i</span> + 1.
+    <span class="var">i</span> is now 4.
+  </li>
+  <li>
+    control returns to the <code>while</code> statement.
+  </li>
+  <li>
+    since <span class="var">i</span> (being 4) is no longer less than 4,
+    the group of statements is skipped over.
+  </li>
+</ul>
+<section>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_6bdc2aa2387413b8.png" alt="">
+</div>
+
+<p>
+This is all hard to see, so let's make it more visible. Let's print the
+value of <span class="var">i</span> inside of the loop. Since the
+<code>write()</code> function doesn't move the turtle, we need to do that
+as well by drawing the now familiar square. By the way, printing a variable
+during execution is a common tool used by programmers to see what is happening
+inside of a program when trying to debug the program.
+</p>
+<p>
+The program uses a while loop to repeat four times: write a number, draw a side,
+turn the corner, and increment the number of sides.
+</p>
+<code>square()
+function () {
+  var i = 0
+  while ( i &lt; 4) {
+    write (i)
+    forward (100)
+    right(90)
+    i = i + 1
+  }
+}
+
+function demo() {
+  reset()
+  square()
+}
+</code>
+<p>
+JavaScript has two other common looping techniques. One is a <code>do...while</code>
+statement.
+The block of code to be repeated is after the <span class="keyword">do</span>
+key word and the  <span class="keyword">while</span>is after the repeated block
+of code. So the block is always executed at least once where in a while statement
+the block may not be executed at all.
+The equivalent code for drawing a square is shown below.
+</p>
+<code>function square(side) {
+  var i = 0
+  do {
+    forward( side);
+    right( 90)
+    i = 1 + 1
+  } while (i < 5)
+}
+</code>
+<p>
+This pattern for looping through a block of code is very common
+in programming, so JavaScript uses
+a technique used in other languages like C to do a <code>for</code> loop.
+A <code>for</code> loop allows the programmer to do the three required steps
+of a loop in a single statement. These parts are
+separated with semicolons, just as multiple statements on
+a line would be separated. The code for a <code>for</code> loop to
+draw a square is as follows:
+</p>
+<code>function square(side) {
+  for( var i = 0; i < 4; i = i + 1) { // init; test; and change i
+    forward( 100) // block of code is within curly braces
+    right( 90)
+  }
+}
+</code>
+</section>
+The bottom line is
+that the inner group of statements is executed exactly 4 times. This type of
+loop is also called an <strong>iterative</strong> loop as it is executed a
+counted number of times. The control variable, <span class="var">i</span>
+in this case, is sometimes called an <strong>iterator</strong>.
+</p>
+
+<section>
+<h2>Function Parameters and Arguments</h2>
+<p>
+Wow! OK. Let's say we want to draw another square, but of a different size.
+We can copy the <code> square()</code> function code, change the function
+name, say to <code>square200()</code>, change the <code>forward(100)</code>
+to the size you want say, <code>forward(200)</code>.
+</p>
+<p>
+Now if you want to draw a square of 100 or 200 points, you are set. But if
+you want another size, you have to do the copy and change routine all over
+again. There is a better way. That is to a <strong>parameter</strong> to
+the basic <code>square()</code> function. We'll tell
+JavaScript that we want to pass a value in the function definition by including
+the parameter name or names within the parentheses as in the following code.
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_4103b621a22e21c4.png" alt="">
+</div>
+<code>function square(side) {
+  for( 1=0; i<4; i=i+1) {
+    forward( side);
+    right( 90)
+  }
+}
+</code>
+<p>
+When the program is executed the value of side is used in the
+<code>forward( side)</code> statement. To use that value, we
+just pass an <strong>argument</strong> to the square function by placing
+the argument, say '100,' within the parentheses, as in: <code>square (100)</code>.
+
+<p>
+Putting the two together, the code should look something like the figure to
+the right.  We also need to modify
+the function call in the <code>demo()</code> function to use the new arguments.
+When the function is invoked, it is supplied with arguments. The value of
+the arguments is passed to the parameter in the corresponding position defined
+with the function.
+Of all this there can be no argument, or was that a parameter.
+</p>
+<code>function square(side) { // side is a parameter
+  var i = 0;
+  while ( i &lt; 4) {
+    forward (side) // here the parameter is accessed
+                   // it is like a variable local
+                   // to the function square()
+    right(90)
+    i = i + 1
+  }
+}
+
+function demo () {
+  reset()
+  square(100) // 100 is an argument
+}
+</code>
+</section>
+
+<section>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_be7a00e682b3155e.png" alt="">
+</div>
+<p>
+Hey, isn’t that just like we did before. That was a lot of work to change the
+code, just to do the same thing.
+Why would you do that? To show off the power of a function with parameters,
+we can now use the iterator, so let's put in an iterator into the demo
+program that turns the square while changing its size.
+Let's do this one step at a time. First just turn it.
+</p>
+</div>
+<code>function square(side) {
+  var i = 0;
+  while ( i &lt; 4) {
+    forward (side)
+    right(90)
+    i = i + 1
+  }
+}
+
+function demo () {
+  reset()
+  var i = 0
+  while (i &lt; 12) {
+    square(75)
+    turn (30) // turn the square
+    i = i + 1
+  }
+}
+</code>
+</section>
+<section>
+<div class="image">
+  <img src="./images/no_picture.png">
+<div class="image">
+<p>
+The next modification to the code also
+changes the size of the squares and their color with each iteration within
+the while loop of the <code>demo()</code> function.
+</p>
+<code>function square(side) {
+  var i = 0;
+  while ( i &lt; 4) {
+    forward (side)
+    right(90)
+    i = i + 1
+  }
+}
+
+function demo () {
+  reset()
+  var i = 0
+  while ( i &lt; 12) {
+    color (i)
+    square(i * 10)
+    turn (30)
+    i = i + 1
+  }
+}
+</code>
+</section>
+
+<h2>Scope</h2>
+<section>
+<p>
+Great. You may have noticed something funny. Both the <code>square()</code>
+and <code>demo*()</code>functions use the same
+variable name <span class="var">i</span> for the iterator.
+Don't they conflict? No. In this case <span class="var">i</span> is defined
+as a local variable within the curly braces of each function with the
+<span class="keyword">var</span>.
+This means the variables only have meaning within the <strong>local</strong>
+context of the function in which they are defined.
+</p>
+<p>
+If <span class="var">i</span>
+had been defined outside of the functions at the <strong>global</strong> level
+as in the following code, there would be trouble.
+</p>
+<code>var i;
+function square(side) {
+  i = 0;
+  while ( i &lt; 4) {
+    forward (side)
+    right(90)
+    i = i + 1
+  }
+}
+
+function demo () {
+  reset()
+  i = 0
+  while ( i &lt; 12) {
+    color (i)
+    square(i * 10)
+    turn (30)
+    i = i + 1
+  }
+}
+</code>
+<p>
+Both functions would access the same variable and this would make the routines much
+harder to debug because both functions would be changing the value
+of <span class="var">i</span>.
+The general sequence of what happens in the code is:
+<ul>
+<li>
+demo function starts up and sets i to 0.
+</li>
+demo invokes square(0 * 10)
+<li>
+</li>
+square sets i to 0, which at this point is OK.
+<li>
+square loops through the values of i until it reaches 4 and it
+returns control to the demo program.
+</li>
+<li>
+demo increments i from 4 to 5. Oops, what happened to 1, 2, 3 and 4?
+</li>
+<li>
+demo invokes square (5 * 10)
+</li>
+<li>
+square sets i to 0, which at this point is backing up.
+</li>
+<li>
+square loops through the values of i until it reaches 4 and it
+returns control to the demo program.
+</li>
+<li>
+demo increments i from 4 to 5. Oops, we're back to where we were and
+the program is stuck in an infinite loop.
+</li>
+</ul>
+</section>
+<p>
+If you run this program on the IDE, it will lock up. The easy way to get out
+of this is to wait for the browser to detect that a web page is taking too
+much time and it issues and alert box asking to stop the window or to continue.
+You should stop the window and reload the IDE page. It probably is a good idea
+to recognize when something is wrong and what to do to fix it.
+</p>
+<p>
+In general it is better to use local variables than
+ones defined globally for several reasons:
+</p>
+<ol type="1">
+<li>
+  The same name can be used without conflict in other functions.
+</li>
+<li>
+  Only the code within the function can access the local variable.
+</li>
+</ol>
+<p>
+Sometimes global variables are
+necessary when you need to share data between functions or when a
+variable needs to last longer than just the time that a function is
+called (a property called <strong>persistence</strong>). A local  variable
+within a function is created each time the function is run, so it has no
+knowledge of previous executions. A global variable lives outside of the
+function so it is not affected by individual function invocations, although
+to be useful, the function may be changing that value for its own benefit. If
+other functions mess with that variable, and there is nothing to stop them
+from doing so except for programmer discipline, the variable may not work
+as expected.
+</p>
+<p>
+Variables default to being global, if you do not use the
+<span class="keyword">var</span> key word to define them.
+A variable can be made local by declaring the
+variable with the <span class="keyword">var</span> key word within the
+curly braces of a function definition. Think of
+the location of the <span class="keyword">var</span> variable declaration
+as the location of the variable. Inside a function: it is local to that function;
+outside the functions: it is global to all.
+</p>
+<p>
+This example also introduced the <code>color()</code> function. It works
+with simple numbered colors like a numbered box of crayons. It is limited to
+a number between 0 and 15. This works great in this case, except for white,
+which is number 7, doesn't show up well on a white background.
+</p>
+<section>
+<h2>Review</h2>
+<p>
+Review a bit, we have:
+</p>
+<ul>
+<li>
+  defined functions.
+</li>
+<li>
+  called or invoked those functions.
+</li>
+<li>
+  defined local variables.
+</li>
+<li>
+  learned a bit about global variables.
+</li>
+<li>
+  declared, assigned and accessed variables.
+</li>
+<li>
+  used iteration to repeat something a number of times.
+</li>
+<li>
+  used a while loop.
+</li>
+<li>
+  used an iteration variable within a loop.
+</li>
+<li>
+  defined a function to use a parameter.
+</li>
+<li>
+  used a function with an argument.
+</li>
+</ul>
+</section>
+<section>
+<h2>Randomness</h2>
+<p>
+So far we have drawn things with attributes that we assign in the code. What
+about having the program make up values and use them on the fly.
+Let’s try to place
+random-colored, random-sized squares at random places on the canvas.
+It sounds like we need a random number generating function. The
+<code>random()</code> function
+fills the need. This has two forms: one with one number and one with
+two numbers. The single number form generates an integer
+between 0 and the value supplied. The two number form generates
+an integer between the two numbers.
+</p>
+
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_94de213c6962653a.png" alt="">
+</div>
+
+<p>
+We used the <code>color()</code> function in the last exercise.  It works on
+a number between 0 and 15, so <code>random( 15)</code> will work for a random
+color (as long has you are happy with crayon colors).
+</p>
+
+<div class="image">
+  <img src="./images/no_picture.png">
+<div class="image">
+<p>
+To position the start
+of the square anywhere on the canvas, the <code>goto(x,y)</code> function
+can be used. A Cartesian coordinate system is used with x=0, y=0 at
+the center of the canvas. (see example of Cartesian coordinates.)
+The values at the edges of the canvas will vary from machine to
+machine and with the size of the particular window. There are
+functions to retrieve the minimum and maximum X values, <code>minX()</code>
+and <code>maxX()</code> respectively. <code>minX()</code> returns the left
+most x point and <code>maxX()</code> returns the right most x point.
+The <code>minY()</code> and <code>maxY()</code> functions do
+the same for the Y values. These functions are necessary because the
+screen size is different for different devices and can change at will
+on laptops and desktop machines as the browser window is changed.
+</p>
+<p>
+We need to pick a random number for a random x and a random y on the
+canvas for the <code>goto()</function></code>.
+<code>random( minX(), maxX())</code> will pick a suitable x value and
+<code>random( minY(), maxY())</code> will pick a suitable y value.
+This is put altogether in the following code. Note that the x and y parameter
+positions in the definition of the <code>goto()</code> function definition
+determine the order of the arguments when invoking the <code>goto()</code>
+function.
+</p>
+<code>function square(side) {
+  i = 0;
+  while ( i &lt; 4) {
+    forward (side)
+    right(90)
+    i = i + 1
+  }
+}
+
+function demo(){
+  var i
+  reset()
+  for (i=0; i&lt;20; i= i + 1) {
+    color( random(15))
+    goto (random( minX(), maxX()), random(minY(), maxY()))
+    square( random( 15,150))
+  }
+}
+</code>
+</section>
+
+<section>
+<h2>Simple Animated Build</h2>
+<p>
+Simple animations can be done with the <code>animate()</code>
+function. The function just repeats calls to the function named in its first
+argument after a delay of the number of milliseconds (1/1000 second) specified
+by the second argument. By not clearing or resetting the canvas between calls,
+the effects just build on the canvas. The program can be stopped by pressing the
+<span class="button">Stop</span> button.
+</p>
+<p>
+Let's use the same basic program that we used in the last exercise.
+We need to break the <code>demo()</code> function into two parts, because
+animate needs to call a function that draws something on the canvas.
+The iteration is no longer needed, because that is effectively done by
+the <code>animate()</code> function. The <code>reset()</code> should only be
+done in the demo function as well as the <code>animate()</code> function.
+Everything else can be put into a <code>randomSquare()</code> function.
+</p>
+<code>function square(side) {
+  i = 0;
+  while ( i &lt; 4) {
+    forward (side)
+    right(90)
+    i = i + 1
+  }
+}
+
+function randomSquare(){
+  color( random(15))
+  goto (random( minX(), maxX()), random(minY(), maxY()))
+  square( random( 15,150))
+
+function demo(){
+  reset()
+  animate( randomSquare, 100) // pass address of function,
+                              // not results of the function
+}
+</code>
+
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_b25a59c93ee7a6db.png" alt="">
+</div>
+<p>
+A funny thing is
+happening with the reference of <code>randomSquare</code> in the <code>demo()</code>
+function above. This is passing the address of the <code>randomSquare()</code>
+function to the <code>animate()</code> function. Animate executes the
+function at the address passed to it. By dropping the parentheses
+from the <code>demo2()</code> function, the address of the function is used
+rather than to attempt to invoke the function immediately as is done with the
+<code>random()</code>, <code>minX()</code>, <code>minY()</code>,
+<code>maxX()</code>, <code>maxY()</code> functions elsewhere in the code.
+</p>
+<p>
+The squares can be
+rotated as well by throwing in a turn (random(something)) into the
+mix.
+</p>
+<code>function square(side) {
+  i = 0;
+  while ( i &lt; 4) {
+    forward (side)
+    right(90)
+    i = i + 1
+  }
+}
+
+function randomSquare(){
+  color( random(15))
+  goto (random( minX(), maxX()), random(minY(), maxY()))
+  right(random( 5, 30))
+  square( random( 15,150))
+
+function demo(){
+  reset()
+  animate( randomSquare, 100) // pass address of function,
+                              // not results of the function
+}
+</code>
+</section>
+
+<section>
+<p>
+The line widths of squares can also be varied by throwing in <code>width</code>
+function. So in keeping with the randomness theme, why not make the lines a
+random width with <code>width (random(</code>something<code>))</code> into the mix.
+You may not want lines that are too thin (zero?) or too wide, so limit the range
+of the widths. This code looks something like the following.
+</p>
+
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_68208927fe627e54.png" alt="">
+</div>
+<code>function square(side) {
+  i = 0;
+  while ( i &lt; 4) {
+    forward (side)
+    right(90)
+    i = i + 1
+  }
+}
+
+function randomSquare(){
+  color( random(15))
+  goto (random( minX(), maxX()), random(minY(), maxY()))
+  right(random( 5, 30))
+  width( random( 1, 6)
+  square( random( 15,150))
+
+function demo(){
+  reset()
+  animate( randomSquare, 100) // pass address of function,
+                              // not results of the function
+}
+</code>
+</section>
+<p>
+By adding minor changes to the code, we are able to have some fairly
+dramatic changes to the generated graphic. Most programming is like this.
+Start out with some thing that works and then add more functionality in
+little steps until it is what you want.
+</p>
+<section>
+<h2>Polygons</h2>
+<h2>Generalizing
+the square function for a polygon function</h2>
+<p>
+We can <strong>generalize</strong> the <code>square()</code> function to make
+it can make polygons. Generalize here means to take the basic idea of a
+function and make it so that it can do more easily.  We've already generalize a
+simple square function into one that you can specify the length of its sides.
+Now we want to generalize the <code>square()</code> function so that it so that
+it can generate a polygon.
+<ul>
+<li>
+  What additional parameter(s) is(are) needed?
+</li>
+<li>
+  Can you calculate the corner angle?
+</li>
+<li>
+  What is the smallest number of parameters that are needed.?
+</li>
+</ul>
+
+<p>
+The answers are on the
+next page if you get stuck, but try to solve these without looking.
+</p>
+</section>
+
+<section>
+<p>
+For the square, take 360°, divided by 4 gives 90° for
+each angle. For a triangle, take 360°, divided by 3 gives 120°
+for each angle. This is the outside angle, not the inside angle.
+Some of you may know that an equilateral triangle, has three sides of the same
+length and three 60° angles.
+Generalizing for polygons, take 360° 
+and divide by the number of sides to get the angle.
+This would mean that a general polygon can be generated by the length of its
+sides and the number of sides required.
+</p>
+
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_3d9cdc3cc0c77a16.png" alt="">
+</div>
+
+<code>function polygon (size, n) {
+  var i = 0
+  while (i < n) {
+    write (i)
+    forward (size)
+    right (360/n)
+    i = i + 1
+  }
+}
+
+function demo() {
+  reset()
+  for (var i=3; i < 10; i = i+1) {
+    polygon( 40+2*i, i)
+  }
+}
+</code>
+
+<p>
+Now let's go one step further and try to draw pointed stars, that we will call spikeys.
+What about a five-pointed star? It has a lot of similarities as the polygon.
+Both end up in the same place and same direction as the start.
+Both have five corners and the corners are in the same place.
+One difference is a spikey is concave between points, where a polygon is flat.
+Another difference is that in drawing a polygon, the turtle only goes around the
+center point once. When drawing a star, the turtle would have to go around twice.
+</li>
+<li>
+  In a polygon, how many times to you go around the center point.
+</li>
+<li>
+  In a five-pointed star, how many times do you go around the center point?
+</li>
+<li>
+  Can you use that number to calculate the angle that you need to turn?
+</li>
+<li>
+  Can you generalize this?
+</li>
+<li>
+  Are there exceptions?
+</li>
+<li>
+  Is there a maximum?
+</li>
+</ul>
+times and still end up in the same starting position and angle?
+<p>
+When you draw the star free hand, you go around
+the center point twice and you make 5 turns. You can use that to
+determine the angle. Twice around the center is twice 360° or 720°.
+Dividing this by the number of points, 5, yields 144°. Remember this is the
+turning angle for the turtle. The inside angle is 180° minus the turning
+angle or 36°.
+</p>
+
+<p>
+The limit to the
+number of times that you can go around the center point is <em><strong>n/2</strong></em>
+where <em><strong>n</strong></em> is the number of points in the star.
+Going around more than  <em><strong>n/2</strong></em> times, produces the same result
+as a lower number,
+but the figure is in the opposite direction. If the number of points is
+divisible by the number of revolutions, the figure will close
+prematurely. So <em><strong>n</strong></em> works best if it is prime. With the
+number of revolutions close to <em><strong>n/2</strong></em>, the figure is most
+spikey. As <em><strong>n</strong></em> gets smaller, the opening in the
+center gets bigger and bigger and the outer ring gets narrower and
+narrower.
+</p>
+</section>
+
+<section>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_4616c1221a3e84ea.png" alt="">
+</div>
+
+<code class="floatleft">function spikey (size,n,revs) {
+  var i = 0
+  while (i < n) {
+    write (i)
+    forward (size)
+    right (revs*360/n)
+    i = i + 1
+  }
+}
+
+function pentagon (size) {
+  spikey (size, 5, 1)
+}
+
+function star (size) {
+  backward (size/2)
+  spikey (size, 5, 2)
+}
+
+function demo () {
+  reset()
+  star(200)
+}
+</code>
+</section>
+
+<section>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_b24baf30964e72cb.png" alt="">
+</div>
+
+<code>function polygon (size, sides) {
+  spikey (size, sides, 1)
+}
+</code>
+
+</div>
+
+<div class="concept">
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_3c59e3d695bcd8bc.png" alt="">
+</div>
+<code>function starN (size, points) {
+  backward (size/2)
+  spikey (size, points, Math.floor(points/2)
+)
+</code>
+
+<p>
+Other variations to try…
+</p>
+
+<code>//spikey( 200, 41, 20)
+//spikey( 200, 41, 20)
+//spikey( 200, 47, 23)
+//spikey( 200, 51, 25)
+//n must be not be divisible by revs
+//revs is best at about n/2
+</code>
+</section>
+
+<section>
+<h2>Next Step???</h2>
+<p>
+What should you do next? Here are some ideas that may help you in your
+next coding adventure.
+</p>
+<ul>
+<div class="image">
+    <img src="Javascript%20Turtle%20Graphics%202_html_912e341a579b6e0a.png" alt="">
+</div>
+<ul>
+<li>
+    Set up a demo of finding pi with a
+    random number generator. Hint: use a square that is 1 unit  by 1
+    unit and a quarter of a circle with a radius of 1 unit. Remember
+    the Pythagorean theorem.
+</li>
+<li>
+    Play with random colors.
+    Hint: <code>color (random(15))</code> or even more colors if
+    you use individual red, green and blue color codes like
+    <code>color ("rgb(" + </code>
+    <code>random(255) + "," + </code>
+    <code>random(255) + "," + </code>
+    <code>random(255) + ")" )</code>.
+</li>
+<li>
+    Play with color around a color wheel to change colors more subtly.
+    Hint: <code>color(&quot;hsl(&quot; + i/n*360 + &quot;, 100%, 50%&quot;)</code>
+</li>
+<li>
+    Investigate other fractals and draw them. Many can be found on Wikipedia.
+</li>
+<li>
+    Investigate tessellations and draw them. Many can be found on Wikipedia.
+    Some can be found on wall paper, shower curtains or floor tiles.
+</li>
+<li>
+    Do an animated graphics demonstration. Write a story or build up a
+    story graphically.
+</li>
+<li>
+    Make the page web accessible for people with various challenges.
+</li>
+<li>
+    Add to a server, perhaps on a Raspberry Pi with Apache.
+</li>
+</ul>
+
+<p>
+Learn more about JavaScript, HTML, and CSS using resources:
+</p>
+<ul>
+<li>
+  Read a book like <em>JavaScript for Kids.</em>
+</li>
+<li>
+  Take a online JavaScript course like Khan Academy. More ideas on the
+<a href="nerd.html">nerd link page</a>.
+</li>
+<li>
+  Get hands on experience with Code.org.
+</li>
+<li>
+  Find other examples of graphics and code in Turtle Graphics
+</li>
+<li>
+  Find out about a particular JavaScript feature at W3School.
+</li>
+<li>
+  Learn about code development tools
+  <ul>
+    <li>
+      Browser based debugging tools.
+    </li>
+    <li>
+      “jslint” programs to check JavaScript, CSS and HTML syntax.
+      Lint programs find inconsistencies in coding style that may
+      lead to undetected bugs.
+    </li>
+    <li>
+      “minify” programs to make your final code smaller for downloads.
+    </li>
+  </ul>
+</li>
+</ul>
+</section>
+</article>
+</body>
+</html>

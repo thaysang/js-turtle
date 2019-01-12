@@ -1,7 +1,7 @@
 /************************************************************************
 *  turtle.js -- javascript for the turtle graphic language extensions
 *
-*  Copyright (c) 2015 Kirk Carlson
+*  Copyright (c) 2015-2019 Kirk Carlson
 *  MIT license
 *
 *  would like to allow optional animation of each line drawn

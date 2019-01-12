@@ -1,0 +1,1568 @@
+<!doctype html>
+<html>
+<head>
+  <title>Polygon Animation</title>
+</head>
+<link type="text/css" rel="stylesheet" href="./turtleweb.css"/>
+<body>
+<header>
+<h1>JavaScript Turtle Graphics</h1>
+<div class="navigation">
+<ul>
+  <li><a href="overview.html" title="Overview of Turtle Graphics">Intro</a></li>
+  <li><a href="guide.html" title="User Guide for Turtle Graphics Integrated Development Environment">Guide</a></li>
+  <li><a href="turtle.html" title="Integrated Development Environment for Turtle Graphics">IDE</a></li>
+  <li><a href="javascript.html" title="Tutorial for Simple JavaScript">JavaScript</a></li>
+  <li><a href="tutorial.html" title="Tutorial for Basic Turtle Graphics">Tutorial</a></li>
+  <li><a class="active" href="animation.html" title="Tutorial for Animation with Turtle Graphics">Animation</a></li>
+  <li><a href="examples.html" title="Examples of Things Created with Turtle Graphics">Examples</a></li>
+  <li><a href="reference.html" title="Language Reference">Reference</a></li>
+  <li><a href="nerd.html" title="Nerd Links">Nerd</a></li>
+  <li><a href="about.html" title="About Turtle Graphics">About</a></li>
+</div>
+</header>
+<article>
+<!-- original source file is  at ~/dev/js-tur/backups/examplesHold/polygonStory.js-->
+<h1>Polygon Animation</h1>
+<h2>Introduction</h2>
+<p>
+This tutorial will take you through the basics of drawing with turtle
+graphics through the creation of the motion of stars as seen from a
+space craft exceeding the speed of light. This is a journey, but like all
+journeys, it has a series of small steps.
+</p>
+<p>
+In preparation for the jouney, it is assumed that you already have some knowledge
+of JavaScript and Turtle Graphics. If not, you may want to read or review the
+following pages before starting here:
+<ul>
+<li>
+<a href="javascript.html">JavaScript Basics</a>
+</li>
+<li>
+<a href="tutorial.html">Turtle Graphics Basics</a>
+</li>
+<li>
+<a href="guide.html">Guide to the IDT Turtle Graphics</a>
+</li>
+</ul>
+<p>
+On this journey we will visit various turtle graphics functions,
+creating JavaScript functions to do new things,
+repeating mechanisms to do the same thing over and over,
+using coordinate systems to plot things on the screen,
+using JavaScript objects to simplify parameter passing and processing,
+and finally animating some polygons.
+</p>
+<p>
+Another way is to take advantage of the loop control mechanisms that
+are part of JavaScript. Since this is "real" JavaScript programming, it 
+is the preferred way to go.
+JavaScript has many looping mechanisms from which to choose including:
+a <code>while</code> loop,
+a <code>do...while</code> loop and a <code>for</code> loop.
+All of these require the following be done:
+</p>
+<h2> Coloring the Polygon or Spikey </h2>
+<p>
+In the tutorial you learned how to change the color and width of the stroke.
+We will review that and add a fill function to fill a shape with a color.
+</p>
+<code>function demo() {
+  reset() // just clear the screen and home the turtle
+  color("red")
+  spikey(5, 2, 50)
+}
+</code
+
+<code>reset()
+color("blue")
+width(5)
+spikey(5, 2, 50)
+</code>
+<p>
+Now we will learn how to fill the interior of the spikey with color.
+</p>
+
+<p>
+We can even fill in the color of the polygons or spikeys
+by using the fill directives of turtle graphics. This directive
+is a little different than other we have used in that it has
+to bracket a series of moves with a <code>beginShape()</code> and
+a <code>fillShape()</code>. This lets the program know where to fill
+in. Of course the movements within the <code>beginShape()</code> and
+<code>fillShape()</code> should start and end at the same point on
+the canvas. That requirement is met by the <code>polygon()</code> and
+<code>spikey()</code> functions.
+</p>
+<p>
+So let's give it a try:
+</p>
+<code>reset()
+color("red")
+beginShape()
+spikey(5, 2, 50)
+fillShape("red")
+</code>
+
+<p>
+The stroke color, the color left by the turtle's pen, and the fill
+color can be different.
+</p>
+<code>reset()
+color("black")
+beginShape()
+spikey(5, 2, 50)
+fillShape("red")
+</code>
+<p>
+or
+</p>
+<code>reset()
+color("blue")
+width(2)
+beginShape()
+spikey(5, 2, 50)
+fillShape("red")
+</code>
+<p>
+You may have noticed that the fill color goes over the top of
+pen stroke. If you want the full width of the pen, you need
+to retrace the movements with the intended stroke color and
+width.
+</p>
+<code>reset()
+beginShape()
+spikey(5, 2, 50)
+fillShape("blue")
+width(2)
+color("white")
+spikey(5, 2, 50)
+</code>
+<h2>Positioning the Polygon or Spikey </h2>
+<p>
+We want to start with the <code>spikey()</code> function that was discussed
+in the Turtle Graphics Tutorial.
+We don't have to always start at the center of the canvas. We can start
+anywhere on the canvas. We can use the basic turtle moves like
+the following code to move the figure:
+</p>
+<code>function spikey (size, n, revs) {
+  var i = 0
+  while (i &lt; n) {
+    write (i)
+    forward (size)
+    right (revs*360/n)
+    i = i + 1
+  }
+}
+
+function demo() {
+  forward (200)
+  right(90)
+  forward( 200)
+  left(90)
+  spikey( 5, 2, 20)
+}
+</code>
+<p>
+That leaves a line of where the turtle traveled. We can prevent the
+turtle from marking by having it lift the pen as in the following code.
+</p>
+<code>function spikey (size, n, revs) {
+  var i = 0
+  while (i &lt; n) {
+    write (i)
+    forward (size)
+    right (revs*360/n)
+    i = i + 1
+  }
+}
+
+function demo() {
+  reset()
+  penup()
+  forward (200)
+  right(90)
+  forward( 200)
+  left(90)
+  pendown()
+  spikey( 5, 2, 20)
+</code>
+<div class="image">
+  <img src="./images/no_picture.png">
+</div>
+But it still isn't centered. It would be nice if it were centered because 
+spikes of different sizes could be place concentrically and the points of
+the spike can be reoriented without appearing to move the spikey.
+To center the two spikies takes a little geometry and trigonometry.
+So if you don't understand the following
+calculations, don't worry, this will be the only time that the math will be
+this difficult in this paper. Consulting the figure on the right we find that:
+<ul>
+<li>
+Turn Angle = 360° * revolutions / number of points
+</li>
+<li>
+Outside Angle = 180° + Turn Angle
+</li>
+<li>
+Inside Angle = 360° - Outside Angle
+</li>
+<li>
+Angle a = (360° - Outside Angle) / 2
+</li>
+<li>
+Angle a = (180° - Turn Angle) / 2
+</li>
+<li>
+Angle b = 90° - Angle a
+</li>
+<li>
+Side B = radius * cosine (Angle a)
+</li>
+<li>
+Spikey stroke length = 2* Side B
+</li>
+<li>
+                     = 2 * radius * cosine( Angle a)
+</li>
+<li>
+                     = 2 * radius * cosine(( 360° - Outside angle) / 2)
+</li>
+</ul>
+<p>
+These calculations can be used to center a spikey. The size of the spikey
+can now be the radius of a circle that would go around the spikey.
+The code for a spikey that uses a central point and a radius
+instead of a side to determine size in the following code.
+</p>
+<p>
+ This also uses the
+<code>goto()</code> function to move the turtle to an x, y position on the
+canvas Cartesian coordinte system. It also uses the
+<code>setheading()</code> function to orient the spikey. Although the
+spikey will be drawn with a point straight up, it could be set to any angle.
+</p>
+<code>function spikey ( points, revs, radius, x, y) {
+  penup()
+  goto(x, y)
+  setheading(0)
+  forward(radius)
+  var turnAngle = 360 * revs/points
+  var angleA = ( 180 - turnAngle)/2
+  var stroke = 2 * radius * Math.cos( degToRad( angleA))
+  right( 180 - angleA)
+  pendown()
+
+  for( var i = 0; i < points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+}
+
+function demo () {
+  reset()
+  hideTurtle()
+  for (rad = 40; rad<=100; rad = rad + 10) {
+    spikey( 5, 2, rad, -10, 10)
+  }
+}
+</code>
+<p>
+Since there are a lot of changes to the <code>spikey()</code> function all at
+once, let's stop to explain what is going on.
+First up, the spikey function has different parameters.
+The <span class="var">points</span> and 
+<span class="var">revs</span> parameters have the same purpose as before.
+The <span class="var">side</span> parameter has been replaced with a
+<span class="var">radius</span> parameter. Both specify the size of the spikey,
+but in different ways. <span class="var">radius</span> specifies the radius of a circle
+that would go around all of the points of the spikey. So spikeys with different
+number of <span class="var">points</span> or different number of
+<span class="var">revs</span> would still be the same size as each other.
+The new parameters <span class="var">x</span> and <span class="var">y</span>
+specify the center point of the spikey.
+</p>
+<p>
+As you can see when the code runs, there are seven perfectly centered and aligned
+five-pointed stars.
+</p>
+<h2>Using Named Parameters and Arguments</h2>
+<p>
+The <code>spikey()</code> function has three parameters: number of points,
+number of revolutions and length of side. But even with just three parameters,
+it starts to get confusing as to what the order of the parameters are.
+JavaScript has a mechanism to help with that, although it is not direct.
+To review, JavaScript has objects. For instance a car object may be
+</p>
+<code>car = { make: "Volkswagen", model: "bug", year: 1967, color: "red" }
+</code>
+<p>
+The make, model, year and color are attributes of the car. You can have
+other cars with other attributes. To access an attribute you use the dot
+notation with the object.attribute as in:
+</p>
+<code>car1 = { make: "Volkswagen", model: "bug", year: 1967, color: "red" }
+car2 = { make: "Ford", model: "Mustang", year: 2008, color: "blue" }
+
+paint = car1.color // paint is red
+paint = car2.color // paint is blue
+</code>
+<p>
+A function can use an object as its only parameter and then break out
+the individual attributes. When the function is invoked, one must use
+the object notation in the argument. So taking the familiar, by now,
+<code>spikey()</code> function and changing it for object notation:
+</p>
+<code>function spikey ( args ) {
+  for( var i=0; i < args.points; i = i+1) { //>
+    forward (args.side)
+    right( 360*args.revs/args.points)
+  }
+}
+
+function demo() {
+  reset();
+  spikey({points:5, revs:2, side:50})
+  left(180)
+  spikey({side:50, revs:2, points:5}) // order doesn't matter.
+}
+</code>
+<p>
+This was for the old simple spikey function.
+Let's say you want a spikey function that does what a
+spikey does, but now you want to add a starting point, a starting angle,
+a stroke color and a fill color. That's a lot to remember just in
+itself, but then you also have to remember the parameter order.
+Naming the parameters reduces that complexity.
+</p>
+<p>
+This function also know whether to re-stroke the spikey or not. This is a
+case where a simple conditional provides some functionality and saves
+the user of the function having to call it twice.
+</p>
+<code>function spikey ( args ) {
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+function demo () {
+  reset()
+  hideTurtle()
+  spikey({ points:5,
+           revs:2,
+	   radius:15,
+	   x:0,
+	   y:0,
+	   heading:0,
+	   color:"red",
+	   width:3,
+	   fill:"white"
+	 })
+  spikey({ x:0,
+           y:30,
+	   radius: 10,
+	   heading:180,
+	   side:50,
+	   points:5,
+	   revs:2,
+	   color:"blue",
+	   fill:"yellow"
+	 })
+  spikey({ x:30,
+           y:10,
+	   radius: 10,
+	   heading:180-72,
+	   side:50,
+	   points:5,
+	   revs:2,
+	   color:"blue",
+	   fill:"yellow"
+	 })
+  spikey({ x:20,
+           y:-28,
+	   radius: 10,
+	   heading:-36,
+	   side:50,
+	   points:5,
+	   revs:2,
+	   stroke:"blue",
+	   fill:"yellow"
+	 })
+  spikey({ x:-20,
+           y:-28,
+	   radius: 10,
+	   heading:36,
+	   side:50,
+	   points:5,
+	   revs:2,
+	   stroke:"blue",
+	   fill:"yellow"
+	 })
+  spikey({ x:-30,
+           y:10,
+	   radius: 10,
+	   heading:180-72,
+	   side:50,
+	   points:5,
+	   revs:2,
+	   color:"blue",
+	   fill:"yellow"
+	 })
+}
+</code>
+<h2>
+Default Parameters
+</h2>
+<p>
+So now we don't need to worry about the order of the parameters, but what happens
+if we leave one out. As it stands, if an attribute is not supplied, JavaScript
+will stop with an error because that attribute is undefined. 'undefined' is a
+special value any variable can have. The easiest thing to do is to set all
+undefined attributes with a default value as shown below. Note that even
+arguments which probably should have been supplied are furnished with a default
+here. It may be a better idea to let an argument like side remain undefined,
+so that the function is called properly.
+The following is a code segment to handle default values
+</p>
+<code>
+  // fill out default values for undefined attributes
+  if (args.x === undefined) args.x = 0
+  if (args.y === undefined) args.y = 0
+  if (args.radius === undefined) args.radius = 10 // really shouldn't default this
+  if (args.heading === undefined) args.heading = 0
+  if (args.color === undefined) args.color = "black"
+  if (args.fill === undefined) args.fill = "white"
+  if (args.width === undefined) args.width = 1
+  if (args.revs === undefined) args.revs = 1 // garden variety polygon
+  if (args.points === undefined) args.points = 5 // really shouldn't default this
+</code>
+
+***CODE FOR SPIKEY testing
+points revs...
+ 3 1
+ 4 1
+ 5 1 2
+ 6 1
+ 7 1 2 3
+ 8 1   3
+ 9 1 2 
+10 1   3 4
+11 1 2 3 4 5
+12 1       5
+13 1 2 3 4 5 6
+14 1   3 4 5 6 
+
+<code>if (frameTurns < 60 ) {
+      frameDelay = 30
+      frameNumber = frameNumber - 1
+      var rad = random( 10,50)
+      var validPointTurns = [ // using an array of array to hold valid
+        // points, turns combinations. To be valid the turns should
+        // be less than half the turns and points should not be
+        // evenly divisable by turns.
+        [5,2],
+        //[6,2],
+        //[6,3],
+        [7,2],
+        [7,3],
+        //[8,2],
+        [8,3],
+        //[8,4],
+        [9,2],
+        //[9,3],
+        [9,4],
+        //[10,2],
+        [10,3],
+        [10,4],
+        //[10,5],
+        [11,2],
+        [11,3],
+        [11,4],
+        [11,5],
+        //[12,2],
+        //[12,3],
+        //[12,4],
+        [12,5]
+        //[12,6],
+       ]
+      var pointTurn = validPointTurns[ random( validPointTurns.length-1)]
+
+      var params = {
+        points: pointTurn[0], // access the first element of the star array
+        turns: pointTurn[1],  // access the second element of the star array
+        radius: rad,
+        penColor: random(16),
+        fillColor: random(16),
+        penWidth: 1,
+        startAngle: random (360),
+        x: random (minX()+rad, maxX()-rad),
+        y: random (minY()+rad, maxY()-rad)
+      }
+      spikeytp( params )
+      frameTurns = frameTurns + 1
+    } else {
+      frameNumber = 169
+    }
+</code>
+
+<h2>
+Polygon Animation.
+</h2>
+<p>
+Now we can play around a bit with animation.
+Animation is done by drawing a series of pictures or frames.
+Each frame is slightly different than the preceding frame.
+If the frames are played at the right speed the
+human eye blurs the frames together to form motion.
+Let's start with simply twisting a simple star.
+</p>
+<code>function spikey ( args ) {
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+// GLOBALS
+var twistAngle
+
+// FUNCTIONS
+function demo () {
+  reset()
+  hideTurtle()
+  twistAngle = 0
+  twistStar()
+}
+
+function twistStar() {
+  reset()
+  hideTurtle()
+  spikey({
+    points:5,
+    revs:2,
+    radius:40,
+    x:0,
+    y:0,
+    heading:twistAngle,
+    color:"red",
+    width:3, 
+    fill:"white"
+  })
+  twistAngle = twistAngle + 2
+  delay( twistStar, 30)
+}
+
+
+
+</code>					      
+<p>
+An improvement can be made to this code. The object defining
+the star can be made a stand alone definition. This allows
+the program to be maintained in a more organized fashion: the
+definitions allow the characteristics of the star to be defined
+separately from the code that does the action.
+This code is shown below. Note the two sections of the code: GLOBALS
+and FUNCTIONS. The variables defined as they are in the GLOBALS section
+are global and may be accessed by any function. ("// GLOBALS" is a comment
+that is just a signal to the programmer that this is the beginning
+of a section.) The name "deltaRotation" is the way that an engineer or
+physisist would talk about change in rotation.
+</p>
+<code>// GLOBALS
+
+var star1 = {
+              points:5,
+              revs:2,
+              radius:40,
+              x:0,
+              y:0,
+              heading:0,
+              color:"red",
+              width:3, 
+              fill:"white"
+           }
+var deltaRotation = 2  // number of degrees of twist between frames
+var frameDelay = 30    // milliseconds between frames
+
+
+// FUNCTIONS
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function twistStar() {
+  clear()
+  spikey(star1)
+  star1.heading = star1.heading + deltaRotation
+  delay( twistStar, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  twistStar()
+}
+</code>					      
+<p>
+Now let's move the star about. So instead of changing the rotation,
+we will change its x and y position. These are independent so
+you can move the star in any direction including backward when
+using a negative change or delta.
+</p>
+<code>// GLOBALS
+var star1 = {
+              points:5,
+              revs:2,
+              radius:40,
+              x:0,
+              y:0,
+              heading:0,
+              color:"red",
+              width:3, 
+              fill:"white"
+           }
+var deltaX = 2  // pixels per frame in x direction
+var deltaY = 2  // pixels per frame in y direction
+var frameDelay = 30    // milliseconds between frames
+
+
+// FUNCTIONS
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function moveStar() {
+  clear()
+  spikey(star1)
+  star1.x = star1.x + deltaX
+  star1.y = star1.y + deltaY
+  delay( moveStar, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  moveStar()
+}
+</code>
+
+<p>Now let's grow the star over time. We do that
+by adding a delta the radius for each frame.
+</p>
+<code>// GLOBALS
+var star1 = {
+              points:5,
+              revs:2,
+              radius:40,
+              x:0,
+              y:0,
+              heading:0,
+              color:"red",
+              width:3, 
+              fill:"white"
+           }
+var deltaRadius = 2  // pixels per frame in x direction
+var frameDelay = 30    // milliseconds between frames
+
+
+// FUNCTIONS
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function growStar() {
+  clear()
+  spikey(star1)
+  star1.radius = star1.radius + deltaRadius
+  delay( growStar, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  growStar()
+}
+</code>
+<p>
+Now let's combine all three and move, grow, and twist it at the same time.
+</p>
+<code>// GLOBALS
+var star1 = {
+              points:5,
+              revs:2,
+              radius:40,
+              x:0,
+              y:0,
+              heading:0,
+              color:"red",
+              width:3, 
+              fill:"white"
+           }
+var deltaX = 2  // change in pixels per frame in x direction
+var deltaY = 2  // change in pixels per frame in y direction
+var deltaHeading = 2  // change in heading per frame
+var deltaRadius = 2  // change in radius per frame
+var frameDelay = 30    // milliseconds between frames
+
+
+// FUNCTIONS
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function changeStar() {
+  clear()
+  spikey(star1)
+  star1.x = star1.x + deltaX
+  star1.y = star1.y + deltaY
+  star1.heading = star1.heading + deltaHeading
+  star1.radius = star1.radius + deltaRadius
+  delay( changeStar, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  changeStar()
+}
+</code>
+<p>
+This code could be improved a small bit. The deltas can be
+part of the other attributes of the star. This way if there
+were more than one star, they would have separate speeds.
+While we are at it, let's also shorten "delta" to just plain "d."
+To make it interesting, we will also add a second star. 
+</p>
+<code>// GLOBALS
+var star1 = {
+              points:5,
+              revs:2,
+              radius:40,
+              x:0,
+              y:0,
+              heading:0,
+              color:"red",
+              width:3,
+              fill:"white",
+              dx: 2,
+              dy: 2,
+              dhead: 2,
+              drad: 2
+           }
+var star2 = {
+              points:7,
+              revs:3,
+              radius:40,
+              x:-100,
+              y:0,
+              heading:0,
+              color:"black",
+              width:3,
+              fill:"blue",
+              dx: 4,
+              dy: 2,
+              dhead: 6,
+              drad: 3
+           }
+var frameDelay = 30    // milliseconds between frames
+
+
+// FUNCTIONS
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function changeStars() {
+  clear()
+
+  spikey(star1)
+  star1.x = star1.x + star1.dx
+  star1.y = star1.y + star1.dy
+  star1.heading = star1.heading + star1.dhead
+  star1.radius = star1.radius + star1.drad
+
+  spikey(star2)
+  star2.x = star2.x + star2.dx
+  star2.y = star2.y + star2.dy
+  star2.heading = star2.heading + star2.dhead
+  star2.radius = star2.radius + star2.drad
+
+  delay( changeStars, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  changeStars()
+}
+</code>
+<p>
+Now let's add acceleration to the mix.
+Acceleration just changes the speed parameters a bit over time.
+Acceleration is the feeling you get when speeding up. Negative
+acceleration or deceleration is the feeling you get when slowing
+down. Since acceleration is just a change in speed we will
+abbreviate acceleration as "dd..."
+We can add acceleration to any speed attribute, so
+we will add a ddx, ddy, ddhead, and ddrad to add acceleration
+attributes for x, y, heading and radius respectively.
+</p>
+<code>// GLOBALS
+var star1 = {
+              points:5,
+              revs:2,
+              radius:40,
+              x:0,
+              y:0,
+              heading:0,
+              color:"red",
+              width:3,
+              fill:"white",
+              dx: 2,
+              dy: 2,
+              dhead: 2,
+              drad: 2,
+              ddx: .2,
+              ddy: .2,
+              ddhead: .2,
+              ddrad: .2
+           }
+var star2 = {
+              points:7,
+              revs:3,
+              radius:40,
+              x:-100,
+              y:0,
+              heading:0,
+              color:"black",
+              width:3,
+              fill:"blue",
+              dx: 4,
+              dy: 2,
+              dhead: 6,
+              drad: 3,
+              ddx: -.4,
+              ddy: .1,
+              ddhead: -.3,
+              ddrad: -.2
+           }
+var frameDelay = 30    // milliseconds between frames
+
+
+// FUNCTIONS
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function changeStar() {
+  clear()
+
+  spikey(star1)
+  star1.x = star1.x + star1.dx
+  star1.y = star1.y + star1.dy
+  star1.heading = star1.heading + star1.dhead
+  star1.radius = star1.radius + star1.drad
+  star1.dx = star1.dx + star1.ddx
+  star1.dy = star1.dy + star1.ddy
+  star1.dhead = star1.dhead + star1.ddhead
+  star1.drad = star1.drad + star1.ddrad
+
+  spikey(star2)
+  star2.x = star2.x + star2.dx
+  star2.y = star2.y + star2.dy
+  star2.heading = star2.heading + star2.dhead
+  star2.radius = star2.radius + star2.drad
+  star2.dx = star2.dx + star2.ddx
+  star2.dy = star2.dy + star2.ddy
+  star2.dhead = star2.dhead + star2.ddhead
+  star2.drad = star2.drad + star2.ddrad
+
+  delay( changeStar, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  changeStar()
+}
+</code>
+<p>
+So we have done motion and acceleration on two stars.
+Now let's multiple stars. If the stars were defined as an
+array, the individual processing for each star would be the same (except
+for the array member number).
+There should be some variation in the size, color and position of each
+star.  The stars should appear to be moving from the center of the canvas
+straight toward the edge.
+</p>
+<code>// GLOBALS
+var frameDelay = 30    // milliseconds between frames
+var polys = []
+var revs = new Array (0,0,0,0,0, 2,2,3,3,4,4,5)
+
+
+// FUNCTIONS
+
+function generatePolys () {
+  var x
+  var y
+  var points
+  for (i=0; i<10; i++) { //>
+    x = random (-100, 100)
+    y = random (-100, 100)
+    points = random(5, 11)
+    polys.push ({
+      points: points,
+      revs: revs[ points],
+      radius: random( 1,6)/2,
+      color: logoColors[ random(15)],
+      fill: logoColors[ random(15)],
+      width: 1,
+      heading: random(360),
+      x: x,
+      y: y,
+      drad: 1,
+      dhead: 1,
+      dx: Math.sign(x),
+      dy: Math.sign(y) * Math.abs(y/x),
+      ddrad: random(1,6)/20,
+      ddhead: .2,
+      ddx: .4 * Math.sign(x),
+      ddy: .2 * Math.sign(y) * Math.abs(y/x)
+    })
+  }
+}
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function changeStars() {
+  clear()
+
+  for (i=0; i<10; i++) { //>
+    spikey(polys[i])
+    polys[i].x = polys[i].x + polys[i].dx
+    polys[i].y = polys[i].y + polys[i].dy
+    polys[i].heading = polys[i].heading + polys[i].dhead
+    polys[i].radius = polys[i].radius + polys[i].drad
+    polys[i].dx = polys[i].dx + polys[i].ddx
+    polys[i].dy = polys[i].dy + polys[i].ddy
+    polys[i].dhead = polys[i].dhead + polys[i].ddhead
+    polys[i].drad = polys[i].drad + polys[i].ddrad
+  }
+
+  delay( changeStars, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  generatePolys()
+  changeStars()
+}
+</code>
+<p>
+That was cool, but the animation stopped way too soon. We will now add 
+an incubator to create new baby stars, so that the animation lasts longer.
+This is done by modifying the <code>generatePolys()</code> function to take
+an argument for the number of stars to generate, and then calling it
+from the <code>changeStars()</code> function.
+</p>
+<code>// GLOBALS
+var frameDelay = 30    // milliseconds between frames
+var polys = []
+
+
+
+// FUNCTIONS
+
+function generatePolys (count) {
+  var x
+  var y
+  var points
+  console.log(count)
+  for (i=0; i<count; i++) { //>
+    x = random (-100, 100)
+    y = random (-100, 100)
+    points = random(5, 11)
+    polys.push ({
+      points: 5,
+      revs: 2,
+      radius: random( 1,6)/2,
+      color: logoColors[ random(15)],
+      fill: logoColors[ random(15)],
+      width: 1,
+      heading: random(360),
+      x: x,
+      y: y,
+      drad: 1,
+      dhead: 1,
+      dx: Math.sign(x),
+      dy: Math.sign(y) * Math.abs(y/x),
+      ddrad: random(1,6)/60,
+      ddhead: .2,
+      ddx: .4 * Math.sign(x),
+      ddy: .2 * Math.sign(y) * Math.abs(y/x)
+    })
+  }
+}
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function changeStars() {
+  clear()
+
+  for (i=0; i<polys.length; i++) { //>
+    spikey(polys[i])
+    polys[i].x = polys[i].x + polys[i].dx
+    polys[i].y = polys[i].y + polys[i].dy
+    polys[i].heading = polys[i].heading + polys[i].dhead
+    polys[i].radius = polys[i].radius + polys[i].drad
+    polys[i].dx = polys[i].dx + polys[i].ddx
+    polys[i].dy = polys[i].dy + polys[i].ddy
+    polys[i].dhead = polys[i].dhead + polys[i].ddhead
+    polys[i].drad = polys[i].drad + polys[i].ddrad
+  }
+
+  generatePolys(1)
+  delay( changeStars, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  generatePolys(10)
+  changeStars()
+}
+</code>
+<p>
+That works for a while, but it is consuming memory
+by continually adding to the polys array. Even though stars
+are no longer on the canvas they are using memory and are
+being recomputed each frame. The motion will get slower and slower
+over time.
+</p>
+<p>
+One way to correct the problem is to delete elements from the polys array when
+that element is off the canvas.
+The edges of the canvas are given by the Turtle Graphics functions
+<code>minX()</code>,
+<code>maxX()</code>,
+<code>minY()</code>, and
+<code>maxY()</code>.
+But remember its not just when the center of the star passes by the edge.
+but the extremities of the star. All of the arms of the star are within
+the radius of the star, so that needs to be added to the dimension of the canvas.
+<code>Array.splice(start, count)</code> is method for chopping out members of an array.
+This has two arguments <code>start</code>, the element where the deletion should
+start, and <code>count</code>, the number of elements to delete. Since this deletes
+elements and causes the length of the array to change, we need to do this
+from the end of the array and move toward its beginning.
+</p>
+<code>// GLOBALS
+var frameDelay = 30    // milliseconds between frames
+var polys = []
+
+
+
+// FUNCTIONS
+
+function generatePolys (count) {
+  var x
+  var y
+  var points
+  console.log(count)
+  for (i=0; i<count; i++) { //>
+    x = random (-100, 100)
+    y = random (-100, 100)
+    points = random(5, 11)
+    polys.push ({
+      points: 5,
+      revs: 2,
+      radius: random( 1,6)/2,
+      color: logoColors[ random(15)],
+      fill: logoColors[ random(15)],
+      width: 1,
+      heading: random(360),
+      x: x,
+      y: y,
+      drad: 1,
+      dhead: 1,
+      dx: Math.sign(x),
+      dy: Math.sign(y) * Math.abs(y/x),
+      ddrad: random(1,6)/60,
+      ddhead: .2,
+      ddx: .4 * Math.sign(x),
+      ddy: .2 * Math.sign(y) * Math.abs(y/x)
+    })
+  }
+}
+
+function spikey ( args ) { // the simpler version for brevity
+  goto( args.x, args.y)
+  setheading( args.heading)
+  forward( args.radius)
+  var turnAngle = 360 * args.revs/args.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * args.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( args.color)
+  width( args.width)
+  beginShape()
+  for( var i = 0; i < args.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( args.fill)
+}
+
+
+function killPolys() {
+  for (i=polys.length-2; i >= 0; i = i - 1) { //>
+    if (polys[i].x -polys[i].radius > maxX() ||
+        polys[i].x + polys[i].radius < minX() ||
+        polys[i].y - polys[i].radius > maxY() ||
+        polys[i].x + polys[i].radius < minX()) {
+       console.log("killing " + i + " " + polys[i].x + " " + polys[i].y + " " + polys.length)
+       polys.splice(i,1) 
+    } 
+  }
+}
+
+function changeStars() {
+  clear()
+
+  for (i=0; i<polys.length; i++) { //>
+    spikey(polys[i])
+    polys[i].x = polys[i].x + polys[i].dx
+    polys[i].y = polys[i].y + polys[i].dy
+    polys[i].heading = polys[i].heading + polys[i].dhead
+    polys[i].radius = polys[i].radius + polys[i].drad
+    polys[i].dx = polys[i].dx + polys[i].ddx
+    polys[i].dy = polys[i].dy + polys[i].ddy
+    polys[i].dhead = polys[i].dhead + polys[i].ddhead
+    polys[i].drad = polys[i].drad + polys[i].ddrad
+  }
+
+  killPolys()
+  generatePolys(1)
+  delay( changeStars, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  generatePolys(10)
+  changeStars()
+}
+</code>
+<ch2>
+Objects, Constructor, and Methods
+</h2>
+<p>
+JavaScript is an Object Oriented language. We have used objects
+in the previous example, but we have yet to make the code object
+oriented. This next step creates the objects using a constructor.
+A constructor is a special function that sets the attributes of 
+an object. It uses the special key word "this" that refers to the
+object being created by the constructor.
+</p>
+<code>
+function Spikey ( points, revs, radius) {
+  this.points = points
+  this.revs = revs
+  this.radius = radius
+)
+</code>
+<p>
+The constructor is invoked to build an object as in the following:
+</p>
+<code>
+star = new Spikey( 5, 2, 40)
+</code>
+<p>
+Objects also have methods. A method is a function that is tied to the object.
+Other objects can have methods with the same name and an object may have
+many methods. The following shows the definition of a Spikey Class with
+a <code>grow()</code> method.
+</p>
+<code>
+function Spikey ( points, revs, radius) {
+  this.points = points
+  this.revs = revs
+  this.radius = radius
+  this.grow = function (delta) {
+    this.radius = this.radius + delta
+  }
+)
+</code>
+<p>
+The method is invoked as in the following code.
+</p>
+<code>
+star = new Spikey( 5, 2, 40) // construct a new Spikey named "star"
+
+star.grow(2) // invoke the grow method on the Spikey named "star"
+</code>
+<p>
+Another way to add a method to a constructor is to use the "prototype" keyword.
+The definition using the prototype keyword is as if it were part of the
+original constructor, so the keyword "this" still refers to the object
+being created.
+</p>
+<code>
+function Spikey ( points, revs, radius) {
+  this.points = points
+  this.revs = revs
+  this.radius = radius
+}
+
+Spikey.prototype.grow = function (delta) {
+  this.radius = this.radius + delta
+}
+</code>
+<p>
+Rewriting the final animation example using object orientation becomes something
+like the following code.
+</p>
+<code>// CONSTRUCTORS
+
+function Spikey ( ) {
+  // set to default value initially
+  this.points = 5
+  this.revs = 2
+  this.radius = 10
+  this.color = "black"
+  this.fill = "white"
+  this.width = 1
+  this.heading = 0
+  this.x = 0
+  this.y = 0
+  this.drad = 0
+  this.dhead = 0
+  this.dx = 0
+  this.dy = 0
+  this.ddrad = 0
+  this.ddhead = 0
+  this.ddx = 0
+  this.ddy = 0
+}
+
+Spikey.prototype.grow = function () {
+  this.radius = this.radius + this.drad
+}
+
+Spikey.prototype.move = function () {
+  this.x = this.x + this.dx
+  this.y = this.y + this.dy
+}
+
+Spikey.prototype.twist = function () {
+  this.heading = this.heading + this.dhead
+}
+
+Spikey.prototype.accelerate = function () {
+  this.dx = this.dx + this.ddx
+  this.dy = this.dy + this.ddy
+  this.dhead = this.dhead + this.ddhead
+  this.drad = this.drad + this.ddrad
+}
+
+
+Spikey.prototype.draw = function () { // the simpler version for brevity
+  goto( this.x, this.y)
+  setheading( this.heading)
+  forward( this.radius)
+  var turnAngle = 360 * this.revs/this.points
+  var angleA = (180 - turnAngle)/2
+  var stroke = 2 * this.radius * Math.cos(degToRad(angleA))
+  right(180-angleA)
+  pendown()
+
+  color( this.color)
+  width( this.width)
+  beginShape()
+  for( var i = 0; i < this.points; i = i + 1) { //>
+    forward( stroke)
+    right( turnAngle)
+  }
+  fillShape( this.fill)
+}
+
+
+// GLOBALS
+
+var frameDelay = 30    // milliseconds between frames
+var polys = []
+
+// FUNCTIONS
+
+function generatePolys (count) {
+  var x
+  var y
+  var points
+  console.log(count)
+  for (i=0; i<count; i++) { //>
+    x = random (-100, 100)
+    y = random (-100, 100)
+    points = random(5, 11)
+    polys.push( new Spikey())
+    var last = polys.length -1
+    polys[last].points = 5
+    polys[last].revs = 2
+    polys[last].radius = random( 1,6)/2
+    polys[last].color = logoColors[ random(15)]
+    polys[last].fill = logoColors[ random(15)]
+    polys[last].width = 1
+    polys[last].heading = random(360)
+    polys[last].x = x
+    polys[last].y = y
+    polys[last].drad = 1
+    polys[last].dhead = 1
+    polys[last].dx = Math.sign(x)
+    polys[last].dy = Math.sign(y) * Math.abs(y/x)
+    polys[last].ddrad = random(1,6)/60
+    polys[last].ddhead = .2
+    polys[last].ddx = .4 * Math.sign(x)
+    polys[last].ddy = .2 * Math.sign(y) * Math.abs(y/x)
+  }
+}
+
+
+function killPolys() {
+  for (i=polys.length-2; i >= 0; i = i - 1) { //>
+    if (polys[i].x -polys[i].radius > maxX() ||
+        polys[i].x + polys[i].radius < minX() ||
+        polys[i].y - polys[i].radius > maxY() ||
+        polys[i].x + polys[i].radius < minX()) {
+        console.log("killing " + i + " " + polys[i].x + " " + polys[i].y + " " + polys.length)
+       polys.splice(i,1) 
+    } 
+  }
+}
+
+function changeStars() {
+  clear()
+
+  for (i=0; i<polys.length; i++) { //>
+    polys[i].draw()
+    polys[i].move()
+    polys[i].twist()
+    polys[i].grow()
+    polys[i].accelerate()
+  }
+
+  killPolys()
+  generatePolys(1)
+  delay( changeStars, frameDelay)
+}
+
+
+function demo () {
+  reset()
+  hideTurtle()
+  wrap(false) // fix edge condition
+  generatePolys(10)
+  changeStars()
+}
+</code>
+</article>
+</body>
+</html>
+</article>
+</body>
+</html>

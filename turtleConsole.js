@@ -1,7 +1,7 @@
 /************************************************************************
 *  turtleConsole -- javascript for the turtle graphic language console
 *
-*  Copyright (c) 2015-2018 Kirk Carlson
+*  Copyright (c) 2015-2019 Kirk Carlson
 *  MIT license
 ************************************************************************/
 
@@ -17,12 +17,114 @@ function cmd (text) {
 }
 
 
-if (window.addEventListener) {              
+if (window.addEventListener) {
     window.addEventListener("resize", fixDragButton);
-} else if (window.attachEvent) {                 
+} else if (window.attachEvent) {
     window.attachEvent("onresize", fixDragButton);
 }
 
+
+/*************************************************************************
+ * onWindowLoad
+ *
+ * handler for when window loads
+ *************************************************************************/
+
+function onWindowLoad() {
+    // check if an example was requested in the URL
+    var queryString = window.location.search; // was "?..." specified"
+    if (queryString != undefined && queryString != "") {
+      var code = ""
+      var command = ""
+      var pos = 0
+        //queryString = queryString.substr(1) // get rid of leading '?'... simple case
+            // want to (queryStrint + "&").search (/[?&]code=[^=]&/
+            // no want to split string up into separate queries... divide on &
+            queries = queryString.split('&')
+            console.log("queries was: " + queries + ", " + typeof(queries))
+            // check specific queries like
+            if (queries != undefined && queries.length > 0) {
+              for (var i=0; i<queries.length; i = i+1) {
+                pos = queries[i].search(/^\??code=/)
+                if (pos >=0) {
+                   console.log( "ind: " + queries[i] + ", " + typeof(queries[i]))
+                   pos = queries[i].indexOf('=')
+                   if (pos > 0 && pos < queries[i].length) {
+                     code = queries[i].substr(pos + 1)
+                     console.log("code query was: " + code + ".")
+                   } else {
+                     console.log("code query was null")
+                   }
+                }
+                pos = queries[i].search(/^\??command=/)
+                if (pos >=0) {
+                  pos = queries[i].indexOf('=')
+                  if (pos > 0 && pos < queries[i].length) {
+                    command = queries[i].substr(pos + 1)
+                    console.log("command query was: " + command + ".")
+                  } else {
+                    console.log("command query was null")
+                  }
+                }
+              }
+
+              if (code != undefined && code != "") {
+                sel = document.getElementById('examples') // post to examples selector
+                sel.value = code; // set selector to requested string ... onchange hander should take over
+
+                console.log("sel.value: " + sel.value + ".")
+                if (sel.value !== undefined && sel.value !== "") {
+                  document.getElementById('definitions').value = eval(sel.value);
+                  // want to use command if specified, else automatiically execute the demo() function
+                  if (command !== undefined || command !== "") { // good enough validation??
+                    cmd ("demo()");
+                    eval (document.getElementById("definitions").value);
+                    console.log("command line: " + document.getElementById("command").value)
+                    console.log("definitions: " + document.getElementById("definitions").value)
+                    if (demo !== undefined) {
+                      console.log("eval \"demo()\"")
+                      eval ("demo();");
+                    }
+                  }
+                }
+              }
+
+              if (command != undefined && command != "") {
+                cmd (command); // boy is this dangerous command could be ANY JAVASCRIPT
+                //eval (document.getElementById("definitions").value);
+                //if (command !== undefined && command !== "") {
+                //  eval (command + "();");
+                //}
+              }
+            }
+            //
+        //sel = document.getElementById('examples') // post to examples selector
+        //sel.value = queryString; // set selector to requested string ... onchange hander should take over
+        //document.getElementById('definitions').value = eval(sel.value);
+    }
+    fixDragButton()
+}
+
+/* JUNK...
+document.getElementById("examples").onchange = function () {
+
+load goes to fixDragButton
+need it to also change the example select if something was specified...
+
+                function pageup() {
+                  var queryString = window.location.search;
+                  console.log( queryString);
+                  name = queryString.substr(1); // get rid of '?'
+                  console.log( name);
+                  sel = document.getElementById('select1') // point to selector
+                  sel.value = name;
+                  console.log( sel.innerHTML);
+                  var currentOpt = sel.options[sel.selectedIndex].innerHTML;  // selected menu option
+                  console.log( currentOpt);
+                  console.log( sel.selectedIndex); // index
+                }
+
+*/
 
 
 var draggingleft = false;
@@ -34,7 +136,7 @@ function fixDragButton() {
   var w = window.innerWidth
   || document.documentElement.clientWidth
   || document.body.clientWidth; // variations for cross browser support
-  
+
   var h = window.innerHeight
   || document.documentElement.clientHeight
   || document.body.clientHeight; // variations for cross browser support
@@ -53,9 +155,9 @@ function fixDragButton() {
   } else {
     var canvasHeight = workAreaHeight - 140 /* APPROXIMATION space for controls */;
   }
-  
+
   var wrapWidth = overallWidth - 2; //leftcolWidth + midcolWidth + rightcolWidth;
-  
+
 
   var referencewidth, refLeftPadding , dragleft, containertop, dropbarwidthleft, dropbarwidthright
 
@@ -98,8 +200,8 @@ function fixDragButton() {
   var definitionsRightPadding = Number(getStyleValue(document.getElementById("definitions"), "padding-right").replace("px", ""));
 
   /* dragbar attribute setting */
-  document.getElementById("dragbarleft").style.width = "5px";    
-  document.getElementById("dragbarright").style.width = "5px";    
+  document.getElementById("dragbarleft").style.width = "5px";
+  document.getElementById("dragbarright").style.width = "5px";
 
   dropbarwidthleft = Number(getStyleValue(document.getElementById("dragbarleft"), "width").replace("px", ""));
   dropbarwidthright = Number(getStyleValue(document.getElementById("dragbarright"), "width").replace("px", ""));
@@ -147,6 +249,7 @@ function fixDragButton() {
   //rightcolElement.style.left = (leftcolWidth +5 + midcolWidth +5 ) + "px";
   //rightcolElement.style.width = (rightcolWidth - 20 ) + "px";
   rightcolElement.style.height = workAreaHeight + "px";
+  //definitionsElement.style.height = (workAreaHeight - examplesHeight - examplesMarginTop - examplesMarginBottom - 10) + "px";
   definitionsElement.style.height = (workAreaHeight - examplesHeight - examplesMarginTop - examplesMarginBottom - 10) + "px";
   //console.log("right examples height", examplesHeight + examplesMarginTop + examplesMarginBottom -10);
 
@@ -176,7 +279,7 @@ function fixDragButton() {
   } else {
     var leftcolWidth = 300;
   }
-   
+
   // right column resized for examples if active
   if (document.getElementById("examplesLabel").className != "closed") {
     var rightcolWidth = Math.min(300, .32* overallWidth);
@@ -191,7 +294,7 @@ function fixDragButton() {
   var canvasWidth = midcolWidth - 5; // removes space for margins
 */
 
- 
+
   //reference.style.height = (workAreaHeight -37) + "px";
 
 
@@ -205,7 +308,7 @@ function fixDragButton() {
   turtleContext.strokeStyle = "lightgray";
   turtleContext.strokeRect(0,0,canvasWidth,canvasHeight);
 */
- 
+
 }
 
 function dragstartleft(e) {
@@ -219,7 +322,7 @@ function dragstartright(e) {
 }
 
 function dragmove(e) {
-  if (draggingleft) 
+  if (draggingleft)
   {
     var rect = document.getElementById("dragbarright").getBoundingClientRect();
     //console.log("dragBarRight:", rect.top, rect.right, rect.bottom, rect.left);
@@ -236,7 +339,7 @@ function dragmove(e) {
     }
   }
 
-  if (draggingright) 
+  if (draggingright)
   {
     var rect = document.getElementById("dragbarleft").getBoundingClientRect();
     //console.log("dragBarLeft:", rect.top, rect.right, rect.bottom, rect.left);
@@ -267,7 +370,7 @@ function dragend() {
 }
 
 
-if (window.addEventListener) {              
+if (window.addEventListener) {
   document.getElementById("dragbarleft").addEventListener("mousedown", function(e) {dragstartleft(e);});
   document.getElementById("dragbarleft").addEventListener("touchstart", function(e) {dragstartleft(e);});
   document.getElementById("dragbarright").addEventListener("mousedown", function(e) {dragstartright(e);});
@@ -276,7 +379,7 @@ if (window.addEventListener) {
   window.addEventListener("touchmove", function(e) {dragmove(e);});
   window.addEventListener("mouseup", dragend);
   window.addEventListener("touchend", dragend);
-  window.addEventListener("load", fixDragButton);
+  window.addEventListener("load", onWindowLoad);
 }
 
 
@@ -319,12 +422,57 @@ else if (command.attachEvent)
             return e.returnValue = false;
         }
     });
-    
+
 function runClicked() {
   stopAnimation();
   cmd ("demo()");
-  commandChanged();
+  eval (document.getElementById("definitions").value);
+  if (demo !== undefined) {
+    eval ("demo();");
+  }
 }
+
+
+// begin of file read stuff
+function loadChanged(e) {
+  var file = e.target.files[0];
+  if (!file) {
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var contents = e.target.result;
+    displayContents(contents);
+  };
+  reader.readAsText(file);
+}
+
+function displayContents(contents) {
+  var element = document.getElementById('definitions');
+  //element.textContent = contents;
+  element.value = contents;
+}
+
+
+// end of file read stuff
+
+var get_blob = function() {
+   return Blob;
+}
+
+function saveClicked() {
+    event.preventDefault();
+    var BB = get_blob();
+    saveAs(
+        new BB(
+            [definitions.value || definitions.placeholder]
+            , {type: "text/plain;charset=" + document.characterSet}
+        )
+        , (code_filename.value || code_filename.placeholder) + ".js"
+    );
+    return false;
+}
+
 
 function clearClicked() {
   //console.log("clear clicked")
@@ -357,7 +505,6 @@ var codeElements = document.querySelectorAll ("#reference button");
 for (var i=0; i< codeElements.length; i++) {
     //console.log(codeElements[i].id)
     codeElements[i].onclick = function () {
-      //eval ("color(\"" + this.id +"\")");
       cmd ("color(\"" + this.id +"\");");
       commandChanged();
     }
@@ -407,13 +554,16 @@ function commandChanged () {
 // set up the control buttons
 document.getElementById("resetButton").onclick=reset;
 document.getElementById("runButton").onclick=runClicked
-document.getElementById("clearButton").onclick=clearClicked;
 document.getElementById("infoButton").onclick=infoClicked;
 document.getElementById("body").onresize=fixDragButton;
 document.getElementById("stopButton").onclick=stopClicked;
 document.getElementById("stopButton").hidden=true;
+document.getElementById("saveButton").onclick=saveClicked;
+document.getElementById("clearButton").onclick=clearClicked;
 
 
+document.getElementById("file-input")
+  .addEventListener('change', loadChanged, false);
 
 
 //window.addEventListener("resize", resizeColumns());
@@ -522,10 +672,11 @@ document.getElementById("definitionsClose").onclick = function () {
   closeDefinitionsDrawer();
 }
 */
-  
+
 mouseOverElementIds = ["reference","turtlecanvas", "examples", "definitions",
                        "command", "infoButton",
-                       "resetButton", "runButton", "stopButton", "clearButton",
+                       "resetButton", "runButton", "stopButton",
+                       "saveButton", "loadButton", "clearButton", "code_filename",
                        "dragbarright","dragbarleft"
                        ];
 /*
@@ -562,7 +713,7 @@ for (var i=0; i < mouseOverElementIds.length; i++) {
 
 function onHelpEnter (helpTextElement) {
   if ((helpTextActive ||
-       (helpTextElement == document.getElementById("infoButton_help_text"))) && 
+       (helpTextElement == document.getElementById("infoButton_help_text"))) &&
        helpTextTimer === undefined) {
     helpTextTimer = setTimeout(onHelpTimeout,helpDelay, helpTextElement);
   }
@@ -609,7 +760,7 @@ for (var i=0; i < tutorialMenuIds.length; i++) {
     closeMenu();
   }
 }
-  
+
 /*
 document.getElementById("hamburger").onclick = function () {
   if ( document.getElementById("menu").className === "closed") {
@@ -619,7 +770,7 @@ document.getElementById("hamburger").onclick = function () {
   }
 }
 */
-  
+
 document.getElementById("tutorialClose").onclick = function () {
   closeTutorial();
   document.getElementById("menu").className="closed";
