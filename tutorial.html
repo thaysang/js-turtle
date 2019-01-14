@@ -13,7 +13,8 @@
     <meta name="LinksUpToDate" content="false"/>
     <meta name="ScaleCrop" content="false"/>
     <meta name="ShareDoc" content="false"/>
-        <link type="text/css" rel="stylesheet" href="./turtleweb.css"/>
+    <link type="text/css" rel="stylesheet" href="./turtleweb.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Poppins|Roboto" rel="stylesheet">
 <!--
         <link type="text/css" rel="stylesheet" href="./tutorial.css"/>
 -->
@@ -51,9 +52,7 @@ move down on the page. It provides
 motion and interest to web pages. JavaScript also checks user inputs before
 a request is sent back to the server.
 </p>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_a9de272a811a4282.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_a9de272a811a4282.png" alt="">
 </section>
 
 <p>
@@ -81,9 +80,7 @@ them to be.
 </p>
 <section>
 <h2>Hello World</h2>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_b6424b9e9cd87037.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_b6424b9e9cd87037.png" alt="">
 <p>
 When programmers are
 faced with a new language, the first thing that they do is to write
@@ -157,9 +154,7 @@ So, you could use &quot;G'day world&quot;, if you want
 the Australian version of “Hello World.”
 </p>
 <section>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_fe08b6fc287c210d.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_fe08b6fc287c210d.png" alt="">
 <p>
 The program as it is,
 isn't quite right. The <code>write()</code> function displays a text
@@ -320,11 +315,7 @@ Now when you press the
 What happens if you
 press the <span class="button">Run Demo</span> button more than once? Why?
 </p>
-
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_9adb0f80a6146c6b.png" alt="">
-</div>
-
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_9adb0f80a6146c6b.png" alt="">
 <p>
 We can fix that by
 clearing the screen by invoking the <code>reset ()</code> function  before
@@ -372,9 +363,7 @@ Insert an <strong>operator</strong> like +, -, /, or * somewhere in the code.
 </section>
 <section>
 <h2>Your First Graphic</h2>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_b3fc22dd53f0c1d6.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_b3fc22dd53f0c1d6.png" alt="">
 OK, but Turtle Graphics is a graphics program, shouldn’t we
 be doing some graphics? Let's see it draw some lines as sort of a
 graphical Hello World example. Let's try to do a simple square.
@@ -395,9 +384,7 @@ right(90)
 Ok, let’s do the same thing, but do it with by defining a function to draw the
 square, as we have learned previously.
 </p>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_2891944c53476dfe.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_2891944c53476dfe.png" alt="">
 
 <code>function square1 () {
   forward(100)
@@ -424,9 +411,7 @@ squares rotated 30° about the starting point. Change the <code>demo ()</code>
 function as follows:
 </p>
 
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_cae1dc59a219b5c6.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_cae1dc59a219b5c6.png" alt="">
 <code>function square1 () {
   forward(100)
   right(90)
@@ -584,9 +569,7 @@ So what happens when this is run.
   </li>
 </ul>
 <section>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_6bdc2aa2387413b8.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_6bdc2aa2387413b8.png" alt="">
 
 <p>
 This is all hard to see, so let's make it more visible. Let's print the
@@ -667,6 +650,7 @@ We can copy the <code> square()</code> function code, change the function
 name, say to <code>square200()</code>, change the <code>forward(100)</code>
 to the size you want say, <code>forward(200)</code>.
 </p>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_4103b621a22e21c4.png" alt="">
 <p>
 Now if you want to draw a square of 100 or 200 points, you are set. But if
 you want another size, you have to do the copy and change routine all over
@@ -674,9 +658,7 @@ again. There is a better way. That is to a <strong>parameter</strong> to
 the basic <code>square()</code> function. We'll tell
 JavaScript that we want to pass a value in the function definition by including
 the parameter name or names within the parentheses as in the following code.
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_4103b621a22e21c4.png" alt="">
-</div>
+</p>
 <code>function square(side) {
   for( 1=0; i<4; i=i+1) {
     forward( side);
@@ -718,9 +700,7 @@ function demo () {
 </section>
 
 <section>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_be7a00e682b3155e.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_be7a00e682b3155e.png" alt="">
 <p>
 Hey, isn’t that just like we did before. That was a lot of work to change the
 code, just to do the same thing.
@@ -751,9 +731,7 @@ function demo () {
 </code>
 </section>
 <section>
-<div class="image">
   <img src="./images/no_picture.png">
-<div class="image">
 <p>
 The next modification to the code also
 changes the size of the squares and their color with each iteration within
@@ -955,20 +933,14 @@ two numbers. The single number form generates an integer
 between 0 and the value supplied. The two number form generates
 an integer between the two numbers.
 </p>
-
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_94de213c6962653a.png" alt="">
-</div>
-
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_94de213c6962653a.png" alt="">
 <p>
 We used the <code>color()</code> function in the last exercise.  It works on
 a number between 0 and 15, so <code>random( 15)</code> will work for a random
 color (as long has you are happy with crayon colors).
 </p>
 
-<div class="image">
   <img src="./images/no_picture.png">
-<div class="image">
 <p>
 To position the start
 of the square anywhere on the canvas, the <code>goto(x,y)</code> function
@@ -1054,10 +1026,7 @@ function demo(){
                               // not results of the function
 }
 </code>
-
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_b25a59c93ee7a6db.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_b25a59c93ee7a6db.png" alt="">
 <p>
 A funny thing is
 happening with the reference of <code>randomSquare</code> in the <code>demo()</code>
@@ -1098,6 +1067,7 @@ function demo(){
 </section>
 
 <section>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_68208927fe627e54.png" alt="">
 <p>
 The line widths of squares can also be varied by throwing in <code>width</code>
 function. So in keeping with the randomness theme, why not make the lines a
@@ -1105,10 +1075,6 @@ random width with <code>width (random(</code>something<code>))</code> into the m
 You may not want lines that are too thin (zero?) or too wide, so limit the range
 of the widths. This code looks something like the following.
 </p>
-
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_68208927fe627e54.png" alt="">
-</div>
 <code>function square(side) {
   i = 0;
   while ( i &lt; 4) {
@@ -1168,6 +1134,7 @@ next page if you get stuck, but try to solve these without looking.
 </section>
 
 <section>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_3d9cdc3cc0c77a16.png" alt="">
 <p>
 For the square, take 360°, divided by 4 gives 90° for
 each angle. For a triangle, take 360°, divided by 3 gives 120°
@@ -1179,11 +1146,6 @@ and divide by the number of sides to get the angle.
 This would mean that a general polygon can be generated by the length of its
 sides and the number of sides required.
 </p>
-
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_3d9cdc3cc0c77a16.png" alt="">
-</div>
-
 <code>function polygon (size, n) {
   var i = 0
   while (i < n) {
@@ -1240,6 +1202,8 @@ turning angle for the turtle. The inside angle is 180° minus the turning
 angle or 36°.
 </p>
 
+<section>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_4616c1221a3e84ea.png" alt="">
 <p>
 The limit to the
 number of times that you can go around the center point is <em><strong>n/2</strong></em>
@@ -1257,10 +1221,6 @@ narrower.
 </section>
 
 <section>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_4616c1221a3e84ea.png" alt="">
-</div>
-
 <code class="floatleft">function spikey (size,n,revs) {
   var i = 0
   while (i < n) {
@@ -1288,10 +1248,7 @@ function demo () {
 </section>
 
 <section>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_b24baf30964e72cb.png" alt="">
-</div>
-
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_b24baf30964e72cb.png" alt="">
 <code>function polygon (size, sides) {
   spikey (size, sides, 1)
 }
@@ -1300,9 +1257,7 @@ function demo () {
 </div>
 
 <div class="concept">
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_3c59e3d695bcd8bc.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_3c59e3d695bcd8bc.png" alt="">
 <code>function starN (size, points) {
   backward (size/2)
   spikey (size, points, Math.floor(points/2)
@@ -1329,9 +1284,7 @@ What should you do next? Here are some ideas that may help you in your
 next coding adventure.
 </p>
 <ul>
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_912e341a579b6e0a.png" alt="">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_912e341a579b6e0a.png" alt="">
 <ul>
 <li>
     Set up a demo of finding pi with a

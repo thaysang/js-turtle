@@ -1,4 +1,4 @@
-// Rhombic Star Tesselation -- a star tesselation using rhombus
+// Rhombic Star Tessellation -- a star tessellation using rhombus
 
 colors = ["red", "white", "blue", "yellow", "green"]
 

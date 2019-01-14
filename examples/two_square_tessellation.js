@@ -1,4 +1,4 @@
-// Two Square Tesselation -- tile a space using two sizes of squares
+// Two Square Tessellation -- tile a space using two sizes of squares
 
 // this assumes that the smaller square is 1/2 of the larger square.
 // that need not be the case

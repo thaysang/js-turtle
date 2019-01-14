@@ -1,4 +1,4 @@
-// Square Tesselation -- tile a space using squares
+// Square Tessellation -- tile a space using squares
 
 colors = ["red", "white", "blue","yellow", "green"]
 

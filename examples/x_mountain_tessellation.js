@@ -1,8 +1,8 @@
-// mountain tesselation -- tesselation with a mountain shaped heptiamond
+// mountain tessellation -- tessellation with a mountain shaped heptiamond
 // a heptiamond is a shape composed of 7 equalateral triangles
 //
 //
-//// Triangle Tesselation -- tile a space using triangles
+//// Triangle Tessellation -- tile a space using triangles
 
 colors = ["red", "white", "blue", "yellow", "green"]
 

@@ -30,10 +30,9 @@
   Turtle Graphics functions and see the graphical results. code and test it on
   a single web page. No other program is required. Just a modern browser that
   can support HTML5 like Chrome or Firefox. Some older browsers may not work.
-<div class="image">
-    <img src="Javascript%20Turtle%20Graphics%202_html_a9de272a811a4282.png"
-    alt="The JavaScript Turtle Graphics IDE with explanations">
-</div>
+    <img src="images/Javascript%20Turtle%20Graphics%202_html_a9de272a811a4282.png"
+    alt="The JavaScript Turtle Graphics IDE with explanations"
+    style="width:100%;">
 <p>
 The IDE screen is divided into four main areas:
 <ul>
@@ -78,7 +77,7 @@ The language reference lists the available functions for Turtle Graphics.
   The square brackets are not used when invoking the function, but the
   separating commas must be supplied.  So for the function template
   <code>foo(<em>a</em> [,<em>b</em> [,<em>c</em>]])</code>, one can invoke 
-  oo as <code>foo(1)</code>, <code>foo(1,2)</code> or <code>foo(1,2,3)</code>.
+  function foo() as <code>foo(1)</code>, <code>foo(1,2)</code> or <code>foo(1,2,3)</code>.
 </p>
 <p>
   Alternative forms of the functions are separated with the pipe '|'
@@ -142,14 +141,14 @@ The language reference lists the available functions for Turtle Graphics.
   function.  You can invoke Turtle Graphics functions, like
   <code>forward(10)</code> to see how they work. Indeed most of the
   functions described in the Language reference page do just that.  When
-  <span class="key">ENTER</span> or <span class="key">RETURN</span> key is
+  <span class="keyboard">ENTER</span> or <span class="keyboard">RETURN</span> key is
   pressed, the statement is executed. Successful
   graphic functions are immediately displayed on the canvas.  Syntax errors
   (e.g., missing parentheses, unknown function name, unexpected end of program)
   and other errors are also shown on the canvas.
 </p>
 <p>
-  The <span class="tButton">RESET</span> button can be used to clear the
+  The <span class="button">RESET</span> button can be used to clear the
   canvas, move the turtle to the center of the canvas, and initialize the IDE.
 </p>
 <p>
@@ -168,7 +167,7 @@ The language reference lists the available functions for Turtle Graphics.
 </p>
 
 <p>
-  The <span class="tButton">RUN DEMO</span> button can be used to run code
+  The <span class="button">RUN DEMO</span> button can be used to run code
   in the Code box provided that the code includes a demo() function.
   Syntax errors in the program may not be apparent. Some errors may be
   visible on the canvas by invoking <code>demo()</code> from the command
@@ -176,22 +175,22 @@ The language reference lists the available functions for Turtle Graphics.
 </p>
 
 <p>
-  The <span class="tButton">CLEAR</class> button can be used to clear the
+  The <span class="button">CLEAR</span> button can be used to clear the
   code in the example area.
 </p>
 <p>
   When the example code executes either <code>animate()</code> or
-  <code>delay()</code> functions, a <span class="tButton">STOP</class>
+  <code>delay()</code> functions, a <span class="button">STOP</span>
   button will appear allowing the user to stop the animation in progress
-  without clearing the canvas. The <tButton>RESET</tButton> button will
+  without clearing the canvas. The <span class="button">RESET</span> button will
   also stop the animation, but it clears the canvas.
 </p>
 <p>
   Any code in the <strong>Code area</strong> is evaluated when the
-  <span class="key">ENTER</span> or <span class="key">RETURN</span> key is
+  <span class="keyboard">ENTER</span> or <span class="keyboard">RETURN</span> key is
   press with the cursor within the Command box. So the last line of the
   example code could invoke any of its functions, (e.g., <code>demo();</code>)
-  which could in turn be executed when an <span class="key">ENTER</span> or <span class="key">RETURN</span> key is pressed with a cursor in an empty Command box.
+  which could in turn be executed when an <span class="keyboard">ENTER</span> or <span class="keyboard">RETURN</span> key is pressed with a cursor in an empty Command box.
 </p>
 
 <h2><a id="Code"></a>Code Area</h2>
@@ -199,7 +198,7 @@ The language reference lists the available functions for Turtle Graphics.
   The example is an area for loading, displaying, and editing JavaScript Turtle
   Graphic programs. Several examples are available in the select menu above
   the  box. Selecting an example causes the example to be loaded, but not
-  executed. The user must press the <tButton>RUN DEMO</tButton> button to
+  executed. The user must press the <span class="button">RUN DEMO</span> button to
   execute the example code.
 </p>
 
@@ -234,7 +233,8 @@ The language reference lists the available functions for Turtle Graphics.
 <h2><a id="Standalone"></a>Stand Alone Mode</h2>
   The IDE can be used without a connection to the internet in what is called
   a stand alone mode.  Download or clone the files from
-  https://github.com/kirkcarlson/js-tur into a dedicated directory.  Access
+  <a href="https://github.com/kirkcarlson/js-tur">https://github.com/kirkcarlson/js-tur</a>
+  into a dedicated directory.  Access
   the files with your browser by opening the <strong>index.html</strong> file
   in that directory.
 </article>

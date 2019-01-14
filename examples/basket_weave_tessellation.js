@@ -1,7 +1,11 @@
-// Herring Bone Tesselation -- tile a space using a herring bone brick laying pattern
+// Basket Weave Tessellation -- tile a space using basket weave pattern
 
-sSide = 15
-lSide = 2* sSide 
+// this assumes that the smaller square is 1/2 of the larger square.
+// that need not be the case
+
+small = 20
+sSide = 2.5 * small
+lSide = sSide + 2 * small
 
 function vRect( sSide, lSide, fColor) {
   beginShape()
@@ -27,54 +31,66 @@ function hRect( sSide, lSide, fColor) {
   forward( lSide)
 }
 
+function square ( side, fColor) {
+  beginShape()
+  for (var i=0; i<4; i++) {
+    forward( side)
+    right(90)
+  }
+  fillShape( fColor)
+  forward( side)
+}
+
+
 function demo() {
   reset()
   count = 0
-  yB = maxY() + sSide
+  yB = maxY() + small
   xB = minX()
   wrap(false)
   right( 90)
-  color("white")
 
   s = 50
   while( turtle.pos.y > minY()) {
     goto (xB, yB)
     while( turtle.pos.x < maxX()) {
       pendown()
-      hRect(sSide, lSide, "darkred")
-      vRect(sSide, lSide, "darkred")
+      square(small, "yellow")
+      penup()
+      forward( sSide)
+      pendown()
+      square(small, "yellow")
+      vRect(sSide, lSide, "lightblue")
+    }
+    yB = yB - small
+
+    goto (xB, yB)
+    while( turtle.pos.x < maxX()) {
+      pendown()
+      hRect(sSide, lSide, "red")
       penup()
       forward( sSide)
     }
     yB = yB - sSide
 
-    goto (xB - lSide/2, yB)
+    goto (xB, yB)
     while( turtle.pos.x < maxX()) {
       pendown()
-      hRect(sSide, lSide, "darkred")
-      vRect(sSide, lSide, "darkred")
+      square(small, "yellow")
+      vRect(sSide, lSide, "lightblue")
+      square(small, "yellow")
       penup()
       forward( sSide)
+      pendown()
     }
-    yB = yB - sSide
+    yB = yB - small
 
-    goto (xB - lSide, yB)
+    goto (xB- lSide +small, yB)
     while( turtle.pos.x < maxX()) {
       pendown()
-      hRect(sSide, lSide, "darkred")
-      vRect(sSide, lSide, "darkred")
+      hRect(sSide, lSide, "red")
       penup()
-      forward( sSide)
-    }
-    yB = yB - sSide
-
-    goto (xB - 3/2 * lSide, yB)
-    while( turtle.pos.x < maxX()) {
-      pendown()
-      hRect(sSide, lSide, "darkred")
-      vRect(sSide, lSide, "darkred")
-      penup()
-      forward( sSide)
+      forward(sSide)
     }
     yB = yB - sSide
   }

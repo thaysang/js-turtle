@@ -1,4 +1,4 @@
-// Brick Tesselation -- tile a space using a basic brick laying pattern
+// Herring Bone Tessellation -- tile a space using a herring bone brick laying pattern
 
 sSide = 15
 lSide = 2* sSide 
@@ -30,7 +30,7 @@ function hRect( sSide, lSide, fColor) {
 function demo() {
   reset()
   count = 0
-  yB = maxY()
+  yB = maxY() + sSide
   xB = minX()
   wrap(false)
   right( 90)
@@ -42,7 +42,9 @@ function demo() {
     while( turtle.pos.x < maxX()) {
       pendown()
       hRect(sSide, lSide, "darkred")
+      vRect(sSide, lSide, "darkred")
       penup()
+      forward( sSide)
     }
     yB = yB - sSide
 
@@ -50,7 +52,29 @@ function demo() {
     while( turtle.pos.x < maxX()) {
       pendown()
       hRect(sSide, lSide, "darkred")
+      vRect(sSide, lSide, "darkred")
       penup()
+      forward( sSide)
+    }
+    yB = yB - sSide
+
+    goto (xB - lSide, yB)
+    while( turtle.pos.x < maxX()) {
+      pendown()
+      hRect(sSide, lSide, "darkred")
+      vRect(sSide, lSide, "darkred")
+      penup()
+      forward( sSide)
+    }
+    yB = yB - sSide
+
+    goto (xB - 3/2 * lSide, yB)
+    while( turtle.pos.x < maxX()) {
+      pendown()
+      hRect(sSide, lSide, "darkred")
+      vRect(sSide, lSide, "darkred")
+      penup()
+      forward( sSide)
     }
     yB = yB - sSide
   }

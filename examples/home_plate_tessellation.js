@@ -1,9 +1,9 @@
-// Home Plate Tesselation -- tile a space using simple pentagon
+// Home Plate Tessellation -- tile a space using simple pentagon
 //
 // this pattern could be the same as a hexagonal pattern with the hexagons
 // split into two halves
 //
-// For more pentagonal tesselations see wikipedia
+// For more pentagonal tessellations see wikipedia
 
 colors = ["red", "white", "blue", "yellow", "green"]
 

@@ -1,4 +1,4 @@
-// rice penta tesselation 1 -- pentagon tesselation discovered by Margorie Rice
+// rice penta tessellation 1 -- pentagon tesselation discovered by Margorie Rice
 
 function pr() {
   forward(sidea)

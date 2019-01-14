@@ -1,4 +1,4 @@
-// Hexagon Tesselation -- tile a surface with hexagons
+// Hexagon Tessellation -- tile a surface with hexagons
 
 function hexagon (side) {
   penup();

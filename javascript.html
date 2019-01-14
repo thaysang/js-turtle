@@ -31,7 +31,7 @@ other tutorials and guides on JavaScript on the internet or in your library.
      </p>
      <h3>Comments</h3>
        <p>
-         A comment is a note left by the developer to others, including the
+         A <strong>comment</strong>  is a note left by the developer to others, including the
          developer, about some aspect of the code. This makes the code
          easier to understand. Comments are not executed by the JavaScript
          interpreter, so they provide no functionality. Yet they are very
@@ -55,7 +55,7 @@ a = 1 // comment after code to end of line
          Bounded comments may cover several lines, it may be a whole line
          of code, or it may be within a line of code.
          Bounded comments may not be nested as it will end on the first
-         occurence of star-slash <code>*/</code>.
+         occurrence of star-slash <code>*/</code>.
          This type of comment is used by several other languages including
          C, C++, Java, and CSS.
          </li>
@@ -73,16 +73,17 @@ a /* a bounded comment may be within code  */ = 1;
      <h3 id=functions>Functions</h3>
        <p>
          JavaScript allows the programmer to define blocks of code that can
-         be used over and over. These blocks are called <span class="keywod">function</span>s.
-         Some functions may take <strong>parameters</strong> as inputs,
+         be used over and over. These blocks are called
+         <span class="keywod">function</span>s.
+         Some functions may take <strong>arguments</strong> as inputs,
          others do not. It is
          up to the programmer to decide what the function will do, whether
          it takes parameters and whether it returns a result. A function may
          be called a procedure, a subroutine, or other names. These names
          are generally talking about the same thing that JavaScript calls a
-         function. A function is "invoked" in a statement by using its name
+         function. A function is <strong>invoked</strong> in a statement by using its name
          followed by a opening and closing parentheses '(' and ')'. There
-         may be parameters between the parentheses.
+         may be arguments between the parentheses.
        </p>
        <p>
          A simple example could be a function that draws a square on the
@@ -103,6 +104,7 @@ function square () {
 
 square () { // invoke the square function
 right(30)   // invoke the Turtle Graphic right() function
+            // with the distance argument 30
 square () { // invoke the square function again
 right(30)   // invoke the Turtle Graphic right() function again
 square () { // invoke the square function once again
@@ -121,7 +123,8 @@ square () { // invoke the square function once again
        <p>
          Variables are used to store a value for later use.  Sometimes it is
          for convenience.  For instance, it is a lot easier to remember and
-         type <span class="var">pi</span>, than it is to remember and type <span class="var">3.141596...</span>
+         type <span class="var">pi</span>, than it is to remember and type
+         <span class="var">3.141596...</span>
          Sometimes a variable is used is to remember a partial result, like
          how many times has the race car gone around the track or how many
          brothers and sisters do you have.
@@ -129,7 +132,7 @@ square () { // invoke the square function once again
        <code>a = 1;   // assign the value of the integer '1' to the variable 'a'.
 a = 1.0;   // assign the value of the number '1.0' to the variable 'a'.
 a = "cabbage"; // assign the string "cabbage" to the variable 'a'.
-a = true; // assign boolean value true to the variable 'a'.
+a = true; // assign the Boolean value true to the variable 'a'.
 </code>
        <p>
         Variable names that have a clear meaning make code easier to read
@@ -141,24 +144,35 @@ a = true; // assign boolean value true to the variable 'a'.
         <strong>1</strong>.
         Variables have some restrictions on naming:
         <ul>
-        <li>cannot start with a digit.</li>
-        <li>cannot contain an operator character, any of
-          +-%/*!~<>{}[]()&lt;&gt;;,.&#39;&quot;&amp;|\ </li>
-        <li>cannot be a key word (a word reserved by the JavaScript
+        <li>
+          cannot start with a digit.
+        </li>
+        <li>
+          cannot contain an operator character, any of
+          +-%/*!~<>{}[]()&lt;&gt;;,.&#39;&quot;&amp;|\ 
+        </li>
+        <li>
+          cannot be a <strong>key word</strong> (a word reserved by the JavaScript
           language (e.g., <span class="keyword">if</span>,
           <span class="keyword">then</span>,
           <span class="keyword">var</span>,
           <span class="keyword">while</span>,
           <span class="keyword">function</span>).
         </li>
-        <li>can contain any lower or upper case letter.</li>
-        <li>can contain one or more digits as long as it is not the starting
-          character.</li>
+        <li>
+          can contain any lower or upper case letter.</li>
+        <li>
+          can contain one or more digits as long as it is not the starting
+          character.
+        </li>
         <li>can contain any of the following symbols: $_. These can be the
           starting character, but usually are not, mainly because of
-          conventions of other languages.</li>
+          conventions of other languages.
+        </li>
         </ul>
+        <p>
         So the following are acceptable as variable names:
+        </p>
         <ul>
           <li>
             allowance,
@@ -179,7 +193,9 @@ a = true; // assign boolean value true to the variable 'a'.
             sunshinePercent.
           </li>
         </ul>
-        The following are unacceptable as variable names:
+      <p>
+      The following are unacceptable as variable names:
+      </p>
         <ul>
           <li>
             2week,
@@ -197,38 +213,42 @@ a = true; // assign boolean value true to the variable 'a'.
             function.
           </li>
         </ul>
-       Variable names are <strong>case sensitive</strong>, so Dog and dog
-       and doG are different names.
-       </p>
-       <p>
-         Variables are <strong>declared</strong> with the
-         <span class="keyword">var</span> keyword.
-         Variables may be <strong>initialized</strong> or <strong>assigned</strong>
-         at the same time as they are declared. JavaScript is 
-         not strict about declaring variables, but it is a good idea to do so.
-       </p>
-       <code>var lapsCompleted; // declared but not initialized
+      <p>
+        Variable names are <strong>case sensitive</strong>, so Dog and dog
+        and doG are different names. It usually is not a good idea to use
+        names with the only difference being the case of the letter.
+      </p>
+      <p>
+        Variables are <strong>declared</strong> with the
+        <span class="keyword">var</span> keyword.
+        Variables may be <strong>initialized</strong> or <strong>assigned</strong>
+        at the same time as they are declared. JavaScript is 
+        not strict about declaring variables, but it is a good idea to do so.
+      </p>
+      <code>var lapsCompleted; // declared but not initialized
 var lapsToGo = 50; //declared and initialized
 lapsToGo = 51; //previously declared, now assigned
 </code>
-       <p>
-       Each variables should be declared only once by using the reserved
-       key word <span class="keyword">var</span> and should be declared
-       before they are used elsewhere.
-       </p>
+      <p>
+        Each variables should be declared only once by using the reserved
+        key word <span class="keyword">var</span> and should be declared
+        before they are used elsewhere.
+      </p>
 
      <h3>Data Types</h3>
+      <p>
        JavaScript has four primitive data types. They are:
+      </p>
        <ul>
-               <li>number (e.g., 1, 1.1, -2)</li>
-               <li>string (e.g., "a", "hi", "How are you?",
+         <li>number (e.g., 1, 1.1, -2)</li>
+         <li>string (e.g., "a", "hi", "How are you?",
                        'What do you know?')</li>
-               <li>boolean (e.g., true, false)</li>
-               <li>undefined</li>
-       </ul>
-       <p>
-       A primitive data type is only composed of itself or data types like
-       it. e.g., <code>1.1 is 1 + .1; "hi" iis "h" + "i"</code>.  Booleans
+         <li>Boolean (e.g., true, false)</li>
+         <li>undefined
+         </li>
+         </ul>
+       <p> A primitive data type is only composed of itself or data types like
+       it, e.g., <code>1.1 is 1 + .1; "hi" is "h" + "i"</code>.  Boolean values
        cannot be combined, they are simply either true or they are false.  A
        variable is undefined if it is not initialized or assigned prior to
        using its value. 
@@ -240,14 +260,15 @@ lapsToGo = 51; //previously declared, now assigned
        hard to debug in some cases.
        </p>
        <code>a = 1 // variable a is defined to be 1
-var b // varible b is declared but undefined
+var b // variable b is declared but undefined
 var c = 1 // variable c is declared and set to 1
 </code>
        </p>
        <p>
-       Additionally JavaScript has some compound data types like a list,
-       e.g., [1,2,3,5] is a list of data elements, each one of which can be
-       different.
+       Additionally JavaScript has compound data types including a
+       <strong>array</strong>,
+       e.g., [1,2,3, "fish"] is an array of data elements, each element may be
+       a different data type.
        </p>
        <code>// assigning an array to a variable
 a = [1, 2, 3, 5]; //a is list of numbers
@@ -255,39 +276,40 @@ a = [1, 2, 3, 5]; //a is list of numbers
 // access an element of an array
 b = a[1]; // b is second element of list a, so it is 2
 </code>
-       </p>
-       It can also be an object. An
+       <p>
+       Another compound JavaScript data element is <strong>object</strong>. An
        object is similar to a list in that it is a collection of values,
        but in an object each value or attribute is named. Let's say you
        want an object to define the characteristics of a dog. You might
        define a dog object as in the following code.
        </p>
        <code>dog = {
-  name: "fido",
-  breed: "dalmation",
+  name: "Fido",
+  breed: "dalmatian",
   color: "white and black",
   gender: "M",
   age: 3
 }
 
 // accessing an element of the object
-breedOfDog = dog.breed  // breedOfDog = "dalmation"
+breedOfDog = dog.breed  // breedOfDog = "dalmatian"
 
 ageOfDog = dog["age"] // ageOfDog = 3
 </code>
        <p>
-       An object may be a collection of primative data types and compound
+       An object may be a collection of primitive data types and compound
        data types like lists and other objects.  Internally all data within
        JavaScript is handled as an object.  Even a JavaScript function is
        treated as an object.
        </p>
        <p>
        JavaScript is said to be <strong>typeless</strong>. This really
-       means that it doesn't
+       means that the language doesn't
        check the type of a variable when setting it.  So you can set
-       variable <span class="var">a</span> to 1 and a while later set <span class="var">a</span> to "hi."
+       variable <span class="var">a</span> to 1 and a while later set
+       <span class="var">a</span> to "hi."
        JavaScript doesn't mind a bit, but this can lead to errors especially
-       when unintensionally reusing a variable or having a number when you
+       when unintentionally reusing a variable or having a number when you
        expect a string.
        </p>
      <h3>Functions with Parameters</h3>
@@ -300,7 +322,7 @@ ageOfDog = dog["age"] // ageOfDog = 3
          use, but it is usually wise to keep the number down to the minimum
          required for the particular function.
        </p>
-       <code>function square (size) { // size is a single parmeter
+       <code>function square (size) { // size is a single parameter
   forward (size); // here it is used in the forward function call
   right (90);
   forward (size); // here it is used in the forward function call
@@ -343,7 +365,7 @@ c = cube (10) // c = 1000
      <h3 id=expressions>Expressions</h3>
        <p>
          Expressions are a way of combining variables, numbers, strings and
-         booleans into other
+         Boolean values into other
          forms. Expressions have operators that act upon one or more operands.
          Much of this is familiar. Adding two numbers to produce a sum.
          Subtracting one number from another to find a difference. Dividing
@@ -351,9 +373,9 @@ c = cube (10) // c = 1000
        </p>
      <h4>Assignment Operators</h4>
        <p>
-       Assigment operators are used to assign values to variables. You can't
+       Assignment operators are used to assign values to variables. You can't
        change the value of number or a string as these are
-       <strong>constant</strong>or <strong>immutable</strong> (unchangable).
+       <strong>constant</strong>or <strong>immutable</strong> (unchangeable).
        </p>
        <table>
          <tr>
@@ -381,7 +403,7 @@ c = cube (10) // c = 1000
          <td>=</td>
          <td>assign</td>
          <td>a = true</td>
-         <td>a is the boolean true</td>
+         <td>a is the Boolean true</td>
        </tr>
        <tr>
          <td>=</td>
@@ -446,15 +468,15 @@ c = cube (10) // c = 1000
          </tr>
        <tr>
          <td>+</td>
-         <td>concatonate or join</td>
+         <td><strong>concatenate</strong> or join</td>
          <td>"tom" + "cat"</td>
          <td>"tomcat"</td>
        </tr>
        </table>
      <h4>Boolean Operators</h4>
        <p>
-       There are a set of operators to manipulate booleans.
-       Remember that a boolean can only be either true or
+       There are a set of operators to manipulate Boolean values.
+       Remember that a Boolean can only be either true or
        false.
        </p>
        <table>
@@ -483,7 +505,7 @@ c = cube (10) // c = 1000
      <h4>Comparison Operators</h4>
        <p>
          Comparison operators are used to compare two operands to result
-         in a boolean true or false value.
+         in a Boolean true or false value.
          Not that equality is similar to assignment.
        </p>
        <table>
@@ -532,8 +554,9 @@ c = cube (10) // c = 1000
        </tr>
        <tr>
          <td>a &lt; b</td>
-         <td>where a and b are strings, true if a is lexically before b,
-            else false</td>
+         <td>where a and b are strings, true if a is alphabetically before b,
+            else false. Note that the ASCII order is used, so all
+            upper case letters are less than any lower case letter.</td>
        </tr>
        <tr>
          <td>&gt;</td>
@@ -583,7 +606,7 @@ c = cube (10) // c = 1000
          (have the same number value).
        </li>
        <li>
-         NaN (<strong>N</strong>ot <strong>a</strong> <strong>N</strong>umber) is not equal to
+         <strong>NaN</strong> (<strong>N</strong>ot <strong>a</strong> <strong>N</strong>umber) is not equal to
          anything, including NaN or undefined.
        </li>
        <li>
@@ -610,10 +633,12 @@ c = cube (10) // c = 1000
        </li>
        </ul>
      <h4>Simplified Operator Precedence</h4>
+     <p>
        JavaScript has some twenty levels of precedence that is described
        more fully in the advanced section of this document. The precedence
        of the operators discussed up to this point is summarized in the
        following table.
+     </p>
 <table class="fullwidth-table">
  <tbody>
   <tr>
@@ -626,7 +651,7 @@ c = cube (10) // c = 1000
    <td>20</td>
    <td>Grouping</td>
    <td>n/a</td>
-   <!-- &#8230; is an elipsis character -->
+   <!-- &#8230; is an ellipsis character -->
    <td><code>( &#8230; )</code></td>
   </tr>
   <tr>
@@ -747,7 +772,7 @@ c = cube (10) // c = 1000
           Some programmers like to end each statement with a semi-colon
          anyway. Some statements may span more than one line, especially
          complex assignment statements.  JavaScript determines the end of
-         a statment explicitly with the presence of the semi-colon or it
+         a statement explicitly with the presence of the semi-colon or it
          guesses the end of statement by the context of the various lines of
          code as in the following example.
        </p>
@@ -760,10 +785,13 @@ a = 1 // could be the end or not depending on what follows
   + 2 // appended to the preceding lines, so a = 5
 b = 3 // another statement
 </code>
+       <p>
        Now let's try some Turtle Graphics functions.
        These statements are simple function calls.
-       <code>forward(10)
-right(90)
+       turn the turtle the right 90 degrees, <code>right(90)</code>, and
+       move the turtle forward 10 units, <code>forward(10)</code>.
+       </p>
+<code>right(90)
 forward(10)
 right(90)
 forward(10)
@@ -771,17 +799,20 @@ right(90)
 forward(10)
 right(90)
 </code>
-       tells the turtle to move and turn, move and turn, move and turn, move and
-       turn to complete a square as in the following figure.
+
+       <img src="images/no_picture.png">
+       <p>
+       This tells the turtle to move and turn, move and turn, move and turn,
+       move and turn to complete a square as in the following figure.
        </p>
        <p>
          Some of JavaScript's constructs come in pairs. Strings are
          enclosed in pair of single quotes (apostrophes) or a pair of double
          quotes. A single quote may appear in a string set off with double
          quotes and a double quote may appear in a string set of with single
-         quotes. An opening parentheses, square bracket, or curly bracket
+         quotes. An opening parentheses, square bracket, or curly brace
          (brace), must be matched with the closing parentheses, square bracket
-         or curly bracket.
+         or curly brace.
        </p>
       <code>r = 'string' // string of characters
 a = "string" // string of characters
@@ -795,7 +826,7 @@ function foo (a, b, c) // group of parameters
   { statement, statement, statement} ; // group of statements in a function
 f = foo (1, 2, 3) // group of arguments 1,2,3
   { a=1; b=2; c=a+b} // group of statements
-dog = { breed: "dalmation",        //object with 4 attributes
+dog = { breed: "dalmatian",        //object with 4 attributes
         color: "white and black",
         gender: "M",
         age:2
@@ -803,24 +834,31 @@ dog = { breed: "dalmation",        //object with 4 attributes
 </code>
    <h2 id="basic javascript concepts">Basic JavaScript Concepts</h2>
      <h3>Conditionals</h3>
-     <p>
        <img src="images/no_picture.png">
-       A conditional is code that is executed when some boolean condition
+     <p>
+       A <strong>conditional</strong> is code that is executed when some
+       Boolean condition
        is true or false.  Conditionals start with an
-       <span class="keyword">if</span> keyword
-       followed by an expression contained in parentheses which evaluates
-       to <span class="keyword">true</span> or
-       <span class="keyword">false</span>. This is followed by a single
-       statement or a block
-       of statements surrounded by curly brackets that is executed if
-       the condition is true.  Many programmers always use the curly
-       brackets to make their code more consistent.  The
+       <span class="keyword">if</span> key word
+       followed by an expression, called the <strong>condition</strong>,
+       contained within parentheses which evaluates to a Boolean value,
+       either <span class="keyword">true</span> or
+       <span class="keyword">false</span>.
+       This is followed by a single statement or a block
+       of statements surrounded by curly braces that is executed if
+       the condition is true.
+       This statement or group of statements is sometimes called
+       the <strong>then clause</strong> of the conditional.
+       Many programmers always use the curly brackets to make their code
+       more consistent, even if there is only a single statement.  The
        <span class="keyword">if</span>
-       statement can be followed immediately by an
+       statement can be followed immediately by the
        <span class="keyword">else</span> keyword
        followed with a single statement or a block of statements surrounded
-       by curly brackets. The <span class="keyword">else</span> clause is
-       executed if the condition is false.
+       by curly braces.
+       This statement or group of statements is sometimes called
+       the <strong>else clause</strong> of the conditional.
+       The else clause is executed if the condition is false.
      </p>
      <code>function square() {
   for (i=0; i<4; i=i+1) {
@@ -877,8 +915,8 @@ dog = { breed: "dalmation",        //object with 4 attributes
              Change the condition within the loop.
            </li>
          </ul>
+       <img src="images/no_picture.png">
        <p>
-         <img src="images/no_picture.png">
          In the example, the condition being tested is the turtle running
          off of the screen. Since its path is enlarged each loop, eventually
          it should run off the screen and prevent an infinite loop.
@@ -893,13 +931,13 @@ dog = { breed: "dalmation",        //object with 4 attributes
 }
 </code>
        <p>
-         In this example, the condition is intialized with <code>i = 0</code>.
+         In this example, the condition is initialized with <code>i = 0</code>.
          The continuing condition is <code>i &gt; 10</code>, so the stopping
-         condition would be <code>i >= 10</code>. The condition is changed within
-         the loop with <code>i = i + 1</code>.
+         condition would be <code>i >= 10</code>. The condition is changed
+         within the loop with <code>i = i + 1</code>.
        </p>
-       <p>
          <img src="images/no_picture.png">
+       <p>
          Sometimes you want the repetition to continue until some other
          criteria is met. Below is an example of a spiral that will expand
          until it moves off of the canvas. This example also shows a variable
@@ -934,7 +972,7 @@ dog = { breed: "dalmation",        //object with 4 attributes
          initialize the value of the iteration variable or iterator. This
          variable is commonly named 'i', but any valid variable name can be
          used. Make sure to include a declaration for the iterator using the
-         keyword <span class="keyword">var</span>. somewhere in the function.
+         keyword <span class="keyword">var</span> somewhere within the function.
          The second part, the while condition 
          is an expression that is evaluated before every loop and must
          evaluate to <span class="keyword">true</span> for the loop to
@@ -954,10 +992,12 @@ dog = { breed: "dalmation",        //object with 4 attributes
        <p>
          Variables declared within a function are local to that function and
          can only be accessed within that function. These variables are called
-         local variables.  Variables declared outside functions and variables
-         that are not declared can be accessed by any function. These variables
-         are called global variables.  Most programmers try to avoid global
-         variables.
+         <strong>local</strong> variables.  Variables declared outside functions
+         and variables that are not declared with the <span class="keyword">var</span>
+         can be accessed by any function.  These variables are called
+         <strong>global</strong> variables.  Most programmers try to avoid global
+         variables to limit the number of functions that can change the
+         value of a variable.
        </p>
        <p>
          Let's say you want to use the variable <span class="var">i</span>
@@ -984,10 +1024,10 @@ for (i=0; i<3; i=i+1) {
 }
 </code>
        <p>
-         So what happens when this is executed? for the first loop of the
-         main program the variable <span class="var">i</class> is set to
+         So what happens when this is executed? For the first loop of the
+         main program the variable <span class="var">i</span> is set to
          zero and the function square is called. Square also sets the
-         variable <span class="var">i</class> is also
+         variable <span class="var">i</span> is also
          set to zero. No problem yet, but as the sides are drawn,
          <span class="var">i</span>
          is incremented to 1, 2, 3 and finally 4. When the square function
@@ -999,7 +1039,7 @@ for (i=0; i<3; i=i+1) {
        </p>
        <p>
          To fix this, one might try to declare <span class="var">i</span>
-         with the <code>var</code> instrution.  If the declaration is outside
+         with the <code>var</code> instruction.  If the declaration is outside
          of the functions, at it is in the following block of code,
          <span class="var">i</span> is declared as a global. Since any
          undeclared variable is a global by default, this declaration has
@@ -1053,7 +1093,7 @@ for (i=0; i<3; i=i+1) {
          In general programmers try to avoid using global variables. This is
          because they can get changed by any function and sometimes it is
          hard to know which function is affecting the variables. Local
-         variables are only affected within the function so it is eaiser to
+         variables are only affected within the function so it is easier to
          find the culprit.
        </p>
        <p>
@@ -1067,7 +1107,7 @@ for (i=0; i<3; i=i+1) {
      <h3>Advanced Assignment Operators</h3>
        <p>
        We talked about the assignment operator <code>=</code>.
-       There are other more specialized assigment operators.
+       There are other more specialized assignment operators.
        In general these should be avoided because they do cause
        some confusion and may lead to bugs if the symbols
        are interchanged. (<code>+=</code> is an assignment adding
@@ -1108,11 +1148,11 @@ for (i=0; i<3; i=i+1) {
 
      <h3>Bit-wise Operators</h3>
        <p>
-       There are operators to perform bitwise operations on numbers. These
+       There are operators to perform bit-wise operations on numbers. These
        numbers are restricted to 32 bits, which is smaller than normal
        integers and floating point numbers (52 bits). Some
        of these operations
-       are similar to the boolean operators, except that they work on
+       are similar to the Boolean operators, except that they work on
        individual bits instead of the value as a whole. While
        this is a more advanced topic, it is nice to know that more exists in
        case you encounter them, or need them for a particular problem. The
@@ -1137,25 +1177,25 @@ for (i=0; i<3; i=i+1) {
        </tr>
        <tr>
          <td><<</td>
-         <td>bitwise AND</td>
+         <td>bit-wise AND</td>
          <td>5&4 (0b0101 & 0b0100)</td>
          <td>4 (0b0100)</td>
        </tr>
        <tr>
          <td><<</td>
-         <td>bitwise OR</td>
+         <td>bit-wise OR</td>
          <td>5|2 (0b0101 | 0b0010)</td>
          <td>7 (0b0111)</td>
        </tr>
        <tr>
          <td>^</td>
-         <td>bitwise exclusive OR</td>
+         <td>bit-wise exclusive OR</td>
          <td>5|2 (0b0101 | 0b0010)</td>
          <td>7 (0b0111)</td>
        </tr>
        <tr>
          <td>~</td>
-         <td>bitwise NOT</td>
+         <td>bit-wise NOT</td>
          <td>~1 (~0b0000000000000001)</td>
          <td>-2 (0b1111111111111110)</td>
        </tr>
@@ -1165,8 +1205,8 @@ for (i=0; i<3; i=i+1) {
          Using a set of parentheses is used to group operands and
          operators to affect the order of evaluation. Operators have an
          order of precedence that dictates the order in which the operators
-         are evaluated, e.g., multipication takes precedence over addition,
-         so mulitplications are done before additions.  The grouping operator
+         are evaluated, e.g., multiplication takes precedence over addition,
+         so multiplications are done before additions.  The grouping operator
          takes precedence over other operators, so what is within the
          parentheses is evaluated before what is outside the parentheses.
          Parentheses may be nested. When in doubt and order matters, use
@@ -1180,7 +1220,7 @@ for (i=0; i<3; i=i+1) {
          the scope of this simple introduction, but are included to inspire
          you to learn more (not to scare you).
         </p>
-<table class="fullwidth-table">
+<table>
  <tbody>
   <tr>
    <th>Precedence</th>
@@ -1190,19 +1230,19 @@ for (i=0; i<3; i=i+1) {
   </tr>
   <tr>
    <td>20</td>
-   <td><code>Grouping</code></td>
+   <td>Grouping</td>
    <td>n/a</td>
-   <!-- &#8230; is an elipsis character -->
+   <!-- &#8230; is an ellipsis character -->
    <td><code>( &#8230; )</code></td>
   </tr>
   <tr>
    <td colspan="1" rowspan="4">19</td>
-   <td><code>Member Access</code></td>
+   <td>Member Access</td>
    <td>left-to-right</td>
    <td><code>&#8230; . &#8230;</code></td>
   </tr>
   <tr>
-   <td><code>Computed Member Access</code></td>
+   <td>Computed Member Access</td>
    <td>left-to-right</td>
    <td><code>&#8230; [ &#8230; ]</code></td>
   </tr>
@@ -1224,12 +1264,12 @@ for (i=0; i<3; i=i+1) {
   </tr>
   <tr>
    <td rowspan="2">17</td>
-   <td><code>Postfix Increment</code></td>
+   <td>Postfix Increment</td>
    <td colspan="1" rowspan="2">n/a</td>
    <td><code>&#8230; ++</code></td>
   </tr>
   <tr>
-   <td><code>Postfix Decrement</code></td>
+   <td>Postfix Decrement</td>
    <td><code>&#8230; --</code></td>
   </tr>
   <tr>
@@ -1239,7 +1279,7 @@ for (i=0; i<3; i=i+1) {
    <td><code>! &#8230;</code></td>
   </tr>
   <tr>
-   <td>Bitwise NOT</td>
+   <td>Bit-wise NOT</td>
    <td><code>~ &#8230;</code></td>
   </tr>
   <tr>
@@ -1259,19 +1299,19 @@ for (i=0; i<3; i=i+1) {
    <td><code>-- &#8230;</code></td>
   </tr>
   <tr>
-   <td>typeof</td>
+   <td><code>typeof</code></td>
    <td><code>typeof &#8230;</code></td>
   </tr>
   <tr>
-   <td>void</td>
+   <td><code>void<code></td>
    <td><code>void &#8230;</code></td>
   </tr>
   <tr>
-   <td>delete</td>
+   <td><code>delete/<code></td>
    <td><code>delete &#8230;</code></td>
   </tr>
   <tr>
-   <td>await</td>
+   <td><code>await</code></td>
    <td><code>await &#8230;</code></td>
   </tr>
   <tr>
@@ -1306,16 +1346,16 @@ for (i=0; i<3; i=i+1) {
   </tr>
   <tr>
    <td rowspan="3">12</td>
-   <td>Bitwise Left Shift</td>
+   <td>Bit-wise Left Shift</td>
    <td colspan="1" rowspan="3">left-to-right</td>
    <td><code>&#8230; &lt;&lt; &#8230;</code></td>
   </tr>
   <tr>
-   <td>Bitwise Right Shift</td>
+   <td>Bit-wise Right Shift</td>
    <td><code>&#8230; &gt;&gt; &#8230;</code></td>
   </tr>
   <tr>
-   <td>Bitwise Unsigned Right Shift</td>
+   <td>Bit-wise Unsigned Right Shift</td>
    <td><code>&#8230; &gt;&gt;&gt; &#8230;</code></td>
   </tr>
   <tr>
@@ -1337,11 +1377,11 @@ for (i=0; i<3; i=i+1) {
    <td><code>&#8230; &gt;= &#8230;</code></td>
   </tr>
   <tr>
-   <td>in</td>
+   <td><code>in</code></td>
    <td><code>&#8230; in &#8230;</code></td>
   </tr>
   <tr>
-   <td>instanceof</td>
+   <td><code>instanceof</code></td>
    <td><code>&#8230; instanceof &#8230;</code></td>
   </tr>
   <tr>
@@ -1364,19 +1404,19 @@ for (i=0; i<3; i=i+1) {
   </tr>
   <tr>
    <td>9</td>
-   <td>Bitwise AND</td>
+   <td>Bit-wise AND</td>
    <td>left-to-right</td>
    <td><code>&#8230; &amp; &#8230;</code></td>
   </tr>
   <tr>
    <td>8</td>
-   <td>Bitwise XOR</td>
+   <td>Bit-wise XOR</td>
    <td>left-to-right</td>
    <td><code>&#8230; ^ &#8230;</code></td>
   </tr>
   <tr>
    <td>7</td>
-   <td>Bitwise OR</td>
+   <td>Bit-wise OR</td>
    <td>left-to-right</td>
    <td><code>&#8230; | &#8230;</code></td>
   </tr>
@@ -1400,7 +1440,7 @@ for (i=0; i<3; i=i+1) {
   </tr>
   <tr>
    <td rowspan="13">3</td>
-   <td Assignment</td>
+   <td rowspan="13">Assignment</td>
    <td rowspan="13">right-to-left</td>
    <td><code>&#8230; = &#8230;</code></td>
   </tr>
@@ -1447,11 +1487,11 @@ for (i=0; i<3; i=i+1) {
    <td><code>&#8230; =&gt; &#8230;</code></td>
   </tr>
   <tr>
-   <td>yield</td>
+   <td><code>yield</code></td>
    <td><code>yield &#8230;</code></td>
   </tr>
   <tr>
-   <td>yield*</td>
+   <td><code>yield*</code></td>
    <td><code>yield* &#8230;</code></td>
   </tr>
   <tr>
@@ -1473,9 +1513,10 @@ for (i=0; i<3; i=i+1) {
          Some problems are easier to solve with iteration and some are easier to solve
          with recursion.
        </p>
-       <p>
        <img src="images/no_picture.png">
-         Consider a Koch line. Take a line of a given length. Divide that line into thirds. Where the middle
+       <p>
+         Consider a Koch line. Take a line of a given length. Divide that line
+         into thirds. Where the middle
          third is, draw an equilateral triangle (a triangle with all three sides the same
          length and the corner angles are also all the same, 60 degrees). Erase the middle
          segment, leaving four segments each of the same length. Repeat the process for
@@ -1506,19 +1547,23 @@ kochForward(maxX() + maxX() - 40); // draw a Koch line most of the width of the 
          Snowflake that uses three Koch lines.
        </p>
        <p>
-         There are several more comples examples of recursion here. The Koch Snowflakes, the Sierpinski
-         Curve and the Symmetrical Tree. 
+         There are several more complex examples of recursion here. The Koch
+         Snowflakes, the Sierpinski Curve and the Symmetrical Tree. 
        </p>
    <h2 id=animation>Animation</h2>
      <p>
-       Animation is the process to bring a drawing to life. The two main
-       ways to do animation is to either incrementally add to a more and
-       more complex drawing or to completely redraw the figure. The human
-       eye will blend motion between two different drawings that are
-       presented about 30 times a second (or 1/30 of a second per frame
+       <strong>Animation</strong> is the process to bring a drawing to life.
+       Animation presents drawings that are slightly different.
+       The differences are perceived as motion.
+       The two main ways to do animation is to either incrementally add to a
+       drawing more and more complex parts or to completely redraw the
+       figure. The drawing that is presented is called a <strong>frame</strong>
+       The human eye will blend motion between two different frames that are
+       presented quick enough. Movies are about 24 frames a second and
+       television is 30 frames a second (or 1/30 of a second per frame
        also called .033 seconds or 33 milliseconds per frame).  Making
-       changes too quickly will be invisable to the human eye and changes
-       made too slowly will be jerky.
+       changes too quickly will be invisible to the human eye. Changes
+       must be made fairly consistently to avoid a jerky appearance.
      </p>
      <p>
        This turtle graphics provide two functions for animation:
@@ -1540,15 +1585,16 @@ kochForward(maxX() + maxX() - 40); // draw a Koch line most of the width of the 
        </p>
        <p>
          The <em>Dividing a Circle</em> example uses the
-         <code`>delay()</code`em> function to draw a set of circles around a preceding set of circles.
-         This example is rather clumsy and can be improved in that a function is written
-         for each level.
+         <code`>delay()</code`em> function to draw a set of circles around a
+         preceding set of circles.  This is an example of building up a
+         drawing of more and more complex parts.
        </p>
        <p>
          The <em>Koch Snowflake</em> example uses the
-         <code>delay()</code> function to draw a set of circles around a preceding set of circles.
-         This example shows the power of using both the delay function to draw a snowflake
-         of a particular order and recursion to build the snowflake of any order.
+         <code>delay()</code> function to draw a successive drawings. 
+         This example shows the power of using both the delay function to
+         draw a snowflake of a particular order and recursion to build the
+         snowflake of a desired order.
        </p>
    <h2 id="under the hood">Under the Hood</h2>
      <h3>Source Code</h3>
@@ -1561,19 +1607,16 @@ kochForward(maxX() + maxX() - 40); // draw a Koch line most of the width of the 
        </p>
        <p>
        The source code for this page can be found in several ways.
+       (Browsers change all the time, so you may need to search around the
+       menus to find the option.)
        </p>
          <ul>
            <li>
-             Most browsers: control or command u.
+             Most browsers: control- or command-u.
            </li>
            <li>
              Firefox: select the menu <strong>Tools>Web Developer>Page Source</strong>.
-   th a lot of different parameters, or options.
-
-
-stamp(NAME, X, Y, SIZE)
-
-        </li>
+           </li>
            <li>
              Chrome: select the menu <strong>View>Developer>View Source</strong>.
            </li>
@@ -1582,12 +1625,8 @@ stamp(NAME, X, Y, SIZE)
            </li>
          </ul>
        <p>
-         To access all of the source code, documentation and development tools used go to
-         <a href="https://www.github.com/kirkcarlson/js-turtle">
-         https://github.com/kirkcarlson/js-turtle</a>.
-       </p>
-       <p>
-         Basically the following modules were used:
+         The following modules provide the basic functionality of the JavaScript
+         Turtle Graphics.
        </p>
        <ul>
          <li>
@@ -1597,12 +1636,12 @@ stamp(NAME, X, Y, SIZE)
          </li>
          <li>
            <strong>turtle.css</strong> defines the styling used to make the page
-           more readable as a Cascading Style Sheet (CSS). CSS allows the artistic
-           design of the page to be separated from the functional underpinnings of
-           the page.
+           more readable as a <strong>Cascading Style Sheet</strong> (CSS).
+           CSS allows the artistic design of the page to be separated from
+           the functional underpinnings of the page.
          </li>
          <li>
-           <strong>turtle.js</strong> defines the the basic turtle graphics
+           <strong>turtle.js</strong> defines the basic turtle graphics
            functions for JavaScript. In theory this module could be included
            in other programs which use turtle graphics.
          </li>
@@ -1615,12 +1654,13 @@ stamp(NAME, X, Y, SIZE)
          </li>
          <li>
            <strong>examples.js</strong> is a tool generated file that contains one string
-           for each example. The examples may be directly viewed on the web page.
-           The tools and the examples may also be viewed directly on on github at
-           <a href="https://www.github.com/kirkcarlson/js.turtle">
-          https://www.github.com/kirkcarlson/js.turtle</a>.
+           for each example. The examples are loaded directly onto the coding
+           area of the console where they may be viewed and modified.
          </li>
        </ul>
+       The tools and the examples may also be viewed directly at
+       <a href="https://www.github.com/kirkcarlson/js.turtle">
+       https://www.github.com/kirkcarlson/js.turtle</a>.
 </article>
 </body>
 </html>
