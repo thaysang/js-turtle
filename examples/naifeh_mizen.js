@@ -66,7 +66,7 @@ function demo() {
   side = .15 * Math.min( maxX(), maxY())
   bColor = "red"
   lColor = "white"
-  width = 3
+  width (3)
 
   //center canvas more or less
   goto(-5*side, 3.5*side)

@@ -36,11 +36,11 @@ function demo () {
   size = Math.min( maxX(), maxY()) * .9
   hideturtle();
 
-  var height = 50
-  var width = 50
+  var tileHeight = 50
+  var tileWidth = 50
   var mortarWidth = 1
   var mortarColor = "#c0c0c0"
   var mortarColor = "#808080"
   var offset = .5
-  cafeTiles( height, width, mortarWidth, mortarColor, offset);
+  cafeTiles( tileHeight, tileWidth, mortarWidth, mortarColor, offset);
 }

@@ -37,7 +37,7 @@ gifs : color_changing_dots.gif \
                sierpinski_triangle_order.gif \
                star_burst.gif
 
-// build the .gif files from series of .png files
+# build the .gif files from series of .png files
 color_changing_dots.gif : image_series/color_changing_dots_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 

@@ -1,33 +1,34 @@
-#!/bin/sh
+#!/bin/bash
+#########################################################################
 # script to add examples as options to select in turtle.html file
 #
 # usage:
 #   modifyHTML.sh directory
-        
+#########################################################################
 
-directory=$1 # name of directory containing a set of javascript programs
+DIRECTORY=$1 # name of directory containing a set of javascript programs
 
 if [ ${1}NotSpecified =  NotSpecified ]; then
-  echo Input directory not specified
-  exit
+	echo Input directory not specified
+	exit 1
 fi
 
-#rm -f tmp # in case it exists
 echo '          <option selected value='example'>Examples</option>' > tmp
 
-for fileName in `ls $directory` ; do
-  optionName=`head -1 $directory/$fileName |sed "s/^\/\/ *\(.*\) --.*$/\1/"`
-  echo "$fileName" | sed -e "s/\(.*\)\.js/          <option value=\1><\/option>/" -e "s/></>$optionName</" >>tmp
+for fileName in `ls $DIRECTORY` ; do
+	OPTION_NAME=`head -1 $DIRECTORY/$fileName |sed -Ee "s/^\/\/ *(.*) --.*$/\1/"`
+	echo "$fileName" | sed -Ee "s/(.*)\.js/          <option value=\"\1\"><\/option>/" -e "s/></>$OPTION_NAME</" >>tmp
 done
 
 # add the new options to the turtle.html file
-backupName=backups/turtle.html.`date "+%Y-%m-%d.%H.%M.%S"`
-cp -f turtle.html $backupName
+BACKUP_FILE=backups/turtle.html.`date "+%Y-%m-%d.%H.%M.%S"`
+cp -f turtle.html $BACKUP_FILE
 (
-  sed -n -e "1,/<select id=examples>/p" <$backupName
-  cat tmp
-  sed -n -e "/<\/select>/,\$p" <$backupName
+	sed -n -e "1,/<select id=examples>/p" <$BACKUP_FILE
+	cat tmp
+	sed -n -e "/<\/select>/,\$p" <$BACKUP_FILE
 ) > turtle.html
 
 # clean up
 rm -f tmp 
+exit 0

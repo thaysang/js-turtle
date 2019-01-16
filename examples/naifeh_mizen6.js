@@ -73,13 +73,13 @@ function demo() {
     mx = turtle.pos.x
     my = turtle.pos.y
     ma = turtle.angle
-    penwidth(0)
+    width(0)
     mizen( side, "white", "blue")
 
     // do it again for the border lines
     goto( mx, my)
     angle( radToDeg( ma))
-    penwidth(.1 * side)
+    width(.1 * side)
     mizen( side, "white", "")
 
     penup()

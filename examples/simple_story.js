@@ -15,17 +15,17 @@ var frameDelay = 0
 function explain( text) {
   // lines within the text string are separated with an at "@" character.
   reset();
-  var width = 2* maxX();
-  var height = 2* maxY();
+  var cWidth = 2* maxX();
+  var cHeight = 2* maxY();
   var lineNumber = 0;
-  goto(-.90 * width + maxX(), .9 * height - maxY());
+  goto(-.90 * cWidth + maxX(), .9 * cHeight - maxY());
   angle(90);
   setfont("bold 20px arial,sans-serif");
 
   var lines = text.split("@");
   for (var i=0; i<lines.length; i++) {
     console.log( lines[i])
-    goto (-.90 * width + maxX(), maxY() -(i+1) * .1 * height)
+    goto (-.90 * cWidth + maxX(), maxY() -(i+1) * .1 * cHeight)
     write (lines[i]);
     lineNumber = lineNumber + 1;
   }

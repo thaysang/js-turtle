@@ -171,8 +171,8 @@ function demo () {\n\
   circleEyeL( h3, v2, 16, cellSize/2 * .8);\n\
 }\n\
 '
-basket_weave_tesselation ='\
-// Basket Weave Tesselation -- tile a space using basket weave pattern\n\
+basket_weave_tessellation ='\
+// Basket Weave Tessellation -- tile a space using basket weave pattern\n\
 \n\
 // this assumes that the smaller square is 1/2 of the larger square.\n\
 // that need not be the case\n\
@@ -338,8 +338,8 @@ function demo() {\n\
   let_them_drop (Math.floor(maxX * maxY/2000));\n\
 }\n\
 '
-brick_tesselation ='\
-// Brick Tesselation -- tile a space using a basic brick laying pattern\n\
+brick_tessellation ='\
+// Brick Tessellation -- tile a space using a basic brick laying pattern\n\
 \n\
 sSide = 15\n\
 lSide = 2* sSide \n\
@@ -395,6 +395,83 @@ function demo() {\n\
     }\n\
     yB = yB - sSide\n\
   }\n\
+}\n\
+'
+cafe_wall_illusion ='\
+// Cafe Wall Illusion -- draws cafe tiles. see Wikipedia.\n\
+\n\
+function drawTile (h,w, tc, x, y) {\n\
+  goto(x,y)\n\
+  beginShape()\n\
+  for( var i=0; i<2; i=i+1) {\n\
+    forward(h)\n\
+    right(90)\n\
+    forward(w)\n\
+    right(90)\n\
+  }\n\
+  fillShape( tc)\n\
+}\n\
+\n\
+function cafeTiles (h, w, gw, gc, off) {\n\
+  maxRow = 2*maxY()/h\n\
+  maxCol = 2*maxX()/w\n\
+  width(gw)\n\
+  color(gc)\n\
+  setHeading(0)\n\
+  for (var row=0; row<maxRow; row=row+1) {\n\
+    for (var col=0; col<maxCol; col=col+1) {\n\
+      if (col%2) {\n\
+        drawTile( h, w, "white", minX()+col*(w+gw/2)+(row%2*w*off), minY()+ row*(h+gw/2))\n\
+      } else {\n\
+        drawTile( h, w, "black", minX()+col*(w+gw/2)+(row%2*w*off), minY()+ row*(h+gw/2))\n\
+      }\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+\n\
+function demo () {\n\
+  reset();\n\
+  size = Math.min( maxX(), maxY()) * .9\n\
+  hideturtle();\n\
+\n\
+  var tileHeight = 50\n\
+  var tileWidth = 50\n\
+  var mortarWidth = 1\n\
+  var mortarColor = "#c0c0c0"\n\
+  var mortarColor = "#808080"\n\
+  var offset = .5\n\
+  cafeTiles( tileHeight, tileWidth, mortarWidth, mortarColor, offset);\n\
+}\n\
+'
+circle_eye2 ='\
+// Circle Eye2 -- draws a set of n inscribed circles between two concentric circles.\n\
+\n\
+function circleEye (x, y, n, outerRadius, innerRadius) {\n\
+  goto (x, y);\n\
+  //circle (outerRadius); //outer circle\n\
+  //circle (innerRadius)\n\
+  radius = outerRadius-innerRadius\n\
+\n\
+  for (i=0; i<n; i++) {\n\
+    goto (x, y);\n\
+    angle (i/n * 360);\n\
+    penup();\n\
+    forward (innerRadius + radius/2);\n\
+    pendown();\n\
+    circle(radius/2); // one inscribed circle\n\
+  }\n\
+}\n\
+\n\
+\n\
+\n\
+function demo () {\n\
+  reset();\n\
+  size = Math.min( maxX(), maxY()) * .9\n\
+  hideturtle();\n\
+  color( random(16));\n\
+  circleEye( 0, 0, 32, size, .2*size);\n\
 }\n\
 '
 circle_eye ='\
@@ -846,6 +923,93 @@ function colorChangingDots () {\n\
 \n\
 demo = colorChangingDots;\n\
 '
+compass_rose2 ='\
+// Compass Rose 2 -- draws compass rose.\n\
+\n\
+function compassRose (x, y, n, outerRadius, innerRadius) {\n\
+  goto (x, y);\n\
+  circle (outerRadius); //outer circle\n\
+  circle (innerRadius);\n\
+\n\
+  angleA= Math.atan((innerRadius* Math.sin(Math.PI/4))/(outerRadius-innerRadius* Math.cos(Math.PI/4))) //radians\n\
+  side1= outerRadius/(1+Math.tan(angleA)/Math.tan(Math.PI/4))\n\
+  side2= side1/Math.cos(angleA)\n\
+  for (i=0; i<4; i++) {\n\
+    goto (x, y);\n\
+    angle (i/4 * 360);\n\
+    penup()\n\
+    forward( innerRadius)\n\
+    pendown()\n\
+    forward (outerRadius-innerRadius);\n\
+    right( 180-radToDeg( angleA));\n\
+    forward( side2);\n\
+    backward( side2);\n\
+    right( radToDeg( 2* angleA));\n\
+    forward( side2);\n\
+  }\n\
+\n\
+  side3= outerRadius/(1+Math.tan(angleA)/Math.tan(Math.PI/8))\n\
+  r3= side3/Math.cos(angleA)\n\
+  console.log( "side3:"+side3 + " r3: " + r3)\n\
+  for (i=0; i<4; i++) {\n\
+    goto (x, y);\n\
+    angle (45 + i/4 * 360);\n\
+    penup()\n\
+    forward( innerRadius)\n\
+    pendown()\n\
+    forward (outerRadius-innerRadius);\n\
+    right( 180-radToDeg( angleA));\n\
+    forward( r3);\n\
+    backward( r3);\n\
+    right( radToDeg( 2* angleA));\n\
+    forward( r3);\n\
+  }\n\
+\n\
+  r4=outerRadius/2\n\
+\n\
+  side4= outerRadius/(1+Math.tan(angleA)/Math.tan(Math.PI/16))\n\
+  r4= side4/Math.cos(angleA)\n\
+  console.log( "side4:"+side4 + " r4: " + r4)\n\
+  for (i=0; i<8; i++) {\n\
+    goto (x, y);\n\
+    angle (22.5 + i/8 * 360);\n\
+    penup()\n\
+    forward (outerRadius);\n\
+    pendown()\n\
+    right( 180-radToDeg( angleA));\n\
+    forward( r4);\n\
+    backward( r4);\n\
+    right( radToDeg( 2* angleA));\n\
+    forward( r4);\n\
+  }\n\
+\n\
+  r5 = .1 * outerRadius\n\
+  base = 2* r5* Math.sin(angleA)\n\
+  for (i=0; i<16; i++) {\n\
+    goto (x, y);\n\
+    angle (11.25 + i/16 * 360);\n\
+    penup()\n\
+    forward (outerRadius);\n\
+    pendown()\n\
+    right( 180-radToDeg( angleA));\n\
+    forward( r5);\n\
+    right(90+radToDeg(angleA))\n\
+    forward (base)\n\
+    right(90+radToDeg(angleA))\n\
+    forward( r5);\n\
+  }\n\
+}\n\
+\n\
+\n\
+\n\
+function demo () {\n\
+  reset();\n\
+  size = Math.min( maxX(), maxY()) * .9\n\
+  hideturtle();\n\
+  //color( random(16));\n\
+  compassRose( 0, 0, 16, size, .2*size);\n\
+}\n\
+'
 compass_rose ='\
 // Compass Rose -- draw a compass rose with the same triangles\n\
 \n\
@@ -1277,6 +1441,63 @@ console.log("size "+ size)\n\
 \n\
   //redrawOnMove(true)\n\
   draw() // just to render the final product\n\
+}\n\
+'
+connected_points ='\
+// connected points -- nice graph\n\
+\n\
+//draw the radials\n\
+function drawRadials(side) {\n\
+  for (var i=0; i<16; i++) {\n\
+    goto(0,0)\n\
+    angle(i/16 * 360)\n\
+    forward( size)\n\
+  }\n\
+}\n\
+\n\
+function spikey ( points, revs, radius, x, y, head) {\n\
+  penup()\n\
+  goto(x, y)\n\
+  setheading(head)\n\
+  forward(radius)\n\
+  var turnAngle = 360 * revs/points\n\
+  var angleA = ( 180 - turnAngle)/2\n\
+  var stroke = 2 * radius * Math.cos( degToRad( angleA))\n\
+  right( 180 - angleA)\n\
+  pendown()\n\
+\n\
+  for( var i = 0; i < points; i = i + 1) { //>\n\
+    forward( stroke)\n\
+    right( turnAngle)\n\
+  }\n\
+}\n\
+\n\
+\n\
+/*\n\
+I bet this thing is a series of\n\
+spikeys\n\
+*/\n\
+\n\
+\n\
+//\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  size=200\n\
+  inr = .33* size\n\
+  spikey( 16, 2, size, 0, 0, 0)\n\
+  spikey( 16, 2, size, 0, 0, 360/16)\n\
+  spikey( 16, 4, size, 0, 0, 0)\n\
+  spikey( 16, 4, size, 0, 0, 360/16)\n\
+  spikey( 16, 4, size, 0, 0, 2*360/16)\n\
+  spikey( 16, 4, size, 0, 0, 3*360/16)\n\
+  spikey( 16, 6, size, 0, 0, 0)\n\
+  spikey( 16, 6, size, 0, 0, 360/16)\n\
+  spikey( 8, 3, inr, 0, 0, 0)\n\
+  spikey( 8, 1, inr, 0, 0, 0)\n\
+  drawRadials( size)\n\
+  goto(0,0)\n\
+  circle( inr)\n\
 }\n\
 '
 conway_fractal ='\
@@ -2639,8 +2860,8 @@ function demo()\n\
   fheart(1 * size, "red")\n\
 }\n\
 '
-herring_bone_tesselation ='\
-// Herring Bone Tesselation -- tile a space using a herring bone brick laying pattern\n\
+herring_bone_tessellation ='\
+// Herring Bone Tessellation -- tile a space using a herring bone brick laying pattern\n\
 \n\
 sSide = 15\n\
 lSide = 2* sSide \n\
@@ -3309,8 +3530,8 @@ function demo() {\n\
   }\n\
 }\n\
 '
-hex_tesselation ='\
-// Hexagon Tesselation -- tile a surface with hexagons\n\
+hex_tessellation ='\
+// Hexagon Tessellation -- tile a surface with hexagons\n\
 \n\
 function hexagon (side) {\n\
   penup();\n\
@@ -3885,13 +4106,13 @@ function demo() {\n\
   hirchhorn(size)\n\
 }\n\
 '
-home_plate_tesselation ='\
-// Home Plate Tesselation -- tile a space using simple pentagon\n\
+home_plate_tessellation ='\
+// Home Plate Tessellation -- tile a space using simple pentagon\n\
 //\n\
 // this pattern could be the same as a hexagonal pattern with the hexagons\n\
 // split into two halves\n\
 //\n\
-// For more pentagonal tesselations see wikipedia\n\
+// For more pentagonal tessellations see wikipedia\n\
 \n\
 colors = ["red", "white", "blue", "yellow", "green"]\n\
 \n\
@@ -5487,6 +5708,142 @@ function demo() {\n\
   kochLineDelay();\n\
 }\n\
 '
+koch_snowflake2 ='\
+// Koch Snowflake 2 -- Koch snowflake with embellishments\n\
+\n\
+function diamond(side) {\n\
+  forward(side)\n\
+  left(60)\n\
+  forward(side)\n\
+  left(120)\n\
+  forward(side)\n\
+  left(60)\n\
+  forward(side)\n\
+  left(120)\n\
+}\n\
+\n\
+function dazzle( side, inset) {\n\
+  inner(side,inset)\n\
+  newside = (side - Math.sqrt(3)* inset) /3\n\
+  penup()\n\
+  left(30)\n\
+  forward(inset)\n\
+  right(30)\n\
+  forward(newside)\n\
+  left(60)\n\
+  pendown()\n\
+  forward(newside)\n\
+  diamond(newside/3)\n\
+  forward(newside)\n\
+  left(120)\n\
+  forward(newside)\n\
+  left(120)\n\
+  forward(newside)\n\
+  diamond(newside/3)\n\
+  forward(newside)\n\
+  left(120)\n\
+  forward(newside)\n\
+  left(120)\n\
+  forward(newside)\n\
+  diamond(newside/3)\n\
+  forward(newside)\n\
+  left(120)\n\
+  forward(newside)\n\
+  penup()\n\
+  right(120)\n\
+  forward(newside)\n\
+  left(30)\n\
+  forward(inset)\n\
+  left(150)\n\
+  pendown()\n\
+}\n\
+\n\
+\n\
+function inner( side, inset) {\n\
+  penup()\n\
+  left( 30)\n\
+  forward( inset)\n\
+  right(30)\n\
+  pendown()\n\
+  forward( side - Math.sqrt(3)*inset)\n\
+  left(120)\n\
+  forward( side - Math.sqrt(3)*inset)\n\
+  left(120)\n\
+  forward( side - Math.sqrt(3)*inset)\n\
+  penup()\n\
+  right(30)\n\
+  forward( inset)\n\
+  left(150)\n\
+  pendown()\n\
+}\n\
+\n\
+function starOfDavid (side) {\n\
+  penup()\n\
+  backward(2*side)\n\
+  right(30)\n\
+  forward(side)\n\
+  right(60)\n\
+  pendown()\n\
+  for (var i=0;i<6;i=i+1) {\n\
+    inner(side, 10)\n\
+    inner(side, 20)\n\
+    dazzle(side, 30)\n\
+    forward(side)\n\
+    left(120)\n\
+    forward(side)\n\
+\n\
+    left(60)\n\
+    forward(side)\n\
+    left(120)\n\
+\n\
+    inner(side, 10)\n\
+    inner(side, 20)\n\
+    dazzle(side, 30)\n\
+    forward(side)\n\
+    left(120)\n\
+    forward(side)\n\
+  }\n\
+}\n\
+\n\
+function kochSnowFlake (side, order) {\n\
+  kochLine(side, order)\n\
+  right(120)\n\
+  kochLine(side, order)\n\
+  right(120)\n\
+  kochLine(side, order)\n\
+  right(120)\n\
+} \n\
+\n\
+\n\
+function kochLine (length, order) {\n\
+  //assume drawn on the current angle\n\
+  if (order == 0) {\n\
+    forward (length);\n\
+  } else {\n\
+    //break line and bump out to the left\n\
+    kochLine (length/3, order-1);\n\
+    left(60); \n\
+    kochLine (length/3, order-1);\n\
+    right(120); \n\
+    kochLine (length/3, order-1);\n\
+    left(60); \n\
+    kochLine (length/3, order-1);\n\
+  }\n\
+}\n\
+\n\
+\n\
+function demo () {\n\
+  reset();\n\
+  size = Math.min( maxX(), maxY()) * .6\n\
+  hideturtle();\n\
+  starOfDavid( size)\n\
+  forward(size)\n\
+  left(180)\n\
+  //showTurtle()\n\
+  kochSnowFlake(3*size, 2)\n\
+  kochSnowFlake(3*size, 3)\n\
+}\n\
+'
 koch_snowflake ='\
 // Koch Snowflakes -- draw an animated set of Koch snowflakes\n\
 \n\
@@ -6046,13 +6403,13 @@ function demo() {\n\
     mx = turtle.pos.x\n\
     my = turtle.pos.y\n\
     ma = turtle.angle\n\
-    penwidth(0)\n\
+    width(0)\n\
     mizen( side, "white", "blue")\n\
 \n\
     // do it again for the border lines\n\
     goto( mx, my)\n\
     angle( radToDeg( ma))\n\
-    penwidth(.1 * side)\n\
+    width(.1 * side)\n\
     mizen( side, "white", "")\n\
 \n\
     penup()\n\
@@ -6135,7 +6492,7 @@ function demo() {\n\
   side = .15 * Math.min( maxX(), maxY())\n\
   bColor = "red"\n\
   lColor = "white"\n\
-  width = 3\n\
+  width (3)\n\
 \n\
   //center canvas more or less\n\
   goto(-5*side, 3.5*side)\n\
@@ -6840,17 +7197,17 @@ var frameDelay = 0\n\
 function explain( text) {\n\
   // lines within the text string are separated with an at "@" character.\n\
   reset();\n\
-  var width = 2* maxX();\n\
-  var height = 2* maxY();\n\
+  var cWidth = 2* maxX();\n\
+  var cHeight = 2* maxY();\n\
   var lineNumber = 0;\n\
-  goto(-.90 * width + maxX(), .9 * height - maxY());\n\
+  goto(-.90 * cWidth + maxX(), .9 * cHeight - maxY());\n\
   angle(90);\n\
   setfont("bold 20px arial,sans-serif");\n\
 \n\
   var lines = text.split("@");\n\
   for (var i=0; i<lines.length; i++) {\n\
     console.log( lines[i])\n\
-    goto (-.90 * width + maxX(), maxY() -(i+1) * .1 * height)\n\
+    goto (-.90 * cWidth + maxX(), maxY() -(i+1) * .1 * cHeight)\n\
     write (lines[i]);\n\
     lineNumber = lineNumber + 1;\n\
   }\n\
@@ -7338,8 +7695,8 @@ function demo() {\n\
   }\n\
 }\n\
 '
-square_tesselation ='\
-// Square Tesselation -- tile a space using squares\n\
+square_tessellation ='\
+// Square Tessellation -- tile a space using squares\n\
 \n\
 colors = ["red", "white", "blue","yellow", "green"]\n\
 \n\
@@ -7576,7 +7933,7 @@ function demo() {\n\
   drawRTree(6,4)\n\
 }\n\
 '
-triangle_tesselation ='\
+triangle_tessellation ='\
 // Triangle Tesselation -- tile a space using triangles\n\
 \n\
 colors = ["red", "white", "blue", "yellow", "green"]\n\
@@ -7679,8 +8036,8 @@ function demo () {\n\
 }\n\
 \n\
 '
-two_square_tesselation ='\
-// Two Square Tesselation -- tile a space using two sizes of squares\n\
+two_square_tessellation ='\
+// Two Square Tessellation -- tile a space using two sizes of squares\n\
 \n\
 // this assumes that the smaller square is 1/2 of the larger square.\n\
 // that need not be the case\n\
@@ -7913,12 +8270,12 @@ function demo() {\n\
   vert( size)\n\
 }\n\
 '
-x_mountain_tesselation ='\
-// mountain tesselation -- tesselation with a mountain shaped heptiamond\n\
+x_mountain_tessellation ='\
+// mountain tessellation -- tessellation with a mountain shaped heptiamond\n\
 // a heptiamond is a shape composed of 7 equalateral triangles\n\
 //\n\
 //\n\
-//// Triangle Tesselation -- tile a space using triangles\n\
+//// Triangle Tessellation -- tile a space using triangles\n\
 \n\
 colors = ["red", "white", "blue", "yellow", "green"]\n\
 \n\
@@ -8115,8 +8472,8 @@ function demo() {\n\
   shape(7,9,1,E5)\n\
 }\n\
 '
-x_rhombic_star_tesselation ='\
-// Rhombic Star Tesselation -- a star tesselation using rhombus\n\
+x_rhombic_star_tessellation ='\
+// Rhombic Star Tessellation -- a star tessellation using rhombus\n\
 \n\
 colors = ["red", "white", "blue", "yellow", "green"]\n\
 \n\
@@ -8187,8 +8544,8 @@ function demo() {\n\
   cent( 20, 12)\n\
 }\n\
 '
-x_rice_penta_tesselation_1 ='\
-// rice penta tesselation 1 -- pentagon tesselation discovered by Margorie Rice\n\
+x_rice_penta_tessellation_1 ='\
+// rice penta tessellation 1 -- pentagon tesselation discovered by Margorie Rice\n\
 \n\
 function pr() {\n\
   forward(sidea)\n\
