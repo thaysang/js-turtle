@@ -9,33 +9,18 @@
 <!--body onresize="resizeColumns();"> -->
 <body id="body">
   <a href="javascript:void(0)" id="dragbarleft"></a>
-    <span class='help_text' id='dragbarleft_help_text'>
+    <span class="help_text" id="dragbarleft_help_text">
       <p>
       Click and drag on the drag bar to resize columns.
       </p>
     </span>
   <a href="javascript:void(0)" id="dragbarright"></a>
-    <span class='help_text' id='dragbarright_help_text'>
+    <span class="help_text" id="dragbarright_help_text">
       <p>
       Click and drag on the drag bar to resize columns.
       </p>
     </span>
   <div id="wrap">
-<!--
-    <div id="hamburger-div">
-      <button id="hamburger">
-        <svg class="fi" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-          <path d="M.004 8h63.998v5.627H.004zM.004 29.187h63.998v5.626H.004zM.004 50.373h63.998V56H.004z"/>
-        </svg>
-      </button>
-      <span class='help_text' id='hamburger_help_text'>
-        <p>
-        Click on the menu icon to bring up a menu to control work areas and access
-        tutorials.
-        </p>
-    </span>
-    </div>  < !-- end of hamburger-div -- >
--->
     <div id="container">
     <div id="leftcolumncontainer">
     <div id="leftcolumn">
@@ -96,27 +81,27 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           penup() | up() | pu()
+           penup() | penUp() | up() | pu()
            <p>
               Lift the pen in the turtle so that it does not leave a mark as
               it moves.
            </p>
            <p>
-              Example: <code>penup()</code>
+              Example: <code>penUp()</code>
            </p>
          </li>
          <li>
-           pendown() | down() | pd()
+           pendown() | penDown() | down() | pd()
            <p>
              Lower the pen in the turtle so that it leaves a mark as
              it moves.
            </p>
            <p>
-             Example: <code>pendown()</code>
+             Example: <code>penDown()</code>
            </p>
          </li>
          <li>
-           hideturtle() | ht()
+           hideturtle() | hideTurtle() | ht()
            <p>
              Hide the turtle. It can still draw, but it isn't shown.
            </p>
@@ -125,7 +110,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           showturtle() | st()
+           showturtle() | showTurtle() | st()
            <p>
              Show the turtle.
            </p>
@@ -163,7 +148,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           goto(<em>x</em>,<em>y</em>) | setposition(<em>x</em>,<em>y</em>) | setpos(<em>x</em>,<em>y</em>)
+           goto(<em>x</em>,<em>y</em>) | setposition(<em>x</em>,<em>y</em>) | setPosition(<em>x</em>,<em>y</em>) | setpos(<em>x</em>,<em>y</em>) | setPos(<em>x</em>,<em>y</em>)
            <p>
              Move the turtle to the coordinates <em>x</em> pixels to the
              right of the center of the drawing area (or <em>-x</em> pixels to the
@@ -175,7 +160,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           setx(<em>x</em>)
+           setx(<em>x</em>) | setX(<em>x</em>)
            <p>
              Move the turtle horizontally to the coordinates <em>x</em> pixels to the
              right of the center of the drawing area (or <em>-x</em> pixels to the
@@ -186,7 +171,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           sety(<em>y</em>)
+           sety(<em>y</em>) | setY(<em>y</em>)
            <p>
              Move the turtle vertically to the coordinates <em>y</em> pixels above
              the center of the drawing area (or <em>-y</em> to below the center).
@@ -209,7 +194,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           width(<em>width</em>) | pensize(<em>width</em>) | penwidth(<em>width</em>) | 
+           width(<em>width</em>) | pensize(<em>width</em>) | penSize(<em>width</em>) | penwidth(<em>width</em>) | penWidth(<em>width</em>) | 
            <p>
              Change the <em>width</em> of the turtle pen (in pixels).
            </p>
@@ -287,7 +272,25 @@ also roll in the tutorial stuff
                </li>
              </ul> 
            <p>
+             Example: <code>color(1)</code>
+           </p>
+           <p>
              Example: <code>color("red")</code>
+           </p>
+           <p>
+             Example: <code>color("#ff0000")</code>
+           </p>
+           <p>
+             Example: <code>color("rbg(255,0,0)")</code>
+           </p>
+           <p>
+             Example: <code>color("rbg(255,0,0, .5)")</code>
+           </p>
+           <p>
+             Example: <code>color("hsl( 0, 100, 100")</code>
+           </p>
+           <p>
+             Example: <code>color("hsl( 0, 100, 100, .4")</code>
            </p>
          </li>
          <li>
@@ -303,7 +306,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           setfont(<em>fontName</em>)
+           setfont(<em>fontName</em>) | setFont(<em>fontName</em>)
            <p>
              Set the characteristics (<em>style</em>, <em>variant</em>, <em>weight</em>,
              <em>size</em>, and <em>font-family</em> desired for the font for subsequent writes.
@@ -313,7 +316,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           curveright (<em>radius</em>[,<em>extent</em>])
+           curveright (<em>radius</em>[,<em>extent</em>]) | curveRight (<em>radius</em>[,<em>extent</em>])
            <p>
              Draw a circular curve from the turtle's postion. The
              center of the curve is to the right of the turtle at a perpendicular
@@ -321,14 +324,14 @@ also roll in the tutorial stuff
              <em>extent</em> is provided to limit the number of degrees of arc.
            </p>
            <p>
-             Example: <code>curveright(30)</code>
+             Example: <code>curveRight(30)</code>
            </p>
            <p>
-             Example: <code>curveright(10,45)</code>
+             Example: <code>curveRight(10,45)</code>
            </p>
          </li>
          <li>
-           curveleft (<em>radius</em>[,<em>extent</em>])
+           curveleft (<em>radius</em>[,<em>extent</em>]) | curveLeft (<em>radius</em>[,<em>extent</em>])
            <p>
              Draw a circular curve from the turtle's postion. The
              center of the curve is to the left of the turtle at a perpendicular
@@ -336,10 +339,10 @@ also roll in the tutorial stuff
              <em>extent</em> is provided to limit the number of degrees of arc.
            </p>
            <p>
-             Example: <code>curveleft(20)</code>
+             Example: <code>curveLeft(20)</code>
            </p>
            <p>
-             Example: <code>curveleft(10,45)</code>
+             Example: <code>curveLeft(10,45)</code>
            </p>
          </li>
          <li>
@@ -377,7 +380,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           beginShape()
+           beginshape() | beginShape()
            <p>
               Marks the begining of a shape to be filled. The shape consists of a
               set of line segments (forward, backward, right, left, curveright, curveleft).
@@ -494,7 +497,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           n = minX()
+           n = minx() | n = minX()
            <p>
              Return the minimum value of x in pixels
            </p>
@@ -503,7 +506,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           n = maxX()
+           n = maxx() | n = maxX()
            <p>
              Return the maximum value of x in pixels
            </p>
@@ -512,7 +515,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           n = minY()
+           n = miny() | n = minY()
            <p>
              Return the minimum value of Y in pixels
            </p>
@@ -521,7 +524,7 @@ also roll in the tutorial stuff
            </p>
          </li>
          <li>
-           n = maxY()
+           n = maxy() | n = maxY()
            <p>
              Return the maximum value of Y in pixels
            </p>
@@ -541,11 +544,13 @@ also roll in the tutorial stuff
            <p>
            Parameters are <em>italicized</em> included within parentheses '(' and ')' characters.
            Optional parameters and separating
-           commas are enclosed withing square bracket '[' and ']' characters.
+           commas are enclosed withing square bracket '[' and ']' characters
+           (the square brackets should not be entered).
            </p>
            <p>
            Alternative forms of
-           the functions are separated with the pipe '|' character. 
+           the functions are separated with the pipe '|' character (e.g.,
+           cat()|dog() means cat() or dog()). 
            </p>
            <p>
             Examples are shown in <code>bold typewriter font</code>. Each example may be clicked
@@ -594,8 +599,8 @@ also roll in the tutorial stuff
          </span>
          <button id="runButton">Run Demo</button>
          <span class='help_text' id='runButton_help_text'>
-           <p>
-           The <strong>Run Demo</strong> button runs the function in the <strong>definitions</strong> area named 
+           <p
+           The <strong>Run Demo</strong> button runs the function in the <strong>Code</strong> area named 
            demo().
            </p>
          </span>
@@ -605,13 +610,34 @@ also roll in the tutorial stuff
            The <strong>Stop</strong> button stops animation.
            </p>
          </span>
+         <a id="saveCanvasButton">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         viewBox="0 0 333.668 333.668" style="enable-background:new 0 0 333.668 333.668;" xml:space="preserve">
+<g>
+        <path d="M295.101,298.649H38.561C17.295,298.649,0,281.354,0,260.088V103.703c0-21.266,17.295-38.561,38.561-38.561h52.347
+                l4.582-15.457c1.87-8.458,9.602-14.666,18.696-14.666h105.297c8.837,0,16.658,6.176,18.728,14.743l0.122,0.527l4.177,14.852h52.597
+                c21.266,0,38.561,17.295,38.561,38.561v156.384C333.662,281.354,316.361,298.649,295.101,298.649z M38.561,77.996
+                c-14.178,0-25.707,11.53-25.707,25.707v156.384c0,14.178,11.53,25.707,25.707,25.707h256.54c14.178,0,25.707-11.53,25.707-25.707
+                V103.703c0-14.178-11.53-25.707-25.707-25.707h-62.327l-7.037-25.097c-0.649-2.918-3.278-5.032-6.26-5.032H114.179
+                c-3.027,0-5.598,2.069-6.26,5.039l-7.429,25.09H38.561z M166.841,259.798c-44.981,0-81.576-36.588-81.576-81.563
+                c0-44.981,36.594-81.569,81.576-81.569c44.969,0,81.557,36.594,81.557,81.569C248.397,223.204,211.809,259.798,166.841,259.798z
+                 M166.841,109.513c-37.893,0-68.722,30.823-68.722,68.716s30.83,68.709,68.722,68.709c37.886,0,68.703-30.823,68.703-68.709
+                C235.543,140.336,204.72,109.513,166.841,109.513z M286.804,101.852c-6.555,0-11.858,5.315-11.858,11.858
+                c0,6.549,5.302,11.857,11.858,11.857c6.549,0,11.851-5.309,11.851-11.857C298.649,107.167,293.346,101.852,286.804,101.852z"/>
+</svg>
+        </a>
+         <span class='help_text' id='saveCanvasButton_help_text'>
+           <p>
+           The <strong>Save Canvas</strong> button takes a snap shot of the canvas and saves in the browser download file with the name TurtleGraphic.png.
+           </p>
+         </span>
         </div> <!-- commandwrapper -->
       </div> <!-- midcolumn -->
       </div> <!-- midcolumncontainer -->
       <div id="rightcolumncontainer">
       <div id="rightcolumn">
       <div id="examplewrapper">
-        <label id="examplesLabel" for=#examples>Code Area</label>
+	<h4>Code Area
         <!-- need to change name Examples to Code Area -->
         <!-- The select options are populated with a tool, DO NOT EDIT. -->
         <select id=examples>
@@ -708,7 +734,8 @@ also roll in the tutorial stuff
           The example can be run with the <strong>Run Demo</strong> button.
           </p>
         </span>
-      <textarea id="definitions">
+      </h4>
+      <textarea id="codeArea">
 /* Define helper functions here
 or write your own functions
 
@@ -731,10 +758,11 @@ function demo() {
     s = s - 10;
   }
 }
-         </textarea> <!-- definitions -->
-         <span class='left_help_text' id='definitions_help_text'>
+         </textarea> <!-- codeArea -->
+         <span class='left_help_text' id='codeArea_help_text'>
            <p>
-           The code area is for the entry of multi-line programs and examples.
+           The code area is for the entry of multi-line programs, helper
+           functions and examples.
            </p>
            <p>
            The code can be examined or modified as desired.
@@ -742,17 +770,59 @@ function demo() {
            <p>
            Individual functions may be executed by typing their name and
            partheses into the
-           <strong>Command</strong> line (for example: <code>demo()</code>) and pressing ENTER.
+           <strong>Command</strong> line (for example: <code>demo()</code>) and pressing ENTER or RETURN.
            </p>
         </span>
-      <div id=filenamewrapper> <!-- filenamewrapper -->
-              <label for="file-input">Upload</label>
-	      <input type="file" id="file-input" accept=".txt, .js" value="Upload" />
-         <span class='left_help_text' id='file-input_help_text'>
+      <div id=codeButtons> <!-- codebuttons -->
+        <input type="file" id="uploadFile" accept=".js,.txt"/>
+        <button id="uploadButton">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 60.903 60.903" style="enable-background:new 0 0 60.903 60.903;" xml:space="preserve">
+<g>
+	<path d="M49.561,16.464H39.45v6h10.111c3.008,0,5.341,1.535,5.341,2.857v26.607c0,1.321-2.333,2.858-5.341,2.858H11.34
+		c-3.007,0-5.34-1.537-5.34-2.858V25.324c0-1.322,2.333-2.858,5.34-2.858h10.11v-6H11.34C4.981,16.466,0,20.357,0,25.324v26.605
+		c0,4.968,4.981,8.857,11.34,8.857h38.223c6.357,0,11.34-3.891,11.34-8.857V25.324C60.902,20.355,55.921,16.464,49.561,16.464z"/>
+	<path d="M39.529,29.004c-0.768,0-1.535,0.294-2.121,0.88l-3.756,3.755V20.612v-6V3.117c0-1.656-1.343-3-3-3s-3,1.344-3,3v11.494v6
+		v13.23l-3.959-3.958c-0.586-0.586-1.354-0.88-2.121-0.88s-1.535,0.294-2.121,0.88c-1.172,1.17-1.172,3.07,0,4.241l8.957,8.957
+		c0.586,0.586,1.354,0.877,2.12,0.877c0.008,0,0.016,0,0.023,0s0.015,0,0.022,0c0.768,0,1.534-0.291,2.12-0.877l8.957-8.957
+		c1.172-1.171,1.172-3.071,0-4.241C41.064,29.298,40.298,29.004,39.529,29.004z"/>
+</svg>
+        </button>
+         <span class='left_help_text' id='uploadButton_help_text'>
            <p>
-           The <strong>Load</strong> button loads a named file into the code area. The file name is relative to the TurtleGraphics.html web root directory.
+           The <strong>Upload</strong> button opens a dialog to select a file
+           to load into the code text area.
            </p>
          </span>
+        <button id="downloadButton">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 67.671 67.671" style="enable-background:new 0 0 67.671 67.671;" xml:space="preserve">
+<g>
+	<path d="M52.946,23.348H42.834v6h10.112c3.007,0,5.34,1.536,5.34,2.858v26.606c0,1.322-2.333,2.858-5.34,2.858H14.724
+		c-3.007,0-5.34-1.536-5.34-2.858V32.207c0-1.322,2.333-2.858,5.34-2.858h10.11v-6h-10.11c-6.359,0-11.34,3.891-11.34,8.858v26.606
+		c0,4.968,4.981,8.858,11.34,8.858h38.223c6.358,0,11.34-3.891,11.34-8.858V32.207C64.286,27.239,59.305,23.348,52.946,23.348z"/>
+	<path d="M24.957,14.955c0.768,0,1.535-0.293,2.121-0.879l3.756-3.756v13.028v6v11.494c0,1.657,1.343,3,3,3s3-1.343,3-3V29.348v-6
+		V10.117l3.959,3.959c0.586,0.586,1.354,0.879,2.121,0.879s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242l-8.957-8.957
+		C35.492,0.291,34.725,0,33.958,0c-0.008,0-0.015,0-0.023,0s-0.015,0-0.023,0c-0.767,0-1.534,0.291-2.12,0.877l-8.957,8.957
+		c-1.172,1.171-1.172,3.071,0,4.242C23.422,14.662,24.189,14.955,24.957,14.955z"/>
+</g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+</svg>
+        </button>
+         <span class='left_help_text' id='downloadButton_help_text'>
+           <p>
+           The <strong>Download</strong> button downloads the code text
+           area to the directory designated for downloads by the browser.
+           </p>
+         </span>
+        <input type="text" id="downloadFilename" placeholder="TurtleGraphic" />.js
+         <span class='left_help_text' id='downloadFilename_help_text'>
+           <p>
+           The <strong>Download Filename</strong> text area holds the filename
+           used when downloading the code text area to the download directory.
+           </p>
+         </span>
+
+<!--
          <button id="saveButton">Download</button>
          <span class='left_help_text' id='saveButton_help_text'>
            <p>
@@ -765,16 +835,14 @@ function demo() {
               The <strong>Save</strong> text area accepts the name of a JavaScript file name to be saved.
            </p>
          </span>
+-->
          <button id="clearButton">Clear</button>
          <span class='left_help_text' id='clearButton_help_text'>
            <p>
-           The <strong>Clear</strong> button clears the definitions text area to allow entry of new programs.
+           The <strong>Clear</strong> button clears the code text area to allow entry of new programs.
            </p>
          </span>
-        </div> <!-- filenamewrapper -->
-	
-<!--
--->
+        </div> <!-- codebuttons -->
       </div> <!-- examplewrapper -->
       </div> <!-- rightcolumn -->
       </div> <!-- rightcolumncontainer -->
@@ -782,460 +850,11 @@ function demo() {
    </div> <!-- wrap-->
 
 
-  <div id="menu" class="closed">
-    <ul>
-      <li id=viewReferenceItem class=checked>
-        <a href="#" id="viewReference">View Language Reference</a>
-      </li>
-      <li id=viewDefinitionsItem class=checked>
-        <a href="#" id="viewDefinitions">View Examples and Definitions</a>
-      </li>
-      <li id=viewHelpTextItem class=checked>
-        <a href="#" id="viewHelpText">Enable Pop-up Help Text</a>
-      </li>
-      <li>
-        <a href="#basic grammar" id="basicGrammarMenu">Basic Javascript Grammar</a>         
-      </li>
-      <li>
-        <a href="#basic javascript concepts" id="basicConceptsMenu">Basic Javascript Concepts</a>
-      </li>
-      <li>
-        <a href="#advanced javascript concepts" id="advancedConceptsMenu">Advanced Javascript Concepts</a>
-      </li>
-      <li>
-        <a href="#animation" id="animationMenu">Animation</a>
-      </li>
-      <li>
-        <a href="#under the hood" id="underHoodMenu">Under the Hood</a>
-      </li>
-      <li>
-        <a href="#about this page" id="aboutMenu">About This Page</a>
-      </li>
-    </ul>
-  </div> <!-- end of menu -->
-  <div id="tutorial" class="closed">
-    <button id="tutorialClose">
-      <svg class="fi" viewBox="0 0 64 64">
-        <line x1="2" y1="2" x2="62" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
-        <line x1="62" y1="2" x2="2" y2="62" style="stroke:rgb(0,0,0);stroke-width:8" />
-      </svg>
-    </button>
-    <div>
-   <h2 id="basic grammar">Basic Javascript Grammar</h2>
-     <p>
-        While a better and more complete guide to the Javascript grammar can be found elsewhere in books or on the Internet,
-        this is a brief guide to help get you started.
-     </p>
-     <h3>Statements</h3>
-       <p>
-         Usually there is one Javascript statement per line, but you can put more on a line as long as
-         each statement is separated with a semicolon ';'. Some programmers like to end each statement with a semi-colon
-         anyway. Some statements may span more than one line, especially complex assignment statements.
-       </p>
-      <code>
-a = 1;
-a = 1 // statement without the ending semicolon
-a = 1; b = 2
-a = 1 // could be the end or not depending on what follows
-  + 1  // appended to preceding line
-  + 1 // appended to the preceding lines
-  + 2; // appended to the preceding lines, so a = 5
-       </code>
-       <p>
-         Many of Javascript's constructs come in pairs. Strings are enclosed in pair of single quotes (apostrophes) or a pair
-         of double quotes. A single quote may appear in a string set off with double quotes and a double quote may appear in a string
-         set of with single quotes. An opening parentheses, square bracket, or squiggle bracket (brace), must be matched with the closing
-         parentheses, square bracket or squiggle bracket.
-       </p>
-     <h3>Comments</h3>
-       <p>
-         A comment is a note left by the developer to others, including the developer, about some
-         aspect of the code to make it easier to understand. Comments are not executed by the Javascript interpreter.
-         Javascript has two kinds of comments. A single line comment starts with a double slash '//' and
-         runs to the end of the current line. The line may contain other Javascript before the double slash.
-         A multi-line comment is fenced in by a slash-star '/*' start sequence and ends in a '*/' sequence. This comment
-         may cover several lines or it may be within the Javascript code of a single line.
-       </p>
-       <code>
-/*
-a multi-line comment
-that spans more than
-one line
-*/
-//a simple single line comment
-a = 1; // a single line comment at the end of a line
-a /* an embedded multi-line comment */ = 1;
-/* multi-line comments /* cannot be nested */ syntax error */
-       </code>
-     <h3 id=variables>Variables</h3>
-       <p>
-         Variables are used to store a value for later use. Sometimes this may be a fairly long time and sometimes it may be
-         vary short time. Variables do not have a single particular type. So the same variable may be assigned a number, such as 1,
-         in one instance and be assigned a string like "Javascript" at some other time. It is up to the programmer to keep track
-         of the type of a variable.
-       </p>
-       <code>
-a = 1;   // assign the value / assign the value of the integer '1' to the variable 'a'.
-a = 1.0;   // assign the value of the floating point number ' 1.0' to the variable 'a'.
-a = "red rutabaga"; // assign the string "red rutabaga" to the variable 'a'.
-a = true; // assign boolean value of true to the variable 'a'.
-       </code>
-       <p>
-         Javascript allows for a wide variety of types beyond simple integers and strings. It allows floating point numbers, Boolean
-         (true or false) values, ordered lists, and objectnctions for later use. This allows the same code to be used over and over.
-         Some functions may be return a value, others do ns. You can find out more about these in other places.
-       </p>
-     <h3 id=functions>Functions</h3>
-       <p>
-         Javascript allows the programmer to define blocks of code that can be used over and over. These blocks are called
-         <em>functions</em>. Some functions may take parameters as inputs, others do not. It is
-         up to the programmer to decide what the function will do, whether it takes parameters and whether it returns a result. A
-         function may be called a procedure, a subroutine, or other names. These names are generally talking about the same thing
-         that Javascript calls a function. A function is "invoked" in a statement by using its name followed by a opening and closing
-         parentheses '(' and ')'. There may be parameters between the parentheses.
-       </p>
-       <p>
-         A simple example could be a function that draws a shape (like a square or other figure) on the canvas. The turtle is moved to where the
-         shape is required and the function is invoked.
-       </p>
-       <code>
-function square () {
-  forward (100);
-  right (90);
-  forward (100);
-  right (90);
-  forward (100);
-  right (90);
-  forward (100);
-  right (90);
-}
-       </code>
-       <p>
-         Good functions have no side effects. So a function that draws a shape should leave the turtle in the same position as it
-         was when the function was called and pointing in the same direction. Of course there are exceptions like a function that draws
-         a fancy corner. The point is, the function should be predictable and not have a side effect which would manifest itself as a
-         nasty bug down the road.
-       </p>
-     <h3>Functions with Parameters</h3>
-       <p>
-         A more powerful version of a function is a function that is called with one or more parameters. A parameter may be a size of a
-         shape. It may be the input of a mathmatical function, say one that takes a number as its input and returns the value of the
-         square of the input (the value of the input times itself). There is no limit to the number of paramters that a function can
-         use, but it is usually wise to keep the number down to the minimum reguired for the function.
-       </p>
-       <code>
-function square (size) {
-  forward (size);
-  right (90);
-  forward (size);
-  right (90);
-  forward (size);
-  right (90);
-  forward (size);
-  right (90);
-}
-       </code>
-   <h2 id="basic javascript concepts">Basic Javascript Concepts</h2>
-     <h3 id=scope>Scoping</h3>
-       <p>
-         Let's say you want to use the variable 'i' as within an iteration as is common practice. There could be trouble if there is
-         a variable named 'i' elsewhere in the program. To solve this problem generally languages, like Javascript, provide rules
-         of scoping to limit the reach of a particular variable. In general a variable may be used within the context in which it is
-         defined. A variable declared with 'var' within a function is only accessed within that function, even if there is another
-         variable named 'i' in the code invoking that function. The 'var' declaration is important, as it states, this variable is
-         defined here and connot be accessed out side of this scope. A function defines a scope basically as the code between the opening
-         and closing curley brackets '{' and '}'. A variable that is defined at the same level of the function is called a "global"
-         variable, in that it CAN be accessed from any function that does not include a locally defined variable of the same name.
-         When a variable is used in a function without being defined with the 'var', it is assumed to be a global external to the
-         function.
-       </p>
-       <code>
-var angle = 90; // this is global
-var size = 10; // this is global
-          
-function square (size /* parameters are automatially local variables) {
-  forward (size); // size references the local parameter size
-  right (angle);  // angle references the global variable angle
-  forward (size);
-  right (angle);
-  forward (size);
-  right (angle);
-  forward (size);
-  right (angle);
-}
-          
-square (100); // draws a square of size 100 pixels
-       </code>
-       <p>
-         Of course functions may be defined within the scope of a function. The "inner" functions can only be used by other inner functions
-         or the outer function. It cannot be used by the code external to the outer function. Likewise variables can be declared
-         within functions to limit their scope of usage.
-       </p>
-     <h3>Iteration</h3>
-       <p>
-         Computer science calls the process of doing things over and over, iteration. Turtle graphics give you only one way to
-         do iteration with the <strong>repeat(<em>count</em>, <em>function</em>)</strong> statement. This lets you do things a
-         set number of times.
-       </p>
-       <code>
-function square (size) {
-  repeat (4, function () {
-    forward (size);
-    right (90);
-  })
-}
-       </code>
-       <p>
-         Sometimes you want the repetition to continue until some other criteria
-         is met. Below is an example of a spiral that will expand until it moves
-         off of the canvas. This example also shows a variable that is increased
-         in value for each loop to make the length of the sides increase.
-       </p>
-       <code>
-function spiral () {
-  wrap(false);
-  var i = 1;
-  while ( turtle.pos.x < maxX()
-          && turtle.pos.x > minX()
-          && turtle.pos.y < maxY()
-          && turtle.pos.y > minY()) {
-    forward (i + i);
-    right (90 - i);
-    i = i + 1;
-  }
-}
-       </code>
-       <p>
-         Javascript has another way of doing interation loops. It has the
-         <em>for</em> construct. This has three distinct sub-statements:
-         an initializer, while test, and iterator. The initializer is used to
-         initialize the value of the iteration variable. This variable is
-         commonly 'i', but any valid variable name can be used. The second part,
-         the while test is an expression that is evaluated before every loop and
-         must evaluate to <em>true</em> for the loop to executed. The third and
-         last part is the iterator where something is done to change the looping
-         variable at the bottom of the loop. Most of the time the parts are
-         fairly simple as in the following:
-       </p>
-       <code>
-function square() {
-  for (i=0; i<4; i=i+1) {
-    forward(20);
-    right(90);
-  }
-}
-       </code>
-     <h3>Conditionals</h3>
-     <p>
-       Conditionals are code that is executed when some condition is true or false.
-       Conditionals start with an <em>if</em> keyword followed by an expression
-       contained in parentheses which
-       evaluates to true or false. This is followed by a single statement or a block
-       of statements surrounded by curley brackets. Many programmers always use the
-       curley brackets to make their code more consistant.
-       The <em>if</em> statement can be followed immediately by an <em>else</em> keyword
-       followed with a single statement or a block of statements surrounded by curley
-       brackets.
-     </p>
-     <code>
-function square() {
-  for (i=0; i<4; i=i+1) {
-    if (i % 2 == 0) { //i is even
-      color (blue);
-      width (4);
-    } else {
-      color (black);
-      width (.5);
-    }
-    forward(50);
-    right(90);
-  }
-}
-     </code>
-     <p>
-       Note: most programmers use the short cut "i++" instead of "i=1+i". The long
-       form is used here just to make the program easier to understand.
-     </p>
-   <h2 id="advanced javascript concepts">Advanced Javascript Concepts</h2>
-     <h3>Recursion</h3>
-       <p>
-         Recursion is special way to to something over and over again. It is similar
-         to iteration in that regard. The main difference is that iteration is a loop
-         within a single routine that is executed over and over. Recursion is a function
-         that calls itself until some criteria is met.
-         Some problems are eaiser to solve with iteration and some are easier to solve
-         with recursion.
-       </p>
-       <p>
-         Consider a line of a given length. Divide that line into thirds. Where the middle
-         third is, draw an equillateral triangle (a triangle with all three sides the same
-         length and the corner angles are also the same, 60 degrees). Erase the middle
-         segment, leaving four segments each of the same length. Repeat the process for
-         the remaining four segments and so on until the segment length is 2 pixels. The
-         following code does just that.
-       </p>
-       <code>
-function kochForward (length) {
-  if (length <= 20) {
-    forward (length);
-  } else {
-    kochForward (length/3);
-    left(60);
-    kochForward (length/3);
-    right(120);
-    kochForward (length/3);
-    left(60);
-    kochForward (length/3);
-  }
-}
-
-setpos(minX() + 20, minY() + 20); // go toward bottom left of canvas
-angle(90);
-kochForward(maxX() + maxX() - 40); // draw a Koch line most of the width of the canvas
-       </code>
-       <p>
-         Hint: you can change the value in the conditional (the 20) to other values
-         to show more or less detail. The Koch line is the basis for the Koch
-         Snowflake that uses three Koch lines.
-       </p>
-       <p>
-         There are several more comples examples of recursion here. The Koch Snowflakes, the Sierpinski
-         Curve and the Symmetrical Tree. 
-       </p>
-   <h2 id=animation>Animation</h2>
-     <p>
-       Animation is the process to bring a drawing to life. The two main ways to do
-       animation is to either incrementally add to a more and more complex drawing
-       or to completely redraw the figure. The human eye will blend motion between
-       two different drawings that are presented about 30 times a second (or 1/30 of
-       a second per frame also called .033 seconds or 33 milliseconds per frame).
-       Making changes too quickly will be invisable to the human eye and changes made
-       too slowly will be jerky.
-     </p>
-     <p>
-       This turtle graphics provide two functions for animation:
-       <em>animate</em> and <em>delay</em> that
-       are discussed more thoroughly below.
-     </p>
-     <h3>Animate</h3>
-       <p>
-         The <em>animate</em> function is used to call a function over and over at
-         a fixed period of time. The clock is an example that uses the animate function
-         to redraw the clock and its hands every second.
-       </p>
-     <h3>Delay</h3>
-       <p>
-         The <em>delay</em> function is used to call a function once after a period of
-         time. For an animation there can be a series of functions that are invoked in a
-         time sequence to provide the animation.
-       </p>
-       <p>
-         The <em>Dividing a Circle</em> example uses the
-         <em>delay</em> function to draw a set of circles around a preceding set of circles.
-         This example is rather clumsy and can be improved in that a function is written
-         for each level.
-       </p>
-       <p>
-         The <em>Koch Snowflake</em> example uses the
-         <em>delay</em> function to draw a set of circles around a preceding set of circles.
-         This example shows the power of using both the delay function to draw a snowflake
-         of a particular order and recursion to build the snowflake of any order.
-       </p>
-   <h2 id="under the hood">Under the Hood</h2>
-     <h3>Source Code</h3>
-       <p>
-         More can be learned by looking at the source code that implements the
-         turtle graphic functions. While the functions are designed to hide the
-         details of the mathematics (trigonometry) that are necessary to plot a
-         line of a given angle and length on a canvas that only understands the
-         x and y coordinates of a cartesian coordinate system.
-       </p>
-       <p>
-       The source code for this page can be found in several ways.
-       </p>
-         <ul>
-           <li>
-             Firefox: select the menu <strong>Tools>Web Developer>Page Source</strong>.
-           </li>
-           <li>
-             Chrome: select the menu <strong>View>Developer>View Source</strong>.
-           </li>
-           <li>
-             Safari: select the menu <strong>Develop>Show Page Source</strong>.
-           </li>
-         </ul>
-       <p>
-         To access all of the source code, documentation and development tools used go to
-         <a href="https://www.github.com/kirkcarlson/js-turtle">
-         https://github.com/kirkcarlson/js-turtle</a>.
-       </p>
-       <p>
-         Basically the following modules were used:
-       </p>
-       <ul>
-         <li>
-           <strong>turtle.html</strong> defines the layout and content of the page
-           as basic HTML. This page contains the text of the language reference, the
-           help text and this tutorial.
-         </li>
-         <li>
-           <strong>turtle.css</strong> defines the styling used to make the page
-           more readable as a Cascading Style Sheet (CSS). CSS allows the artistic
-           design of the page to be separated from the functional underpinnings of
-           the page.
-         </li>
-         <li>
-           <strong>turtle.js</strong> defines the the basic turtle graphics
-           functions for Javascript. In theory this module could be included
-           in other programs which use turtle graphics.
-         </li>
-         <li>
-           <strong>turtle_console.js</strong> defines the behind the scenes
-           mechanisms to make this page work as a code development laboratory. It
-           has the functions to pop up this tutorial and functions to hide and show
-           the language reference and definitions sections of the work area.
-           It also allows commands and definitions to be entered and executed.
-         </li>
-         <li>
-           <strong>examples.js</strong> is a tool generated file that contains one string
-           for each example. The examples may be directly viewed on the web page.
-           The tools and the examples may also be viewed directly on on github at
-           <a href="https://www.github.com/kirkcarlson/js.turtle">
-          https://www.github.com/kirkcarlson/js.turtle</a>.
-         </li>
-       </ul>
-   <h2 id="about this page">About This Page</h2>
-     <h3>History of Turtle Graphics</h3>
-       <p>
-         Turtle graphics were orignally developed as part of the Logo language developed
-         in 1967 at Bolt, Beranek and Newman (BBN), a Cambridge,
-         Massachusetts research firm, by Wally Feurzeig and Seymour Papert.
-         There have been several attempts to commercialize
-         turtle graphics for small children including the Terripin Turtle and Apple
-         Logo Graphics using an Apple ][ computer. Most of the implementations
-         of Turtle Graphics did not include a full implementation of the Logo language.
-       </p>
-     <h3>History of This Page</h3>
-       <p>
-         This project was forked from bjpop/js-turtle. This project had the basic turtle
-         functions, the **animate** function, the immediate execution of the **command**
-         line, and the editable **definitions** area. This was the substantial portion of
-         this project, and overall had brilliant ideas.
-       </p>
-       <p>
-         Kirk Carlson added some turtle functions and added enhancements to make
-         the project more of a code developent platform. It is hoped that this
-         project can help young programmers move from code.org and Scratch projects
-         to Javascript projects.
-       </p>
-    </div>
-  </div> <!-- end of tutorial -->
-
 <!-- scripts -->
    <script type="text/javascript" src="examples.js"></script>
    <script type="text/javascript" src="turtle.js"></script>
    <script type="text/javascript" src="turtleConsole.js"></script>
    <script type="text/javascript" src="FileSaver.min.js"></script>
-  
+   <script src="he.js"></script>
 </body>
 </html>

@@ -54,12 +54,32 @@ var turtleContext = turtleCanvas.getContext("2d");
 // the turtle takes precedence when compositing
 turtleContext.globalCompositeOperation = "destination-over";
 
-// initialize the state of the turtle
-var turtle = undefined;
 
 
 //////RENDERING FUNCTIONS
 
+
+function Pos (x,y) {
+  this.x = x
+  this.y = y
+}
+
+function Turtle () {
+  this.pos = new Pos(0,0)
+  this.angle = 0
+  this.penDown = true
+  this.width = 1
+  this.visible = true // controls turtle visibility
+  this.redraw = true //  controls redrawing turtle every move
+  this.shape = false //  controls inclusion of segments from a filled shape
+  this.wrap = true //    controls wraping at the edge
+  this.font = "10pt normal Helvetica, sans-serif"
+  this.color = "black"
+};
+
+// initialize the state of the turtle
+var turtle = new Turtle();
+console.log("Tangle:" + turtle.angle + "Tfont: "+ turtle.font )
 
 /*******************************************************************************
  * initialize -- initialize the turtle graphics system
@@ -69,6 +89,18 @@ var turtle = undefined;
  * returns: None
  ******************************************************************************/
 function initialize() {
+  turtle.pos.x = 0
+  turtle.pos.y = 0
+  turtle.angle = 0
+  turtle.penDown = true
+  turtle.width = 1
+  turtle.visible = true
+  turtle.redraw = true
+  turtle.shape = false
+  turtle.wrap = true
+  turtle.font = "10pt normal Helvetica, sans-serif"
+  turtle.color = "black"
+/*
    turtle = { pos: {
                  x: 0,
                  y: 0
@@ -80,11 +112,15 @@ function initialize() {
               redraw: true, //  controls redrawing turtle every move
               shape: false, //  controls inclusion of segments from a filled shape
               wrap: true, //    controls wraping at the edge
+              font: "10pt normal Helvetica, sans-serif",
               color: "black"
             };
-   imageContext.lineWidth = turtle.width;
-   imageContext.strokeStyle = "black";
-   imageContext.globalAlpha = 1;
+*/
+  //turtle = Turtle();
+  imageContext.font = turtle.font;
+  imageContext.lineWidth = turtle.width;
+  imageContext.strokeStyle = turtle.color;
+  imageContext.globalAlpha = 1;
 }
 
 
@@ -234,8 +270,7 @@ function stopAnimation() {
   while (timeouts.length > 0) {
     clearTimeout(timeouts.pop());
   }
-  //should trap error is stopButton is not defined
-  document.getElementById("stopButton").hidden=true;
+  document.getElementById("stopButton").hidden = true;
 }
 
 
@@ -254,7 +289,7 @@ function redrawOnMove(bool) {
 
 
 /*******************************************************************************
- * warp -- set the desired state of the boundary wrapping function
+ * wrap -- set the desired state of the boundary wrapping function
  *
  * arguments:
  *   bool: desired state of boundary wrapping function
@@ -267,27 +302,29 @@ function wrap(bool) {
 
 
 /*******************************************************************************
- * beginShape -- mark the beginning of a filled shape
+ * beginshape -- mark the beginning of a filled shape
  *
  * arguments: None
  *
  * returns: None
  ******************************************************************************/
-function beginShape() {
+function beginshape() {
   turtle.shape = true;
   imageContext.beginPath();
 }
 
+beginShape = beginshape;
+
 
 /*******************************************************************************
- * fillShape -- fill shape
+ * fillshape -- fill shape
  *
  * arguments:
  *   styl: fill style (color, gradient, or pattern), defaulting to turtle color
  *
  * returns: None
  ******************************************************************************/
-function fillShape( styl) {
+function fillshape( styl) {
   if (turtle.shape) {
     if (styl == undefined) {
        styl = turtle.color;
@@ -315,6 +352,8 @@ function fillShape( styl) {
   }
   turtle.shape = false;
 }
+
+fillShape = fillshape;
 
 
 //////Movement Functions
@@ -508,7 +547,7 @@ function curveleft (radius, extent) {
   counterclockwise = !counterclockwise;
   startAngle = -startAngle;
   stopAngle = -stopAngle;
-	//write(startAngle + "  " + stopAngle + "  " + startAngle-degToRad(extent))
+
   imageContext.save();
   centerCoords(imageContext);
   imageContext.beginPath();
@@ -848,6 +887,8 @@ function repeat(n, action) {
    var count = 1;
    for (count = 1; count <= n; count += 1) {
       action();
+      if (errorFound)
+        break;
    }
 }
 
@@ -889,7 +930,6 @@ pause = sleep;
  *
  * returns: None
  ******************************************************************************/
-// set the width of the line
 function width(w) {
    turtle.width = w;
    imageContext.lineWidth = w;
@@ -946,6 +986,7 @@ colour = color;
  * returns: None
  ******************************************************************************/
 function setfont(font) {
+   turtle.font = font;
    imageContext.font = font;
 }
 
@@ -1031,10 +1072,13 @@ var timeouts = []; //array of time out IDs started with the delay function
  * returns: None
  ******************************************************************************/
 function animate(f, ms) {
-   intervals.push (setInterval(f, ms));
+   intervals.push (setInterval( function (){
+      f()
+      if (errorFound)
+        stop()
+   }, ms));
    document.getElementById("stopButton").hidden=false;
 }
-
 
 /*******************************************************************************
  * delay -- delay an action for ms milliseconds to animate drawing
@@ -1047,17 +1091,16 @@ function animate(f, ms) {
  ******************************************************************************/
 function delay(f, ms) {
    timeouts.push (setTimeout(function () {
-     timeouts.pop(); // pop the current timer
-     if (timeouts.length == 0) {
-       document.getElementById("stopButton").hidden=true;
-     }
-     f();
-   }, ms));
+       timeouts.pop(); // pop the current timer
+       if (timeouts.length == 0) {
+         document.getElementById("stopButton").hidden=true;
+       }
+       f();
+       if (errorFound)
+         stop()
+     }, ms));
    document.getElementById("stopButton").hidden=false;
 }
-
-
-
 
 
 ///////SUPPORT FUNCTIONS
@@ -1111,6 +1154,61 @@ function constrain(n, low, high) {
     n = n - modulo;
   }
   return n;
+}
+
+
+var turtleState = new Turtle();
+
+function saveTurtleState(tState) {
+  // tState is an object defining the state of a turtle
+  // turtle is an object defining the current state of the turtle
+  //what about the font
+  tState.pos.x = turtle.pos.x
+  tState.pos.y = turtle.pos.y
+  tState.angle = turtle.angle
+  tState.penDown = turtle.penDown
+  tState.width = turtle.width
+  tState.visible = turtle.visible
+  tState.redraw = turtle.redraw
+  tState.shape = turtle.shape
+  tState.wrap = turtle.wrap
+  tState.font = turtle.font
+  tState.color = turtle.color
+  console.log("sTS font: "+ tState.font + " color:" + tState.color)
+}
+
+
+function restoreTurtleState(tState) {
+  // tState is an object defining the state of a turtle
+  // turtle is an object defining the current state of the turtle
+  //what about the font
+  turtle.pos.x = tState.pos.x
+  turtle.pos.y = tState.pos.y
+  turtle.angle = tState.angle
+  turtle.penDown = tState.penDown
+  turtle.width = tState.width
+  turtle.visible = tState.visible
+  turtle.redraw = tState.redraw
+  turtle.shape = tState.shape
+  turtle.wrap = tState.wrap
+  turtle.font = tState.font
+  turtle.color = tState.color
+
+  imageContext.font = tState.font;
+  imageContext.lineWidth = tState.width;
+  imageContext.strokeStyle = tState.color;
+  console.log("rTS font: "+ turtle.font + " color:" + turtle.color)
+  console.log("rTS font: "+ imageContext.font + " color:" + imageContext.strokeStyle)
+}
+
+
+function logTurtle( where) {
+  // t is an object defining the state of a turtle
+  if (where === undefined) where = "???"
+  console.log (where + " x:" + turtle.pos.x + " y:" + turtle.pos.y + " angle:" + turtle.angle + " color:" + turtle.color)
+  console.log ("  penDown:" + turtle.penDown + " width:" + turtle.width + " visible:" + turtle.visible)
+  console.log ("  redraw:" + turtle.redraw + " shape:" + turtle.shape + " wrap:" + turtle.wrap)
+  console.log ("  font:" + turtle.font)
 }
 
 
