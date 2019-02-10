@@ -1,94 +1,135 @@
 all: turtle.html gifs
 
 
-# should separate the production of examples.js and modification of turtle.html
+# use the headers from index.html to update headers in other files
+# turtle.html does not have the header
+# overview.html is linked to index.html (the default file loaded)
+turtleHeaderDummy : about.html \
+                    animation.html \
+                    examples.html \
+                    guide.html \
+                    javascript.html \
+                    nerd.html \
+                    reference.html \
+                    tutorial.html
+	/bin/bash bin/syncHeader.sh $?;\
+	touch turtleHeaderDummy
 
+
+# see if links in files are OK
+linkTestDummy :  bin/checkLinks.sh \
+                 turtleHeaderDummy
+	/bin/bash bin/checkLinks.sh;\
+	touch linkTestDummy
+
+
+# update the example strings if any example has changed
 examples.js :   examples/*.js\
-                bin/makeJsStrings.sh
-	/bin/bash bin/makeJsStrings.sh examples
+                bin/buildJsStrings.sh
+	/bin/bash bin/buildJsStrings.sh examples
 
 
-turtle.html :   examples.js \
+# update the turtle.html if the examples strings has changed
+turtle.html :   linkTestDummy \
+                turtleHeaderDummy \
+                examples.js \
                 bin/modifyHTML.sh
 	/bin/bash bin/modifyHTML.sh examples
 
-makeJsStrings.sh :
-	echo "Changes to makeJsStrings.sh have now been applied"
+buildJsStrings.sh :
+	echo "Changes to buildJsStrings.sh have now been applied"
 
-#examples.js :
-#	echo "examples.js was edited by hand"
+# build the animated gif files
+gifs : images/color_changing_dots.gif \
+       images/conway_fractal_generation.gif \
+       images/conway_pinwheel_divide_generation.gif \
+       images/conway_pinwheel_expand_generation.gif \
+       images/dividing_a_circle.gif \
+       images/dragon_curve.gif \
+       images/fibanocci_sequence.gif \
+       images/gosper_curve_generation.gif \
+       images/hilbert_curve_generation.gif \
+       images/intersection_simulator.gif \
+       images/jumping_jack.gif \
+       images/koch_line.gif \
+       images/koch_snowflake.gif \
+       images/nested_squares.gif \
+       images/polygon.gif \
+       images/sierpinski_curve_order.gif \
+       images/sierpinski_triangle_order.gif \
+       images/star_burst.gif
 
-gifs : color_changing_dots.gif \
-               conway_fractal_generation.gif \
-               conway_pinwheel_divide_generation.gif \
-               conway_pinwheel_expand_generation.gif \
-               dividing_a_circle.gif \
-               dragon_curve.gif \
-               fibanocci_sequence.gif \
-               gosper_curve_generation.gif \
-               hilbert_curve_generation.gif \
-               intersection_simulator.gif \
-               jumping_jack.gif \
-               koch_line.gif \
-               koch_snowflake.gif \
-               nested_squares.gif \
-               polygon.gif \
-               sierpinski_curve_order.gif \
-               sierpinski_triangle_order.gif \
-               star_burst.gif
-
-# build the .gif files from series of .png files
-color_changing_dots.gif : image_series/color_changing_dots_*.png
+# build an individual .gif file from series of .png files
+# individual commands here allow for customizing the delay
+images/color_changing_dots.gif :\
+		image_series/color_changing_dots_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-conway_fractal_generation.gif : image_series/conway_fractal_generation_*.png
+images/conway_fractal_generation.gif :\
+		image_series/conway_fractal_generation_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort)  $@
 
-conway_pinwheel_divide_generation.gif : image_series/conway_pinwheel_divide_generation_*.png
+images/conway_pinwheel_divide_generation.gif :\
+		image_series/conway_pinwheel_divide_generation_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-conway_pinwheel_expand_generation.gif : image_series/conway_pinwheel_expand_generation_*.png
+images/conway_pinwheel_expand_generation.gif :\
+		image_series/conway_pinwheel_expand_generation_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-dividing_a_circle.gif : image_series/dividing_a_circle_*.png
+images/dividing_a_circle.gif :\
+		image_series/dividing_a_circle_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-dragon_curve.gif : image_series/dragon_curve_*.png
+images/dragon_curve.gif :\
+		image_series/dragon_curve_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-fibanocci_sequence.gif : image_series/fibanocci_sequence_*.png
+images/fibanocci_sequence.gif :\
+		image_series/fibanocci_sequence_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-gosper_curve_generation.gif : image_series/gosper_curve_generation_*.png
+images/gosper_curve_generation.gif :\
+		image_series/gosper_curve_generation_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-hilbert_curve_generation.gif : image_series/hilbert_curve_generation_*.png
+images/hilbert_curve_generation.gif :\
+		image_series/hilbert_curve_generation_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-intersection_simulator.gif : image_series/intersection_simulator_*.png
+images/intersection_simulator.gif :\
+		image_series/intersection_simulator_*.png
 	convert -delay 200 -loop 0 $(shell ls $^ | sort) $@
 
-jumping_jack.gif :  image_series/jumping_jack_*.png
+images/jumping_jack.gif : \
+		image_series/jumping_jack_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-koch_line.gif : image_series/koch_line_order_*.png
+images/koch_line.gif :\
+		image_series/koch_line_order_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-koch_snowflake.gif : image_series/koch_snowflake_*.png
+images/koch_snowflake.gif :\
+		image_series/koch_snowflake_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-nested_squares.gif : image_series/nested_squares_*.png
+images/nested_squares.gif :\
+		image_series/nested_squares_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-polygon.gif : image_series/polygon_*.png
+images/polygon.gif :\
+		image_series/polygon_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-sierpinski_curve_order.gif : image_series/sierpinski_curve_order_*.png
+images/sierpinski_curve_order.gif :\
+		image_series/sierpinski_curve_order_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-sierpinski_triangle_order.gif : image_series/sierpinski_triangle_order_*.png
+images/sierpinski_triangle_order.gif :\
+		image_series/sierpinski_triangle_order_*.png
 	convert -delay 100 -loop 0 $(shell ls $^ | sort) $@
 
-star_burst.gif : image_series/star_burst_*.png
+images/star_burst.gif :\
+		image_series/star_burst_*.png
 	convert -delay 300 -loop 0 $(shell ls $^ | sort) $@
 

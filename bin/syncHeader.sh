@@ -1,22 +1,9 @@
 #!/bin/bash
-files='
-  about.html 
-  animation.html 
-  examples.html 
-  guide.html 
-  javascript.html 
-  nerd.html 
-  overview.html 
-  reference.html 
-  tutorial.html'
-
-
-for file in $files
+for file in $*
 do
  echo $file
- # extract the header from overview
- sed -ne '/<header>/,/<\/header>/p' \
-     <overview.html >temp
+ # extract the header from index.html
+ sed -ne '/<header>/,/<\/header>/p' <index.html >temp
  # make the active link the current file
  sed -e '/ class="active"/s///' \
      -e "/href=\"${file}\"/s//class=\"active\" &/"\
