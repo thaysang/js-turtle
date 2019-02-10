@@ -3,8 +3,10 @@
 <head>
   <title>Polygon Animation</title>
 </head>
-<link type="text/css" rel="stylesheet" href="./turtleweb.css"/>
-<link href="https://fonts.googleapis.com/css?family=Poppins|Roboto" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./turtleweb.css"/>
+    <link type="text/css" rel="stylesheet" href="./tutorial.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Poppins|Roboto" rel="stylesheet">
+    <script src="tutorial.js"></script>
 <body>
 <header>
 <h1>JavaScript Turtle Graphics</h1>
@@ -70,7 +72,8 @@ In the tutorial you learned how to change the color and width of the stroke.
 We will review that and add a fill function to fill a shape with a color.
 To change the color of the turtle's pen use use the <code>color()</code>
 function with a color as in the following example:
-</p>function spikey (size, n, revs) {
+</p>
+<code class="tryme">function spikey (n, revs, size) {
   var i = 0
   while (i < n) {
     write (i)
@@ -80,17 +83,18 @@ function with a color as in the following example:
   }
 }
 
-<code>function demo() {
+function demo() {
   reset() // just clear the screen and home the turtle
   color("red")
   spikey(5, 2, 50)
 }
 </code>
+<p>
 To change the width of the pen stroke, we use the <code>width</code> function
 with the width expressed as a number of pixels. A <code>pixel</code> is the
 size of smallest piece of the display, a dot or maybe a period.
-<code>
-</p>function spikey (size, n, revs) {
+</p>
+<code class="tryme">function spikey (n, revs, size) {
   var i = 0
   while (i < n) {
     write (i)
@@ -121,7 +125,7 @@ the canvas.
 <p>
 So let's give it a try:
 </p>
-<code>function spikey (size, n, revs) {
+<code class="tryme">function spikey (n, revs, size) {
   var i = 0
   while (i < n) {
     write (i)
@@ -150,7 +154,7 @@ pen stroke and it overlaps about half
 of the stroke line. To make the width of the stroke as you intended
 it, you need to re-stroke the graphic to get it on top of the fill.
 </p>
-<code >function spikey (size, n, revs) {
+<code class="tryme">function spikey (n, revs, size) {
   var i = 0
   while (i < n) {
     write (i)
@@ -180,7 +184,7 @@ We don't have to always start at the center of the canvas. We can start
 anywhere on the canvas. We can use the basic turtle moves like
 the following code to move the figure:
 </p>
-<code>function spikey (size, n, revs) {
+<code class="tryme">function spikey (n, revs, size) {
   var i = 0
   while (i &lt; n) {
     write (i)
@@ -191,18 +195,19 @@ the following code to move the figure:
 }
 
 function demo() {
-  forward (200)
+  reset()
+  forward (100)
   right(90)
-  forward( 200)
+  forward( 100)
   left(90)
-  spikey( 5, 2, 20)
+  spikey( 5, 2, 40)
 }
 </code>
 <p>
 That leaves a line of where the turtle traveled. We can prevent the
 turtle from marking by having it lift the pen as in the following code.
 </p>
-<code>function spikey (size, n, revs) {
+<code class="tryme">function spikey (n, revs, size) {
   var i = 0
   while (i &lt; n) {
     write (i)
@@ -215,12 +220,13 @@ turtle from marking by having it lift the pen as in the following code.
 function demo() {
   reset()
   penup()
-  forward (200)
+  forward (100)
   right(90)
-  forward( 200)
+  forward( 100)
   left(90)
   pendown()
-  spikey( 5, 2, 20)
+  spikey( 5, 2, 40)
+}
 </code>
 <img src="./images/no_picture.png">
 <p>
@@ -271,13 +277,13 @@ The code for a spikey that uses a central point and a radius
 instead of a side to determine size in the following code.
 </p>
 <p>
- This also uses the
+This also uses the
 <code>goto()</code> function to move the turtle to an x, y position on the
 canvas Cartesian coordinate system. It also uses the
 <code>setheading()</code> function to orient the spikey. Although the
 spikey will be drawn with a point straight up, it could be set to any angle.
 </p>
-<code>function spikey ( points, revs, radius, x, y) {
+<code class="tryme">function spikey ( points, revs, radius, x, y) {
   penup()
   goto(x, y)
   setheading(0)
@@ -348,7 +354,7 @@ the individual attributes. When the function is invoked, one must use
 the object notation in the argument. So taking the familiar, by now,
 <code>spikey()</code> function and changing it for object notation:
 </p>
-<code>function spikey ( args ) {
+<code class="tryme">function spikey ( args ) {
   for( var i=0; i < args.points; i = i+1) { //>
     forward (args.side)
     right( 360*args.revs/args.points)
@@ -375,7 +381,7 @@ This function also know whether to re-stroke the spikey or not. This is a
 case where a simple conditional provides some functionality and saves
 the user of the function having to call it twice.
 </p>
-<code>function spikey ( args ) {
+<code class="tryme">function spikey ( args ) {
   goto( args.x, args.y)
   setheading( args.heading)
   forward( args.radius)
@@ -494,7 +500,7 @@ If the frames are played at the right speed the
 human eye blurs the frames together to form motion.
 Let's start with simply twisting a simple star.
 </p>
-<code>function spikey ( args ) {
+<code class="tryme">function spikey ( args ) {
   goto( args.x, args.y)
   setheading( args.heading)
   forward( args.radius)
@@ -518,12 +524,6 @@ Let's start with simply twisting a simple star.
 var twistAngle
 
 // FUNCTIONS
-function demo () {
-  reset()
-  hideTurtle()
-  twistAngle = 0
-  twistStar()
-}
 
 function twistStar() {
   reset()
@@ -544,7 +544,12 @@ function twistStar() {
 }
 
 
-
+function demo () {
+  reset()
+  hideTurtle()
+  twistAngle = 0
+  twistStar()
+}
 </code>
 <p>
 An improvement can be made to this code. The object defining
@@ -559,7 +564,7 @@ that is just a signal to the programmer that this is the beginning
 of a section.) The name "deltaRotation" is the way that an engineer or
 physisist would talk about change in rotation.
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 
 var star1 = {
               points:5,
@@ -619,7 +624,7 @@ we will change its x and y position. These are independent so
 you can move the star in any direction including backward when
 using a negative change or delta.
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 var star1 = {
               points:5,
               revs:2,
@@ -678,7 +683,7 @@ function demo () {
 <p>
 Now let's grow the star over time. We do that by adding a delta to the radius for each frame.
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 var star1 = {
               points:5,
               revs:2,
@@ -735,7 +740,7 @@ function demo () {
 <p>
 Now let's combine all three and move, grow, and twist it at the same time.
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 var star1 = {
               points:5,
               revs:2,
@@ -802,7 +807,7 @@ were more than one star, they would have separate speeds.
 While we are at it, let's also shorten "delta" to just plain "d."
 To make it interesting, we will also add a second star. 
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 var star1 = {
               points:5,
               revs:2,
@@ -893,12 +898,12 @@ acceleration or deceleration is the feeling you get when slowing
 down. Since acceleration is just a change in speed we will
 abbreviate acceleration as "dd..."
 We can add acceleration to any speed attribute, so
-we will add variables <span class="var">ddx</span,
-<span class="var">ddx</span, <span class="var">ddy</span,
-<span class="var">ddhead</span, and <span class="var">dddrad</span to add
+we will add variables <span class="var">ddx</span>,
+<span class="var">ddx</span>, <span class="var">ddy</span>,
+<span class="var">ddhead</span>, and <span class="var">dddrad</span> to add
 acceleration attributes for x, y, heading and radius respectively.
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 var star1 = {
               points:5,
               revs:2,
@@ -1006,7 +1011,7 @@ There should be some variation in the size, color and position of each
 star.  The stars should appear to be moving from the center of the canvas
 straight toward the edge.
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 var frameDelay = 30    // milliseconds between frames
 var polys = []
 var revs = new Array (0,0,0,0,0, 2,2,3,3,4,4,5)
@@ -1099,7 +1104,7 @@ This is done by modifying the <code>generatePolys()</code> function to take
 an argument for the number of stars to generate, and then calling it
 from the <code>changeStars()</code> function.
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 var frameDelay = 30    // milliseconds between frames
 var polys = []
 
@@ -1211,7 +1216,7 @@ start, and <span class="var">count</span>, the number of elements to delete. Sin
 elements and causes the length of the array to change, we need to do this
 from the end of the array and move toward its beginning.
 </p>
-<code>// GLOBALS
+<code class="tryme">// GLOBALS
 var frameDelay = 30    // milliseconds between frames
 var polys = []
 
@@ -1326,8 +1331,7 @@ A constructor is a special function that sets the attributes of
 an object. It uses the special key word "this" that refers to the
 object being created by the constructor.
 </p>
-<code>
-function Spikey ( points, revs, radius) {
+<code>function Spikey ( points, revs, radius) {
   this.points = points
   this.revs = revs
   this.radius = radius
@@ -1336,8 +1340,7 @@ function Spikey ( points, revs, radius) {
 <p>
 The constructor is invoked to build an object as in the following:
 </p>
-<code>
-star = new Spikey( 5, 2, 40)
+<code>star = new Spikey( 5, 2, 40)
 </code>
 <p>
 Objects also have methods. A method is a function that is tied to the object.
@@ -1345,8 +1348,7 @@ Other objects can have methods with the same name and an object may have
 many methods. The following shows the definition of a Spikey Class with
 a <code>grow()</code> method.
 </p>
-<code>
-function Spikey ( points, revs, radius) {
+<code>function Spikey ( points, revs, radius) {
   this.points = points
   this.revs = revs
   this.radius = radius
@@ -1358,8 +1360,7 @@ function Spikey ( points, revs, radius) {
 <p>
 The method is invoked as in the following code.
 </p>
-<code>
-star = new Spikey( 5, 2, 40) // construct a new Spikey named "star"
+<code>star = new Spikey( 5, 2, 40) // construct a new Spikey named "star"
 
 star.grow(2) // invoke the grow method on the Spikey named "star"
 </code>
@@ -1369,8 +1370,7 @@ The definition using the prototype keyword is as if it were part of the
 original constructor, so the keyword "this" still refers to the object
 being created.
 </p>
-<code>
-function Spikey ( points, revs, radius) {
+<code>function Spikey ( points, revs, radius) {
   this.points = points
   this.revs = revs
   this.radius = radius
@@ -1384,7 +1384,7 @@ Spikey.prototype.grow = function (delta) {
 Rewriting the final animation example using object orientation becomes something
 like the following code.
 </p>
-<code>// CONSTRUCTORS
+<code class="tryme">// CONSTRUCTORS
 
 function Spikey ( ) {
   // set to default value initially

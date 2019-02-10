@@ -14,10 +14,12 @@
     <meta name="ScaleCrop" content="false"/>
     <meta name="ShareDoc" content="false"/>
     <link type="text/css" rel="stylesheet" href="./turtleweb.css"/>
+    <link type="text/css" rel="stylesheet" href="./tutorial.css"/>
     <link href="https://fonts.googleapis.com/css?family=Poppins|Roboto" rel="stylesheet">
 <!--
         <link type="text/css" rel="stylesheet" href="./tutorial.css"/>
 -->
+    <script src="tutorial.js"></script>
 </head>
 <body>
 <header>
@@ -89,7 +91,7 @@ its syntax and the operation of the new language. Typically this is a
 &quot;Hello World&quot; program. For this environment such a program would
 be as follows:
 </p>
-<code>write (&quot;Hello World&quot;)
+<code class="tryme">write (&quot;Hello World&quot;)
 </code>
 
 <p>
@@ -169,7 +171,7 @@ lets use the coding area, so we can edit the programs and make
 changes to it as necessary. The resulting program for the
 coding area is:
 </p>
-<code>right (90)
+<code class="tryme">right (90)
 write (&quot;Hello World&quot;)
 </code>
 
@@ -191,7 +193,7 @@ program languages to allow a character to be used as itself (or as something
 completely different than its normal usage). As you learn programming you
 will probably encounter more examples of escaping or escape mechanisms.
 </p>
-<code>right (90)
+<code class="tryme">right (90)
 write ("That's fun! Don't forget to try this at \"home.\"")
 </code>
 <p>
@@ -204,7 +206,7 @@ statements that read better with multiple lines. Each line in formal
 JavaScript must end in a semi-colon ';' as in:
 </p>
 
-<code>right( 90);
+<code class="tryme">right( 90);
 write ( &quot;Hello World&quot;);
 </code>
 
@@ -239,7 +241,7 @@ their user. JavaScript allows its users to define their own
 functions. We can define a 'Hello World' function, ‘hi()’  as:
 </p>
 
-<code>function hi () {
+<code class="tryme">function hi () {
   right( 90);
   write ( &quot;Hello World&quot;);
 }
@@ -273,7 +275,7 @@ This is because the <span class="button">Run Demo</span> tries to invoked the
 So let's adds a <code>demo()</code> function to the program:
 </p>
 
-<code>function hi () {
+<code class="tryme">function hi () {
   right( 90);
   write ( &quot;Hello World&quot;);
 }
@@ -293,7 +295,7 @@ but as defined, it does nothing.  The <code>hi()</code> function
 was never called or invoked. Let's add a call or invocation to the <code>hi()</code>
 function in the <code>demo()</code> function.
 </p>
-<code>function hi () {
+<code class="tryme">function hi () {
   right( 90);
   write ( &quot;Hello World&quot;);
 }
@@ -321,7 +323,7 @@ We can fix that by
 clearing the screen by invoking the <code>reset ()</code> function  before
 writing to the canvas.
 </p>
-<code>function hi () {
+<code class="tryme">function hi () {
   right( 90);
   write ( &quot;Hello World&quot;);
 }
@@ -368,7 +370,7 @@ OK, but Turtle Graphics is a graphics program, shouldn’t we
 be doing some graphics? Let's see it draw some lines as sort of a
 graphical Hello World example. Let's try to do a simple square.
 
-<code>forward(100)
+<code class="tryme">forward(100)
 right(90)
 forward(100)
 right(90)
@@ -386,7 +388,7 @@ square, as we have learned previously.
 </p>
     <img src="images/Javascript%20Turtle%20Graphics%202_html_2891944c53476dfe.png" alt="">
 
-<code>function square1 () {
+<code class="tryme">function square1 () {
   forward(100)
   right(90)
   forward(100)
@@ -412,7 +414,7 @@ function as follows:
 </p>
 
     <img src="images/Javascript%20Turtle%20Graphics%202_html_cae1dc59a219b5c6.png" alt="">
-<code>function square1 () {
+<code class="tryme">function square1 () {
   forward(100)
   right(90)
   forward(100)
@@ -442,7 +444,7 @@ square1(), there is a lot of repetition. There are a couple of ways to
 do this. Using the Turtle Graphics function <code>repeat()</code>, the
 code would look something like:
 </p>
-<code>// square with repeat
+<code class="tryme">// square with repeat
 function el () {
   forward (100)
   right (90)
@@ -463,7 +465,7 @@ function demo () {
 There is a method can get rid of the standalone <code>el()</code> function
 when using the <code>repeat()</code> function. The code is shown below.
 </p>
-<code>repeat( 4, function() {
+<code class="tryme">repeat( 4, function() {
     forward( 100)
     right( 90)}
   )
@@ -481,7 +483,7 @@ things. Let's not use the <code>repeat()</code> function and use a with a
 <code>while</code> statement instead. The simplest JavaScript program using
 a <code>while</code> statement is something like:
 </p>
-<code>var i = 0;
+<code class="tryme">var i = 0;
   while ( i &lt; 4) {
     i = i + 1
 }
@@ -583,8 +585,7 @@ inside of a program when trying to debug the program.
 The program uses a while loop to repeat four times: write a number, draw a side,
 turn the corner, and increment the number of sides.
 </p>
-<code>square()
-function () {
+<code class="tryme">function square() {
   var i = 0
   while ( i &lt; 4) {
     write (i)
@@ -608,13 +609,18 @@ of code. So the block is always executed at least once where in a while statemen
 the block may not be executed at all.
 The equivalent code for drawing a square is shown below.
 </p>
-<code>function square(side) {
+<code class="tryme">function square(side) {
   var i = 0
   do {
-    forward( side);
+    forward( 50);
     right( 90)
-    i = 1 + 1
-  } while (i < 5)
+    i = i + 1
+  } while (i < 4)
+}
+
+function demo() {
+  reset()
+  square()
 }
 </code>
 <p>
@@ -627,11 +633,16 @@ separated with semicolons, just as multiple statements on
 a line would be separated. The code for a <code>for</code> loop to
 draw a square is as follows:
 </p>
-<code>function square(side) {
+<code class="tryme">function square(side) {
   for( var i = 0; i < 4; i = i + 1) { // init; test; and change i
     forward( 100) // block of code is within curly braces
     right( 90)
   }
+}
+
+function demo() {
+  reset()
+  square()
 }
 </code>
 </section>
@@ -659,11 +670,16 @@ the basic <code>square()</code> function. We'll tell
 JavaScript that we want to pass a value in the function definition by including
 the parameter name or names within the parentheses as in the following code.
 </p>
-<code>function square(side) {
-  for( 1=0; i<4; i=i+1) {
+<code class="tryme">function square(side) {
+  for( i=0; i<4; i=i+1) {
     forward( side);
     right( 90)
   }
+}
+
+function demo () {
+  reset()
+  square(100) // 100 is an argument
 }
 </code>
 <p>
@@ -681,7 +697,7 @@ the arguments is passed to the parameter in the corresponding position defined
 with the function.
 Of all this there can be no argument, or was that a parameter.
 </p>
-<code>function square(side) { // side is a parameter
+<code class="tryme">function square(side) { // side is a parameter
   var i = 0;
   while ( i &lt; 4) {
     forward (side) // here the parameter is accessed
@@ -710,7 +726,7 @@ program that turns the square while changing its size.
 Let's do this one step at a time. First just turn it.
 </p>
 </div>
-<code>function square(side) {
+<code class="tryme">function square(side) {
   var i = 0;
   while ( i &lt; 4) {
     forward (side)
@@ -737,7 +753,7 @@ The next modification to the code also
 changes the size of the squares and their color with each iteration within
 the while loop of the <code>demo()</code> function.
 </p>
-<code>function square(side) {
+<code class="tryme">function square(side) {
   var i = 0;
   while ( i &lt; 4) {
     forward (side)
@@ -776,7 +792,7 @@ If <span class="var">i</span>
 had been defined outside of the functions at the <strong>global</strong> level
 as in the following code, there would be trouble.
 </p>
-<code>var i;
+<code class="tryme">var i;
 function square(side) {
   i = 0;
   while ( i &lt; 4) {
@@ -806,10 +822,12 @@ The general sequence of what happens in the code is:
 <li>
 demo function starts up and sets i to 0.
 </li>
-demo invokes square(0 * 10)
 <li>
+demo invokes square(0 * 10)
 </li>
+<li>
 square sets i to 0, which at this point is OK.
+</li>
 <li>
 square loops through the values of i until it reaches 4 and it
 returns control to the demo program.
@@ -966,7 +984,7 @@ positions in the definition of the <code>goto()</code> function definition
 determine the order of the arguments when invoking the <code>goto()</code>
 function.
 </p>
-<code>function square(side) {
+<code class="tryme">function square(side) {
   i = 0;
   while ( i &lt; 4) {
     forward (side)
@@ -1006,7 +1024,7 @@ the <code>animate()</code> function. The <code>reset()</code> should only be
 done in the demo function as well as the <code>animate()</code> function.
 Everything else can be put into a <code>randomSquare()</code> function.
 </p>
-<code>function square(side) {
+<code class="tryme">function square(side) {
   i = 0;
   while ( i &lt; 4) {
     forward (side)
@@ -1019,6 +1037,7 @@ function randomSquare(){
   color( random(15))
   goto (random( minX(), maxX()), random(minY(), maxY()))
   square( random( 15,150))
+}
 
 function demo(){
   reset()
@@ -1043,7 +1062,7 @@ The squares can be
 rotated as well by throwing in a turn (random(something)) into the
 mix.
 </p>
-<code>function square(side) {
+<code class="tryme">function square(side) {
   i = 0;
   while ( i &lt; 4) {
     forward (side)
@@ -1057,6 +1076,7 @@ function randomSquare(){
   goto (random( minX(), maxX()), random(minY(), maxY()))
   right(random( 5, 30))
   square( random( 15,150))
+}
 
 function demo(){
   reset()
@@ -1075,7 +1095,7 @@ random width with <code>width (random(</code>something<code>))</code> into the m
 You may not want lines that are too thin (zero?) or too wide, so limit the range
 of the widths. This code looks something like the following.
 </p>
-<code>function square(side) {
+<code class="tryme">function square(side) {
   i = 0;
   while ( i &lt; 4) {
     forward (side)
@@ -1088,8 +1108,9 @@ function randomSquare(){
   color( random(15))
   goto (random( minX(), maxX()), random(minY(), maxY()))
   right(random( 5, 30))
-  width( random( 1, 6)
+  width( random( 1, 6))
   square( random( 15,150))
+}
 
 function demo(){
   reset()
@@ -1146,7 +1167,7 @@ and divide by the number of sides to get the angle.
 This would mean that a general polygon can be generated by the length of its
 sides and the number of sides required.
 </p>
-<code>function polygon (size, n) {
+<code class="tryme">function polygon (size, n) {
   var i = 0
   while (i < n) {
     write (i)
@@ -1221,7 +1242,7 @@ narrower.
 </section>
 
 <section>
-<code class="floatleft">function spikey (size,n,revs) {
+<code class="tryme floatleft">function spikey (size,n,revs) {
   var i = 0
   while (i < n) {
     write (i)
@@ -1229,10 +1250,6 @@ narrower.
     right (revs*360/n)
     i = i + 1
   }
-}
-
-function pentagon (size) {
-  spikey (size, 5, 1)
 }
 
 function star (size) {
@@ -1249,8 +1266,23 @@ function demo () {
 
 <section>
     <img src="images/Javascript%20Turtle%20Graphics%202_html_b24baf30964e72cb.png" alt="">
-<code>function polygon (size, sides) {
+<code class="tryme floatleft">function spikey (size,n,revs) {
+  var i = 0
+  while (i < n) {
+    write (i)
+    forward (size)
+    right (revs*360/n)
+    i = i + 1
+  }
+}
+
+function polygon (size, sides) {
   spikey (size, sides, 1)
+}
+
+function demo () {
+  reset()
+  polygon(20, 20)
 }
 </code>
 
@@ -1258,10 +1290,26 @@ function demo () {
 
 <div class="concept">
     <img src="images/Javascript%20Turtle%20Graphics%202_html_3c59e3d695bcd8bc.png" alt="">
-<code>function starN (size, points) {
+<code class="tryme floatleft">function spikey (size,n,revs) {
+  var i = 0
+  while (i < n) {
+    write (i)
+    forward (size)
+    right (revs*360/n)
+    i = i + 1
+  }
+}
+
+function starN ( size, points) {
+  reset()
   backward (size/2)
-  spikey (size, points, Math.floor(points/2)
-)
+  spikey (size, points, Math.floor(points/2))
+}
+
+function demo () {
+  reset()
+  starN (200, 21)
+}
 </code>
 
 <p>
