@@ -21,6 +21,7 @@ function drawRandomSquiggle() {
 }
 
 function demo() {
+  reset()
   hideTurtle();
   drawRandomSquiggle();
 }

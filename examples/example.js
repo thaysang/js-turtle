@@ -1,4 +1,4 @@
-// example -- example of code
+// Example -- example of code
 /* Define helper functions here
 or write your own functions
 including a demo() function

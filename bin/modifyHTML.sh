@@ -15,9 +15,11 @@ fi
 
 echo '          <option selected value='example'>Examples</option>' > tmp
 
-for fileName in `ls $DIRECTORY` ; do
-	OPTION_NAME=`head -1 $DIRECTORY/$fileName |sed -Ee "s/^\/\/ *(.*) --.*$/\1/"`
-	echo "$fileName" | sed -Ee "s/(.*)\.js/          <option value=\"\1\"><\/option>/" -e "s/></>$OPTION_NAME</" >>tmp
+for FILE_NAME in `ls $DIRECTORY` ; do
+	echo "   working on $FILE_NAME"
+	OPTION_NAME=`head -1 $DIRECTORY/$FILE_NAME |sed -Ee "s/^\/\/ *(.*) --.*$/\1/"`
+	echo "   $OPTION_NAME"
+	echo "$FILE_NAME" | sed -Ee "s/(.*)\.js/          <option value=\"\1\"><\/option>/" -e "s/></>$OPTION_NAME</" >>tmp
 done
 
 # add the new options to the turtle.html file

@@ -9,18 +9,18 @@
 # NOTE: JavaScript routines CANNOT contain single quotes!!!
 
 
-directory=$1 # name of directory containing a set of JavaScript programs
+DIRECTORY=$1 # name of directory containing a set of JavaScript programs
 
-if [ ${1}NotSpecified =  NotSpecified ]; then
+if [ ${DIRECTORY}NotSpecified =  NotSpecified ]; then
   echo Input directory not specified
   exit
 fi
 
 rm -f examples.js # clear temporary file
 
-for fileName in `ls $directory` ; do
-  stringName=`echo $fileName | sed -e s/.js\$//`
-  (echo "${stringName} ='\\"
-  sed -e "s/$/\\\\n\\\\/" < $directory/$fileName
+for FILE_NAME in `ls $DIRECTORY` ; do
+  STRING_NAME=`echo $FILE_NAME | sed -e s/.js\$//`
+  (echo "${STRING_NAME} ='\\";
+  sed -Ee "s/$/\\\\n\\\\/" -e "s/<feff>//"< $DIRECTORY/$FILE_NAME;
   echo "'") >>examples.js
 done

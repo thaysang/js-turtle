@@ -1,4 +1,4 @@
-// connected points -- nice graph
+// Connected Points -- points connected by spikeys
 
 //draw the radials
 function drawRadials(side) {
@@ -27,29 +27,29 @@ function spikey ( points, revs, radius, x, y, head) {
 }
 
 
-/*
-I bet this thing is a series of
-spikeys
-*/
 
-
-//
 function demo() {
   reset()
   wrap(false)
-  size=200
+  size = .9* Math.min( maxX(), maxY())
+  //size=200
   inr = .33* size
+  width(.5)
   spikey( 16, 2, size, 0, 0, 0)
   spikey( 16, 2, size, 0, 0, 360/16)
+  width(.25)
   spikey( 16, 4, size, 0, 0, 0)
   spikey( 16, 4, size, 0, 0, 360/16)
   spikey( 16, 4, size, 0, 0, 2*360/16)
   spikey( 16, 4, size, 0, 0, 3*360/16)
   spikey( 16, 6, size, 0, 0, 0)
   spikey( 16, 6, size, 0, 0, 360/16)
+  width(.7)
   spikey( 8, 3, inr, 0, 0, 0)
   spikey( 8, 1, inr, 0, 0, 0)
+  width(1)
   drawRadials( size)
   goto(0,0)
   circle( inr)
+  hideTurtle()
 }

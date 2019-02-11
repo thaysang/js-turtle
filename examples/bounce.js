@@ -1,4 +1,4 @@
-// Bouncing Rectangles -- rectagles which bounce off the side of the canvas
+// Bouncing Rectangles -- rectangles which bounce off the side of the canvas
 
   var maxX =  imageContext.canvas.width/2;
   var maxY =  imageContext.canvas.height/2;

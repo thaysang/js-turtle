@@ -1,0 +1,18 @@
+/*******************************************************************************
+ * tutorial.css -- tutorial specific css
+ *
+ *
+ *******************************************************************************/
+
+.tryme::after {
+  background-color:red;
+  -webkit-border-radius: 5pt;
+  -moz-border-radius: 5pt;
+  border-radius:5pt;
+  border: black solid 1pt;
+  color: white;
+  content: "Try Me";
+  display: inline-block;
+  float: right;
+  padding: 0 6pt;
+}

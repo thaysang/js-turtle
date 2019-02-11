@@ -59,25 +59,29 @@ function mizen( side, lColor, fColor) {
 }
 
 
-function demo() {
-  reset()
-  wrap(false)
-  side = 40 // 1/2 basic face of hexagon, width...
-  side = .15 * Math.min( maxX(), maxY())
+function mizenSimple() {
   bColor = "red"
   lColor = "white"
-  width (3)
+  background ("tan")
 
   //center canvas more or less
   goto(-5*side, 3.5*side)
+  width (1)
   angle(0)
   mizen( side, "black", "red")
 
   // do again to make lines stand out
   goto(-5*side, 3.5*side)
+  width (3)
   angle(0)
   mizen( side, "white", "")
+}
 
-
+function demo() {
+  reset()
+  wrap(false)
+  side = 40 // 1/2 basic face of hexagon, width...
+  side = .15 * Math.min( maxX(), maxY())
+  mizenSimple()
   hideturtle()
 }

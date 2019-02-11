@@ -1,4 +1,4 @@
-// Hirshhorn -- Hirchshorn 6-fold-rotational symmetry pentagonal tiling
+// Hircshhorn Tiles -- Hirschhorn 6-fold-rotational symmetry pentagonal tiling
 
 
 // CONSTRAINTS

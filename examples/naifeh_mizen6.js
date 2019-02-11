@@ -32,6 +32,7 @@ function mizen( side, lColor, fColor) {
   color(lColor)
   right(120)
   for (var i=0; i<6; i++) {
+    pendown()
     v( side, fColor)
     penup()
     right(30)
@@ -61,14 +62,8 @@ function mizen( side, lColor, fColor) {
 
 
 
-function demo() {
-  reset()
-  //center canvas more or less
-  side = 10 // 1/2 basic face of hexagon, width...
-  side = .08 * Math.min( maxX(), maxY())
+function mizen6(side) {
   penup()
-  goto (-8*side, 9*side)
-  //angle(120)
   for (var j=0; j<6; j++) {
     mx = turtle.pos.x
     my = turtle.pos.y
@@ -90,5 +85,14 @@ function demo() {
     right(90)
     pendown()
   }
-  //hideturtle()
+  hideturtle()
+}
+
+
+function demo() {
+  reset()
+  side = .08 * Math.min( maxX(), maxY())
+  //center canvas more or less
+  goto (-8*side, 9*side)
+  mizen6( side)
 }

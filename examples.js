@@ -271,7 +271,7 @@ function demo() {\n\
 }\n\
 '
 bounce ='\
-// Bouncing Rectangles -- rectagles which bounce off the side of the canvas\n\
+// Bouncing Rectangles -- rectangles which bounce off the side of the canvas\n\
 \n\
   var maxX =  imageContext.canvas.width/2;\n\
   var maxY =  imageContext.canvas.height/2;\n\
@@ -888,6 +888,590 @@ function demo() {\n\
    animate(clock,1000);\n\
 }\n\
 '
+collidescape ='\
+// Collidescape (tm) -- aperiodic tiling researched by Ward Hollins.\n\
+// angles for the two isosceles triangles are: \n\
+// 36, 72, 72 and 36, 36, 108 ..degrees\n\
+//  1,2,2 and 1,1,3 times pi/5 .. radians\n\
+ang = 360/10 // the basic angle (pi/5 radians)\n\
+side = 50 // length of the common side of the isosceles triangles\n\
+bBase = 2* side * Math.cos( degToRad( ang)) // length of big base\n\
+sBase = 2* side * Math.sin( degToRad( ang/2)) // length of small base\n\
+\n\
+\n\
+function bb (fColor) { //big piece, big angle\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 4 * ang)\n\
+    forward( bBase)\n\
+    right( 4 * ang)\n\
+    forward( side)\n\
+    right( 180)\n\
+    fillShape( fColor)\n\
+}\n\
+\n\
+\n\
+function bs (fColor) { // big piece, small angle\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 2 * ang)\n\
+    forward( side)\n\
+    right( 4 * ang)\n\
+    forward( bBase)\n\
+    right( 180)\n\
+    fillShape( fColor)\n\
+}\n\
+\n\
+\n\
+function bs2 (fColor) { // big piece, small angle other corner\n\
+    beginShape()\n\
+    forward( bBase)\n\
+    right( 4 * ang)\n\
+    forward( side)\n\
+    right( 2 * ang)\n\
+    forward( side)\n\
+    right( 180)\n\
+    fillShape( fColor)\n\
+}\n\
+\n\
+\n\
+function ss (fColor) { // small piece, small angle\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 3 * ang)\n\
+    forward( sBase)\n\
+    right( 3 * ang)\n\
+    forward( side)\n\
+    right( 180)\n\
+    fillShape( fColor)\n\
+}\n\
+\n\
+\n\
+function sb (fColor) { // small piece, big angle\n\
+    beginShape()\n\
+    forward( sBase)\n\
+    right( 3 * ang)\n\
+    forward( side)\n\
+    right( 4 * ang)\n\
+    forward( side)\n\
+    right( 180)\n\
+    fillShape( fColor)\n\
+}\n\
+\n\
+\n\
+function sb2 (fColor) { // small piece, big angle other corner\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 4 * ang)\n\
+    forward( side)\n\
+    right( 3 * ang)\n\
+    forward( sBase)\n\
+    right( 180)\n\
+    fillShape( fColor)\n\
+}\n\
+\n\
+\n\
+function spiral( ) {\n\
+// function draws a spiral using only two isosceles triangles\n\
+// this is done with a series of points. Each point starts at the\n\
+// center of the spiral and moves to the point where several triangles\n\
+// are drawn. This technique isolates changes, but is less efficient\n\
+// overall.\n\
+//\n\
+// Numbers for each point can be included by uncommenting the "//write"\n\
+// statements.\n\
+\n\
+    c1 = "yellow"\n\
+    c2 = "blue"\n\
+    for (var i=0; i<5; i++) {\n\
+//point0:\n\
+        goto(0,0)\n\
+        setHeading( (i * 2 + 1) * ang)\n\
+        bs( c2)\n\
+\n\
+//point1:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i * 2 + 1) * ang)\n\
+        forward( bBase)\n\
+	pendown()\n\
+\n\
+        bs( c2)\n\
+        bs( c2)\n\
+        bs2( c1)\n\
+        sb2( c1)\n\
+        bs2( c1)\n\
+        ss( c2)\n\
+        bb( c2)\n\
+        //write( "1")\n\
+\n\
+//point2:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i * 2 + 1) * ang)\n\
+        bs( c2)\n\
+        forward( bBase + side)\n\
+        left( 3 * ang)\n\
+	pendown()\n\
+\n\
+        ss( c2)\n\
+        ss( c2)\n\
+        bb( c2)\n\
+        //write( "2")\n\
+\n\
+//point3:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i +1) * 2* ang)\n\
+        forward( bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side)\n\
+        left( 2 * ang)\n\
+	pendown()\n\
+\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        ss( c1)\n\
+        ss( c1)\n\
+        bs( c1)\n\
+        //write( "3")\n\
+\n\
+//point4:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2 * ang)\n\
+        forward( bBase)\n\
+        right (ang)\n\
+\n\
+	pendown()\n\
+        bs( c1)\n\
+        left ( ang)\n\
+\n\
+	penup()\n\
+        forward( bBase)\n\
+	pendown()\n\
+\n\
+        bs( c2)\n\
+        sb( c1)\n\
+        sb2( c1)\n\
+        bs2( c1)\n\
+        bs( c2)\n\
+        bs2( c2)\n\
+        ss( c2)\n\
+        ss( c2)\n\
+        //write( "4")\n\
+\n\
+//point5:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i +1) * 2* ang)\n\
+        forward( bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side + sBase)\n\
+        left( 2 * ang)\n\
+	pendown()\n\
+\n\
+        bs2( c2)\n\
+        sb2( c2)\n\
+        sb( c2)\n\
+        sb2( c2)\n\
+        sb( c2)\n\
+        //write( "5")\n\
+\n\
+//point6:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2* ang)\n\
+        forward(  bBase + side + bBase)\n\
+        left( 3 * ang)\n\
+	pendown()\n\
+\n\
+        bs2( c1)\n\
+        bb( c1)\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        bb( c1)\n\
+        //write( "6")\n\
+\n\
+//point7:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading(( i + 1)* 2 * ang)\n\
+        forward(  bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side)\n\
+        right( 2* ang)\n\
+        forward( side)\n\
+        left ( 3 * ang)\n\
+	pendown()\n\
+\n\
+        sb2( c2)\n\
+        sb( c2)\n\
+        ss( c2)\n\
+        bb( c2)\n\
+        //write( "7")\n\
+\n\
+//point8:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading(( i + 1)* 2 * ang)\n\
+        forward(  bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side)\n\
+        right( 3 * ang)\n\
+        forward( bBase + side)\n\
+	pendown()\n\
+\n\
+        ss( c2)\n\
+        sb2( c2)\n\
+        sb( c2)\n\
+        ss( c2)\n\
+        sb2( c2)\n\
+        sb( c2)\n\
+        //write( "8")\n\
+\n\
+//point9:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2* ang)\n\
+        forward(  bBase + side + bBase) //@6\n\
+        left( 2 * ang)\n\
+        forward( side)\n\
+        right( ang)\n\
+        forward( sBase + sBase)\n\
+        right( 3 * ang)\n\
+	pendown()\n\
+\n\
+        sb2( c2)\n\
+        sb( c2)\n\
+        bb( c1)\n\
+        ss( c1)\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        //write( "9")\n\
+\n\
+//point10:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2 * ang)\n\
+        forward(  bBase + side + bBase) //@6\n\
+        right( 2 * ang)\n\
+        forward( bBase)\n\
+        left( 4 * ang)\n\
+	pendown()\n\
+\n\
+        sb2( c1)\n\
+        sb( c1)\n\
+        sb2( c1)\n\
+        sb( c1)\n\
+        //write( "10")\n\
+\n\
+//point11:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2 * ang)\n\
+        forward(  bBase + side + bBase) //@6\n\
+        right( 2 * ang)\n\
+        forward( bBase + side)\n\
+        right( 1 * ang)\n\
+        forward( side)\n\
+	pendown()\n\
+\n\
+        bb( c1)\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        //write( "11")\n\
+\n\
+//point12:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2 * ang)\n\
+        forward(  bBase + side + bBase) //@6\n\
+        right( 2 * ang)\n\
+        forward( bBase + side)\n\
+        right( ang)\n\
+        forward( side) // @11\n\
+        forward(side)\n\
+	pendown()\n\
+\n\
+        bb( c1)\n\
+        bs( c1)\n\
+        //write( "12")\n\
+\n\
+//point13:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading(( i + 1)* 2 * ang)\n\
+        forward(  bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side)\n\
+        right( 3 * ang)\n\
+        forward( bBase + side) //@8\n\
+        right( ang)\n\
+        forward( side)\n\
+        left( 3 * ang)\n\
+	pendown()\n\
+\n\
+        sb( c2)\n\
+        bs( c2)\n\
+        bs2( c2)\n\
+        bb( c2)\n\
+        //write( "13")\n\
+\n\
+//point14:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i +1) * 2 * ang)\n\
+        forward( bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side + sBase) // @5\n\
+        left(  ang)\n\
+        forward( side)\n\
+        right( 2* ang)\n\
+        forward( side + side)\n\
+	pendown()\n\
+\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        bb( c2)\n\
+        bs( c2)\n\
+        bs2( c2)\n\
+        bb( c1)\n\
+        //write( "14")\n\
+\n\
+//point15:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading(( i + 1)* 2 * ang)\n\
+        forward(  bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side)\n\
+        right( 3 * ang)\n\
+        forward( bBase + side) //@8\n\
+        right( ang)\n\
+        forward( side) //@13\n\
+        forward( bBase)\n\
+        left( ang)\n\
+        forward( side)\n\
+	pendown()\n\
+\n\
+        bs( c2)\n\
+        bs2( c2)\n\
+        bb( c1)\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        bb( c2)\n\
+        //write( "15")\n\
+\n\
+//point16:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2* ang)\n\
+        forward(  bBase + side + bBase) //@6\n\
+        left( 2 * ang)\n\
+        forward( side)\n\
+        right( ang)\n\
+        forward( sBase + sBase) //@9\n\
+        right( 2 * ang)\n\
+        forward( bBase)\n\
+        right( ang)\n\
+        forward( side)\n\
+        left( 2* ang)\n\
+	pendown()\n\
+\n\
+        bs( c2)\n\
+        bs2( c2)\n\
+        bb( c1)\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        bb( c2)\n\
+        //write( "16")\n\
+\n\
+//point17:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2* ang)\n\
+        forward(  bBase + side + bBase) //@6\n\
+        left( 2 * ang)\n\
+        forward( side)\n\
+        right( ang)\n\
+        forward( sBase + sBase) //@9\n\
+        right( 2 * ang)\n\
+        forward( bBase)\n\
+        right( ang)\n\
+        forward( side) //@16\n\
+        forward( side)\n\
+        left( 2 * ang)\n\
+	pendown()\n\
+\n\
+        ss( c2)\n\
+        sb2( c2)\n\
+        sb( c1)\n\
+        bs( c1)\n\
+        //write( "17")\n\
+\n\
+//point18:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i +1) * 2 * ang)\n\
+        forward( bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side + sBase) // @5\n\
+        left(  ang)\n\
+        forward( side)\n\
+        right( 2 * ang)\n\
+        forward( side + side) //@14\n\
+        right( 2 * ang)\n\
+        forward( side) //@ intermediate point\n\
+        right( 3 * ang)\n\
+	pendown()\n\
+\n\
+        bs( c2)\n\
+        right( 4 * ang)\n\
+        //write ( "14b")\n\
+        bs( c1)\n\
+        right( 1 * ang)\n\
+\n\
+	penup\n\
+        forward( side)\n\
+	pendown()\n\
+\n\
+        bb( c2)\n\
+        bs( c2)\n\
+        bs2( c2)\n\
+        bb( c1)\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        //write( "18")\n\
+\n\
+//point19:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i +1) * 2 * ang)\n\
+        forward( bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side + sBase) // @5\n\
+        left(  ang)\n\
+        forward( side)\n\
+        right( 2 * ang)\n\
+        forward( side + side) //@14\n\
+        right( 2 * ang)\n\
+        forward( side + side + side)\n\
+        left( 2*ang)\n\
+	pendown()\n\
+\n\
+        ss( c1)\n\
+        sb2( c1)\n\
+        sb( c2)\n\
+        bs( c2)\n\
+        //write( "19")\n\
+\n\
+//point20:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i +1) * 2 * ang)\n\
+        forward( bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side + sBase) // @5\n\
+        left(  ang)\n\
+        forward( side)\n\
+        right( 2 * ang)\n\
+        forward( side + side) //@14\n\
+        right( 2 * ang)\n\
+        forward( side + side + side) //@19\n\
+        right( ang)\n\
+        forward( sBase)\n\
+        left( 3*ang)\n\
+	pendown()\n\
+\n\
+        ss( c1)\n\
+        sb2( c1)\n\
+        sb( c2)\n\
+        ss( c2)\n\
+        //write( "20")\n\
+\n\
+//point21:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i +1) * 2 * ang)\n\
+        forward( bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side + sBase) // @5\n\
+        left(  ang)\n\
+        forward( side)\n\
+        right( 2 * ang)\n\
+        forward( side + side) //@14\n\
+        right( 2 * ang)\n\
+        forward( side + side + side)\n\
+        right( ang)\n\
+        forward( sBase) //@20\n\
+        forward( sBase)\n\
+        left( 3*ang)\n\
+	pendown()\n\
+\n\
+        ss( c1)\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        bb( c2)\n\
+        //write( "21")\n\
+\n\
+//point22:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( (i +1) * 2 * ang)\n\
+        forward( bBase + side)\n\
+        left( 2 * ang)\n\
+        forward( side + side + sBase) // @5\n\
+        left(  ang)\n\
+        forward( side)\n\
+        right( 2 * ang)\n\
+        forward( side + side) //@14\n\
+        right( 2 * ang)\n\
+        forward( side + side + side)\n\
+        right( ang)\n\
+        forward( sBase + sBase) //@21\n\
+        forward( side)\n\
+        left( 2*ang)\n\
+	pendown()\n\
+\n\
+        bs( c1)\n\
+        bs2( c1)\n\
+        bb( c2)\n\
+        bs( c2)\n\
+        //write( "22")\n\
+\n\
+//point23:\n\
+	penup()\n\
+        goto(0,0)\n\
+        setHeading( i * 2* ang)\n\
+        forward(  bBase + side + bBase) //@6\n\
+        left( 2 * ang)\n\
+        forward( side)\n\
+        right( ang)\n\
+        forward( sBase + sBase) //@9\n\
+        right( 2 * ang)\n\
+        forward( bBase)\n\
+        right( ang)\n\
+        forward( side + side) //@17\n\
+        right( ang)\n\
+        forward( sBase)\n\
+        left( 3 * ang)\n\
+	pendown()\n\
+\n\
+        ss( c2)\n\
+        bs( c2)\n\
+        //write( "23")\n\
+   }\n\
+}\n\
+\n\
+\n\
+function demo () {\n\
+    reset()\n\
+    wrap(false)\n\
+    pendown()\n\
+    spiral( )\n\
+}\n\
+'
 color_changing_dots ='\
 // Color Changing Dots -- demonstrate the concept of changing the colors of a string of dots (lights?)\n\
 \n\
@@ -1444,7 +2028,7 @@ console.log("size "+ size)\n\
 }\n\
 '
 connected_points ='\
-// connected points -- nice graph\n\
+// Connected Points -- points connected by spikeys\n\
 \n\
 //draw the radials\n\
 function drawRadials(side) {\n\
@@ -1473,31 +2057,31 @@ function spikey ( points, revs, radius, x, y, head) {\n\
 }\n\
 \n\
 \n\
-/*\n\
-I bet this thing is a series of\n\
-spikeys\n\
-*/\n\
 \n\
-\n\
-//\n\
 function demo() {\n\
   reset()\n\
   wrap(false)\n\
-  size=200\n\
+  size = .9* Math.min( maxX(), maxY())\n\
+  //size=200\n\
   inr = .33* size\n\
+  width(.5)\n\
   spikey( 16, 2, size, 0, 0, 0)\n\
   spikey( 16, 2, size, 0, 0, 360/16)\n\
+  width(.25)\n\
   spikey( 16, 4, size, 0, 0, 0)\n\
   spikey( 16, 4, size, 0, 0, 360/16)\n\
   spikey( 16, 4, size, 0, 0, 2*360/16)\n\
   spikey( 16, 4, size, 0, 0, 3*360/16)\n\
   spikey( 16, 6, size, 0, 0, 0)\n\
   spikey( 16, 6, size, 0, 0, 360/16)\n\
+  width(.7)\n\
   spikey( 8, 3, inr, 0, 0, 0)\n\
   spikey( 8, 1, inr, 0, 0, 0)\n\
+  width(1)\n\
   drawRadials( size)\n\
   goto(0,0)\n\
   circle( inr)\n\
+  hideTurtle()\n\
 }\n\
 '
 conway_fractal ='\
@@ -1584,7 +2168,7 @@ function caption (message) {\n\
   goto (minX()+10, minY()+10)\n\
   setheading( 90)\n\
 \n\
-  // erase wha will be in the path\n\
+  // erase what will be in the path\n\
   color ("white")\n\
   width (10)\n\
   forward (maxY() * 2 - 12)\n\
@@ -2339,6 +2923,59 @@ function demo() {\n\
   hideturtle()\n\
 }\n\
 '
+dodecahedronGraph ='\
+// Dodecahedron Graph -- draw a 2-dimentional graph of a dodecahedron\n\
+// graph here describes the connections between vertices, more at\n\
+// Wikipedia.com\n\
+\n\
+//   This would be easier to draw to points on concentric circles\n\
+//   This is just lines and not shadable polygons\n\
+\n\
+function pent(side) {\n\
+  var angle2=72-(360-108)/2\n\
+  // the sides below are really trigonometric conversions\n\
+  // without the trig functions\n\
+  var side2 = .4*side\n\
+  var angle3 = 80\n\
+  var side3 = 1.05 * side\n\
+  var angle4 = 40\n\
+  var side4 = .5 * side\n\
+  var angle5 = 129\n\
+  var side5 = 2.65 * side\n\
+  for (var i=0; i<5; i++) {\n\
+    forward (side)\n\
+      right(angle2)\n\
+      forward (side2)\n\
+        right(angle3)\n\
+        forward(side3)\n\
+          left(angle4)\n\
+          forward(side4)\n\
+            left(angle5)\n\
+            forward(side5)\n\
+            backward(side5)\n\
+            right(angle5)\n\
+          backward(side4)\n\
+          right(angle4)\n\
+        backward(side3)\n\
+        left(angle3)\n\
+        left(angle3)\n\
+        forward(side3)\n\
+        backward(side3)\n\
+        right(angle3)\n\
+      backward (side2)\n\
+      left(angle2)\n\
+    right(72)\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  goto (-50,-22)\n\
+  right(17)\n\
+  pent(50)\n\
+  hideturtle()\n\
+}\n\
+'
 dragon_curve ='\
 //  Dragon Curve -- draw a fractal curve formed by folding a shape onto itself\n\
 //  more infomration at wikipedia  https://en.wikipedia.org/wiki/Dragon_curve\n\
@@ -2440,7 +3077,7 @@ function demo() {\n\
 }  \n\
 '
 example ='\
-// example -- example of code\n\
+// Example -- example of code\n\
 /* Define helper functions here\n\
 or write your own functions\n\
 including a demo() function\n\
@@ -2519,78 +3156,6 @@ function demo() {\n\
   hideTurtle()\n\
   fib( 11,4)\n\
 }\n\
-'
-first ='\
-// First Programs -- first programs in learning turtle graphics\n\
-\n\
-//traditional first program, Hello World\n\
-function hi ()\n\
-{\n\
-  reset()\n\
-  write ("Hello World")\n\
-}\n\
-\n\
-\n\
-// first readable program\n\
-function hi2 ()\n\
-{\n\
-  reset()\n\
-  turn (90)\n\
-  write ("Hello World")\n\
-}\n\
-\n\
-// simple square function\n\
-function square1 ()\n\
-{\n\
-  reset()\n\
-  forward (100)\n\
-  turn(90)\n\
-  forward (100)\n\
-  turn(90)\n\
-  forward (100)\n\
-  turn(90)\n\
-  forward (100)\n\
-  turn(90)\n\
-}\n\
-\n\
-\n\
-// square with repeat\n\
-function el ()\n\
-{\n\
-  forward (100)\n\
-  turn(90)\n\
-}\n\
-\n\
-function square2 ()\n\
-{\n\
-  reset()\n\
-  repeat (4, el)\n\
-}\n\
-\n\
-// square with a while loop\n\
-function square3 () {\n\
-  var i = 0\n\
-  while (i<4) {\n\
-    forward( 100)\n\
-    turn( 90)\n\
-    i = i + 1\n\
-  }\n\
-}\n\
-\n\
-// square with a for loop\n\
-// the control part of the for loop includes\n\
-// the initialization part: i = 0\n\
-// the conditional part: i<4\n\
-// the iteration part: i = i + 1 or abbreviated as i++\n\
-function square4() {\n\
-  for( var i=0; i<4; i++) {\n\
-    forward( 100)\n\
-    turn( 90)\n\
-  }\n\
-}\n\
-\n\
-// change the following to map different functions to the demo function\n\
-demo = hi\n\
 '
 gosper_curve ='\
 // Gosper Curve -- draw a space filling curve named after Bill Gosper\n\
@@ -3728,8 +4293,8 @@ function demo () {\n\
   delayedHilbert()\n\
 }\n\
 '
-hirschhorn_rotational_symmetry_pentagonal_tiling ='\
-// Hirshhorn -- Hirchshorn 6-fold-rotational symmetry pentagonal tiling\n\
+hirschhorn_tiles ='\
+// Hircshhorn Tiles -- Hirschhorn 6-fold-rotational symmetry pentagonal tiling\n\
 \n\
 \n\
 // CONSTRAINTS\n\
@@ -5914,7 +6479,7 @@ function demo() {\n\
   kochSnowflakeDelay();\n\
 }\n\
 '
-kochTrianglesStacked ='\
+koch_triangles_stacked ='\
 // Koch Snowflakes, Stacked -- draw an set of stacked Koch snowflakes\n\
 \n\
 \n\
@@ -5954,6 +6519,868 @@ function demo() {\n\
   for (var i=0; i<6; i++) {\n\
     kochSnowflake( size*(i+1)*(i+1), i)\n\
   }\n\
+}\n\
+'
+life ='\
+// life -- Conway\'s game of life\n\
+columns = 16\n\
+rows = 16\n\
+\n\
+\n\
+dotSize = 6\n\
+dotGap = 4\n\
+columnSize = 2 * dotSize + dotGap\n\
+rowSize = 2 * dotSize + dotGap\n\
+columnMid = columns/2 * columnSize\n\
+rowMid = rows/2 * rowSize\n\
+\n\
+\n\
+var grid = [ [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0],\n\
+             [0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0]\n\
+]\n\
+\n\
+var grid2 = Array( rows * columns)\n\
+\n\
+function drawGrid( grid) {\n\
+  for (r=0; r < rows; r++) {\n\
+    for ( c=0; c < columns; c++) {\n\
+       //write( r + " " + c)\n\
+       goto ( c * columnSize - columnMid, r * rowSize - rowMid)\n\
+       if (grid [r][c]) {\n\
+         color( "red")\n\
+       } else {\n\
+         color( "lightpink")\n\
+       }\n\
+       dot( dotSize)\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+function drawGrid2( grid) {\n\
+  for (r=0; r < rows; r++) {\n\
+    for ( c=0; c < columns; c++) {\n\
+       goto ( columnMid - c * columnSize , rowMid - r * rowSize)\n\
+       if (grid [r * columns + c]) {\n\
+         color( "red")\n\
+       } else {\n\
+         color( "lightgray")\n\
+       }\n\
+       dot( dotSize)\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+function loadPattern( pattern) {\n\
+  for (r=0; r < rows; r++) {\n\
+    mask = 0b1000000000000000\n\
+    for ( c=0; c < columns; c++) {\n\
+      grid [r][c] = pattern [r] & mask\n\
+      mask = mask >> 1 \n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+function loadPattern2( pattern) {\n\
+  for (r=0; r < rows; r++) {\n\
+    mask = 0b00000000000000001\n\
+    for ( c=0; c < columns; c++) {\n\
+      if (pattern[ r] & mask) {\n\
+        grid [r * columns + c] = true\n\
+      } else {\n\
+        grid [r * columns + c] = false\n\
+      }\n\
+      mask = mask << 1 \n\
+    }\n\
+  }\n\
+}\n\
+\n\
+function generation2( currentGrid) {\n\
+  var nextGrid = Array(rows*columns)\n\
+  for (r=0; r < rows; r++) {\n\
+    for ( c=0; c < columns; c++) {\n\
+      var cell = r * columns + c\n\
+      count = neighborCount2( currentGrid, cell)\n\
+      //console.log ("row:" + r + " col:" + c + " count:" + count)\n\
+      if (currentGrid[ cell]) { //alive\n\
+        if (count == 2 || count == 3) {\n\
+           nextGrid[ cell] = true\n\
+        } else {\n\
+           nextGrid[ cell] = false\n\
+        }\n\
+      } else { // vacant\n\
+        if ( count == 3) {\n\
+           nextGrid[ cell] = true\n\
+        } else {\n\
+           nextGrid[ cell] = false\n\
+        }\n\
+      }\n\
+    }\n\
+  }\n\
+  for (r=0; r < rows; r++) {\n\
+    for ( c=0; c < columns; c++) {\n\
+      cell = r * columns + c\n\
+      currentGrid [ cell] = nextGrid[ cell]\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+\n\
+function neighborCount( grid, cell) {\n\
+  var r = cell / columns\n\
+  var c = cell % columns\n\
+  var count = 0\n\
+  if (r > 0) {\n\
+    if ( c>0 && grid[r-1, c-1]) {\n\
+      count = count + 1\n\
+    }\n\
+    if ( grid[r-1, c]) {\n\
+      count = count + 1\n\
+    }\n\
+    if ( c<columns-1 && grid[r-1, c+1]) {\n\
+      count = count + 1\n\
+    }\n\
+  }\n\
+  if ( c>0 && grid[r, c-1]) {\n\
+    count = count + 1\n\
+  }\n\
+  if ( c<columns-1 && grid[r, c+1]) {\n\
+    count = count + 1\n\
+  }\n\
+  if (r < rows-1) {\n\
+    if ( c>0 && grid[r+1, c-1]) {\n\
+      count = count + 1\n\
+    }\n\
+    if ( grid[r+1, c]) {\n\
+      count = count + 1\n\
+    }\n\
+    if ( c<columns-1 && grid[r+1, c+1]) {\n\
+      count = count + 1\n\
+    }\n\
+  }\n\
+  return count\n\
+}\n\
+\n\
+\n\
+function neighborCount2( grid, cell) {\n\
+  var r = Math.floor(cell / columns)\n\
+  var c = cell % columns\n\
+  var count = 0\n\
+  if ( r>0) {\n\
+    if ( c>0 && grid[(r-1)*columns + c-1]) {\n\
+      count = count + 1\n\
+      //console.log("NW " + r + "," + c)\n\
+    }\n\
+    if ( grid[(r-1)*columns + c]) {\n\
+      count = count + 1\n\
+      //console.log("N " + r + "," + c)\n\
+    }\n\
+    if ( c<columns-1 && grid[(r-1)*columns + c+1]) {\n\
+      count = count + 1\n\
+      //console.log("NE " + r + "," + c)\n\
+    }\n\
+  }\n\
+  if ( c>0 && grid[r*columns + c-1]) {\n\
+    count = count + 1\n\
+    //console.log("W " + r + "," + c)\n\
+  }\n\
+  if ( c<columns-1 && grid[r*columns + c+1]) {\n\
+    count = count + 1\n\
+    //console.log("E " + r + "," + c)\n\
+  }\n\
+  if (r < rows-1) {\n\
+    if ( c>0 && grid[(r+1) * columns + c-1]) {\n\
+      count = count + 1\n\
+      //console.log("SW " + r + "," + c)\n\
+    }\n\
+    if ( grid[(r+1) * columns + c]) {\n\
+      count = count + 1\n\
+      //console.log("S " + r + "," + c)\n\
+    }\n\
+    if ( c<columns-1 && grid[(r+1) * columns + c+1]) {\n\
+      count = count + 1\n\
+      //console.log("SE " + r + "," + c)\n\
+    }\n\
+  }\n\
+  return count\n\
+}\n\
+\n\
+var past = [ Array( rows*columns).fill(false),\n\
+             Array( rows*columns).fill(false),\n\
+             Array( rows*columns).fill(false)\n\
+           ]\n\
+var numPast = past.length\n\
+\n\
+var lastPast = 0\n\
+var oscillatingCount = 0\n\
+var oscillatingPast\n\
+var oscillatingDuration = 3 // how many oscillations are visible before stopping\n\
+\n\
+function endTest (grid) {\n\
+  // return true if stable or oscillating\n\
+  var stable = true\n\
+  var oscillating2 = true\n\
+  var oscillating3 = true\n\
+  var oscillating = false\n\
+  for (i = grid.length - 1; i>=0; i= i-1) {\n\
+    // is the pattern stable?\n\
+    if (grid[i] != past[lastPast] [i]) {\n\
+       stable = false\n\
+    }\n\
+\n\
+    // is the pattern on period = 2?\n\
+    if (grid[i] != past[(lastPast + numPast -1) % numPast][i]) {\n\
+       oscillating2 = false\n\
+    }\n\
+    // is the pattern on period = 3?\n\
+    if (grid[i] != past[(lastPast + numPast -2) % numPast][i]) {\n\
+       oscillating3 = false\n\
+    }\n\
+    past[(lastPast+1) % numPast][i] = grid[i]\n\
+  }\n\
+  if (oscillating2 || oscillating3) {\n\
+    if (oscillatingCount == 0) { // first oscillation detected\n\
+      oscillatingCount = oscillatingDuration\n\
+      oscillatingPast = lastPast\n\
+    } else {\n\
+      if (lastPast == oscillatingPast) {\n\
+        oscillatingCount = oscillatingCount - 1\n\
+        if (oscillatingCount == 0) {\n\
+          oscillating = true\n\
+        }\n\
+      }\n\
+    }\n\
+  }\n\
+  lastPast = (lastPast+1) % numPast\n\
+  //console.log( "stable:" + stable + " oscil2:" + oscillating2 + " oscil3:" + oscillating3+ " lastPast:" + lastPast)\n\
+  return ( stable || oscillating)\n\
+}\n\
+\n\
+\n\
+// in the following patterns, the left most bit\n\
+// is taken to be the highest bit. There is one\n\
+// number per row (for up to 32 bits).\n\
+var trafficLight = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000000000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0000001110000000, //05\n\
+  0b0000000000000000, //06\n\
+  0b0000100000100000, //07\n\
+  0b0000100000100000, //08\n\
+  0b0000100000100000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000001110000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+var greaterThan = [\n\
+  //5432109876543210\n\
+  0b1000000000000000, //00\n\
+  0b0100000000000000, //01\n\
+  0b0010000000000000, //02\n\
+  0b0001000000000000, //03\n\
+  0b0000100000000000, //04\n\
+  0b0000010000000000, //05\n\
+  0b0000001000000000, //06\n\
+  0b0000000100000000, //07\n\
+  0b0000000100000000, //08\n\
+  0b0000001000000000, //09\n\
+  0b0000010000000000, //10\n\
+  0b0000100000000000, //11\n\
+  0b0001000000000000, //12\n\
+  0b0010000000000000, //13\n\
+  0b0100000000000000, //14\n\
+  0b1000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var pulsar = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000111000111000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0010000101000010, //04\n\
+  0b0010000101000010, //05\n\
+  0b0010000101000010, //06\n\
+  0b0000111000111000, //07\n\
+  0b0000000000000000, //08\n\
+  0b0000111000111000, //09\n\
+  0b0010000101000010, //10\n\
+  0b0010000101000010, //11\n\
+  0b0010000101000010, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000111000111000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var glider = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000000000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0000000000000000, //05\n\
+  0b0000000000000000, //06\n\
+  0b0000000000000000, //07\n\
+  0b0000000000000000, //08\n\
+  0b0000000000000000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b1110000000000000, //13\n\
+  0b0010000000000000, //14\n\
+  0b0100000000000000  //15\n\
+]\n\
+\n\
+\n\
+var glider2 = [\n\
+  //5432109876543210\n\
+  0b0100000000000010, //00\n\
+  0b0010000000000100, //01\n\
+  0b1110000000000111, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0000000000000000, //05\n\
+  0b0000000000000000, //06\n\
+  0b0000000000000000, //07\n\
+  0b0000000000000000, //08\n\
+  0b0000000000000000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b1110000000000111, //13\n\
+  0b0010000000000100, //14\n\
+  0b0100000000000010  //15\n\
+]\n\
+\n\
+\n\
+var lwss = [ // light weight space ship\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000000000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0111100000000000, //05\n\
+  0b1000100000000000, //06\n\
+  0b0000100000000000, //07\n\
+  0b1001000000000000, //08\n\
+  0b0000000000000000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var lwss2 = [ // light weight space ship\n\
+  //5432109876543210\n\
+  0b1010000000001001, //00\n\
+  0b0001000000010000, //01\n\
+  0b0001000000010001, //02\n\
+  0b1001000000011110, //03\n\
+  0b0111000000000000, //04\n\
+  0b0000000000000000, //05\n\
+  0b0000000000000000, //06\n\
+  0b0000000000000000, //07\n\
+  0b0000000000000000, //08\n\
+  0b0000000000000000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000001110, //11\n\
+  0b0111100000001001, //12\n\
+  0b1000100000001000, //13\n\
+  0b0000100000001000, //14\n\
+  0b1001000000000101, //15\n\
+]\n\
+\n\
+var beacons = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //00\n\
+  0b0001100000110000, //01\n\
+  0b0001100000110000, //02\n\
+  0b0000011011000000, //03\n\
+  0b0000011011000000, //04\n\
+  0b0000000000000000, //05\n\
+  0b0000011011000000, //06\n\
+  0b0000011011000000, //07\n\
+  0b0001100000110000, //08\n\
+  0b0001100000110000, //09\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var pentathalon = [\n\
+  //5432109876543210\n\
+  0b0000000010000000, //00\n\
+  0b0000000010000000, //01\n\
+  0b0000000111000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0000000111000000, //05\n\
+  0b0000000010000000, //06\n\
+  0b0000000010000000, //07\n\
+  0b0000000010000000, //08\n\
+  0b0000000010000000, //09\n\
+  0b0000000111000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000111000000, //13\n\
+  0b0000000010000000, //14\n\
+  0b0000000010000000  //15\n\
+]\n\
+\n\
+\n\
+var mwss = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000000000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0000100000000000, //05\n\
+  0b0010001000000000, //06\n\
+  0b0000000100000000, //07\n\
+  0b0010000100000000, //08\n\
+  0b0001111100000000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var hwss = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000000000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0000110000000000, //05\n\
+  0b0010000100000000, //06\n\
+  0b0000000010000000, //07\n\
+  0b0010000010000000, //08\n\
+  0b0001111110000000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var oscillator14 = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000011100000, //02\n\
+  0b0000000111100000, //03\n\
+  0b1100001100011110, //04\n\
+  0b1100011001101110, //05\n\
+  0b0000000111100000, //06\n\
+  0b0000000000000000, //07\n\
+  0b0000000000000000, //08\n\
+  0b0000000000000000, //09\n\
+  0b0000000111100000, //10\n\
+  0b1100011001101110, //11\n\
+  0b1100001100011110, //12\n\
+  0b0000000111100000, //13\n\
+  0b0000000011100000, //14\n\
+  0b0000000000000000, //15\n\
+]\n\
+\n\
+\n\
+var tumbler = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000000000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000001000100000, //04\n\
+  0b0000001101100000, //05\n\
+  0b0000000101000000, //06\n\
+  0b0000010101010000, //07\n\
+  0b0000011000110000, //08\n\
+  0b0000001000100000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var unix = [ // period 6 oscillator\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000000000000, //02\n\
+  0b0000011000000000, //03\n\
+  0b0000011000000000, //04\n\
+  0b0000000000000000, //05\n\
+  0b0000000000000000, //06\n\
+  0b0000111000000000, //07\n\
+  0b0000110100110000, //08\n\
+  0b0000001100110000, //09\n\
+  0b0000001100000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+\n\
+var greatOnOff = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000011000000000, //02\n\
+  0b0000100100000000, //03\n\
+  0b0000101100000000, //04\n\
+  0b0001101011000000, //05\n\
+  0b0000000110100000, //06\n\
+  0b0000000000100000, //07\n\
+  0b0000000111000000, //08\n\
+  0b0000000100000000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var birther = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b1100000000000000, //01\n\
+  0b1100000000000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0001000000000000, //05\n\
+  0b1111100000000000, //06\n\
+  0b0000010000000000, //07\n\
+  0b0001100000000000, //08\n\
+  0b0011000000000000, //09\n\
+  0b0100000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var blank = [\n\
+  //5432109876543210\n\
+  0b0000000000000000, //00\n\
+  0b0000000000000000, //01\n\
+  0b0000000000000000, //02\n\
+  0b0000000000000000, //03\n\
+  0b0000000000000000, //04\n\
+  0b0000000000000000, //05\n\
+  0b0000000000000000, //06\n\
+  0b0000000000000000, //07\n\
+  0b0000000000000000, //08\n\
+  0b0000000000000000, //09\n\
+  0b0000000000000000, //10\n\
+  0b0000000000000000, //11\n\
+  0b0000000000000000, //12\n\
+  0b0000000000000000, //13\n\
+  0b0000000000000000, //14\n\
+  0b0000000000000000  //15\n\
+]\n\
+\n\
+\n\
+var gen\n\
+var numDemos = 16\n\
+var demoNumber\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  hideTurtle()\n\
+  demoNumber = 0\n\
+  gen = 10000000\n\
+  nextGen()\n\
+}\n\
+\n\
+function nextGen() {\n\
+  gen = gen + 1\n\
+  if (gen < 500 && !endTest(grid)) {\n\
+    generation2( grid)\n\
+    drawGrid2( grid)\n\
+    delay (nextGen, 100)\n\
+  } else {\n\
+    switch (demoNumber) {\n\
+    case 0:\n\
+      loadPattern2(birther)\n\
+      break\n\
+    case 15:\n\
+      loadPattern2(greatOnOff)\n\
+      break\n\
+    case 14:\n\
+      loadPattern2(unix)\n\
+      break\n\
+    case 13:\n\
+      loadPattern2(tumbler)\n\
+      break\n\
+    case 12:\n\
+      loadPattern2(oscillator14)\n\
+      break\n\
+    case 11:\n\
+      loadPattern2(hwss)\n\
+      break\n\
+    case 10:\n\
+      loadPattern2(mwss)\n\
+      break\n\
+    case 9:\n\
+      loadPattern2(trafficLight)\n\
+      break\n\
+    case 1:\n\
+      loadPattern2(beacons)\n\
+      break\n\
+    case 2:\n\
+      loadPattern2(glider)\n\
+      break\n\
+    case 3:\n\
+      loadPattern2(glider2)\n\
+      break\n\
+    case 4:\n\
+      loadPattern2(lwss)\n\
+      break\n\
+    case 5:\n\
+      loadPattern2(lwss2)\n\
+      break\n\
+    case 6:\n\
+      loadPattern2(pulsar)\n\
+      break\n\
+    case 7:\n\
+      loadPattern2(greaterThan)\n\
+      break\n\
+    case 8:\n\
+      loadPattern2(pentathalon)\n\
+      break\n\
+    default:\n\
+      loadPattern2(greaterThan)\n\
+      break\n\
+    }\n\
+    demoNumber = (demoNumber +1) % numDemos\n\
+    drawGrid2( grid)\n\
+    gen = 0\n\
+    delay (nextGen, 500)\n\
+  }\n\
+}\n\
+'
+miura_origami ='\
+// Miura Origami -- fold pattern for the miura origami\n\
+\n\
+function horiz( size){\n\
+  hy = maxY()\n\
+  while (hy > minY()) {\n\
+    goto (minX(), hy)\n\
+    angle(90)\n\
+    forward( 2*maxX())\n\
+    hy = hy - size\n\
+  } \n\
+}\n\
+\n\
+function vert( size) {\n\
+  vx = minX()\n\
+  while ( vx < maxX()) {\n\
+    vy = maxY()\n\
+    while (vy > minY()) {\n\
+      goto( vx, vy)\n\
+      angle( 180 - 6)\n\
+      forward( size * Math.cos( degToRad(6)))\n\
+      right( 12)\n\
+      forward( size * Math.cos( degToRad(6)))\n\
+      vy = vy - 2 * size\n\
+\n\
+    }\n\
+    vx = vx + size\n\
+  }\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap( false)\n\
+  size = 100\n\
+  horiz( size)\n\
+  vert( size)\n\
+}\n\
+'
+mountain_tessellation ='\
+// Mountain Tessellation -- tessellation with a mountain shaped heptiamond\n\
+// a heptiamond is a shape composed of 7 equalateral triangles\n\
+//\n\
+//\n\
+//// Triangle Tessellation -- tile a space using triangles\n\
+\n\
+colors = ["red", "white", "blue", "yellow", "green"]\n\
+\n\
+function shapeUp (side, fillColor) {\n\
+  // assume pointing in direction of base\n\
+  beginShape()\n\
+  forward(3* side)\n\
+  left(120)\n\
+  forward(2*side)\n\
+  left( 120)\n\
+  forward(side)\n\
+  right( 120)\n\
+  forward( side)\n\
+  left( 120)\n\
+  forward( 2*side)\n\
+  left(120)\n\
+  fillShape( fillColor)\n\
+}\n\
+\n\
+function mountainUnit(side){\n\
+  pendown()\n\
+  shapeUp(side, "darkgreen")//1,1\n\
+  penup()\n\
+  left(60)\n\
+  forward(side)\n\
+  right(60)\n\
+  forward(5*side)\n\
+  right(180)\n\
+  pendown()\n\
+  shapeUp(side, "skyblue")//1,0\n\
+  penup()\n\
+\n\
+  forward(3*side)\n\
+  left(180)\n\
+  pendown()\n\
+  shapeUp(side, "green") //0,0\n\
+\n\
+  penup()\n\
+  left(60)\n\
+  forward(2*side)\n\
+  left(120)\n\
+  pendown()\n\
+  shapeUp(side, "lightblue")//0,1\n\
+  forward( 3*side)\n\
+  left( 180)\n\
+  penup()\n\
+\n\
+}\n\
+\n\
+// nextColor could be completely random, if desired\n\
+function nextColor() {\n\
+  c = colors[ count % color.length]\n\
+  count = count + 1\n\
+  return c\n\
+}\n\
+\n\
+\n\
+function newRow(lastx, lasty) {\n\
+  // function to determine where the new row should start\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  side = 20\n\
+  rowx = minX() - side // - 5.5 * side\n\
+  rowy = minY()// +2*side\n\
+  right(90)\n\
+  mx = rowx\n\
+  my = rowy\n\
+\n\
+console.log("xy<: " + minX() + " " + minY())\n\
+  // row until run off bottom or off right side\n\
+  // column when end is off screen\n\
+\n\
+  // while ( x<maxX() && y>minY()) {\n\
+  var done = false\n\
+  var i = 0\n\
+  var sqrt3 = Math.sqrt(3)\n\
+  while (!done){\n\
+console.log("xy: " + i + " " + mx + " " + my)\n\
+    goto (mx, my)\n\
+    mountainUnit( side)\n\
+    //goto (mx+2.2*side, my+1*sqrt3*side)\n\
+    //write(i)\n\
+    \n\
+    mx = mx + 4.5 * side\n\
+    my = my -sqrt3/2 * side\n\
+\n\
+    if (mx > maxX() || my < (minY() - 1.5 * sqrt3 * side)) {\n\
+      console.log( "New row")\n\
+      if (my > maxY()) {\n\
+        done = true\n\
+      }\n\
+      // move up one row\n\
+      rowx = rowx + 0.5 * side\n\
+      rowy = rowy + 1.5 * sqrt3 * side\n\
+      if (rowy > maxY() + sqrt3 * side) {\n\
+        while (rowy> maxY() + sqrt3 * side) {\n\
+          // step forward one more unit\n\
+           console.log( "Stepping forward one")\n\
+           rowx = rowx + 4.5 * side\n\
+           rowy = rowy - sqrt3/2 * side\n\
+        }\n\
+      } else if (rowx > minX() - 1 * side) {\n\
+         console.log( "Backing up one")\n\
+         // back up one more unit\n\
+         rowx = rowx - 4.5 * side\n\
+         rowy = rowy + sqrt3/2 * side\n\
+      }\n\
+      mx = rowx\n\
+      my = rowy\n\
+      //done = true\n\
+    }\n\
+    if (i> 75) {\n\
+      done = true\n\
+    }\n\
+    if ( mx>maxX() + 500  && my>maxY()) {\n\
+      done = true\n\
+    }\n\
+    i++\n\
+  }\n\
+  console.log("Count: " + --i)\n\
+\n\
 }\n\
 '
 naifeh_ajlun ='\
@@ -6362,6 +7789,7 @@ function mizen( side, lColor, fColor) {\n\
   color(lColor)\n\
   right(120)\n\
   for (var i=0; i<6; i++) {\n\
+    pendown()\n\
     v( side, fColor)\n\
     penup()\n\
     right(30)\n\
@@ -6391,14 +7819,8 @@ function mizen( side, lColor, fColor) {\n\
 \n\
 \n\
 \n\
-function demo() {\n\
-  reset()\n\
-  //center canvas more or less\n\
-  side = 10 // 1/2 basic face of hexagon, width...\n\
-  side = .08 * Math.min( maxX(), maxY())\n\
+function mizen6(side) {\n\
   penup()\n\
-  goto (-8*side, 9*side)\n\
-  //angle(120)\n\
   for (var j=0; j<6; j++) {\n\
     mx = turtle.pos.x\n\
     my = turtle.pos.y\n\
@@ -6420,7 +7842,16 @@ function demo() {\n\
     right(90)\n\
     pendown()\n\
   }\n\
-  //hideturtle()\n\
+  hideturtle()\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  side = .08 * Math.min( maxX(), maxY())\n\
+  //center canvas more or less\n\
+  goto (-8*side, 9*side)\n\
+  mizen6( side)\n\
 }\n\
 '
 naifeh_mizen ='\
@@ -6485,26 +7916,30 @@ function mizen( side, lColor, fColor) {\n\
 }\n\
 \n\
 \n\
-function demo() {\n\
-  reset()\n\
-  wrap(false)\n\
-  side = 40 // 1/2 basic face of hexagon, width...\n\
-  side = .15 * Math.min( maxX(), maxY())\n\
+function mizenSimple() {\n\
   bColor = "red"\n\
   lColor = "white"\n\
-  width (3)\n\
+  background ("tan")\n\
 \n\
   //center canvas more or less\n\
   goto(-5*side, 3.5*side)\n\
+  width (1)\n\
   angle(0)\n\
   mizen( side, "black", "red")\n\
 \n\
   // do again to make lines stand out\n\
   goto(-5*side, 3.5*side)\n\
+  width (3)\n\
   angle(0)\n\
   mizen( side, "white", "")\n\
+}\n\
 \n\
-\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  side = 40 // 1/2 basic face of hexagon, width...\n\
+  side = .15 * Math.min( maxX(), maxY())\n\
+  mizenSimple()\n\
   hideturtle()\n\
 }\n\
 '
@@ -6882,6 +8317,146 @@ function demo() {\n\
   animate( function () { nestedSquares(number)} ,200);\n\
 }\n\
 '
+pentahex ='\
+// Pentahex -- game pieces consisting of five hexagons in a 10x11 field\n\
+\n\
+// This sets up a pseudo interpreter. Each move is a right (r) or left (l)\n\
+// token. Each piece consists of a set of such moves to from the outline\n\
+// of the piece.\n\
+\n\
+function r() {\n\
+  forward( side)\n\
+  right( 60)\n\
+}\n\
+\n\
+function l() {\n\
+  forward( side)\n\
+  left( 60)\n\
+}\n\
+\n\
+  I5=[l,l,r,l,r,l,r,l,r,l,l,l,l,r,l,r,l,r,l,r,l,l]\n\
+  D5=[l,l,r,l,r,l,l,l,r,l,l,r,l,l,r,l]\n\
+  T5=[l,l,r,r,l,r,l,l,l,l,r,r,l,l,l,r,l,r,l,l]\n\
+  N5=[l,l,r,r,l,l,r,l,r,l,l,l,l,r,l,r,r,l,l,r,l,l]\n\
+  P5=[l,l,r,l,r,r,l,l,l,r,l,l,l,r,l,r,l,r,l,l]\n\
+  E5=[l,l,r,r,l,l,l,r,r,l,l,l,l,r,l,r,l,r,l,l]\n\
+  G5=[l,l,r,r,l,l,r,l,l,r,l,l,l,l,r,r,r,l,l,r,l,l]\n\
+  A5=[l,r,l,l,l,r,r,l,l,l,l,r,r,l,l,l,r,l]\n\
+  J5=[l,r,l,l,r,l,r,l,r,l,l,l,l,r,l,r,l,r,r,l,l,l]\n\
+  Y5=[l,l,r,l,r,r,l,l,l,l,r,r,l,l,l,l,r,r,l,r,l,l]\n\
+  X5=[l,l,r,r,l,l,l,r,l,l,l,r,r,l,l,l,r,l]\n\
+  y5=[l,l,r,r,l,l,l,l,r,r,r,l,l,l,l,r,l,l,r,r,l,l]\n\
+  u5=[l,l,r,l,r,l,l,r,l,l,l,l,r,r,r,l,l,l,r,l]\n\
+  V5=[l,l,r,l,r,l,l,l,l,r,r,r,l,l,l,l,r,l,r,l]\n\
+  U5=[l,r,l,l,r,l,l,l,l,r,r,r,r,l,l,l,l,r,l,l,r,l]\n\
+  C5=[l,l,l,r,r,l,r,r,l,l,l,l,r,l,l,r,l,r,l,l,r,l]\n\
+  q5=[l,l,r,r,l,r,l,l,l,r,l,l,l,r,r,l,l,r,l,l]\n\
+  r5=[l,l,r,l,r,r,r,l,l,l,l,r,l,l,r,l,l,r,l,r,l,l]\n\
+  L5=[l,r,l,r,l,l,l,l,r,l,r,r,l,r,l,l,l,l,r,l,r,l]\n\
+  W5=[l,l,r,r,l,l,r,r,l,l,l,l,r,l,l,r,r,l,l,r,l,l]\n\
+  S5=[l,l,l,r,r,l,r,l,l,r,l,l,l,l,r,r,l,r,l,l,r,l]\n\
+  p5=[l,l,r,l,r,l,l,r,l,l,l,r,l,l,r,r,l,l]\n\
+\n\
+function shape( bx, by, axis, turns, fillColor ) {\n\
+  // draw a shape at board position bx, by, with the piece oriented\n\
+  // on one of six axises. The shape consists of an array of turns.\n\
+  penup()\n\
+  goto( baseX, baseY)\n\
+  angle(0)\n\
+  forward( 2* by * side * Math.cos(degToRad(30)))\n\
+  right(60)\n\
+  forward( 2* bx * side * Math.cos(degToRad(30)))\n\
+  penup()\n\
+  dot()  //center of start cell\n\
+  angle(60 * axis )\n\
+  left( 180 - 30)\n\
+  forward( side)\n\
+  left (120) \n\
+  pendown()\n\
+  beginShape()\n\
+  for (j=0; j< turns.length; j++) {\n\
+    turns[j]()\n\
+  }\n\
+  fillShape( fillColor)\n\
+  penup()\n\
+\n\
+  left( 60)\n\
+  forward(side)\n\
+  dot()\n\
+  backward(side)\n\
+  right( 60)\n\
+\n\
+// return to the start position, not really necessary\n\
+  left(60)\n\
+  forward( side)\n\
+  left( 30)\n\
+}\n\
+\n\
+function drawAll() {\n\
+  reset()\n\
+  side = 15\n\
+  baseX = -200\n\
+  baseY = -200\n\
+\n\
+  shape(0,0,0,D5)\n\
+  shape(3,0,0,u5)\n\
+  shape(6,0,0,V5)\n\
+  shape(9,0,0,r5)\n\
+  shape(12,0,0,y5)\n\
+  shape(15,0,0,L5)\n\
+  shape(0,4,0,U5)\n\
+  shape(3,4,0,Y5)\n\
+  shape(6,4,0,p5)\n\
+  shape(9,4,0,C5)\n\
+  shape(12,4,0,A5)\n\
+  shape(15,4,0,J5)\n\
+  shape(0,7,0,I5)\n\
+  shape(3,8,0,T5)\n\
+  shape(6,8,0,N5)\n\
+  shape(9,8,0,P5)\n\
+  shape(12,8,0,G5)\n\
+  shape(15,8,0,E5)\n\
+  shape(0,12,0,S5)\n\
+  shape(3,12,0,q5)\n\
+  shape(6,12,0,W5)\n\
+  shape(9,12,0,X5)\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  hideTurtle()\n\
+\n\
+  side =   Math.min( 2*maxX()/ 12/ 1.5, 2*maxY()/ 16/ Math.sqrt(3))\n\
+  //side = 20\n\
+\n\
+  baseX = -5 * 1.5 * side\n\
+  baseY = -7 * Math.sqrt(3) * side\n\
+\n\
+  shape(0,2,3,D5, "red")\n\
+  shape(2,0,1,u5, "lightgreen")\n\
+  shape(5,0,1,V5, "blue")\n\
+  shape(10,0,4,r5, "yellow")\n\
+  shape(3,1,5,y5, "blue")\n\
+  shape(10,1,5,L5, "red")\n\
+  shape(5,3,3,U5, "red")\n\
+  shape(3,2,0,Y5, "yellow")\n\
+  shape(1,3,0,X5, "lightgreen")\n\
+  shape(0,5,0,W5, "red")\n\
+  shape(9,2,4,q5, "blue")\n\
+  shape(5,4,5,p5, "lightgreen")\n\
+  shape(9,3,5,S5, "yellow")\n\
+  shape(10,5,4,C5, "lightgreen")\n\
+  shape(8,6,1,A5, "yellow")\n\
+  shape(8,5,4,J5, "red")\n\
+  shape(3,7,1,I5, "blue")\n\
+  shape(0,7,0,T5, "yellow")\n\
+  shape(1,9,1,N5, "lightgreen")\n\
+  shape(3,9,1,P5, "yellow")\n\
+  shape(7,8,1,G5, "red")\n\
+  shape(7,9,1,E5, "blue")\n\
+}\n\
+'
 polygon ='\
 // Polygon -- draw a polygon of n sides of length m\n\
 \n\
@@ -6990,6 +8565,194 @@ function demo () {\n\
     goto (random( minX()+20, maxX()-20),random( minY()+20, maxY()-20));\n\
     color(random(16));\n\
     stickMan(random (30,60));\n\
+  }\n\
+}\n\
+'
+rhombic_star_tessellation ='\
+// Rhombic Star Tessellation -- a star tessellation using rhombus\n\
+\n\
+colors = ["red", "white", "blue", "yellow", "green"]\n\
+numColors = colors.length\n\
+\n\
+function rh(side, fillColor) {\n\
+  beginShape()\n\
+  forward( side)\n\
+  left( 45)\n\
+  forward( side)\n\
+  left( 180-45)\n\
+  forward( side)\n\
+  left( 45)\n\
+  forward( side)\n\
+  left( 180-45)\n\
+  fillShape(fillColor)\n\
+}\n\
+\n\
+function sideBySide( count, side, fillColor) {\n\
+  for( var j=0; j<count; j++) {\n\
+    pendown()\n\
+    rh( side, fillColor)\n\
+    penup()\n\
+    right( (180-45)/2)\n\
+    forward( 2* side * Math.sin( degToRad( 22.5)))\n\
+    left( ( 180-45)/2)\n\
+  }\n\
+  left( ( 180-45)/2 + 45)\n\
+  forward( 2 * count * side * Math.sin( degToRad( 22.5)))\n\
+  right( (180-45)/2)\n\
+}\n\
+\n\
+function cent(side, count) {\n\
+  for( var i=0; i<8; i++) { // draw the center\n\
+    rh( side, colors[0%numColors])\n\
+    left( 45)\n\
+  }\n\
+\n\
+  for( var i=0; i<8; i++) { // draw the second tier\n\
+    forward( side)\n\
+    rh( side, colors[1%numColors])\n\
+    right( 45)\n\
+    rh( side, colors[1%numColors])\n\
+    left(45)\n\
+    backward( side)\n\
+    left(45)\n\
+  }\n\
+\n\
+  for( var j=2; j<count; j++) { // draw the other tiers\n\
+    for( var i=0; i<8; i++) {\n\
+      forward( j*side)\n\
+      pendown()\n\
+      rh( side, colors[j%numColors])\n\
+      right( 45)\n\
+      sideBySide(j, side, colors[j%numColors])\n\
+      backward( j*side)\n\
+      left(45)\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+// nextColor could be completely random, if desired\n\
+function nextColor() { \n\
+  c = colors[ count % color.length]\n\
+  count = count + 1\n\
+  return c\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap(false)\n\
+  side = .075 * Math.min(maxX(), maxY())\n\
+  cent( side, 12)\n\
+  hideturtle()\n\
+}\n\
+'
+rice_penta_tessellation_1 ='\
+// rice penta tessellation 1 -- pentagon tessellation discovered by Margorie Rice\n\
+\n\
+c1 = "yellow"\n\
+c2 = "orange"\n\
+c3 = "red"\n\
+c4 = "blue"\n\
+c5 = "blue"\n\
+c6 = "red"\n\
+c7 = "yellow"\n\
+c8 = "orange"\n\
+\n\
+function pr(fill) {\n\
+  beginShape()\n\
+  forward(sidea)\n\
+  left(180-angleB)\n\
+  forward(sideb)\n\
+  left(180-angleC)\n\
+  forward(sidec)\n\
+  left(180-angleD)\n\
+  forward(sided)\n\
+  left(180-angleE)\n\
+  forward(sidee)\n\
+  left(180-angleA)\n\
+  fillShape(fill)\n\
+}\n\
+\n\
+function pl(fill) {\n\
+  beginShape()\n\
+  forward(sidea)\n\
+  right(180-angleB)\n\
+  forward(sideb)\n\
+  right(180-angleC)\n\
+  forward(sidec)\n\
+  right(180-angleD)\n\
+  forward(sided)\n\
+  right(180-angleE)\n\
+  forward(sidee)\n\
+  right(180-angleA)\n\
+  fillShape(fill)\n\
+}\n\
+\n\
+\n\
+function pu() { // penta unit\n\
+  pr(c1)\n\
+  pl(c2)\n\
+\n\
+  forward( 2*sidea)\n\
+  left(180)\n\
+  pr(c3)\n\
+  pl(c4)\n\
+\n\
+\n\
+  left( angleA)\n\
+  forward( sidee)\n\
+  left( 180 - angleC)\n\
+  forward( sideb)\n\
+  left( 180- angleB)\n\
+  forward( sidea)\n\
+  right(180)\n\
+\n\
+  pl(c5)\n\
+  pr(c6)\n\
+\n\
+  forward( 2 * sidea)\n\
+  right(180)\n\
+  pr(c7)\n\
+  pl(c8)\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap( false)\n\
+  size = 10\n\
+\n\
+  sidea = size\n\
+  sideb = 5.9 * size // fudging to make work\n\
+  sidec = 2.8 * size // fudging to make work\n\
+  sided = sidec\n\
+  sidee = 2 * sidec\n\
+  angleA = 120\n\
+  angleB = 90\n\
+  angleC = 120\n\
+  angleD = 90\n\
+  angleE = 120\n\
+  goto (minX(), maxY())\n\
+  goto (minX(),maxY())\n\
+  bigX = minX() + 2*size\n\
+  bigY = maxY()\n\
+  setHeading (44)\n\
+  while (turtle.pos.x < maxX()) {\n\
+    goto (bigX, bigY)\n\
+    while (turtle.pos.y > minY()-8*size) {\n\
+      pu()\n\
+      left( angleA)\n\
+      forward( sidee)\n\
+      right( 180 - angleE)\n\
+      forward( 2* sidec)\n\
+      left( 180 - angleE)\n\
+      forward( sidec)\n\
+      right( 180 - angleD)\n\
+      forward( sided)\n\
+      left( 180- angleA)\n\
+      forward( 2* sidea)\n\
+      right( 180)\n\
+    }\n\
+    bigX = bigX + 20.72 * size\n\
+    bigY = bigY + .4 * size\n\
   }\n\
 }\n\
 '
@@ -7313,6 +9076,833 @@ function demo() {\n\
   frameDelay = 1000;\n\
   frameNumber = 0;\n\
   frame();\n\
+}\n\
+'
+sliding_block ='\
+// sliding block puzzle -- animated solution to Square Root sliding block puzzle\n\
+// details of the moves are on the console.log\n\
+\n\
+var side\n\
+var baseX\n\
+var baseY\n\
+var count\n\
+\n\
+var e = "e"\n\
+var w = "w"\n\
+var n = "n"\n\
+var s = "s"\n\
+var ee = "ee"\n\
+var ww = "ww"\n\
+var nn = "nn"\n\
+var ss = "ss"\n\
+var ne = "ne"\n\
+var nw = "nw"\n\
+var se = "se"\n\
+var sw = "sw"\n\
+var en = "en"\n\
+var es = "es"\n\
+var wn = "wn"\n\
+var ws = "ws"\n\
+\n\
+/* valid moves for blocks\n\
+ * all tests include bounds test\n\
+ * 1x1\n\
+ *   if x-1 is free: w\n\
+ *   if x-1 and x-2 is free: ww\n\
+ *   if x-1 and y-1 is free: wn\n\
+ *   if x-1 and y+1 is free: ws\n\
+ *   if x+1 is free: e\n\
+ *   if x+1 and x+2 is free: ee\n\
+ *   if x+1 and y-1 is free: en\n\
+ *   if x+1 and y+1 is free: es\n\
+ *   if y-1 is free: n\n\
+ *   if y-1 and y-2 is free: nn\n\
+ *   if y-1 and x-1 is free: nw\n\
+ *   if y-1 and x+1 is free: ne\n\
+ *   if y+1 is free: s\n\
+ *   if y+1 and y+2 is free: ss\n\
+ *   if y+1 and x-1 is free: sw\n\
+ *   if y+1 and x+1 is free: se\n\
+ * 1x2\n\
+ *   if x-1 and x-1,y+1 is free: w\n\
+ *   if x+1 and x+1,y+1 is free: e\n\
+ *   if y+2 is free: s\n\
+ *   if y+2 and y+3 is free: ss\n\
+ *   if y-1 is free: n\n\
+ *   if y-1 and y-2 is free: nn\n\
+ * 2x1\n\
+ *   if x-1 is free: w\n\
+ *   if x-1 and x-2 is free: ww\n\
+ *   if x+2 is free: e\n\
+ *   if x+2 and x+3 is free: ee\n\
+ *   if y+1 and x+1,y+1 is free: s\n\
+ *   if y-1 and x+1,y-1 is free: n\n\
+ * 2x2\n\
+ *   if x-1 and x-1,y+1 is free: w\n\
+ *   if x+2 and x+2,y+1 is free: e\n\
+ *   if y+2 and x+1,y+2 is free: s\n\
+ *   if y-1 and x+1,y-1 is free: n\n\
+*/\n\
+blocks = [ {h:1, v:2, x:0, y:0},\n\
+           {h:2, v:2, x:1, y:0},\n\
+           {h:1, v:2, x:3, y:0},\n\
+           {h:2, v:1, x:0, y:2},\n\
+           {h:1, v:1, x:0, y:3},\n\
+           {h:1, v:1, x:0, y:4},\n\
+           {h:1, v:2, x:1, y:3},\n\
+           {h:1, v:2, x:2, y:3},\n\
+           {h:1, v:1, x:3, y:3},\n\
+           {h:1, v:1, x:3, y:4} ]\n\
+\n\
+function init () {\n\
+  side = .9 * 2* Math.min(maxX()/4, maxY()/5)\n\
+  baseX = -2 * side\n\
+  baseY = 2.5 * side\n\
+  count = 0\n\
+}\n\
+\n\
+function drawBlock( h, v, x, y, n) {\n\
+  //console.log("DB" + " " + h + " " + v + " " + x + " " + y)\n\
+  // draw a block\n\
+  color ("black")\n\
+  beginShape()\n\
+  goto (baseX + x * side, baseY - y * side)\n\
+  setHeading(90)\n\
+  forward( h * side)\n\
+  right( 90)\n\
+  forward( v * side)\n\
+  right( 90)\n\
+  forward( h * side)\n\
+  right( 90)\n\
+  forward( v * side)\n\
+  right( 90)\n\
+  fillShape("tan")\n\
+\n\
+  goto (baseX + (x + .5)*side, baseY -(y+.5) *side)\n\
+  write(n)\n\
+}\n\
+\n\
+\n\
+function moveBlock (blockIndex, x, y) {\n\
+  blocks[ blockIndex].x = x\n\
+  blocks[ blockIndex].y = y\n\
+  count = count + 1\n\
+}\n\
+\n\
+\n\
+function drag( blockIndex, dir) {\n\
+  //dir is a string of e, w, n, s\n\
+  var x = 0\n\
+  var y = 0\n\
+  for (ch in dir) {\n\
+    if (dir[ch] == "w") {\n\
+      x = x - 1\n\
+    } else if (dir[ch] == "e") {\n\
+      x = x + 1\n\
+    } else if (dir[ch] == "s") {\n\
+      y = y + 1\n\
+    } else if (dir[ch] == "n") {\n\
+      y = y - 1\n\
+    }\n\
+\n\
+    //console.log(dir[ch] + " " + x + "," + y)\n\
+  }\n\
+  blocks[ blockIndex].x = blocks[ blockIndex].x + x\n\
+  blocks[ blockIndex].y = blocks[ blockIndex].y + y\n\
+  count = count + 1\n\
+}\n\
+\n\
+function drawBlocks () {\n\
+  for (var block in blocks) {\n\
+    //console.log("dBs: " + block)\n\
+    drawBlock( blocks[ block].h, blocks[block].v, blocks[block].x, blocks[block].y, block)\n\
+  }\n\
+}\n\
+\n\
+\n\
+\n\
+var free = []\n\
+\n\
+function findFree() {\n\
+  // find the free spaces in the puzzle\n\
+  var x,y, v, h, block, overlap, freeList\n\
+\n\
+free = [[undefined, undefined, undefined, undefined],\n\
+        [undefined, undefined, undefined, undefined],\n\
+        [undefined, undefined, undefined, undefined],\n\
+        [undefined, undefined, undefined, undefined],\n\
+        [undefined, undefined, undefined, undefined]]\n\
+\n\
+  // mark the in use spaces\n\
+  overlap = false\n\
+  for (block in blocks) {\n\
+    x = blocks[block].x\n\
+    y = blocks[block].y\n\
+    v = blocks[block].v\n\
+    h = blocks[block].h\n\
+    //console.log( "X:"+x + " Y:"+y + " free:" + free[x][y])\n\
+    if (free[x][y] == undefined) {\n\
+      //console.log("unfreeing 00: " + x + " " + y + " " + block)\n\
+      free[x][y] = block\n\
+      // check for 2x1 or 2x2\n\
+      if (h == 2) {\n\
+        if (free[x+1][y] == undefined) {\n\
+      //console.log("unfreeing 10: " + x + " " + y + " " + block)\n\
+          free[x+1][y] = block\n\
+        } else {\n\
+          overlap = true\n\
+        }\n\
+      }\n\
+      // check for 1x2 or 2x2\n\
+      if (v == 2) {\n\
+        if (free[x][y+1] == undefined) {\n\
+      //console.log("unfreeing 01: " + x + " " + y + " " + block)\n\
+          free[x][y+1] = block\n\
+        } else {\n\
+          overlap = true\n\
+        }\n\
+      }\n\
+      // check for 2x2 specifically\n\
+      if (h == 2 && v == 2) {\n\
+        if (free[x+1][y+1] == undefined) {\n\
+      //console.log("unfreeing 11: " + x + " " + y + " " + block)\n\
+          free[x+1][y+1] = block\n\
+        } else {\n\
+          overlap = true\n\
+        }\n\
+      }\n\
+    } else {\n\
+      overlap = true\n\
+    }\n\
+    if (overlap) {\n\
+      console.log( "Block " + block + " is overlapping")\n\
+    }\n\
+  }\n\
+\n\
+  // find the free spaces\n\
+  freeList = []\n\
+  for( y=0; y<5; y = y+1) { \n\
+    for( x=0; x<4; x = x+1) {\n\
+      //console.log( "X:"+x + " Y:"+y + " Block:" + free[x][y])\n\
+      if (free[x][y] == undefined) { //free\n\
+        //freeList.push([x,y])\n\
+        //freeList.push({"x":x,"y":y})\n\
+        freeList.push(([x,y]))\n\
+      }\n\
+    }\n\
+  }\n\
+  if (freeList.length != 2) {\n\
+    console.log( "FreeList has wrong number of members: " + freeList.length)\n\
+  }\n\
+  //console.log( "FreeList:  " + freeList)\n\
+  //console.log( "FreeList0:  " + freeList[0])\n\
+  var freeStr = ""\n\
+  var lead = ""\n\
+  var freemember\n\
+  for (freemember in freeList) {\n\
+    freeStr = freeStr + lead + "[" +  freeList[freemember] + "]"\n\
+    lead = ","\n\
+  }\n\
+\n\
+  // log the blocks\n\
+  var logStr\n\
+  for( y=0; y<5; y = y+1) { \n\
+    logStr = y + ":"\n\
+    for( x=0; x<4; x = x+1) {\n\
+      if (free[x][y] == undefined) {\n\
+        logStr = logStr + " "\n\
+      } else {\n\
+        logStr = logStr + free[x][y]\n\
+      }\n\
+    }\n\
+    console.log( logStr)\n\
+  }\n\
+  console.log( "  FreeList: "+ freeStr)\n\
+}\n\
+\n\
+var moveList = []\n\
+\n\
+function checkMove( block, direction) {\n\
+  var found = false\n\
+  var index\n\
+  //if move is not on moveList\n\
+  for (index in moveList) {\n\
+    if (moveList[index][0] == block && moveList[index][1].localeCompare(direction)==0) {\n\
+      found = true\n\
+    }\n\
+  }\n\
+  if (!found) {\n\
+    console.log( "   ***Move is not on moveList***")\n\
+  }\n\
+}\n\
+ \n\
+\n\
+function checkLastMove( block, direction) {\n\
+  // check that the moveList includes the reciprocal of the last move\n\
+  var index\n\
+  var directions = direction.split("")\n\
+  var ripString = ""\n\
+  var found = false\n\
+  for (index in directions) {\n\
+    if (directions[index] == "e") { ripString = "w" + ripString } \n\
+    if (directions[index] == "w") { ripString = "e" + ripString } \n\
+    if (directions[index] == "n") { ripString = "s" + ripString } \n\
+    if (directions[index] == "s") { ripString = "n" + ripString }\n\
+  }\n\
+  for (index in moveList) {\n\
+    if (moveList[index][0] == block && moveList[index][1] == ripString) {\n\
+      found = true\n\
+    }\n\
+  }\n\
+  if (!found) {\n\
+    console.log( "   ***Reciprocal move to "+ block+direction + " is not on moveList***")\n\
+  }\n\
+}\n\
+\n\
+function findMoves() {\n\
+  // find the free spaces in the puzzle\n\
+  var x, y, v, h, block\n\
+\n\
+  moveList = []\n\
+\n\
+  for (block in blocks) {\n\
+    x = blocks[block].x\n\
+    y = blocks[block].y\n\
+    v = blocks[block].v //vertical size\n\
+    h = blocks[block].h //horizontal size\n\
+\n\
+    if (v == 1) {\n\
+      if (x>=1 && free[x-1][y] == undefined) {\n\
+        moveList.push([block,"w"])\n\
+        if (x>=2 && free[x-2][y] == undefined) {\n\
+            moveList.push([block,"ww"])\n\
+        } else if (h==1) {\n\
+          if ( y>=1 && free[x-1][y-1] == undefined) {\n\
+            moveList.push([block,"wn"])\n\
+          } else if (y<=3 && free[x-1][y+1] == undefined) {\n\
+            moveList.push([block,"ws"])\n\
+          }\n\
+        }\n\
+      }\n\
+      if (x+h<=3 && free[x+h][y] == undefined) {\n\
+        moveList.push([block,"e"])\n\
+        if (x+h+1<=3 && free[x+h+1][y] == undefined) {\n\
+            moveList.push([block,"ee"])\n\
+        } else if (h == 1) {\n\
+          if (y>=1 && x<=2 && free[x+1][y-1] == undefined) {\n\
+            moveList.push([block,"en"])\n\
+          } else if (y<=3 && x<=2 && free[x+1][y+1] == undefined) {\n\
+            moveList.push([block,"es"])\n\
+          }\n\
+        }\n\
+      }\n\
+    }\n\
+\n\
+    if (h == 1) {\n\
+      if (y>=1 && free[x][y-1] == undefined) {\n\
+        moveList.push([block,"n"])\n\
+        if (y>=2 && free[x][y-2] == undefined) {\n\
+            moveList.push([block,"nn"])\n\
+        }\n\
+        if (v == 1) {\n\
+          if (x>=1 && free[x-1][y-1] == undefined) {\n\
+            moveList.push([block,"nw"])\n\
+          } else if (x<=2 && free[x+1][y-1] == undefined) {\n\
+            moveList.push([block,"ne"])\n\
+          }\n\
+        }\n\
+      }\n\
+      if (y+v<=4 && free[x][y+v] == undefined) {\n\
+        moveList.push([block,"s"])\n\
+        if (y+v+1<=4 && free[x][y+v+1] == undefined) {\n\
+            moveList.push([block,"ss"])\n\
+        }\n\
+        if (v == 1) {\n\
+          if (x>=1 && free[x-1][y+1] == undefined) {\n\
+            moveList.push([block,"sw"])\n\
+          } else if (x<=2 && free[x+1][y+1] == undefined) {\n\
+            moveList.push([block,"se"])\n\
+          }\n\
+        }\n\
+      }\n\
+    }\n\
+\n\
+    if (v == 2) {\n\
+      if (x>=1 && free[x-1][y] == undefined && free[x-1][y+1] == undefined ) {\n\
+        moveList.push([block,"w"])\n\
+      } else if (x<=2 && free[x+h][y] == undefined && free[x+h][y+1] == undefined) {\n\
+        moveList.push([block,"e"])\n\
+      }\n\
+    }\n\
+\n\
+    if (h == 2) {\n\
+      if (y>=1 && free[x][y-1] == undefined && free[x+1][y-1] == undefined) {\n\
+        moveList.push([block,"n"])\n\
+      } else if (y+v<=4 && free[x][y+v] == undefined && free[x+1][y+v] == undefined) {\n\
+        moveList.push([block,"s"])\n\
+      }\n\
+    }\n\
+  }\n\
+\n\
+  //console.log("Moves: " + moveList)\n\
+  var moveStr = ""\n\
+  var lead = ""\n\
+  var index\n\
+  var possibleMoveCount = 0\n\
+  for (index in moveList) {\n\
+    moveStr = moveStr + lead +  moveList[index][0] +  moveList[index][1] \n\
+    if ( lastMove[0] == moveList[index][0]) { // tag reciprocal moves\n\
+      moveStr = moveStr + "*"\n\
+    } else {\n\
+      possibleMoveCount = possibleMoveCount + 1\n\
+    }\n\
+    lead = ", "\n\
+  }\n\
+  console.log( "  Moves: "+ moveStr)\n\
+  if (possibleMoveCount < 1) {\n\
+    console.log ("   ***There are not enough moves***")\n\
+  }\n\
+}\n\
+\n\
+\n\
+/* valid moves for blocks\n\
+ * all tests include bounds test\n\
+ * 1x1 -\n\
+ *   if x-1 is free: w\n\
+ *   if x-1 and x-2 is free: ww\n\
+ *   if x-1 and y-1 is free: wn\n\
+ *   if x-1 and y+1 is free: ws\n\
+ *   if x+1 is free: e\n\
+ *   if x+1 and x+2 is free: ee\n\
+ *   if x+1 and y-1 is free: en\n\
+ *   if x+1 and y+1 is free: es\n\
+ *   if y-1 is free: n\n\
+ *   if y-1 and y-2 is free: nn\n\
+ *   if y-1 and x-1 is free: nw\n\
+ *   if y-1 and x+1 is free: ne\n\
+ *   if y+1 is free: s\n\
+ *   if y+1 and y+2 is free: ss\n\
+ *   if y+1 and x-1 is free: sw\n\
+ *   if y+1 and x+1 is free: se\n\
+ * 1x2 |\n\
+ *   if x-1 and x-1,y+1 is free: w\n\
+ *   if x+1 and x+1,y+1 is free: e\n\
+ *   if y+2 is free: s\n\
+ *   if y+2 and y+3 is free: ss\n\
+ *   if y-1 is free: n\n\
+ *   if y-1 and y-2 is free: nn\n\
+ * 2x1 --\n\
+ *   if x-1 is free: w\n\
+ *   if x-1 and x-2 is free: ww\n\
+ *   if x+2 is free: e\n\
+ *   if x+2 and x+3 is free: ee\n\
+ *   if y+1 and x+1,y+1 is free: s\n\
+ *   if y-1 and x+1,y-1 is free: n\n\
+ * 2x2 ==\n\
+ *   if x-1 and x-1,y+1 is free: w\n\
+ *   if x+2 and x+2,y+1 is free: e\n\
+ *   if y+2 and x+1,y+2 is free: s\n\
+ *   if y-1 and x+1,y-1 is free: n\n\
+*/\n\
+\n\
+\n\
+function getState() {\n\
+  //returns a value that is the state of the puzzle\n\
+  //each piece is located with a 2-bit x and 3-bit y\n\
+  //1x2 and 1x1 pieces are deternined by left to right and top to bottom order\n\
+	// this allows the same state for exchanged pieces\n\
+  var blockPos = [undefined, undefined, undefined,\n\
+	          undefined, undefined, undefined,\n\
+	          undefined, undefined, undefined]\n\
+  var blockSeen = [ false, false, false, false, false,\n\
+                    false, false, false, false]\n\
+  var blockMap1x2 = 2 \n\
+  var blockMap1x1 = 6 \n\
+  var blockNum\n\
+\n\
+  for( y=0; y<5; y = y+1) { \n\
+    for( x=0; x<4; x = x+1) {\n\
+      blockNum = free[x][y]\n\
+      if (blockNum != undefined && !blockSeen[ blockNum] ) { // first sight of block\n\
+        blockSeen[ blockNum] = true\n\
+	if (blockNum == 1 ) { // 2x2\n\
+	  blockPos[ 0 ] = [x,y]\n\
+	} else if (blockNum == 3 ) { // 2x1\n\
+	  blockPos[ 1 ] = [x,y]\n\
+	} else if (blockNum == 0 || blockNum == 2 || blockNum == 6 || blockNum == 7) { // 1x2\n\
+	  blockPos[ blockMap1x2] = [x,y]\n\
+	  blockMap1x2 = blockMap1x2 + 1\n\
+        } else if (blockNum == 4 || blockNum == 5 || blockNum == 8 || blockNum == 9) { // 1x1\n\
+	  blockPos[ blockMap1x1] = [x,y]\n\
+	  blockMap1x1 = blockMap1x1 + 1\n\
+	}\n\
+      }\n\
+    }\n\
+  }\n\
+\n\
+  // wanted to do bit arithmetic, but that limit is 32 bits and need 50\n\
+  // uses 2 bits for x and 3 bits for y for each of 10 blocks = 50 bits\n\
+  // 5 bits is 2**5 = 32\n\
+  // putting the most stable blocks at high end of state number\n\
+  var state = 0\n\
+  for (blockNum = 0; blockNum <10; blockNum = blockNum + 1) {\n\
+    console.log ("state blockNum:" + blockNum + " pos:" + blockPos[ blockNum] + " state:" + state + " " + (blockPos[blockNum][0] + (blockPos[blockNum][1]*4)) * 32**( 9 - blockNum) + " " + (blockPos[blockNum][0] + (blockPos[blockNum][1]*4)) )\n\
+    state = state + ((blockPos[blockNum][0] + (blockPos[blockNum][1]*4)) * 32**( 9 - blockNum))\n\
+  }\n\
+  if ( blockMap1x2 != 6  | blockMap1x1 != 10) {\n\
+    console.log( "   ***State Processing Error***" + blockMap1x2 + " " + blockMap1x1)\n\
+  }\n\
+  return state\n\
+}\n\
+      \n\
+\n\
+\n\
+function demo1() {\n\
+  reset()\n\
+  init()\n\
+  console.log("demo: " + blocks[0])\n\
+  console.log("demo: " + blocks)\n\
+  //drawBlocks()\n\
+  moveBlock( 3, 2, 2)\n\
+  moveBlock( 4, 1, 2)\n\
+  moveBlock( 5, 0, 2)\n\
+  moveBlock( 6, 0, 3)\n\
+  moveBlock( 7, 1, 3)\n\
+  moveBlock( 8, 2, 4)\n\
+  moveBlock( 3, 2, 3)\n\
+  moveBlock( 4, 3, 2)\n\
+  moveBlock( 5, 2, 2)\n\
+  moveBlock( 6, 0, 2)\n\
+  moveBlock( 7, 1, 2)\n\
+  moveBlock( 8, 0, 4)\n\
+  moveBlock( 9, 1, 4)\n\
+  moveBlock( 3, 2, 4)\n\
+  moveBlock( 5, 3, 3)\n\
+  moveBlock( 7, 2, 2)\n\
+  moveBlock( 6, 1, 2)\n\
+  moveBlock( 0, 0, 2)\n\
+  moveBlock( 1, 0, 0)\n\
+  moveBlock( 2, 2, 0)\n\
+  moveBlock( 4, 3, 0)\n\
+  moveBlock( 5, 3, 1)\n\
+  moveBlock( 7, 3, 2)\n\
+  moveBlock( 2, 2, 2)\n\
+  moveBlock( 4, 2, 0)\n\
+  moveBlock( 5, 2, 1)\n\
+  moveBlock( 7, 3, 0)\n\
+  moveBlock( 2, 3, 2)\n\
+  moveBlock( 5, 2, 3)\n\
+  moveBlock( 4, 2, 2)\n\
+  moveBlock( 1, 1, 0)\n\
+  moveBlock( 0, 0, 0)\n\
+  moveBlock( 6, 0, 2)\n\
+  moveBlock( 4, 1, 2)\n\
+  moveBlock( 5, 1, 3)\n\
+  moveBlock( 2, 2, 2)\n\
+  moveBlock( 7, 3, 2)\n\
+  moveBlock( 1, 2, 0)\n\
+  moveBlock( 4, 1, 0)\n\
+  moveBlock( 5, 1, 1)\n\
+  moveBlock( 9, 1, 2)\n\
+  moveBlock( 8, 1, 3)\n\
+  moveBlock( 6, 0, 3)\n\
+  moveBlock( 0, 0, 1)\n\
+  moveBlock( 4, 0, 0)\n\
+  moveBlock( 5, 1, 0)\n\
+  moveBlock( 9, 1, 1)\n\
+  moveBlock( 8, 1, 2)\n\
+  moveBlock( 6, 1, 3)\n\
+  moveBlock( 0, 0, 3)\n\
+  moveBlock( 9, 0, 2)\n\
+  moveBlock( 5, 0, 1)\n\
+  moveBlock( 1, 1, 0)\n\
+  moveBlock( 7, 3, 0)\n\
+  moveBlock( 2, 3, 2)\n\
+  moveBlock( 8, 2, 3)\n\
+  moveBlock( 1, 1, 1)\n\
+  moveBlock( 4, 2, 0)\n\
+  moveBlock( 5, 1, 0)\n\
+  moveBlock( 9, 0, 0)\n\
+  moveBlock( 0, 0, 1)\n\
+  moveBlock( 6, 0, 3)\n\
+  moveBlock( 8, 1, 4)\n\
+  moveBlock( 1, 1, 2)\n\
+  moveBlock( 4, 1, 1)\n\
+  moveBlock( 7, 2, 0)\n\
+  moveBlock( 2, 3, 0)\n\
+  moveBlock( 1, 2, 2)\n\
+  moveBlock( 4, 1, 3)\n\
+  moveBlock( 5, 1, 1)\n\
+  moveBlock( 9, 1, 0)\n\
+  moveBlock( 0, 0, 0)\n\
+  moveBlock( 6, 0, 2)\n\
+  moveBlock( 8, 0, 4)\n\
+  moveBlock( 4, 1, 4)\n\
+  moveBlock( 1, 1, 2)\n\
+  moveBlock( 2, 3, 2)\n\
+  moveBlock( 7, 3, 0)\n\
+  moveBlock( 9, 2, 0)\n\
+  moveBlock( 5, 2, 1)\n\
+  moveBlock( 0, 1, 0)\n\
+  moveBlock( 6, 0, 0)\n\
+  moveBlock( 1, 0, 2)\n\
+  moveBlock( 5, 2, 3)\n\
+  moveBlock( 9, 2, 2)\n\
+  moveBlock( 7, 2, 0)\n\
+  moveBlock( 2, 3, 0)\n\
+  moveBlock( 5, 3, 2)\n\
+  moveBlock( 3, 2, 3)\n\
+  moveBlock( 4, 3, 4)\n\
+  moveBlock( 8, 2, 4)\n\
+  moveBlock( 1, 0, 3)\n\
+  moveBlock( 9, 0, 2)\n\
+  moveBlock( 5, 1, 2)\n\
+  moveBlock( 3, 2, 2)\n\
+  moveBlock( 8, 3, 3)\n\
+  moveBlock( 1, 1, 3)\n\
+\n\
+  drawBlocks()\n\
+  console.log( "count= " + count)\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  init()\n\
+\n\
+  drag( 3, ee)\n\
+  drag( 4, ne)\n\
+  drag( 5, nn)\n\
+  drag( 6, w)\n\
+  drag( 7, w)\n\
+  drag( 8, sw)\n\
+  drag( 3, s)\n\
+  drag( 4, ee)\n\
+  drag( 5, ee)\n\
+  drag( 6, n)\n\
+  drag( 7, n)\n\
+  drag( 8, ww)\n\
+  drag( 9, ww)\n\
+  drag( 3, s)\n\
+  drag( 5, se)\n\
+  drag( 7, e)\n\
+  drag( 6, e)\n\
+  drag( 0, ss)\n\
+  drag( 1, w)\n\
+  drag( 2, w)\n\
+  drag( 4, nn)\n\
+  drag( 5, nn)\n\
+  drag( 7, e)\n\
+  drag( 2, ss)\n\
+  drag( 4, w)\n\
+  drag( 5, w)\n\
+  drag( 7, nn)\n\
+  drag( 2, e)\n\
+  drag( 5, ss)\n\
+  drag( 4, ss)\n\
+  drag( 1, e)\n\
+  drag( 0, nn)\n\
+  drag( 6, w)\n\
+  drag( 4, w)\n\
+  drag( 5, w)\n\
+  drag( 2, w)\n\
+  drag( 7, ss)\n\
+  drag( 1, e)\n\
+  drag( 4, nn)\n\
+  drag( 5, nn)\n\
+  drag( 9, nn)\n\
+  drag( 8, en)\n\
+  drag( 6, s)\n\
+  drag( 0, s)\n\
+  drag( 4, w)\n\
+  drag( 5, n)\n\
+  drag( 9, n)\n\
+  drag( 8, n)\n\
+  drag( 6, e)\n\
+  drag( 0, ss)\n\
+  drag( 9, ws)\n\
+  drag( 5, sw)\n\
+  drag( 1, w)\n\
+  drag( 7, nn)\n\
+  drag( 2, e)\n\
+  drag( 8, es)\n\
+  drag( 1, s)\n\
+  drag( 4, ee)\n\
+  drag( 5, ne)\n\
+  drag( 9, nn)\n\
+  drag( 0, nn)\n\
+  drag( 6, w)\n\
+  drag( 8, ws)\n\
+  drag( 1, s)\n\
+  drag( 4, sw)\n\
+  drag( 7, w)\n\
+  drag( 2, nn)\n\
+  drag( 1, e)\n\
+  drag( 4, ss)\n\
+  drag( 5, s)\n\
+  drag( 9, e)\n\
+  drag( 0, n)\n\
+  drag( 6, n)\n\
+  drag( 8, w)\n\
+  drag( 4, s)\n\
+  drag( 1, w)\n\
+  drag( 2, ss)\n\
+  drag( 7, e)\n\
+  drag( 9, e)\n\
+  drag( 5, e)\n\
+  drag( 0, e)\n\
+  drag( 6, nn)\n\
+  drag( 1, w)\n\
+  drag( 5, ss)\n\
+  drag( 9, ss)\n\
+  drag( 7, w)\n\
+  drag( 2, nn)\n\
+  drag( 5, en)\n\
+  drag( 3, n)\n\
+  drag( 4, ee)\n\
+  drag( 8, ee)\n\
+  drag( 1, s)\n\
+  drag( 9, ww)\n\
+  drag( 5, ww)\n\
+  drag( 3, n)\n\
+  drag( 8, ne)\n\
+  drag( 1, e)\n\
+\n\
+  drawBlocks()\n\
+  console.log( "count= " + count)\n\
+}\n\
+\n\
+\n\
+var moveCount;\n\
+var delayTime = 300;\n\
+var moves; // List of the moves to be made\n\
+var lastMove = []; // last move made\n\
+moves = [ // series of moves\n\
+// [ blockNumber, move directions ]\n\
+  [ 3, ee],\n\
+  [ 4, ne],\n\
+  [ 5, nn],\n\
+  [ 6, w],\n\
+  [ 7, w],\n\
+  [ 8, ws],\n\
+  [ 3, s],\n\
+  [ 4, ee],\n\
+  [ 5, ee],\n\
+  [ 6, n],\n\
+  [ 7, n],\n\
+  [ 8, ww],\n\
+  [ 9, ww],\n\
+  [ 3, s],\n\
+  [ 5, se],\n\
+  [ 7, e],\n\
+  [ 6, e],\n\
+  [ 0, ss],\n\
+  [ 1, w],\n\
+  [ 7,nn],\n\
+  [ 4, w],\n\
+  [ 5, w],\n\
+  [ 2, ss],\n\
+  [ 7, e],\n\
+  [ 1, e],\n\
+  [ 0, nn],\n\
+  [ 6, w],\n\
+  [ 4, w],\n\
+  [ 5, w],\n\
+  [ 2, w],\n\
+  [ 7, ss],\n\
+  [ 1, e],\n\
+  [ 4, nn],\n\
+  [ 5, nn],\n\
+  [ 9, nn],\n\
+  [ 8, en],\n\
+  [ 6, s],\n\
+  [ 0, s],\n\
+  [ 4, w],\n\
+  [ 5, n],\n\
+  [ 9, n],\n\
+  [ 8, n],\n\
+  [ 6, e],\n\
+  [ 0, ss],\n\
+  [ 9, ws],\n\
+  [ 5, sw],\n\
+  [ 1, w],\n\
+  [ 7, nn],\n\
+  [ 2, e],\n\
+  [ 8, es],\n\
+  [ 1, s],\n\
+  [ 4, ee],\n\
+  [ 5, ne],\n\
+  [ 9, nn],\n\
+  [ 0, nn],\n\
+  [ 6, w],\n\
+  [ 8, ws],\n\
+  [ 1, s],\n\
+  [ 4, sw],\n\
+  [ 7, w],\n\
+  [ 2, nn],\n\
+  [ 1, e],\n\
+  [ 4, ss],\n\
+  [ 5, s],\n\
+  [ 9, e],\n\
+  [ 0, n],\n\
+  [ 6, n],\n\
+  [ 8, w],\n\
+  [ 4, s],\n\
+  [ 1, w],\n\
+  [ 2, ss],\n\
+  [ 7, e],\n\
+  [ 9, e],\n\
+  [ 5, e],\n\
+  [ 0, e],\n\
+  [ 6, nn],\n\
+  [ 1, w],\n\
+  [ 5, ss],\n\
+  [ 9, ss],\n\
+  [ 7, w],\n\
+  [ 2, nn],\n\
+  [ 5, en],\n\
+  [ 3, n],\n\
+  [ 4, ee],\n\
+  [ 8, ee],\n\
+  [ 1, s],\n\
+  [ 9, ww],\n\
+  [ 5, ww],\n\
+  [ 3, n],\n\
+  [ 8, ne],\n\
+  [ 1, e]\n\
+]\n\
+\n\
+\n\
+function moveOne() {\n\
+  reset()\n\
+  //console.log( "mO " + moveCount)\n\
+  //console.log( "mO " + moves[moveCount])\n\
+\n\
+  drawBlocks();\n\
+  findFree()\n\
+  console.log("   State: " + getState())\n\
+  findMoves()\n\
+  if (moveCount > 0) {\n\
+    checkLastMove( lastMove[0], lastMove[1])\n\
+  }\n\
+  var block = moves[ moveCount][0]\n\
+  var dir =   moves[ moveCount][1]\n\
+  console.log( "  Move " + moveCount + ": " + block + dir)\n\
+  checkMove( block,  dir)\n\
+  drag( block, dir)\n\
+  moveCount = moveCount + 1;\n\
+  lastMove = [block, dir]\n\
+  if (moveCount < moves.length) {\n\
+    delay( moveOne, delayTime)\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  init()\n\
+  moveCount=0\n\
+\n\
+  delay( moveOne, delayTime)\n\
 }\n\
 '
 snowman ='\
@@ -7778,6 +10368,7 @@ function drawRandomSquiggle() {\n\
 }\n\
 \n\
 function demo() {\n\
+  reset()\n\
   hideTurtle();\n\
   drawRandomSquiggle();\n\
 }\n\
@@ -7872,6 +10463,48 @@ function demo () {\n\
   star ( side)\n\
   fillShape("gold")\n\
   hideTurtle()\n\
+}\n\
+'
+stars_and_rhombuses ='\
+// Stars and Rhombuses -- tesselation found on a wall paper pattern\n\
+\n\
+function quadRhom( side) {\n\
+  for( var i=0; i<4; i++) {\n\
+    for ( var j=0; j<4; j++) {\n\
+      forward( side)\n\
+      right( ang)\n\
+      forward( side)\n\
+      right( 180- ang)\n\
+      forward( side)\n\
+      right( ang)\n\
+      forward( side)\n\
+      right( 180- ang)\n\
+    }\n\
+    right( 90)\n\
+  }\n\
+}\n\
+\n\
+function demo() {\n\
+  reset()\n\
+  wrap( false)\n\
+  hideTurtle()\n\
+  ang = 60\n\
+  side = 20\n\
+  xoffset = 0\n\
+  chord = 2* side * Math.cos(degToRad(ang/2))\n\
+\n\
+  for (var fy=maxY(); fy>minY(); fy=fy - chord) {   \n\
+    for (var fx=minX(); fx<maxX(); fx=fx + 2*chord) {\n\
+      goto( fx+xoffset, fy)\n\
+      angle( 90 - ang/2)\n\
+      quadRhom( side)\n\
+    }\n\
+    if (xoffset>0) {\n\
+      xoffset = 0\n\
+    } else {\n\
+      xoffset = chord\n\
+    }\n\
+  }\n\
 }\n\
 '
 tree ='\
@@ -8231,411 +10864,41 @@ console.log("X="+2*maxX()+ " Y="+2*maxY() + " W="+flagWidth + "H="+flagHeight)\n
   \n\
 demo = flag\n\
 '
-x_miura_origami ='\
-// miura origami -- fold pattern for the miura origami\n\
+waves ='\
+// waves -- wave interference patterns\n\
 \n\
-function horiz( size){\n\
-  hy = maxY()\n\
-  while (hy > minY()) {\n\
-    goto (minX(), hy)\n\
-    angle(90)\n\
-    forward( 2*maxX())\n\
-    hy = hy - size\n\
-  } \n\
+//draw the radials\n\
+function drawRadials(side) {\n\
+	for (var i=0; i<16; i++) {\n\
+		goto(0,0)\n\
+		angle(i/16 * 360)\n\
+		forward( size)\n\
+	}\n\
 }\n\
 \n\
-function vert( size) {\n\
-  vx = minX()\n\
-  while ( vx < maxX()) {\n\
-    vy = maxY()\n\
-    while (vy > minY()) {\n\
-      goto( vx, vy)\n\
-      angle( 180 - 6)\n\
-      forward( size * Math.cos( degToRad(6)))\n\
-      right( 12)\n\
-      forward( size * Math.cos( degToRad(6)))\n\
-      vy = vy - 2 * size\n\
-\n\
-    }\n\
-    vx = vx + size\n\
-  }\n\
-}\n\
-\n\
-\n\
-function demo() {\n\
-  reset()\n\
-  wrap( false)\n\
-  size = 160\n\
-  horiz( size)\n\
-  vert( size)\n\
-}\n\
-'
-x_mountain_tessellation ='\
-// mountain tessellation -- tessellation with a mountain shaped heptiamond\n\
-// a heptiamond is a shape composed of 7 equalateral triangles\n\
-//\n\
-//\n\
-//// Triangle Tessellation -- tile a space using triangles\n\
-\n\
-colors = ["red", "white", "blue", "yellow", "green"]\n\
-\n\
-function shapeUp (side) {\n\
-  // assume pointing in direction of base\n\
-  forward(3* side)\n\
-  left(120)\n\
-  forward(2*side)\n\
-  left( 120)\n\
-  forward(side)\n\
-  right( 120)\n\
-  forward( side)\n\
-  left( 120)\n\
-  forward( 2*side)\n\
-  left(120)\n\
-}\n\
-\n\
-function mu(side){ // mountain unit\n\
-  pendown()\n\
-  shapeUp(side)//1,1\n\
-  penup()\n\
-  left(60)\n\
-  forward(side)\n\
-  right(60)\n\
-  forward(5*side)\n\
-  right(180)\n\
-  pendown()\n\
-  shapeUp(side)//1,0\n\
-  penup()\n\
-\n\
-  forward(3*side)\n\
-  left(180)\n\
-  pendown()\n\
-  shapeUp(side) //0,0\n\
-\n\
-  penup()\n\
-  left(60)\n\
-  forward(2*side)\n\
-  left(120)\n\
-  pendown()\n\
-  shapeUp(side)//0,1\n\
-  forward( 3*side)\n\
-  left( 180)\n\
-  penup()\n\
-\n\
-}\n\
-\n\
-// nextColor could be completely random, if desired\n\
-function nextColor() {\n\
-  c = colors[ count % color.length]\n\
-  count = count + 1\n\
-  return c\n\
-}\n\
-\n\
-function demo() {\n\
-  reset()\n\
-  wrap(false)\n\
-  side = 20\n\
-  xStart = 0\n\
-  yStart = -4.5*side\n\
-  while (turtle.pos.y < maxY()) {\n\
-    goto (maxX()+ xStart, minY()+ yStart)\n\
-    while (turtle.pos.x > minX()) {\n\
-      mu( side)\n\
-    }\n\
-    yStart = yStart + 4.5 * side\n\
-    xStart = xStart + Math.sqrt(3)/2 * side\n\
-  }\n\
-}\n\
-\n\
-'
-x_pentahexthing ='\
-// pentahex -- game pieces consisting of five hexagons in a 10x11 field\n\
-\n\
-// This sets up a pseudo interpreter. Each move is a right (r) or left (l)\n\
-// token. Each piece consists of a set of such moves to from the outline\n\
-// of the piece.\n\
-\n\
-function r() {\n\
-  forward( side)\n\
-  right( 60)\n\
-}\n\
-\n\
-function l() {\n\
-  forward( side)\n\
-  left( 60)\n\
-}\n\
-\n\
-  I5=[l,l,r,l,r,l,r,l,r,l,l,l,l,r,l,r,l,r,l,r,l,l]\n\
-  D5=[l,l,r,l,r,l,l,l,r,l,l,r,l,l,r,l]\n\
-  T5=[l,l,r,r,l,r,l,l,l,l,r,r,l,l,l,r,l,r,l,l]\n\
-  N5=[l,l,r,r,l,l,r,l,r,l,l,l,l,r,l,r,r,l,l,r,l,l]\n\
-  P5=[l,l,r,l,r,r,l,l,l,r,l,l,l,r,l,r,l,r,l,l]\n\
-  E5=[l,l,r,r,l,l,l,r,r,l,l,l,l,r,l,r,l,r,l,l]\n\
-  G5=[l,l,r,r,l,l,r,l,l,r,l,l,l,l,r,r,r,l,l,r,l,l]\n\
-  A5=[l,r,l,l,l,r,r,l,l,l,l,r,r,l,l,l,r,l]\n\
-  J5=[l,r,l,l,r,l,r,l,r,l,l,l,l,r,l,r,l,r,r,l,l,l]\n\
-  Y5=[l,l,r,l,r,r,l,l,l,l,r,r,l,l,l,l,r,r,l,r,l,l]\n\
-  X5=[l,l,r,r,l,l,l,r,l,l,l,r,r,l,l,l,r,l]\n\
-  y5=[l,l,r,r,l,l,l,l,r,r,r,l,l,l,l,r,l,l,r,r,l,l]\n\
-  u5=[l,l,r,l,r,l,l,r,l,l,l,l,r,r,r,l,l,l,r,l]\n\
-  V5=[l,l,r,l,r,l,l,l,l,r,r,r,l,l,l,l,r,l,r,l]\n\
-  U5=[l,r,l,l,r,l,l,l,l,r,r,r,r,l,l,l,l,r,l,l,r,l]\n\
-  C5=[l,l,l,r,r,l,r,r,l,l,l,l,r,l,l,r,l,r,l,l,r,l]\n\
-  q5=[l,l,r,r,l,r,l,l,l,r,l,l,l,r,r,l,l,r,l,l]\n\
-  r5=[l,l,r,l,r,r,r,l,l,l,l,r,l,l,r,l,l,r,l,r,l,l]\n\
-  L5=[l,r,l,r,l,l,l,l,r,l,r,r,l,r,l,l,l,l,r,l,r,l]\n\
-  W5=[l,l,r,r,l,l,r,r,l,l,l,l,r,l,l,r,r,l,l,r,l,l]\n\
-  S5=[l,l,l,r,r,l,r,l,l,r,l,l,l,l,r,r,l,r,l,l,r,l]\n\
-  p5=[l,l,r,l,r,l,l,r,l,l,l,r,l,l,r,r,l,l]\n\
-\n\
-function shape( bx, by, axis, turns   ) {\n\
-  // draw a shape at board position bx, by, with the piece oriented\n\
-  // on one of six axises. The shape consists of an array of turns.\n\
-  penup()\n\
-  goto( baseX, baseY)\n\
-  angle(0)\n\
-  forward( 2* by * side * Math.cos(degToRad(30)))\n\
-  right(60)\n\
-  forward( 2* bx * side * Math.cos(degToRad(30)))\n\
-  penup()\n\
-  dot()  //center of start cell\n\
-  angle(60 * axis )\n\
-  left( 180 - 30)\n\
-  forward( side)\n\
-  left (120) \n\
-  pendown()\n\
-  for (j=0; j< turns.length; j++) {\n\
-    turns[j]()\n\
-  }\n\
-  penup() // return to the start position, not really necessary\n\
-  left(60)\n\
-  forward( side)\n\
-  left( 30)\n\
-}\n\
-\n\
-function drawAll() {\n\
-  reset()\n\
-  side = 15\n\
-  baseX = -200\n\
-  baseY = -200\n\
-\n\
-  shape(0,0,0,D5)\n\
-  shape(3,0,0,u5)\n\
-  shape(6,0,0,V5)\n\
-  shape(9,0,0,r5)\n\
-  shape(12,0,0,y5)\n\
-  shape(15,0,0,L5)\n\
-  shape(0,4,0,U5)\n\
-  shape(3,4,0,Y5)\n\
-  shape(6,4,0,p5)\n\
-  shape(9,4,0,C5)\n\
-  shape(12,4,0,A5)\n\
-  shape(15,4,0,J5)\n\
-  shape(0,7,0,I5)\n\
-  shape(3,8,0,T5)\n\
-  shape(6,8,0,N5)\n\
-  shape(9,8,0,P5)\n\
-  shape(12,8,0,G5)\n\
-  shape(15,8,0,E5)\n\
-  shape(0,12,0,S5)\n\
-  shape(3,12,0,q5)\n\
-  shape(6,12,0,W5)\n\
-  shape(9,12,0,X5)\n\
-}\n\
-\n\
-function demo() {\n\
-  reset()\n\
-  side = 20\n\
-  baseX = -200\n\
-  baseY = -200\n\
-\n\
-  shape(0,2,3,D5)\n\
-  shape(2,0,1,u5)\n\
-  shape(5,0,1,V5)\n\
-  shape(10,0,4,r5)\n\
-  shape(3,1,5,y5)\n\
-  shape(10,1,5,L5)\n\
-  shape(5,3,3,U5)\n\
-  shape(3,2,0,Y5)\n\
-  shape(1,3,0,X5)\n\
-  shape(0,5,0,W5)\n\
-  shape(9,2,4,q5)\n\
-  shape(5,4,5,p5)\n\
-  shape(9,3,5,S5)\n\
-  shape(10,5,4,C5)\n\
-  shape(8,6,1,A5)\n\
-  shape(8,5,4,J5)\n\
-  shape(3,7,1,I5)\n\
-  shape(0,7,0,T5)\n\
-  shape(1,9,1,N5)\n\
-  shape(3,9,1,P5)\n\
-  shape(7,8,1,G5)\n\
-  shape(7,9,1,E5)\n\
-}\n\
-'
-x_rhombic_star_tessellation ='\
-// Rhombic Star Tessellation -- a star tessellation using rhombus\n\
-\n\
-colors = ["red", "white", "blue", "yellow", "green"]\n\
-\n\
-function rh(side) {\n\
-  forward( side)\n\
-  left( 45)\n\
-  forward( side)\n\
-  left( 180-45)\n\
-  forward( side)\n\
-  left( 45)\n\
-  forward( side)\n\
-  left( 180-45)\n\
-}\n\
-\n\
-function sideBySide( count, side) {\n\
-  for( var j=0; j<count; j++) {\n\
-    pendown()\n\
-    rh( side)\n\
-    penup()\n\
-    right( (180-45)/2)\n\
-    forward( 2* side * Math.sin( degToRad( 22.5)))\n\
-    left( ( 180-45)/2)\n\
-  }\n\
-  left( ( 180-45)/2 + 45)\n\
-  forward( 2 * count * side * Math.sin( degToRad( 22.5)))\n\
-  right( (180-45)/2)\n\
-}\n\
-\n\
-function cent(side, count) {\n\
-  for( var i=0; i<8; i++) { // draw the center\n\
-    rh( side)\n\
-    left( 45)\n\
-  }\n\
-\n\
-  for( var i=0; i<8; i++) { // draw the second tier\n\
-    forward( side)\n\
-    rh( side)\n\
-    right( 45)\n\
-    rh( side)\n\
-    left(45)\n\
-    backward( side)\n\
-    left(45)\n\
-  }\n\
-\n\
-  for( var j=2; j<count; j++) { // draw the other tiers\n\
-    for( var i=0; i<8; i++) {\n\
-      forward( j*side)\n\
-      pendown()\n\
-      rh( side)\n\
-      right( 45)\n\
-      sideBySide(j, side)\n\
-      backward( j*side)\n\
-      left(45)\n\
-    }\n\
-  }\n\
-}\n\
-\n\
-// nextColor could be completely random, if desired\n\
-function nextColor() { \n\
-  c = colors[ count % color.length]\n\
-  count = count + 1\n\
-  return c\n\
-}\n\
-\n\
-function demo() {\n\
-  reset()\n\
-  wrap(false)\n\
-  cent( 20, 12)\n\
-}\n\
-'
-x_rice_penta_tessellation_1 ='\
-// rice penta tessellation 1 -- pentagon tesselation discovered by Margorie Rice\n\
-\n\
-function pr() {\n\
-  forward(sidea)\n\
-  left(180-angleB)\n\
-  forward(sideb)\n\
-  left(180-angleC)\n\
-  forward(sidec)\n\
-  left(180-angleD)\n\
-  forward(sided)\n\
-  left(180-angleE)\n\
-  forward(sidee)\n\
-  left(180-angleA)\n\
-}\n\
-\n\
-function pl() {\n\
-  forward(sidea)\n\
-  right(180-angleB)\n\
-  forward(sideb)\n\
-  right(180-angleC)\n\
-  forward(sidec)\n\
-  right(180-angleD)\n\
-  forward(sided)\n\
-  right(180-angleE)\n\
-  forward(sidee)\n\
-  right(180-angleA)\n\
-}\n\
-\n\
-\n\
-function pu() { // penta unit\n\
-  pr()\n\
-  pl()\n\
-\n\
-  forward( 2*sidea)\n\
-  left(180)\n\
-  pr()\n\
-  pl()\n\
-\n\
-\n\
-  left( angleA)\n\
-  forward( sidee)\n\
-  left( 180 - angleC)\n\
-  forward( sideb)\n\
-  left( 180- angleB)\n\
-  forward( sidea)\n\
-  right(180)\n\
-\n\
-  pl()\n\
-  pr()\n\
-\n\
-  forward( 2 * sidea)\n\
-  right(180)\n\
-  pr()\n\
-  pl()\n\
-}\n\
-\n\
-function demo() {\n\
-  reset()\n\
-  wrap( false)\n\
-  size = 10\n\
 /*\n\
-  sidea = size\n\
-  sideb = 4.9 * size\n\
-  sidec = 1.15 * size\n\
-  sided = 2 * sidea + sidec\n\
-  sidee = sided\n\
+need to calculate the angles for starting and stopping the arcs.\n\
+distances are known\n\
+\n\
 */\n\
-  sidea = size\n\
-  sideb = 5.9 * size // fudging to make work\n\
-  sidec = 2.8 * size // fudging to make work\n\
-  sided = sidec\n\
-  sidee = 2 * sidec\n\
-  angleA = 120\n\
-  angleB = 90\n\
-  angleC = 120\n\
-  angleD = 90\n\
-  angleE = 120\n\
-  goto (minX(), maxY())\n\
-  while (turtle.pos.y > minY()) {\n\
-    pu()\n\
-    left( angleA)\n\
-    forward( sidee)\n\
-    right( 180 - angleE)\n\
-    forward( 2* sidec)\n\
-    left( 180 - angleE)\n\
-    forward( sidec)\n\
-    right( 180 - angleD)\n\
-    forward( sided)\n\
-    left( 180- angleA)\n\
-    forward( 2* sidea)\n\
-    right( 180)\n\
-  }\n\
+\n\
+\n\
+//\n\
+function demo() {\n\
+	reset()\n\
+	wrap(false)\n\
+	size=200\n\
+	step = 4\n\
+	n = 2* size/step\n\
+	goto(0,0)\n\
+	circle( size)\n\
+	goto(size,0)\n\
+	for( var i=0; i< n; i=i+step){\n\
+		arc(i * step, 180, false)\n\
+	}\n\
+	goto(-size,0)\n\
+	for( var i=0; i< n; i=i+step){\n\
+		arc(i * step, 180, true)\n\
+	}\n\
 }\n\
 '

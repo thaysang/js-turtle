@@ -1,4 +1,4 @@
-// miura origami -- fold pattern for the miura origami
+// Miura Origami -- fold pattern for the miura origami
 
 function horiz( size){
   hy = maxY()
@@ -31,7 +31,7 @@ function vert( size) {
 function demo() {
   reset()
   wrap( false)
-  size = 160
+  size = 100
   horiz( size)
   vert( size)
 }

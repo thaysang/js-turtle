@@ -81,7 +81,7 @@ function caption (message) {
   goto (minX()+10, minY()+10)
   setheading( 90)
 
-  // erase wha will be in the path
+  // erase what will be in the path
   color ("white")
   width (10)
   forward (maxY() * 2 - 12)
