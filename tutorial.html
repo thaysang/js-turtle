@@ -54,7 +54,7 @@ move down on the page. It provides
 motion and interest to web pages. JavaScript also checks user inputs before
 a request is sent back to the server.
 </p>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_a9de272a811a4282.png" alt="">
+    <img src="images/ide_pointers.png" alt="">
 </section>
 
 <p>
@@ -82,7 +82,7 @@ them to be.
 </p>
 <section>
 <h2>Hello World</h2>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_b6424b9e9cd87037.png" alt="">
+    <img src="images/first_hello.png" alt="">
 <p>
 When programmers are
 faced with a new language, the first thing that they do is to write
@@ -156,7 +156,7 @@ So, you could use &quot;G'day world&quot;, if you want
 the Australian version of “Hello World.”
 </p>
 <section>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_fe08b6fc287c210d.png" alt="">
+    <img src="images/hello_world.png" alt="">
 <p>
 The program as it is,
 isn't quite right. The <code>write()</code> function displays a text
@@ -317,7 +317,7 @@ Now when you press the
 What happens if you
 press the <span class="button">Run Demo</span> button more than once? Why?
 </p>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_9adb0f80a6146c6b.png" alt="">
+    <img src="images/hello_world_pin_wheel.png" alt="">
 <p>
 We can fix that by
 clearing the screen by invoking the <code>reset ()</code> function  before
@@ -365,7 +365,7 @@ Insert an <strong>operator</strong> like +, -, /, or * somewhere in the code.
 </section>
 <section>
 <h2>Your First Graphic</h2>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_b3fc22dd53f0c1d6.png" alt="">
+    <img src="images/first_square.png" alt="">
 OK, but Turtle Graphics is a graphics program, shouldn’t we
 be doing some graphics? Let's see it draw some lines as sort of a
 graphical Hello World example. Let's try to do a simple square.
@@ -386,7 +386,7 @@ right(90)
 Ok, let’s do the same thing, but do it with by defining a function to draw the
 square, as we have learned previously.
 </p>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_2891944c53476dfe.png" alt="">
+    <img src="images/square_function.png" alt="">
 
 <code class="tryme">function square1 () {
   forward(100)
@@ -407,13 +407,12 @@ function demo () {
 </section>
 
 <section>
+    <img src="images/rotated_squares.png" alt="">
 <p>
 Let's see some of the power of a function with a simple change to draw three
 squares rotated 30° about the starting point. Change the <code>demo ()</code>
 function as follows:
 </p>
-
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_cae1dc59a219b5c6.png" alt="">
 <code class="tryme">function square1 () {
   forward(100)
   right(90)
@@ -465,16 +464,24 @@ function demo () {
 There is a method can get rid of the standalone <code>el()</code> function
 when using the <code>repeat()</code> function. The code is shown below.
 </p>
-<code class="tryme">repeat( 4, function() {
+<code class="tryme">function square() {
+  repeat( 4, function() {
     forward( 100)
     right( 90)}
   )
+}
+
+function demo () {
+  reset()
+  square()
+}
 </code>
 <p>
 This works, but its syntax is hard to get right especially for beginners.
 All of the parentheses and curly braces have to be paired just right.
 This is called an <strong>anonymous function</strong> because it is a
-function without a name.
+function definition without a name. The function can only be invoked within
+this repeat statement and cannot be invoked by other code.
 </p>
 </aside>
 <p>
@@ -483,7 +490,7 @@ things. Let's not use the <code>repeat()</code> function and use a with a
 <code>while</code> statement instead. The simplest JavaScript program using
 a <code>while</code> statement is something like:
 </p>
-<code class="tryme">var i = 0;
+<code>var i = 0;
   while ( i &lt; 4) {
     i = i + 1
 }
@@ -567,11 +574,11 @@ So what happens when this is run.
   </li>
   <li>
     since <span class="var">i</span> (being 4) is no longer less than 4,
-    the group of statements is skipped over.
+    the group of statemments is skipped over.
   </li>
 </ul>
 <section>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_6bdc2aa2387413b8.png" alt="">
+    <img src="images/numbered_square.png" alt="">
 
 <p>
 This is all hard to see, so let's make it more visible. Let's print the
@@ -579,7 +586,7 @@ value of <span class="var">i</span> inside of the loop. Since the
 <code>write()</code> function doesn't move the turtle, we need to do that
 as well by drawing the now familiar square. By the way, printing a variable
 during execution is a common tool used by programmers to see what is happening
-inside of a program when trying to debug the program.
+inside of a program to help debug the program.
 </p>
 <p>
 The program uses a while loop to repeat four times: write a number, draw a side,
@@ -604,7 +611,7 @@ function demo() {
 JavaScript has two other common looping techniques. One is a <code>do...while</code>
 statement.
 The block of code to be repeated is after the <span class="keyword">do</span>
-key word and the  <span class="keyword">while</span>is after the repeated block
+key word and the <span class="keyword">while</span> is after the repeated block
 of code. So the block is always executed at least once where in a while statement
 the block may not be executed at all.
 The equivalent code for drawing a square is shown below.
@@ -661,7 +668,7 @@ We can copy the <code> square()</code> function code, change the function
 name, say to <code>square200()</code>, change the <code>forward(100)</code>
 to the size you want say, <code>forward(200)</code>.
 </p>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_4103b621a22e21c4.png" alt="">
+    <img src="images/parameterized_square.png" alt="">
 <p>
 Now if you want to draw a square of 100 or 200 points, you are set. But if
 you want another size, you have to do the copy and change routine all over
@@ -716,7 +723,7 @@ function demo () {
 </section>
 
 <section>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_be7a00e682b3155e.png" alt="">
+    <img src="images/looping_square.png" alt="">
 <p>
 Hey, isn’t that just like we did before. That was a lot of work to change the
 code, just to do the same thing.
@@ -747,7 +754,7 @@ function demo () {
 </code>
 </section>
 <section>
-  <img src="./images/no_picture.png">
+  <img src="./images/colored_twisted_squares.png">
 <p>
 The next modification to the code also
 changes the size of the squares and their color with each iteration within
@@ -951,14 +958,14 @@ two numbers. The single number form generates an integer
 between 0 and the value supplied. The two number form generates
 an integer between the two numbers.
 </p>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_94de213c6962653a.png" alt="">
+    <img src="images/random_squares.png" alt="">
 <p>
 We used the <code>color()</code> function in the last exercise.  It works on
 a number between 0 and 15, so <code>random( 15)</code> will work for a random
 color (as long has you are happy with crayon colors).
 </p>
 
-  <img src="./images/no_picture.png">
+  <img src="./images/coordinates.png">
 <p>
 To position the start
 of the square anywhere on the canvas, the <code>goto(x,y)</code> function
@@ -1045,7 +1052,7 @@ function demo(){
                               // not results of the function
 }
 </code>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_b25a59c93ee7a6db.png" alt="">
+    <img src="images/animated_random_squares.png" alt="">
 <p>
 A funny thing is
 happening with the reference of <code>randomSquare</code> in the <code>demo()</code>
@@ -1087,7 +1094,7 @@ function demo(){
 </section>
 
 <section>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_68208927fe627e54.png" alt="">
+    <img src="images/random_width_squares.png" alt="">
 <p>
 The line widths of squares can also be varied by throwing in <code>width</code>
 function. So in keeping with the randomness theme, why not make the lines a
@@ -1155,7 +1162,7 @@ next page if you get stuck, but try to solve these without looking.
 </section>
 
 <section>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_3d9cdc3cc0c77a16.png" alt="">
+    <img src="images/pentagon.png" alt="">
 <p>
 For the square, take 360°, divided by 4 gives 90° for
 each angle. For a triangle, take 360°, divided by 3 gives 120°
@@ -1224,7 +1231,7 @@ angle or 36°.
 </p>
 
 <section>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_4616c1221a3e84ea.png" alt="">
+    <img src="images/first_star.png" alt="">
 <p>
 The limit to the
 number of times that you can go around the center point is <em><strong>n/2</strong></em>
@@ -1265,7 +1272,7 @@ function demo () {
 </section>
 
 <section>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_b24baf30964e72cb.png" alt="">
+    <img src="images/20-sided_polygon.png" alt="">
 <code class="tryme floatleft">function spikey (size,n,revs) {
   var i = 0
   while (i < n) {
@@ -1289,7 +1296,7 @@ function demo () {
 </div>
 
 <div class="concept">
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_3c59e3d695bcd8bc.png" alt="">
+    <img src="images/20_point_star.png" alt="">
 <code class="tryme floatleft">function spikey (size,n,revs) {
   var i = 0
   while (i < n) {
@@ -1332,7 +1339,7 @@ What should you do next? Here are some ideas that may help you in your
 next coding adventure.
 </p>
 <ul>
-    <img src="images/Javascript%20Turtle%20Graphics%202_html_912e341a579b6e0a.png" alt="">
+    <img src="images/colored_spikey.png" alt="">
 <ul>
 <li>
     Set up a demo of finding pi with a

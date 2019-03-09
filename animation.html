@@ -178,6 +178,7 @@ function demo () {
 </code>
 <h2>Positioning the Polygon or Spikey </h2>
 <p>
+<img src="./images/positioned_spikey.png">
 We want to start with the <code>spikey()</code> function that was discussed
 in the Turtle Graphics Tutorial.
 We don't have to always start at the center of the canvas. We can start
@@ -203,6 +204,7 @@ function demo() {
   spikey( 5, 2, 40)
 }
 </code>
+<img src="./images/transparently_positioned_spikey.png">
 <p>
 That leaves a line of where the turtle traveled. We can prevent the
 turtle from marking by having it lift the pen as in the following code.
@@ -228,17 +230,19 @@ function demo() {
   spikey( 5, 2, 40)
 }
 </code>
-<img src="./images/no_picture.png">
 <p>
-But it still isn't centered. It would be nice if it were centered because 
-spikes of different sizes could be place concentrically and the points of
-the spike can be reoriented without appearing to move the spikey.
+But it still isn't centered about a specific point. It would be nice if
+it were centered because 
+spikies of different sizes could be place concentrically and the points of
+the spike can be reoriented without appearing to move the spikey, sort of
+like the spokes of a bicycle wheel.
 To center the two spikies takes a little geometry and trigonometry.
 So if you don't understand the following
 calculations, don't worry, this will be the only time that the math will be
-this difficult in this paper. Consulting the figure on the right we find that:
+this difficult in this tutorial. Consulting the figure on the right we find that:
 </p>
 <ul>
+<img src="./images/spikey_radius.png" width=400>
 <li>
 Turn Angle = 360° * revolutions / number of points
 </li>
@@ -255,19 +259,20 @@ Angle a = (360° - Outside Angle) / 2
 Angle a = (180° - Turn Angle) / 2
 </li>
 <li>
-Angle b = 90° - Angle a
+Angle a = (180° - (360 * revolutions / number of points)) / 2
 </li>
 <li>
-Side B = radius * cosine (Angle a)
+adjacent side = stroke length /2 = radius * cosine (Angle a)
 </li>
 <li>
-Spikey stroke length = 2* Side B
+multiplying both sides by 2 gives:
+<br>
+stroke length = 2 * radius * cosine (Angle a)
 </li>
 <li>
-                     = 2 * radius * cosine( Angle a)
-</li>
-<li>
-                     = 2 * radius * cosine(( 360° - Outside angle) / 2)
+or replacing Angle a:
+<br>
+stroke length = 2 * radius * cosine((180° - Turn Angle) / 2)
 </li>
 </ul>
 <p>
@@ -275,6 +280,16 @@ These calculations can be used to center a spikey. The size of the spikey
 can now be the radius of a circle that would go around the spikey.
 The code for a spikey that uses a central point and a radius
 instead of a side to determine size in the following code.
+<code>Math.cos()</code> is the cosine function from the JavaScript Math
+library. The beauty of the cosine function is that it expresses the ratio of
+the side adjacent to the angle to the hypotenuse (the long side of the
+right triagle as a function of the angle. Since the JavaScript implementation
+of the cosine function uses radians instead of degrees, the function
+<code>degToRad()</code> is used to make the proper conversion. There
+are 2 pi radians in a circle and there are 360 in the same circle. So this
+conversion finds the fraction of a circle (number of degrees divided by
+the number of degrees in a cirles), and multiples that fraction by the 
+number of radian in a circle (2 pi).
 </p>
 <p>
 This also uses the
@@ -313,11 +328,14 @@ Since there are a lot of changes to the <code>spikey()</code> function all at
 once, let's stop to explain what is going on.
 First up, the spikey function has different parameters.
 The <span class="var">points</span> and 
-<span class="var">revs</span> parameters have the same purpose as before.
+<span class="var">revs</span> parameters have the same purpose as before,
+that is to limit the scope of the variables to within the <code>spikey</code>
+function.
 The <span class="var">side</span> parameter has been replaced with a
 <span class="var">radius</span> parameter. Both specify the size of the spikey,
-but in different ways. <span class="var">radius</span> specifies the radius of a circle
-that would go around all of the points of the spikey. So spikeys with different
+but in different ways. <span class="var">radius</span> specifies the radius
+of a circle that would go around all of the points of the spikey. So spikeys
+with different
 number of <span class="var">points</span> or different number of
 <span class="var">revs</span> would still be the same size as each other.
 The new parameters <span class="var">x</span> and <span class="var">y</span>

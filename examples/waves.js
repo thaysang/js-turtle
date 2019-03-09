@@ -1,4 +1,4 @@
-// waves -- wave interference patterns
+// Waves -- wave interference patterns
 
 //draw the radials
 function drawRadials(side) {
@@ -11,7 +11,7 @@ function drawRadials(side) {
 
 /*
 need to calculate the angles for starting and stopping the arcs.
-distances are known
+distances are known. This math is a bit tough.
 
 */
 
@@ -20,6 +20,7 @@ distances are known
 function demo() {
 	reset()
 	wrap(false)
+	hideTurtle()
 	size=200
 	step = 4
 	n = 2* size/step

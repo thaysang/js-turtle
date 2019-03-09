@@ -1,4 +1,4 @@
-//  Dragon Curve -- draw a fractal curve formed by folding a shape onto itself
+// Dragon Curve -- draw a fractal curve formed by folding a shape onto itself
 //  more infomration at wikipedia  https://en.wikipedia.org/wiki/Dragon_curve
 
 

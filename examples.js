@@ -1473,7 +1473,7 @@ function demo () {\n\
 }\n\
 '
 color_changing_dots ='\
-// Color Changing Dots -- demonstrate the concept of changing the colors of a string of dots (lights?)\n\
+// Color Changing Dots -- show changing colors of a string of dots or lights\n\
 \n\
 /*\n\
 Maybe you can adapt to make a traffic light simulator or Christmas light\n\
@@ -2923,61 +2923,8 @@ function demo() {\n\
   hideturtle()\n\
 }\n\
 '
-dodecahedronGraph ='\
-// Dodecahedron Graph -- draw a 2-dimentional graph of a dodecahedron\n\
-// graph here describes the connections between vertices, more at\n\
-// Wikipedia.com\n\
-\n\
-//   This would be easier to draw to points on concentric circles\n\
-//   This is just lines and not shadable polygons\n\
-\n\
-function pent(side) {\n\
-  var angle2=72-(360-108)/2\n\
-  // the sides below are really trigonometric conversions\n\
-  // without the trig functions\n\
-  var side2 = .4*side\n\
-  var angle3 = 80\n\
-  var side3 = 1.05 * side\n\
-  var angle4 = 40\n\
-  var side4 = .5 * side\n\
-  var angle5 = 129\n\
-  var side5 = 2.65 * side\n\
-  for (var i=0; i<5; i++) {\n\
-    forward (side)\n\
-      right(angle2)\n\
-      forward (side2)\n\
-        right(angle3)\n\
-        forward(side3)\n\
-          left(angle4)\n\
-          forward(side4)\n\
-            left(angle5)\n\
-            forward(side5)\n\
-            backward(side5)\n\
-            right(angle5)\n\
-          backward(side4)\n\
-          right(angle4)\n\
-        backward(side3)\n\
-        left(angle3)\n\
-        left(angle3)\n\
-        forward(side3)\n\
-        backward(side3)\n\
-        right(angle3)\n\
-      backward (side2)\n\
-      left(angle2)\n\
-    right(72)\n\
-  }\n\
-}\n\
-\n\
-function demo() {\n\
-  reset()\n\
-  goto (-50,-22)\n\
-  right(17)\n\
-  pent(50)\n\
-  hideturtle()\n\
-}\n\
-'
 dragon_curve ='\
-//  Dragon Curve -- draw a fractal curve formed by folding a shape onto itself\n\
+// Dragon Curve -- draw a fractal curve formed by folding a shape onto itself\n\
 //  more infomration at wikipedia  https://en.wikipedia.org/wiki/Dragon_curve\n\
 \n\
 \n\
@@ -4295,7 +4242,6 @@ function demo () {\n\
 '
 hirschhorn_tiles ='\
 // Hircshhorn Tiles -- Hirschhorn 6-fold-rotational symmetry pentagonal tiling\n\
-\n\
 \n\
 // CONSTRAINTS\n\
 // six ang0 = 360\n\
@@ -6522,7 +6468,7 @@ function demo() {\n\
 }\n\
 '
 life ='\
-// life -- Conway\'s game of life\n\
+// Life -- Conway\'s game of life\n\
 columns = 16\n\
 rows = 16\n\
 \n\
@@ -6571,7 +6517,7 @@ function drawGrid( grid) {\n\
 }\n\
 \n\
 \n\
-function drawGrid2( grid) {\n\
+function drawGrid2( grid, baseCaption) {\n\
   for (r=0; r < rows; r++) {\n\
     for ( c=0; c < columns; c++) {\n\
        goto ( columnMid - c * columnSize , rowMid - r * rowSize)\n\
@@ -6583,6 +6529,7 @@ function drawGrid2( grid) {\n\
        dot( dotSize)\n\
     }\n\
   }\n\
+  caption( baseCaption)\n\
 }\n\
 \n\
 \n\
@@ -6771,6 +6718,34 @@ function endTest (grid) {\n\
   lastPast = (lastPast+1) % numPast\n\
   //console.log( "stable:" + stable + " oscil2:" + oscillating2 + " oscil3:" + oscillating3+ " lastPast:" + lastPast)\n\
   return ( stable || oscillating)\n\
+}\n\
+\n\
+\n\
+function caption (message) {\n\
+  // save your current position, heading, etc.\n\
+  var savedX = turtle.pos.x\n\
+  var savedY = turtle.pos.y\n\
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees\n\
+  var savedColor = turtle.color\n\
+  var savedWidth = turtle.width\n\
+\n\
+  goto (minX()+10, minY()+10)\n\
+  setheading( 90)\n\
+\n\
+  // erase what will be in the path\n\
+  setfont("bold 16px helvitica,sans-serif")\n\
+  color ("white")\n\
+  width (22)\n\
+  forward (maxY() * 2 - 12)\n\
+  goto (minX()+10, minY()+5)\n\
+  color ("black")\n\
+  write( message)\n\
+\n\
+  //go back from whence you came\n\
+  goto( savedX, savedY)\n\
+  setheading( savedHeading)\n\
+  color ( savedColor)\n\
+  width (savedWidth)\n\
 }\n\
 \n\
 \n\
@@ -7147,67 +7122,84 @@ function demo() {\n\
 \n\
 function nextGen() {\n\
   gen = gen + 1\n\
-  if (gen < 500 && !endTest(grid)) {\n\
+  if (gen < 100 && !endTest(grid)) {\n\
     generation2( grid)\n\
-    drawGrid2( grid)\n\
+    drawGrid2( grid, baseCaption + " " + gen)\n\
     delay (nextGen, 100)\n\
   } else {\n\
     switch (demoNumber) {\n\
     case 0:\n\
       loadPattern2(birther)\n\
+      baseCaption = "Birther"\n\
       break\n\
     case 15:\n\
       loadPattern2(greatOnOff)\n\
+      baseCaption = "Great On/Off"\n\
       break\n\
     case 14:\n\
       loadPattern2(unix)\n\
+      baseCaption = "Unix"\n\
       break\n\
     case 13:\n\
       loadPattern2(tumbler)\n\
+      baseCaption = "Tumbler"\n\
       break\n\
     case 12:\n\
       loadPattern2(oscillator14)\n\
+      baseCaption = "Oscillator 14"\n\
       break\n\
     case 11:\n\
       loadPattern2(hwss)\n\
+      baseCaption = "Heavy Weight Space Ship"\n\
       break\n\
     case 10:\n\
       loadPattern2(mwss)\n\
+      baseCaption = "Medium Weight Space Ship"\n\
       break\n\
     case 9:\n\
       loadPattern2(trafficLight)\n\
+      baseCaption = "Traffic Light"\n\
       break\n\
     case 1:\n\
       loadPattern2(beacons)\n\
+      baseCaption = "Beacons"\n\
       break\n\
     case 2:\n\
       loadPattern2(glider)\n\
+      baseCaption = "Glider"\n\
       break\n\
     case 3:\n\
       loadPattern2(glider2)\n\
+      baseCaption = "Glider Collision"\n\
       break\n\
     case 4:\n\
       loadPattern2(lwss)\n\
+      baseCaption = "Light Weight Space Ship"\n\
       break\n\
     case 5:\n\
       loadPattern2(lwss2)\n\
+      baseCaption = "Light Weight Space Ship 2"\n\
       break\n\
     case 6:\n\
       loadPattern2(pulsar)\n\
+      baseCaption = "Pulsar"\n\
       break\n\
     case 7:\n\
       loadPattern2(greaterThan)\n\
+      baseCaption = "Greater Than"\n\
       break\n\
     case 8:\n\
       loadPattern2(pentathalon)\n\
+      baseCaption = "Pentathalon"\n\
       break\n\
     default:\n\
       loadPattern2(greaterThan)\n\
+      baseCaption = "Greater Than"\n\
       break\n\
     }\n\
     demoNumber = (demoNumber +1) % numDemos\n\
-    drawGrid2( grid)\n\
     gen = 0\n\
+    drawGrid2( grid, baseCaption + " " + gen)\n\
     delay (nextGen, 500)\n\
   }\n\
 }\n\
@@ -8646,7 +8638,7 @@ function demo() {\n\
 }\n\
 '
 rice_penta_tessellation_1 ='\
-// rice penta tessellation 1 -- pentagon tessellation discovered by Margorie Rice\n\
+// Rice Penta Tessellation 1 -- pentagon tessellation discovered by Margorie Rice\n\
 \n\
 c1 = "yellow"\n\
 c2 = "orange"\n\
@@ -9079,7 +9071,7 @@ function demo() {\n\
 }\n\
 '
 sliding_block ='\
-// sliding block puzzle -- animated solution to Square Root sliding block puzzle\n\
+// Sliding Block Puzzle -- animated solution to Square Root sliding block puzzle\n\
 // details of the moves are on the console.log\n\
 \n\
 var side\n\
@@ -9554,7 +9546,6 @@ function getState() {\n\
   }\n\
   return state\n\
 }\n\
-      \n\
 \n\
 \n\
 function demo1() {\n\
@@ -9773,6 +9764,33 @@ function demo() {\n\
 }\n\
 \n\
 \n\
+function caption (message) {\n\
+  // save your current position, heading, etc.\n\
+  var savedX = turtle.pos.x\n\
+  var savedY = turtle.pos.y\n\
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees\n\
+  var savedColor = turtle.color\n\
+  var savedWidth = turtle.width\n\
+\n\
+  goto (minX()+10, minY()+10)\n\
+  setheading( 90)\n\
+\n\
+  // erase what will be in the path\n\
+  setfont("bold 16px helvitica,sans-serif")\n\
+  color ("white")\n\
+  width (22)\n\
+  forward (maxY() * 2 - 12)\n\
+  goto (minX()+10, minY()+5)\n\
+  color ("black")\n\
+  write( message)\n\
+\n\
+  //go back from whence you came\n\
+  goto( savedX, savedY)\n\
+  setheading( savedHeading)\n\
+  color ( savedColor)\n\
+  width (savedWidth)\n\
+}\n\
+\n\
 var moveCount;\n\
 var delayTime = 300;\n\
 var moves; // List of the moves to be made\n\
@@ -9879,6 +9897,7 @@ function moveOne() {\n\
   //console.log( "mO " + moves[moveCount])\n\
 \n\
   drawBlocks();\n\
+  caption( "Sliding block move " + moveCount)\n\
   findFree()\n\
   console.log("   State: " + getState())\n\
   findMoves()\n\
@@ -10865,7 +10884,7 @@ console.log("X="+2*maxX()+ " Y="+2*maxY() + " W="+flagWidth + "H="+flagHeight)\n
 demo = flag\n\
 '
 waves ='\
-// waves -- wave interference patterns\n\
+// Waves -- wave interference patterns\n\
 \n\
 //draw the radials\n\
 function drawRadials(side) {\n\
@@ -10878,7 +10897,7 @@ function drawRadials(side) {\n\
 \n\
 /*\n\
 need to calculate the angles for starting and stopping the arcs.\n\
-distances are known\n\
+distances are known. This math is a bit tough.\n\
 \n\
 */\n\
 \n\
@@ -10887,6 +10906,7 @@ distances are known\n\
 function demo() {\n\
 	reset()\n\
 	wrap(false)\n\
+	hideTurtle()\n\
 	size=200\n\
 	step = 4\n\
 	n = 2* size/step\n\

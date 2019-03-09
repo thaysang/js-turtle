@@ -1,4 +1,4 @@
-// Color Changing Dots -- demonstrate the concept of changing the colors of a string of dots (lights?)
+// Color Changing Dots -- show changing colors of a string of dots or lights
 
 /*
 Maybe you can adapt to make a traffic light simulator or Christmas light

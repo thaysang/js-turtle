@@ -1,4 +1,4 @@
-// rice penta tessellation 1 -- pentagon tessellation discovered by Margorie Rice
+// Rice Penta Tessellation 1 -- pentagon tessellation discovered by Margorie Rice
 
 c1 = "yellow"
 c2 = "orange"

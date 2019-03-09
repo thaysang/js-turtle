@@ -1,4 +1,4 @@
-// life -- Conway\'s game of life
+// Life -- Conway\'s game of life
 columns = 16
 rows = 16
 
@@ -47,7 +47,7 @@ function drawGrid( grid) {
 }
 
 
-function drawGrid2( grid) {
+function drawGrid2( grid, baseCaption) {
   for (r=0; r < rows; r++) {
     for ( c=0; c < columns; c++) {
        goto ( columnMid - c * columnSize , rowMid - r * rowSize)
@@ -59,6 +59,7 @@ function drawGrid2( grid) {
        dot( dotSize)
     }
   }
+  caption( baseCaption)
 }
 
 
@@ -247,6 +248,34 @@ function endTest (grid) {
   lastPast = (lastPast+1) % numPast
   //console.log( "stable:" + stable + " oscil2:" + oscillating2 + " oscil3:" + oscillating3+ " lastPast:" + lastPast)
   return ( stable || oscillating)
+}
+
+
+function caption (message) {
+  // save your current position, heading, etc.
+  var savedX = turtle.pos.x
+  var savedY = turtle.pos.y
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees
+  var savedColor = turtle.color
+  var savedWidth = turtle.width
+
+  goto (minX()+10, minY()+10)
+  setheading( 90)
+
+  // erase what will be in the path
+  setfont("bold 16px helvitica,sans-serif")
+  color ("white")
+  width (22)
+  forward (maxY() * 2 - 12)
+  goto (minX()+10, minY()+5)
+  color ("black")
+  write( message)
+
+  //go back from whence you came
+  goto( savedX, savedY)
+  setheading( savedHeading)
+  color ( savedColor)
+  width (savedWidth)
 }
 
 
@@ -623,67 +652,84 @@ function demo() {
 
 function nextGen() {
   gen = gen + 1
-  if (gen < 500 && !endTest(grid)) {
+  if (gen < 100 && !endTest(grid)) {
     generation2( grid)
-    drawGrid2( grid)
+    drawGrid2( grid, baseCaption + " " + gen)
     delay (nextGen, 100)
   } else {
     switch (demoNumber) {
     case 0:
       loadPattern2(birther)
+      baseCaption = "Birther"
       break
     case 15:
       loadPattern2(greatOnOff)
+      baseCaption = "Great On/Off"
       break
     case 14:
       loadPattern2(unix)
+      baseCaption = "Unix"
       break
     case 13:
       loadPattern2(tumbler)
+      baseCaption = "Tumbler"
       break
     case 12:
       loadPattern2(oscillator14)
+      baseCaption = "Oscillator 14"
       break
     case 11:
       loadPattern2(hwss)
+      baseCaption = "Heavy Weight Space Ship"
       break
     case 10:
       loadPattern2(mwss)
+      baseCaption = "Medium Weight Space Ship"
       break
     case 9:
       loadPattern2(trafficLight)
+      baseCaption = "Traffic Light"
       break
     case 1:
       loadPattern2(beacons)
+      baseCaption = "Beacons"
       break
     case 2:
       loadPattern2(glider)
+      baseCaption = "Glider"
       break
     case 3:
       loadPattern2(glider2)
+      baseCaption = "Glider Collision"
       break
     case 4:
       loadPattern2(lwss)
+      baseCaption = "Light Weight Space Ship"
       break
     case 5:
       loadPattern2(lwss2)
+      baseCaption = "Light Weight Space Ship 2"
       break
     case 6:
       loadPattern2(pulsar)
+      baseCaption = "Pulsar"
       break
     case 7:
       loadPattern2(greaterThan)
+      baseCaption = "Greater Than"
       break
     case 8:
       loadPattern2(pentathalon)
+      baseCaption = "Pentathalon"
       break
     default:
       loadPattern2(greaterThan)
+      baseCaption = "Greater Than"
       break
     }
     demoNumber = (demoNumber +1) % numDemos
-    drawGrid2( grid)
     gen = 0
+    drawGrid2( grid, baseCaption + " " + gen)
     delay (nextGen, 500)
   }
 }

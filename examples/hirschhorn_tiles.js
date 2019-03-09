@@ -1,6 +1,5 @@
 // Hircshhorn Tiles -- Hirschhorn 6-fold-rotational symmetry pentagonal tiling
 
-
 // CONSTRAINTS
 // six ang0 = 360
 //ang0 + ang1 + ang4 = 360

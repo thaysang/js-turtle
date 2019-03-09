@@ -1,4 +1,4 @@
-// sliding block puzzle -- animated solution to Square Root sliding block puzzle
+// Sliding Block Puzzle -- animated solution to Square Root sliding block puzzle
 // details of the moves are on the console.log
 
 var side
@@ -473,7 +473,6 @@ function getState() {
   }
   return state
 }
-      
 
 
 function demo1() {
@@ -692,6 +691,33 @@ function demo() {
 }
 
 
+function caption (message) {
+  // save your current position, heading, etc.
+  var savedX = turtle.pos.x
+  var savedY = turtle.pos.y
+  var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees
+  var savedColor = turtle.color
+  var savedWidth = turtle.width
+
+  goto (minX()+10, minY()+10)
+  setheading( 90)
+
+  // erase what will be in the path
+  setfont("bold 16px helvitica,sans-serif")
+  color ("white")
+  width (22)
+  forward (maxY() * 2 - 12)
+  goto (minX()+10, minY()+5)
+  color ("black")
+  write( message)
+
+  //go back from whence you came
+  goto( savedX, savedY)
+  setheading( savedHeading)
+  color ( savedColor)
+  width (savedWidth)
+}
+
 var moveCount;
 var delayTime = 300;
 var moves; // List of the moves to be made
@@ -798,6 +824,7 @@ function moveOne() {
   //console.log( "mO " + moves[moveCount])
 
   drawBlocks();
+  caption( "Sliding block move " + moveCount)
   findFree()
   console.log("   State: " + getState())
   findMoves()
