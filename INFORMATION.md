@@ -1,58 +1,65 @@
 #Project Information
 ##History
-This project was forked from bjpop/js-turtle. This project had the basic turtle functions,
-**animate** function,
-the immediate execution of the **command** line, and the editable **definitions** area. This was a
-substantial portion of this project, and overall had brilliant ideas.
+This project was forked from bjpop/js-turtle. This project had the basic turtle
+functions, **animate** function, the immediate execution of the **command**
+line, and the editable **definitions** area. This was a substantial portion of
+this project, and overall had brilliant ideas.
 
 ##File Structure
 This project consists of several files which are used for a single HTML page.
 
 - **turtle.html** is the basic HTML page. It includes the platform layout and the content of the language reference.
 - **turtle.css** controls the formatting and styling of the page.
-- **turtle.js** contains the Javascript code for the Logo Turtle Javascript functions. This code could
-be included in other projects that want turtle graphics without the console functions.
-- **turtleConsole.js** contains the Javascript code for the platform controls (e.g., language reference
+- **turtle.js** contains the Javascript code for the Logo Turtle Javascript
+  functions. This code could be included in other projects that want turtle
+graphics without the console functions.
+- **turtleConsole.js** contains the Javascript code for the platform controls
+  (e.g., language reference
 clickons, **Command** box, **RESET** button, **RUN DEMO** button, **STOP** button)
-- **examples** is a directory the contains example code in both a native form (e.g., example.js) and
-in a string assignment (e.g., example.str.js) form where the
-native form is passed as a Javascript string variable to be included in the platform.
-- **examples.js** is the file containing the processed example code for inclusion in the console. It is built with the **make** command (see below).
-- **Makefile** used for maintaining the example Javascript code files for inclusion into the
-platform page (see below).
-- **jsTojsString** is an executable shell script for converting a Javascript example programs into a
-Javascript string which can be loaded into the **Example** box (see below).
+- **examples** is a directory the contains example code in both a native form
+  (e.g., example.js) and in a string assignment (e.g., example.str.js) form
+where the native form is passed as a Javascript string variable to be included
+in the platform.
+- **examples.js** is the file containing the processed example code for
+  inclusion in the console. It is built with the **make** command (see below).
+- **Makefile** used for maintaining the example Javascript code files for
+  inclusion into the platform page (see below).
+- **jsTojsString** is an executable shell script for converting a Javascript
+  example programs into a Javascript string which can be loaded into the
+**Example** box (see below).
 - **README.md** is the general read me documentation file for this project and includes a basic user manual.
 - **INFORMATION.md** is this documentation file.
 
 ##Example Code Processing
-JavaScript does not have functions that allow it to read files on the computer where it is
-being executed. This protects the user from mischievous code, but makes it somewhat difficult
-to load files dynamically. Toward this end, the JavaScript examples are converted to strings
-that can be loaded as text into the **Example** box. This processing does two things. First it
-makes the lines of the program into a JavaScript string and assigns that string to a JavaScript
-variable. It appends a backslash '/' character to the end of each line which tells JavaScript that
-the line is continued on the next line. The second thing it does is to inject a '\n' at the end
-of each line so that when JavaScript loads the string into the **Example** box, it know where the
-original lines ended.
+JavaScript does not have functions that allow it to read files on the computer
+where it is being executed. This protects the user from mischievous code, but
+makes it somewhat difficult to load files dynamically. Toward this end, the
+JavaScript examples are converted to strings that can be loaded as text into
+the **Example** box. This processing does two things. First it makes the lines
+of the program into a JavaScript string and assigns that string to a JavaScript
+variable. It appends a backslash '/' character to the end of each line which
+tells JavaScript that the line is continued on the next line. The second thing
+it does is to inject a '\n' at the end of each line so that when JavaScript
+loads the string into the **Example** box, it know where the original lines
+ended.
 
-This processing is done with a Linux shell program. This was developed on a Macintosh and should
-work on Linux machines. A **Makefile** is used to keep track of when a particular example program file
-needs to be updated. This allows the updating to be performed with a simple **make** command.
+This processing is done with a Linux shell program. This was developed on a
+Macintosh and should work on Linux machines. A **Makefile** is used to keep
+track of when a particular example program file needs to be updated. This
+allows the updating to be performed with a simple **make** command.
 
 New example files require:
 - inclusion within the **Makefile** so that they are updated with the **make** command.
-- inclusion of the Javascript string files (e.g., &lt;script src=example.str.js>&lt;/script>) within the **turtle.html**
-so that the strings are accessible to Javascript.
+- inclusion of the Javascript string files (e.g., &lt;script
+  src=example.str.js>&lt;/script>) within the **turtle.html** so that the
+strings are accessible to Javascript.
 - inclusion of the &lt;option> in the **Examples** select within **turtleConsole.js** file.
 ##Initial Enhancements
 
 The following are the initial enhancements to the forked project:
 
 * re-formatted the language reference to use and unordered list and paragraph tags.
-* dropped jQuery thinking that it really wasn't needed and wanted the code to be "easier"
-to read in the sence that one would have to know less to read it. With the number of onclick
-events, this is now somewhat questionable.
+* dropped jQuery thinking that it really wasn't needed and wanted the code to be "easier" to read in the sence that one would have to know less to read it. With the number of onclick events, this is now somewhat questionable.
 * made the **language reference**examples be "clickable", so that they load the **command** line
 and are executed when clicked.
 * added synonyms for commands (e.g., colour=color, fd=forward).
@@ -106,12 +113,11 @@ the delayed function mechanism.
      - [x] simple traffic light simulator
      - [x] integrate intersection simulator
      - [x] more fractal examples
-
-        - [x] Sierpinski triangle
-        - [x] dragon curve
-        - [x] Hilbert curve
-        - [x] Gosper curve
-        - [x] Conway pinwheel
+	- [x] Sierpinski triangle
+	- [x] dragon curve
+	- [x] Hilbert curve
+	- [x] Gosper curve
+	- [x] Conway pinwheel
      - [ ] asymmetric tree
      - [ ] more tessellation examples
 	   - [x] pentagons 
@@ -122,10 +128,8 @@ the delayed function mechanism.
 	   - [ ] triangles
 	   - [ ] shifted trangles
 	   - [x] two triangle size
-	   
  - [x] Conway Pinwheel
  - [x] star evolution
-
 	 - [x] basic 5-pointed star
 	 - [x] open up points
 	 - [x] move star (dx, dy)
@@ -190,20 +194,65 @@ separate selector from the example selector].
 #Bugs
 * make the run button better
 	- [ ] if demo() is undefined, just say "Run"
-	* make enter work all of the time on the command line
-	* demo() needs to be cleared when changing examples (e.g., flag to clock, binary)
-	* demo() may be should be called automatically when the example is loaded
-* add a visible version number to this thing somewhere
-* need some protection from infinite loops (hard to do without injecting code somewhere)mo
-* arc and curve test is missing third example
+	* [ ] make enter work all of the time on the command line
+	* [ ] demo() needs to be cleared when changing examples (e.g., flag to clock, binary)
+	* [ ] demo() may be should be called automatically when the example is loaded
+* [ ] add a visible version number to this thing somewhere
+* [ ] need some protection from infinite loops (hard to do without injecting code somewhere)mo
+* [ ] arc and curve test is missing third example
 	* Should add example for rounded rectangles
-* hexagon tesselation is not working
-* circle eye could be bigger, maybe different colors for each inscribed circle
-* color changing dots is not working, should start with a clear
-* dividing a circle is not working *****Fixed without identifying problem**
-* Add tag //*sourceURL=foo.js to bottom of all examples for debugging purposes (or just add ~=definitions.js via the exec command?) <--alternate is better because it works for user entered code
+* [ ] hexagon tessellation is not working
+* [ ] circle eye could be bigger, maybe different colors for each inscribed circle
+* [ ] color changing dots is not working, should start with a clear
+* [ ] dividing a circle is not working *****Fixed without identifying problem*****
+* [ ] Add tag //*sourceURL=foo.js to bottom of all examples for debugging purposes (or just add ~=definitions.js via the exec command?) <--alternate is better because it works for user entered code
 * optionally 
-* curveRight and curveLeft are not working from all start angles
+* [ ] curveRight and curveLeft are not working from all start angles
+*  [ ] run demo is rough
+	-    should be consistent about errors
+	-    need to catch errors in repeat and delay and STOP!
+*  [ ] names in reference aren't proper camel case
+*  [ ] turtle context not saved and restored properly
+    color, angle, position, width is not restored
+*  [ ] error handling is inconsistant
+*  [ ] examples should be consistant
+	-    [ ] include demo()
+	-    [ ] include reset()
+*  [ ] add example checker
+	-    [ ] no single quote
+	-    [ ] Name Capitalized
+	-    [ ] demo function
+	-    [ ] reset function? ok for those that build like graphitti
+*  [ ] can a pause button be implemented? -- just an asyncronous event
+*  [ ] resume uses the play/run button. If pause in progress, resume, else play from start
+
+*  [ ] reset() sets stokeStyle to "black". is that complete?
+   [ ] see also other references...
+
+* [ ] decahedron graph does not auto start while animation in progress
+* [ ] need to reset
+* [ ] n drop first examples
+* [ ] hirshhorn name not loading.
+* [ ] niefah mizen6 has missing figure
+* [ ] niefah mizen has black edge inconsistantly showing
+* [ ] squiggle needs a reset
+* [ ] miura should be scaled a bit ... 1-2 inches, at least 5x5
+* [ ] rotate mountain tesselation 90°
+* [ ] pentahex needs to be scaled
+* [ ] rhombic star should hide turtle
+* [ ] rice pentellation needs more fill
+
+*tutorial got really short. should at least have progression on the square. 
+tutorial has bugs
+
+
+*fix icons to make more consistant
+*credit icons
+<div>Icons made by <a href="https://www.flaticon.com/authors/robin-kylander" title="Robin Kylander">Robin Kylander</a> from <a href="https://www.flaticon.com/" ⇥·······⇥·······⇥·······    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" ⇥⇥·······⇥·······    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
+
+
+
 
 #Proposed Turtle Graphics Lesson Outline
 

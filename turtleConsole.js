@@ -4,52 +4,6 @@
  *  Copyright (c) 2015-2019 Kirk Carlson
  *  MIT license
  ************************************************************************/
-/*bugs
-  run demo is rough
-    should be consistent about errors
-    need to catch errors in repeat and delay and STOP!
-  names in reference aren't proper camel case
-  turtle context not saved and restored properly
-    color, angle, position, width is not restored
-  error handling is inconsistant
-  examples should be consistant
-    include demo()
-    include reset()
-  add example checker
-    no single quote
-    Name Capitalized
-    demo function
-    reset function? ok for those that build like graphitti
-  can a pause button be implemented? -- just an asyncronous event
-  resume uses the play/run button. If pause in progress, resume, else play from start
-
-  reset() sets stokeStyle to "black". is that complete?
-   see also other references...
-
-dodecahedron graph does not auto start while animation in progress
-" need to reset
-can drop first examples
-hirshhorn name not loading.
-.niefah mizen6 has missing figure
-.niefah mizen has black edge inconsistantly showing
-.squiggle needs a reset
-.miura should be scaled a bit ... 1-2 inches, at least 5x5
-.rotate mountain tesselation 90°
-.pentahex needs to be scaled
-.rombic star should hide turtle
-.rice pentellation needs more fill
-
-tutorial got really short. should at least have progression on the square.
-tutorial has bugs
-
-
-fix icons to make more consistant
-credit icons
-<div>Icons made by <a href="https://www.flaticon.com/authors/robin-kylander" title="Robin Kylander">Robin Kylander</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-
-
- */
-
 //console.log("Starting up")
 
 //**GLOBALS***
