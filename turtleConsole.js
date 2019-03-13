@@ -522,7 +522,6 @@ var get_blob = function() {
  *   false to prevent further processing
  *************************************************************************/
 function downloadClicked(e) {
-    //event.preventDefault();
     e.preventDefault();
     var BB = get_blob();
     saveAs(
@@ -545,8 +544,8 @@ function downloadClicked(e) {
  * returns:
  *   false to prevent further processing
  *************************************************************************/
-function saveCanvasClicked() {
-    event.preventDefault();
+function saveCanvasClicked(e) {
+    e.preventDefault();
     var BB = get_blob();
     saveAs(
         new BB(
