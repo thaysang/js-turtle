@@ -521,8 +521,9 @@ var get_blob = function() {
  * returns:
  *   false to prevent further processing
  *************************************************************************/
-function downloadClicked() {
-    event.preventDefault();
+function downloadClicked(e) {
+    //event.preventDefault();
+    e.preventDefault();
     var BB = get_blob();
     saveAs(
         new BB(
