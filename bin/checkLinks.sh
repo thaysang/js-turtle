@@ -56,15 +56,17 @@ do
 					echo "***No anchor in $FILE for \"$REF\"."
 				fi
 			fi
+		elif [[ $REF == https://en.wikipedia.org* ]]; then #this stopped working???
+			echo "   skipping"
 		elif [[ $REF == https* ]]; then
 			echo "   Looking for $REF"
-			wget -qO- $REF &> /dev/null
+			wget -qO- -v -t 2 --timeout 10 --no-check-certificate $REF &> /dev/null
 			if [ $? -ne 0 ]; then
 				echo "***Bad link to \"$REF\"."
 			fi
 		elif [[ $REF == http* ]]; then
 			echo "   Looking for $REF"
-			wget -qO- $REF &> /dev/null
+			wget -qO- -v -t 2 --timeout 10 --no-check-certificate $REF &> /dev/null
 			if [ $? -ne 0 ]; then
 				echo "***Bad link to \"$REF\"."
 			fi
