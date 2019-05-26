@@ -10883,6 +10883,322 @@ console.log("X="+2*maxX()+ " Y="+2*maxY() + " W="+flagWidth + "H="+flagHeight)\n
   \n\
 demo = flag\n\
 '
+wang_tiles ='\
+// Wang Tiles -- progressively tile the canvas with Wang Tiles\n\
+\n\
+\n\
+//****CONFIGURATION****\n\
+\n\
+side = 30\n\
+margin = 10\n\
+\n\
+\n\
+//****CONSTANTS****\n\
+\n\
+N = 0\n\
+E = 1\n\
+S = 2\n\
+W = 3\n\
+\n\
+\n\
+var TILES = [ // original 13\n\
+  "GGBR",\n\
+  "GBGR",\n\
+  "GBBG",\n\
+  "RRGG",\n\
+  "RRBB",\n\
+  "RGGB",\n\
+  "YYRY",\n\
+  "BYGY",\n\
+  "GKRY",\n\
+  "GKYY",\n\
+  "YKRK",\n\
+  "BKGK",\n\
+  "GYGK"\n\
+];\n\
+\n\
+\n\
+/*\n\
+var TILES = [ // new 11\n\
+  "RRRY",\n\
+  "BRBY",\n\
+  "RYYY",\n\
+  "WBRB",\n\
+  "BBWB",\n\
+  "WWRW",\n\
+  "RYBW",\n\
+  "BWBR",\n\
+  "BRWR",\n\
+  "YYBR",\n\
+  "RWRY",\n\
+];\n\
+*/\n\
+\n\
+\n\
+var COLORS = { // original colors\n\
+  "R": "red",\n\
+  "G": "green",\n\
+  "B": "blue",\n\
+  "Y": "yellow",\n\
+  "K": "gray",\n\
+  "W": "white"\n\
+};\n\
+\n\
+\n\
+/*\n\
+var COLORS = { // for red-green color blind\n\
+  "R": "red",\n\
+  "G": "lightgreen",\n\
+  "B": "blue",\n\
+  "Y": "yellow",\n\
+  "K": "skyblue"\n\
+  "W": "white"\n\
+};\n\
+*/\n\
+\n\
+\n\
+//****GLOBALS****\n\
+\n\
+var tiles; // global array of tile objects\n\
+var currentTile; // current tile to be considered\n\
+var hHumber; // number of tiles horizontally\n\
+var vHumber; // number of tiles vertically\n\
+\n\
+\n\
+//****FUNCTIONS****\n\
+\n\
+function drawTriangle (fill) {\n\
+  // draw triangle in place\n\
+  beginShape()\n\
+  forward( side)\n\
+  right( 135)\n\
+  forward ( side/Math.sqrt(2))\n\
+  right( 90)\n\
+  forward( side/Math.sqrt(2))\n\
+  fillShape( fill)\n\
+  right( 135)\n\
+}\n\
+\n\
+\n\
+function drawTile (x, y, tile) {\n\
+  goto(x,y)\n\
+  angle(90)\n\
+  drawTriangle( COLORS[ TILES[tile][N]])\n\
+  forward( side)\n\
+  right( 90)\n\
+  drawTriangle( COLORS[ TILES[tile][E]])\n\
+  forward( side)\n\
+  right( 90)\n\
+  drawTriangle( COLORS[ TILES[tile][S]])\n\
+  forward( side)\n\
+  right( 90)\n\
+  drawTriangle( COLORS[ TILES[tile][W]])\n\
+  forward( side)\n\
+  right( 90)\n\
+}\n\
+\n\
+\n\
+function north(tx, ty) { // get tile north of given coordinate\n\
+  var possibles = tiles[ty-1][tx].possibles\n\
+  var nTile = possibles[tiles[ty-1][tx].posIndex]\n\
+  console.log("north",tx,ty, nTile)\n\
+  return nTile\n\
+}\n\
+\n\
+\n\
+function west(tx, ty) { // get tile west of given coordinate\n\
+  var possibles = tiles[ty][tx-1].possibles\n\
+  var wTile = possibles[tiles[ty][tx-1].posIndex]\n\
+  console.log("west",tx,ty, wTile)\n\
+  return wTile\n\
+}\n\
+\n\
+\n\
+class Tile {\n\
+  constructor (x, y, prev) {\n\
+    //tile coordinates\n\
+    this.tx = x\n\
+    this.ty = y\n\
+    //tile possibles\n\
+    this.possibles = []\n\
+    this.posIndex = undefined // index of possibles\n\
+    // tile links\n\
+    this.prev = prev\n\
+    this.next = undefined\n\
+  }\n\
+\n\
+  findPossibles() {\n\
+    /*\n\
+     * find the possible tiles for a new tile\n\
+     * this may backtrack to previous tiles to find an alive tiling\n\
+     * returns true if the tiling is alive\n\
+     */\n\
+\n\
+    console.log("fP", this.tx, this.ty)\n\
+    this.possibles = []\n\
+    if (this.tx == 0 && this.ty == 0) {\n\
+      console.log ("fP new")\n\
+      this.possibles = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]\n\
+\n\
+    } else if (this.ty == 0) {\n\
+      console.log ("fP first row")\n\
+      var w = TILES[west(this.tx, this.ty)][E]\n\
+      for (var i = 0; i<TILES.length; i++) {\n\
+        console.log("fP",w , TILES[i][W])\n\
+        if (TILES[i][W] == w){\n\
+           console.log("fP push", i)\n\
+           this.possibles.push(i)\n\
+        }\n\
+      }\n\
+\n\
+    } else if (this.tx == 0){\n\
+      console.log ("fP new row")\n\
+      var n = TILES[north(this.tx, this.ty)][S]\n\
+      for (var i = 0; i<TILES.length; i++) {\n\
+        if (TILES[i][N] == n){\n\
+          this.possibles.push(i)\n\
+        }\n\
+      }\n\
+\n\
+    } else {\n\
+      console.log ("fP in row")\n\
+      var w = TILES[west(this.tx, this.ty)][E]\n\
+      var n = TILES[north(this.tx, this.ty)][S]\n\
+      for (var i = 0; i<TILES.length; i++) {\n\
+        if (TILES[i][W] == w && TILES[i][N] == n){\n\
+          this.possibles.push(i)\n\
+        }\n\
+      }\n\
+    }\n\
+\n\
+    if (this.possibles.length > 0) { // ready to plot\n\
+      //randomize order of possibles\n\
+      var possibles = []\n\
+      while (this.possibles.length > 0) {\n\
+        possibles.push(\n\
+            this.possibles.splice( \n\
+                Math.random() * this.possibles.length, 1)[0]\n\
+        )\n\
+      }\n\
+      this.possibles = possibles\n\
+      this.posIndex = 0\n\
+      console.log("fP-",this.tx, this.ty, this.possibles, this.posIndex)\n\
+      return (true)\n\
+\n\
+    } else { // blocked, need to backtrack\n\
+      this.possibles = []\n\
+      this.posIndex = undefined\n\
+      this.plotBlank()\n\
+      if (this.tx != 0 || this.ty != 0) {\n\
+        return( this.prev.backtrack())\n\
+      } else { // truly blocked\n\
+        return( false)\n\
+      }\n\
+    }\n\
+  }\n\
+\n\
+\n\
+  backtrack() {\n\
+    /*\n\
+     * use the next possible of the current cell or backtrack again\n\
+     */\n\
+\n\
+    console.log("bt:", this.tx, this.ty, this.possibles, this.posIndex)\n\
+    currentTile = this\n\
+    if (this.posIndex != undefined && this.posIndex + 1 < this.possibles.length) {\n\
+      // ready to plot\n\
+      this.posIndex = this.posIndex + 1\n\
+      return( true)\n\
+\n\
+    } else { // backtrack again\n\
+      this.possibles = []\n\
+      this.posIndex = undefined\n\
+      this.plotBlank()\n\
+      if (this.tx != 0 || this.ty != 0) {\n\
+        return( this.prev.backtrack())\n\
+      } else { // truly blocked\n\
+        return( false)\n\
+      }\n\
+    }\n\
+  }\n\
+\n\
+\n\
+  plot() {\n\
+    if (this.posIndex != undefined && this.posIndex < this.possibles.length) {\n\
+      var tile = this.possibles[this.posIndex]\n\
+      console.log("plot", this.tx, this.ty, this.posIndex, tile)\n\
+      drawTile (minX()+margin + this.tx * side * 1,\n\
+                maxY()-margin - this.ty * side * 1,\n\
+                tile)\n\
+    } else {\n\
+      console.log( "***Plot Error")\n\
+    }\n\
+  }\n\
+\n\
+\n\
+  plotBlank() {\n\
+    console.log("plotblank", this.tx, this.ty)\n\
+    color( "white")\n\
+    goto( minX()+margin + this.tx * side * 1,\n\
+          maxY()-margin - this.ty * side * 1)\n\
+    angle(90)\n\
+    beginShape()\n\
+    forward( side)\n\
+    right( 90)\n\
+    forward( side)\n\
+    right( 90)\n\
+    forward( side)\n\
+    right( 90)\n\
+    forward( side)\n\
+    right( 90)\n\
+    fillShape("lightblue")\n\
+    color("black")\n\
+  }\n\
+}\n\
+\n\
+\n\
+function delayedBuild () {\n\
+  hideTurtle()\n\
+  if (currentTile.findPossibles()) { // currentTile may change here\n\
+    currentTile.plot()\n\
+    if( (currentTile.tx != hNumber-1) ||\n\
+        (currentTile.ty != vNumber-1)) {\n\
+      currentTile = currentTile.next\n\
+      delay( delayedBuild, 0)\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+//****MAIN****\n\
+\n\
+function demo () {\n\
+  reset()\n\
+  //hideTurtle()\n\
+  tiles = []\n\
+  // build a logical array of tiles\n\
+  hNumber = Math.floor((maxX()*2 - margin * 2) / side)\n\
+  vNumber = Math.floor((maxY()*2 - margin * 2) / side)\n\
+  //hNumber = 8\n\
+  //vNumber = 8\n\
+  var prev = undefined\n\
+  for (var r=0; r< vNumber; r++) {\n\
+    tiles.push([]) //append row  \n\
+    //write (tiles[0]) \n\
+    for (var c=0; c< hNumber; c++) {\n\
+      var tile = new Tile (c, r, prev)\n\
+      tiles[r].push(tile) //append tile\n\
+      if (prev != undefined){\n\
+         prev.next = tile\n\
+      }\n\
+      prev = tile\n\
+    }\n\
+  }\n\
+  console.log("array is built")\n\
+  currentTile = tiles[0][0]\n\
+  delayedBuild()\n\
+}\n\
+'
 waves ='\
 // Waves -- wave interference patterns\n\
 \n\
