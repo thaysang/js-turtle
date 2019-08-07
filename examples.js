@@ -3053,6 +3053,1015 @@ function demo() {\n\
    }\n\
 }\n\
 '
+eye_simulator ='\
+// Eye Simulator -- Eye movement simulation\n\
+/*\n\
+This program is a graphical simulation of eyes to experiment with their\n\
+movement and emotional expression. This is investigation before committing\n\
+design to Arduino hardware.\n\
+*/\n\
+\n\
+\n\
+// ****CONSTANTS FOR DOT MATRICES****\n\
+\n\
+const columns = 32 // left and right eye are side by side\n\
+const rows = 9\n\
+\n\
+\n\
+// ****CONSTANTS FOR TURTLE GRAPHICS****\n\
+\n\
+const dotSize = 4\n\
+const dotGap = 2 // space between dots\n\
+const eyeGap = 4 // space between eyes\n\
+const columnSize = 2 * dotSize + dotGap\n\
+const rowSize = 2 * dotSize + dotGap\n\
+const columnMid = columns/2 * columnSize + eyeGap/2\n\
+const rowMid = rows/2 * rowSize\n\
+\n\
+const dotOff =          "#f0f0f0"\n\
+const eyeBrowColor =    "#8080ff"\n\
+const eyeBallColor =    "#ccccff"\n\
+const eyeOutlineColor = "#b3b3ff"\n\
+const rightEyeColor =   "#0000ff"\n\
+const leftEyeColor =    "#0000ff"\n\
+const rightPupilColor = "#000000"\n\
+const leftPupilColor =  "#000000"\n\
+\n\
+\n\
+// these may be dependent upon eye graphic\n\
+const irisWidth =       5\n\
+const irisHeight =      3\n\
+const irisCenterRight = 7 // absolute grid x for right eye center\n\
+const irisCenterLeft = 24 // absolute grid x for left eye center\n\
+const irisMiddle =      6 // absolute grid y for iris middle\n\
+\n\
+// relative from bottom\n\
+const lidsClosed = 0\n\
+const lidsNormal = 4 // normal/relaxed position of the eye lids\n\
+const lidsMin = 0\n\
+const lidsMax = 6\n\
+\n\
+// relative to iris center, middle:\n\
+const irisMaxX = 5\n\
+const irisMinX = -4\n\
+const irisMaxY = irisMiddle - rows + 1 + lidsMax\n\
+const irisMinY = irisMiddle - rows + 1 + lidsMin\n\
+const irisNormalX = 0 // normal/relaxed X position of the iris and pupil\n\
+const irisNormalY = 0 // normal/relaxed Y position of the iris and pupil\n\
+\n\
+\n\
+const lids = [\n\
+    [\n\
+        // lids[0]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00000000000000000000000000000000, //05\n\
+        0b10000000000000011000000000000001, //06\n\
+        0b01110000000011100111000000001110, //07\n\
+        0b00001111111100000000111111110000  //08\n\
+    ],\n\
+    [\n\
+        // lids[1]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00000000000000000000000000000000, //05\n\
+        0b10000000000000011000000000000001, //06\n\
+        0b01111111111111000011111111111110, //07\n\
+        0b00001111111100000000111111110000  //08\n\
+    ],\n\
+    [\n\
+        // lids[2]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00000000000000000000000000000000, //05\n\
+        0b11111111111111111111111111111111, //06\n\
+        0b01110000000011100111000000001110, //07\n\
+        0b00001111111100000000111111110000  //08\n\
+    ],\n\
+    [\n\
+        // lids[3]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00111111111111000011111111111110, //05\n\
+        0b10000000000000011000000000000001, //06\n\
+        0b01110000000011100111000000001110, //07\n\
+        0b00001111111100000000111111110000  //08\n\
+    ],\n\
+    [\n\
+        // lids[4]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00011111111100000000111111111000, //04\n\
+        0b01100000000011100111000000000110, //05\n\
+        0b10000000000000011000000000000001, //06\n\
+        0b01110000000011100111000000001110, //07\n\
+        0b00001111111100000000111111110000  //08\n\
+    ],\n\
+    [\n\
+        // lids[5]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00001111111100000000111111110000, //03\n\
+        0b01110000000011100111000000001110, //04\n\
+        0b10000000000000011000000000000001, //05\n\
+        0b10000000000000011000000000000001, //06\n\
+        0b01110000000011100111000000001110, //07\n\
+        0b00001111111100000000111111110000  //08\n\
+    ],\n\
+    [\n\
+        // lids[6]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00001111111100000000111111110000, //02\n\
+        0b01110000000011100111000000001110, //03\n\
+        0b10000000000000011000000000000001, //04\n\
+        0b10000000000000011010000000000001, //05\n\
+        0b10000000000000011000000000000001, //06\n\
+        0b01110000000011100111000000001110, //07\n\
+        0b00001111111100000000111111110000  //08\n\
+    ]\n\
+]\n\
+\n\
+\n\
+const masks = [\n\
+    [\n\
+        // masks[0]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00000000000000000000000000000000, //05\n\
+        0b00000000000000000000000000000000, //06\n\
+        0b00000000000000000000000000000000, //07\n\
+        0b00000000000000000000000000000000  //08\n\
+    ],\n\
+    [\n\
+        // masks[1]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00000000000000000000000000000000, //05\n\
+        0b00000000000000000000000000000000, //06\n\
+        0b00000000000000000000000000000000, //07\n\
+        0b00000000000000000000000000000000  //08\n\
+    ],\n\
+    [\n\
+        // masks[2]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00000000000000000000000000000000, //05\n\
+        0b00000000000000000000000000000000, //06\n\
+        0b00001111111110000001111111110000, //07\n\
+        0b00000000000000000000000000000000  //08\n\
+    ],\n\
+    [\n\
+        // masks[3]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00000000000000000000000000000000, //05\n\
+        0b01111111111111100111111111111110, //06\n\
+        0b00001111111110000001111111110000, //07\n\
+        0b00000000000000000000000000000000  //08\n\
+    ],\n\
+    [\n\
+        // masks[4]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00000000000000000000000000000000, //03\n\
+        0b00000000000000000000000000000000, //04\n\
+        0b00011111111100000000111111111000, //05\n\
+        0b01111111111111100111111111111110, //06\n\
+        0b00001111111110000001111111110000, //07\n\
+        0b00000000000000000000000000000000  //08\n\
+    ],\n\
+    [\n\
+        // masks[5]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0000000000000000000000000000000000, //03\n\
+        0b00001111111100000000111111110000, //04\n\
+        0b01111111111111100111111111111110, //05\n\
+        0b01111111111111100111111111111110, //06\n\
+        0b00001111111110000001111111110000, //07\n\
+        0b00000000000000000000000000000000  //08\n\
+    ],\n\
+    [\n\
+        // masks[6]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+        0b00000000000000000000000000000000, //02\n\
+        0b00001111111100000000111111110000, //03\n\
+        0b01111111111111100111111111111110, //04\n\
+        0b01111111111111100111111111111110, //05\n\
+        0b01111111111111100111111111111110, //06\n\
+        0b00001111111100000000111111110000, //07\n\
+        0b00000000000000000000000000000000  //08\n\
+    ]\n\
+]\n\
+\n\
+\n\
+\n\
+const irisTypes = {\n\
+    NORMAL : 0,\n\
+    HEART : 1\n\
+}\n\
+\n\
+\n\
+const irises = [\n\
+    [ // normal\n\
+        //43210\n\
+        0b01110, //00\n\
+        0b11111, //01\n\
+        0b01110  //02\n\
+    ],\n\
+    [ // heart really too small\n\
+        //43210\n\
+        0b01010, //00\n\
+        0b11111, //01\n\
+        0b00100  //02\n\
+    ]\n\
+]\n\
+\n\
+\n\
+const pupilTypes = {\n\
+    NONE :     0,\n\
+    SMALL :    1,\n\
+    MEDIUM :   2,\n\
+    PREY :     3,\n\
+    PREDITOR : 4,\n\
+    X :        6,\n\
+}\n\
+\n\
+\n\
+const pupils = [\n\
+    [\n\
+        //pupils[ 0]\n\
+        //43210\n\
+        0b00000, //00\n\
+        0b00000, //01\n\
+        0b00000  //02\n\
+    ],\n\
+    [\n\
+        //pupils[ 1]\n\
+        //43210\n\
+        0b00000, //00\n\
+        0b00100, //01\n\
+        0b00000  //02\n\
+    ],\n\
+    [\n\
+        //pupils[ 2]\n\
+        //03210\n\
+        0b00100, //00\n\
+        0b01110, //01\n\
+        0b00100  //02\n\
+    ],\n\
+    [\n\
+        //pupils[ 3]\n\
+        //03210\n\
+        0b00000, //00\n\
+        0b11111, //01\n\
+        0b00000  //02\n\
+    ],\n\
+    [\n\
+        //pupils[ 4]\n\
+        //03210\n\
+        0b00100, //00\n\
+        0b00100, //01\n\
+        0b00100  //02\n\
+    ],\n\
+    [\n\
+        //pupil[ 5]\n\
+        //03210\n\
+        0b01010, //00\n\
+        0b00100, //01\n\
+        0b01010  //02\n\
+    ],\n\
+]\n\
+\n\
+\n\
+const browTypes = {\n\
+    NONE :     0,\n\
+    NORMAL :   1,\n\
+    UP :       2,\n\
+    IN :       3,\n\
+    OUT :      4,\n\
+    RIGHT_UP : 5,\n\
+    LEFT_UP :  6,\n\
+    DOUBLE :   7,\n\
+}\n\
+\n\
+const brows = [\n\
+    [\n\
+        // brows[0]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+    ],\n\
+    [\n\
+        // brows[1]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000000000000000000, //00\n\
+        0b01111111111111100111111111111110, //01\n\
+    ],\n\
+    [\n\
+        // brows[2]\n\
+        //10987654321098765432109876543210\n\
+        0b01111111111111100111111111111110, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+    ],\n\
+    [\n\
+        // brows[3]\n\
+        //10987654321098765432109876543210\n\
+        0b01111111000000000000000011111110, //00\n\
+        0b00000000111111100111111100000000, //00\n\
+        0b00000000000000000000000000000000, //01\n\
+    ],\n\
+    [\n\
+        // brows[4]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000111111100111111100000000, //00\n\
+        0b01111111000000000000000011111110, //01\n\
+    ],\n\
+    [\n\
+        // brows[5]\n\
+        //10987654321098765432109876543210\n\
+        0b01111111000000000000000011111110, //00\n\
+        0b00000000111111100111111100000000, //01\n\
+    ],\n\
+    [\n\
+        // brows[6]\n\
+        //10987654321098765432109876543210\n\
+        0b00000000000000000111111111111110, //00\n\
+        0b01111111111111100000000000000000, //01\n\
+    ],\n\
+    [\n\
+        // brows[7]\n\
+        //10987654321098765432109876543210\n\
+        0b01111111111111100000000000000000, //00\n\
+        0b00000000000000000111111111111110, //01\n\
+    ],\n\
+    [\n\
+        // brows[8]\n\
+        //10987654321098765432109876543210\n\
+        0b01111111111111100111111111111110, //00\n\
+        0b01111111111111100111111111111110, //01\n\
+    ],\n\
+]\n\
+\n\
+\n\
+// ****CONSTANTS FOR COMMANDS****\n\
+\n\
+/*\n\
+commands are segregated for brow, lids, pupil, iris, control.\n\
+The lids and iris have a separate timer for internal movement.\n\
+The brow, pupil, emotions, and control can change instantly (except\n\
+as they effect changes in the pupil and lids.\n\
+\n\
+so if a eye is command to move 2 right and 2 up.\n\
+there would be steps for eye movement until the eye reached the target x and y\n\
+*/\n\
+\n\
+const commands = {\n\
+    //lid commands\n\
+    LIDS_TO :            01, //n, step time\n\
+    LIDS_NORMAL :        02, //step time\n\
+    LIDS_CLOSE :         03, //step time\n\
+    BLINK :              20, // step time\n\
+    WINK_RIGHT :         21, // step time\n\
+    WINK_LEFT :          22, // step time\n\
+\n\
+    //iris commands\n\
+    EYES_UP :            30, //n, step time\n\
+    EYES_DOWN :          31, //n, step time\n\
+    EYES_RIGHT :         32, //n, step time\n\
+    EYES_LEFT :          33, //n, step time\n\
+    EYES_TO :            34, //x,y, step time\n\
+    EYES_CENTER :        35, //step time\n\
+    EYES_MIDDLE :        36, //step time\n\
+\n\
+    //emotion commands\n\
+    NORMAL :             50,\n\
+    LOVE :               51,\n\
+    DEAD :               52,\n\
+    STARS :              53,\n\
+    SAD :                54,\n\
+    SURPRISE :           55,\n\
+    QUESTION :           56,\n\
+\n\
+    //brow commands\n\
+    BROW_TYPE :          60, //n\n\
+\n\
+    //iris commands\n\
+    IRIS_TYPE :          70, //type\n\
+\n\
+    //control commands\n\
+    HOLD :               80, //time\n\
+    LOOP :               81,\n\
+    STOP :               82,\n\
+    CAPTION :            83, //string\n\
+}\n\
+\n\
+\n\
+simulatorCommands = [\n\
+    [commands.CAPTION, "Close and open"],\n\
+    [commands.LIDS_CLOSE, 50],\n\
+    [commands.HOLD, 200],\n\
+    [commands.LIDS_TO, 9, 50],\n\
+    [commands.HOLD, 200],\n\
+    [commands.LIDS_NORMAL, 50],\n\
+    [commands.HOLD, 200],\n\
+    [commands.CAPTION, "Blink"],\n\
+    [commands.BROW_TYPE, browTypes.RIGHT_UP],\n\
+    [commands.BLINK, 50],\n\
+    [commands.HOLD, 1000],\n\
+    [commands.BLINK, 50],\n\
+    [commands.BROW_TYPE, browTypes.NORMAL],\n\
+    [commands.CAPTION, "Eyes up"],\n\
+    [commands.EYES_UP, 9, 200],\n\
+    [commands.CAPTION, "Eyes right"],\n\
+    [commands.EYES_RIGHT, 9, 200],\n\
+    [commands.CAPTION, "Eyes down"],\n\
+    [commands.EYES_DOWN, 9, 200],\n\
+    [commands.CAPTION, "Eyes left"],\n\
+    [commands.EYES_LEFT, 9, 200],\n\
+    [commands.CAPTION, "Eyes up again"],\n\
+    [commands.EYES_UP, 9, 200],\n\
+    [commands.CAPTION, "Return to middle, center"],\n\
+    [commands.EYES_MIDDLE, 200],\n\
+    [commands.EYES_CENTER, 200],\n\
+    [commands.CAPTION, "Hold"],\n\
+    [commands.HOLD, 1000],\n\
+    [commands.CAPTION, "End of loop"],\n\
+    [commands.LOOP]\n\
+]\n\
+\n\
+\n\
+// ****GLOBALS****\n\
+\n\
+//var grid = []\n\
+var coloredGrid = []\n\
+\n\
+\n\
+// ****FUNCTIONS****\n\
+\n\
+\n\
+function loadColoredPattern( pattern, col) {\n\
+  for (r=0; r < rows; r++) {\n\
+    for ( c=0; c < columns; c++) {\n\
+      if (pattern[ r] & (1<<c)) {\n\
+        coloredGrid [r * columns + c] = col\n\
+      } else {\n\
+        coloredGrid [r * columns + c] = dotOff\n\
+      }\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+\n\
+function loadColoredSubPattern( subPattern, col, x, y, w, h) {\n\
+  // x,y is top left corner of pattern position\n\
+  // it is aiso top left corner of grid\n\
+  for ( var iy=0; iy < h; iy++) {\n\
+    for ( var ix = w-1; ix >=0; ix--) {\n\
+      var mask = 0b00000000000000001 << ix\n\
+      if (subPattern[ iy] & mask) {\n\
+        coloredGrid [(y+iy) * columns + 31-x + ix -w + 1] = col\n\
+      }\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+function loadColoredMaskedSubPattern( subPattern, mask, col, x, y, w, h) {\n\
+  // x,y is top left corner of pattern position\n\
+  // it is also top left corner of grid\n\
+  for ( var iy=0; iy < h; iy++) {\n\
+    for ( var ix = w-1; ix >=0; ix--) {\n\
+      if (subPattern[ iy] & (1<<ix) && mask[y+iy] & 1<<(x+w-1-ix)) {\n\
+        coloredGrid [(y+iy) * columns + 31-x + ix -w + 1] = col\n\
+      }\n\
+    }\n\
+  }\n\
+}\n\
+\n\
+\n\
+function caption (message) {\n\
+    // save your current position, heading, etc.\n\
+    var savedX = turtle.pos.x\n\
+    var savedY = turtle.pos.y\n\
+    var savedHeading = turtle.angle / 2 / Math.PI * 360 //convert radians to degrees\n\
+    var savedColor = turtle.color\n\
+    var savedWidth = turtle.width\n\
+\n\
+    goto (minX()+10, minY()+10)\n\
+    setheading( 90)\n\
+\n\
+    // erase what will be in the path\n\
+    setfont("bold 16px helvitica,sans-serif")\n\
+    color ("white")\n\
+    width (22)\n\
+    forward (maxY() * 2 - 12)\n\
+    goto (minX()+10, minY()+5)\n\
+    color ("black")\n\
+    write( message)\n\
+\n\
+    //go back from whence you came\n\
+    goto( savedX, savedY)\n\
+    setheading( savedHeading)\n\
+    color ( savedColor)\n\
+    width (savedWidth)\n\
+}\n\
+\n\
+\n\
+\n\
+// ****GLOBALS FOR COMMAND INTERPRETER****\n\
+    var baseCaption = "" // base caption\n\
+\n\
+    const lidStates = {\n\
+        IDLE : 0,\n\
+        CLOSING : 1,\n\
+        OPENING : 2,\n\
+    }\n\
+    var lidState = lidStates.IDLE\n\
+    var lidTarget = 0\n\
+    var lidCommanded = 0 // lid position requested. May be overridden by high iris value.\n\
+\n\
+    var lidsCurrent = lidsNormal\n\
+\n\
+    var irisTypeCurrent = irisTypes.NORMAL\n\
+    const irisStates = {\n\
+        IDLE : 0,\n\
+        MOVING : 1,\n\
+        MOVING_BACK : 2\n\
+    }\n\
+    var irisState = irisStates.IDLE\n\
+\n\
+    // iris coordinates relative to the eye center and middle\n\
+    var irisTargetX = 0\n\
+    var irisTargetY = 0\n\
+    var irisCurrentX = 0\n\
+    var irisCurrentY = 0\n\
+\n\
+    const pupilNormal = pupilTypes.SMALL // normal/relaxed type of pupil\n\
+    var pupilCurrent = pupilTypes.SMALL // normal/relaxed type of pupil\n\
+\n\
+    const browNormal = browTypes.NORMAL // normal/relaxed type of eye brow\n\
+    var browCurrent = browTypes.NORMAL // current type of the brow\n\
+\n\
+    var commandSequence = [] // array of commands to be executed\n\
+    var currentCommand = 0 // index into command sequence of the current command\n\
+    var subCommand = 0 // number of times current command has executed\n\
+    var commandDue = undefined // epoch milliseconds when normal command is due\n\
+                       // = undefined when not active\n\
+    var browCommandDue = undefined // epoch milliseconds when default brow command is due\n\
+                       // = undefined when not active\n\
+\n\
+\n\
+\n\
+function absIrisY ( irisY) {\n\
+    // return the absolute grid Y coordinate for a given iris Y coordinate\n\
+    // irisY = 0 is the grid irisMiddle\n\
+    return irisMiddle - irisY\n\
+}\n\
+\n\
+\n\
+function absLidY (lidY) {\n\
+    // return the absolute grid Y coordinate for a given lid Y coordinate\n\
+    // lidY = 0 is grid max Y = rows -1\n\
+    return rows - 1 - lidY\n\
+}\n\
+\n\
+\n\
+function irisMovementCheck () {\n\
+    // check if iris and lid movement is required\n\
+    console.log( "iMC", irisCurrentX, irisCurrentY, irisTargetX, irisTargetY, lidsCurrent, lidCommanded)\n\
+    console.log( "iMC1", absIrisY(irisCurrentY), absIrisY(irisTargetY), absLidY(lidsCurrent), absLidY(lidCommanded))\n\
+    var moved = false\n\
+    if (irisCurrentY > irisTargetY) {\n\
+        irisCurrentY = irisCurrentY - 1\n\
+        moved = true\n\
+    } else if (irisCurrentY < irisTargetY) {\n\
+        irisCurrentY = irisCurrentY + 1\n\
+        moved = true\n\
+    }\n\
+    // absolute coordinates are for the grid\n\
+    if (absIrisY(irisCurrentY) < absLidY(lidsCurrent) &&\n\
+        absIrisY(irisCurrentY) + 1 > absLidY(lidsMax)) {\n\
+        lidsCurrent = lidsCurrent + 1\n\
+        moved = true\n\
+    } else if (absIrisY(irisCurrentY) - 1 > absLidY(lidsCurrent) &&\n\
+               lidsCurrent > lidCommanded) {\n\
+        lidsCurrent = lidsCurrent - 1\n\
+        moved = true\n\
+    }\n\
+    if (irisCurrentX > irisTargetX) {\n\
+        irisCurrentX = irisCurrentX - 1\n\
+        moved = true\n\
+    } else if (irisCurrentX < irisTargetX) {\n\
+        irisCurrentX = irisCurrentX + 1\n\
+        moved = true\n\
+    }\n\
+    console.log( "iMC moved =", moved ? "true" : "false")\n\
+    return moved\n\
+}\n\
+\n\
+\n\
+function commandCheck ( currentTime) {\n\
+    // check is a command is due to be executed\n\
+    // returns false if no delay requested\n\
+    // returns true if a delay was requested for rendering\n\
+    console.log("cmdchk0:", currentTime, commandDue, currentCommand, subCommand)\n\
+\n\
+    var renderingRequired = false\n\
+    var commandAdvance = false // only advance command explicitly\n\
+\n\
+    if (commandDue === undefined || currentTime > commandDue) {\n\
+        commandDue = undefined\n\
+        var command = commandSequence [ currentCommand]\n\
+        // execute the command. Some commands are immediate, others take time.\n\
+        console.log("cmdchk1:", currentCommand, command[0], command[1], command[2])\n\
+\n\
+        switch (command[ 0]) {\n\
+        case commands.CAPTION: // string\n\
+            baseCaption = command [1]\n\
+            // do not render until something else changes\n\
+            commandAdvance = true\n\
+            break\n\
+        case commands.LIDS_CLOSE: // delay\n\
+            if (lidsCurrent > lidsClosed) {\n\
+                lidCommanded = lidsClosed\n\
+                lidsCurrent = lidsCurrent - 1\n\
+                commandDue = currentTime + command[1]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.LIDS_NORMAL: // delay\n\
+            if (lidsCurrent > lidsNormal) {\n\
+                lidCommanded = lidsNormal\n\
+                lidsCurrent = lidsCurrent - 1\n\
+                commandDue = currentTime + command[1]\n\
+                renderingRequired = true\n\
+            } else if (lidsCurrent < lidsNormal) {\n\
+                lidCommanded = lidsNormal\n\
+                lidsCurrent = lidsCurrent + 1\n\
+                commandDue = currentTime + command[1]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.LIDS_TO: // opening, delay\n\
+            if (command [1] >= lids.length) {\n\
+                lidsCommanded = lids.lenth - 1\n\
+            } else if (command [1] < lidsClosed) {\n\
+                lidsCommanded = lidsClosed\n\
+            }\n\
+            if (lidsCurrent > lidsCommanded && lidsCurrent > lidsClosed) {\n\
+                lidsCurrent = lidsCurrent - 1\n\
+                commandDue = currentTime + command[2]\n\
+                renderingRequired = true\n\
+            } else if (lidsCurrent > lidsCommanded &&\n\
+                       lidsCurrent < lids.length -2) {\n\
+                lidsCurrent = lidsCurrent + 1\n\
+                commandDue = currentTime + command[2]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                commandAdvance = true\n\
+            }\n\
+\n\
+            break\n\
+        case commands.HOLD: // delay\n\
+            commandDue = currentTime + command[1]\n\
+            commandAdvance = true\n\
+            break\n\
+        case commands.BROW_TYPE: // browType\n\
+            currentBrowType = command[1]\n\
+            renderingRequired = true\n\
+            commandAdvance = true\n\
+            break\n\
+        case commands.BROW_TYPE_TEMP: // browType, delay\n\
+            currentBrowType = command[1]\n\
+            browCommandDue = currentTime + command[2]\n\
+            renderingRequired = true\n\
+            commandAdvance = true\n\
+            break\n\
+        case commands.BLINK: // delay\n\
+            switch (lidState) {\n\
+            case lidStates.IDLE:\n\
+            case lidStates.CLOSING:\n\
+                if (lidsCurrent > lidsClosed) {\n\
+                    lidState = lidStates.CLOSING\n\
+                    lidsCurrent = lidsCurrent - 1\n\
+                    commandDue = currentTime + command[1]\n\
+                    renderingRequired = true\n\
+                } else {\n\
+                    lidState = lidStates.OPENING\n\
+                }\n\
+                break;\n\
+            case lidStates.OPENING:\n\
+                if (lidsCurrent < lidCommanded) {\n\
+                    lidState = lidStates.OPENING\n\
+                    lidsCurrent = lidsCurrent + 1\n\
+                    commandDue = currentTime + command[1]\n\
+                    renderingRequired = true\n\
+                } else {\n\
+                    lidState = lidStates.IDLE\n\
+                    commandAdvance = true\n\
+                }\n\
+                break\n\
+            }\n\
+            break\n\
+        case commands.EYES_UP: // relativeTargetY, delay\n\
+            console.log("EU:", irisState)\n\
+            if (irisState === irisStates.IDLE) {\n\
+                irisState = irisStates.MOVING\n\
+                irisTargetY = irisCurrentY + command [1]\n\
+                if (irisTargetY > irisMaxY) {\n\
+                    irisTargetY = irisMaxY\n\
+                }\n\
+            }\n\
+            if (irisMovementCheck()) {\n\
+                commandDue = currentTime + command [2]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                irisState = irisStates.IDLE\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.EYES_DOWN: // relativeTargetY, delay\n\
+            if (irisState === irisStates.IDLE) {\n\
+                irisState = irisStates.MOVING\n\
+                irisTargetY = irisCurrentY - command [1]\n\
+                if (irisTargetY < irisMinY) {\n\
+                    irisTargetY = irisMinY\n\
+                }\n\
+            }\n\
+            if (irisMovementCheck()) {\n\
+                commandDue = currentTime + command [2]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                irisState = irisStates.IDLE\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.EYES_RIGHT: // relativeTargeX, delay\n\
+            if (irisState === irisStates.IDLE) {\n\
+                irisState = irisStates.MOVING\n\
+                irisTargetX = irisCurrentX + command [1]\n\
+                if (irisTargetX > irisMaxX) {\n\
+                    irisTargetX = irisMaxX\n\
+                }\n\
+            }\n\
+            if (irisMovementCheck()) {\n\
+                commandDue = currentTime + command [2]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                irisState = irisStates.IDLE\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.EYES_LEFT: // relativeTargetX, delay\n\
+            if (irisState === irisStates.IDLE) {\n\
+                irisState = irisStates.MOVING\n\
+                irisTargetX = irisCurrentX - command [1]\n\
+                if (irisTargetX < irisMinX) {\n\
+                    irisTargetX = irisMinX\n\
+                }\n\
+            }\n\
+            if (irisMovementCheck()) {\n\
+                commandDue = currentTime + command [2]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                irisState = irisStates.IDLE\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.EYES_MIDDLE: // delay\n\
+            if (irisState === irisStates.IDLE) {\n\
+                irisState = irisStates.MOVING\n\
+                irisTargetY = irisNormalY\n\
+                if (irisTargetY > irisMaxY) {\n\
+                    irisTargetY = irisMaxY\n\
+                }\n\
+                if (irisTargetY < irisMinY) {\n\
+                    irisTargetY = irisMinY\n\
+                }\n\
+            }\n\
+            if (irisMovementCheck()) {\n\
+                commandDue = currentTime + command [1]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                irisState = irisStates.IDLE\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.EYES_CENTER: // delay\n\
+            if (irisState === irisStates.IDLE) {\n\
+                irisState = irisStates.MOVING\n\
+                irisTargetX = irisNormalX\n\
+                if (irisTargetX > irisMaxX) {\n\
+                    irisTargetX = irisMaxX\n\
+                }\n\
+                if (irisTargetX < irisMinX) {\n\
+                    irisTargetX = irisMinX\n\
+                }\n\
+            }\n\
+            if (irisMovementCheck()) {\n\
+                commandDue = currentTime + command [1]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                irisState = irisStates.IDLE\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.EYES_TO: // x, y, delay\n\
+            if (irisState === irisStates.IDLE) {\n\
+                irisState = irisStates.MOVING\n\
+                irisTargetX = command [1]\n\
+                irisTargetY = command [2]\n\
+                if (irisTargetX > irisMaxX) {\n\
+                    irisTargetX = irisMaxX\n\
+                }\n\
+                if (irisTargetX < irisMinX) {\n\
+                    irisTargetX = irisMinX\n\
+                }\n\
+                if (irisTargetY > irisMaxY) {\n\
+                    irisTargetY = irisMaxY\n\
+                }\n\
+                if (irisTargetY < irisMinY) {\n\
+                    irisTargetY = irisMinY\n\
+                }\n\
+            }\n\
+            if (irisMovementCheck()) {\n\
+                commandDue = currentTime + command [3]\n\
+                renderingRequired = true\n\
+            } else {\n\
+                irisState = irisStates.IDLE\n\
+                commandAdvance = true\n\
+            }\n\
+            break\n\
+        case commands.LOOP:\n\
+            currentCommand = 0\n\
+            break\n\
+        case commands.STOP:\n\
+            exit(1)\n\
+            break\n\
+        default:\n\
+            console.log("command check BAD COMMAND:", command[0])\n\
+            currentCommand = 0\n\
+            break\n\
+        }\n\
+    } else if (browCommandDue !== undefined && currentTime > browCommandDue) {\n\
+        // make brows normal again\n\
+        currentBrowType = browNormal\n\
+        renderingRequired = true\n\
+        browCommandDue = undefined\n\
+    }\n\
+    console.log( "cmdChk rendReq =", renderingRequired ? "true" : "false", " cmdAdv =", commandAdvance ? "true" : "false")\n\
+    if ( renderingRequired) {\n\
+console.log("cmdchk render",lidsCurrent, browCurrent, irisTypeCurrent, pupilCurrent, irisCurrentX, irisCurrentY, baseCaption)\n\
+\n\
+\n\
+        drawEyes (lidsCurrent, browCurrent, irisTypeCurrent, pupilCurrent,\n\
+                irisCurrentX, irisCurrentY,\n\
+                baseCaption + " " + currentCommand + "-" + subCommand)\n\
+        subCommand = subCommand + 1\n\
+    }\n\
+    if ( commandAdvance) { // advance to the next command\n\
+        currentCommand = (currentCommand + 1) % commandSequence.length\n\
+        subCommand = 0\n\
+    }\n\
+    return commandAdvance\n\
+}\n\
+\n\
+\n\
+function renderEyes (eyeOpening, browType, irisType, pupilType, ix, iy) {\n\
+    // ix and iy use relative coordinates, positive up and right\n\
+    // grid coordinates: positive down and right\n\
+\n\
+    //console.log("rE:", eyeOpening, browType, irisType, pupilType, ix, iy)\n\
+    loadColoredPattern (lids[eyeOpening], eyeOutlineColor)\n\
+    loadColoredSubPattern (masks[eyeOpening], eyeBallColor, 0,0,columns,rows)\n\
+    loadColoredSubPattern (brows[browType], eyeBrowColor, 0,0,columns,2)\n\
+//neat to mask the iris\n\
+\n\
+console.log("rE1:",irises[irisType], irisType, masks[eyeOpening], eyeOpening,\n\
+         rightEyeColor,\n\
+         irisCenterRight+ix-Math.floor(irisWidth/2),\n\
+         irisMiddle-iy- Math.floor(irisHeight/2),\n\
+         irisWidth, irisHeight)\n\
+\n\
+     loadColoredMaskedSubPattern ( irises[irisType], masks[eyeOpening],\n\
+            rightEyeColor,\n\
+            irisCenterRight+ix-Math.floor(irisWidth/2),\n\
+            irisMiddle-iy- Math.floor(irisHeight/2),\n\
+            irisWidth, irisHeight)\n\
+console.log("rE2:",leftEyeColor,\n\
+         irisCenterLeft+ix-Math.floor(irisWidth/2),\n\
+         irisMiddle-iy- Math.floor(irisHeight/2),\n\
+         irisWidth, irisHeight)  \n\
+\n\
+    loadColoredMaskedSubPattern ( irises[irisType], masks[eyeOpening],\n\
+            leftEyeColor,\n\
+            irisCenterLeft+ix-Math.floor(irisWidth/2),\n\
+            irisMiddle-iy- Math.floor(irisHeight/2),\n\
+            irisWidth, irisHeight)\n\
+    loadColoredMaskedSubPattern ( pupils[pupilType], masks[eyeOpening],\n\
+            rightPupilColor,\n\
+            irisCenterRight+ix-Math.floor(irisWidth/2),\n\
+            irisMiddle-iy- Math.floor(irisHeight/2),\n\
+            irisWidth, irisHeight)\n\
+    loadColoredMaskedSubPattern ( pupils[pupilType], masks[eyeOpening],\n\
+            leftPupilColor,\n\
+            irisCenterLeft+ix-Math.floor(irisWidth/2),\n\
+            irisMiddle-iy- Math.floor(irisHeight/2),\n\
+            irisWidth, irisHeight)\n\
+}\n\
+\n\
+function drawEyes( eyeOpening, browType, irisType, pupilType, ix, iy, baseCaption) {\n\
+console.log("dE1:",eyeOpening, browType, irisType, pupilType, ix, iy, baseCaption)\n\
+\n\
+    renderEyes (eyeOpening, browType, irisType, pupilType, ix, iy)\n\
+    for ( var r=0; r < rows; r++) {\n\
+        for ( var c=0; c < columns; c++) {\n\
+             var offset = 0\n\
+             if ( c >= columns/2) {\n\
+                 offset = eyeGap\n\
+             }\n\
+             goto ( columnMid - (c + offset)* columnSize, rowMid - r * rowSize)\n\
+             color( coloredGrid [r * columns + c])\n\
+             dot( dotSize)\n\
+        }\n\
+    }\n\
+    caption( baseCaption)\n\
+}\n\
+\n\
+\n\
+\n\
+function executeCommand () {\n\
+    var d = new Date()\n\
+    var currentTime = d.getTime()\n\
+    //while ( !commandCheck ( currentTime)) {}\n\
+    commandCheck ( currentTime)\n\
+\n\
+    delay( executeCommand, 10) // there can be multiple timers running\n\
+                               // so this delay should be fairly short\n\
+}\n\
+\n\
+\n\
+function demo() {\n\
+    reset()\n\
+    hideTurtle()\n\
+    commandDue = undefined\n\
+    commandSequence = simulatorCommands\n\
+    currentCommand = 0\n\
+    subCommand = 0\n\
+    delay( executeCommand, 10)\n\
+}\n\
+'
 fibinoucci ='\
 // Fibanochi sequence -- draw a set of squares illustrating a Figanochi sequence\n\
 // a Fibanochi sequence is the series 1,1,2,3,5,8,13,21,...\n\
