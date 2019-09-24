@@ -38,6 +38,9 @@ The "redraw" boolean function controls whether the turtle is drawn after each mo
 
 "wrap" only works for straight lines, not curves, circles, or dots.
 
+This is an experimental version that allows export of svg graphic in addition to
+the png for the canvas. Turtle moves are accumulated and then exported enmass.
+
 *************************************************************************************/
 
 
@@ -121,6 +124,112 @@ function initialize() {
   imageContext.lineWidth = turtle.width;
   imageContext.strokeStyle = turtle.color;
   imageContext.globalAlpha = 1;
+
+  svgInitialize()
+}
+
+
+var svgBlob
+var svgLastMove
+
+function svgInitialize() {
+// really want to delay putting out the preamble, because it needs to contain the height and width which is computed by the actual turtle
+// movement. It may have to include some instructions for translating between the turtle coordinate scheme to the SVG scheme.
+  svgBlob = '<svg id="turtle-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="300">'
+  svgLastMoveX = undefined;
+  svgLastMoveY = undefined;
+  svgMaxX = turtle.pos.x;
+  svgMinX = turtle.pos.x;
+  svgMaxY = turtle.pos.y;
+  svgMinY = turtle.pos.y;
+  svgPath = "";
+  pathCount = 0
+
+<svg id="turtle-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="300">
+  <path id="turtle-path-0" stroke="black" d="M 250 250 M 100 100 l 0 50 l -50 0 l 0 -50 l 50 0 " fill="none" vector-effect="non-scaling-stroke" />
+  //<path id="turtle-path-1" stroke="blue" d="M 250 250 M 200 200 l 0 50 l -50 0" fill="none" vector-effect="non-scaling-stroke" />
+  //<path id="turtle-path-2" stroke="red" d="M150 250 l0 -50 l50 0" fill="none" vector-effect="non-scaling-stroke" />
+  <path stroke="blue" d="M 250 250 M 200 200 l 0 50 l -50 0" fill="none" vector-effect="non-scaling-stroke" />
+  <path stroke="red" d="M150 250 l0 -50" fill="none" vector-effect="non-scaling-stroke" />
+  <path stroke="red" stroke-width="3" d="M150 200 l50 0" fill="none" vector-effect="non-scaling-stroke" />
+
+</svg>
+}
+
+
+// working assumption: path is opened to the turtle's current position
+//   movements with pen up are accumulated.
+//   movements with pen down are drawn in place
+//   x and y coordinates are not needed within a given path
+
+// a new path is opened when there is a forward or backward
+function svgOpenPath() {
+  svgClosePath() // in case one is open...
+  svgD =   '\n<path stroke="' + turtle.color + ' d="M" + turtle.pos.x + " " + turtle.pos.y'
+}
+
+
+function svgAppendPath( rx, ry) {
+  // rx is the relative x movement
+  // rx is the relative y movement
+  // assume turtle has moved when this is called
+  if (turtle.visible) { // pen down
+    if (svgLastMove !== undefined) { // move the accumulated movement
+      svgD = svgD + " m" + svgLastMove[0] + " " + svgLastMove[1]
+      svgLastMove = undefined
+    }
+    svgD = svgD + " l" + rx + " " + ry
+  } else { // pen up
+    if (svgLastMove !== undefined) {
+      svgLastMove[0] = svgLastMove[0] + rx
+      svgLastMove[1] = svgLastMove[1] + ry
+    } else {
+      svgLastMove = rx, ry
+    }
+  }
+
+  // keep track of turtle high water marks
+  if (turtle.pos.x > svgMaxX) {
+    svgMaxX = turtle.pos.x;
+  }
+  if (turtle.pos.x < svgMinX) {
+    svgMinX = turtle.pos.x;
+  }
+  if (turtle.pos.Y > svgMaxY) {
+    svgMaxY = turtle.pos.y;
+  }
+  if (turtle.pos.Y < svgMinY) {
+    svgMinY = turtle.pos.y;
+  }
+}
+
+
+// assuming on color change, width change, shape begin or shape end, the current path is closed
+// a ne path is not opened until there is a forward or backward command
+// This is written to collapse all pen up movements into a single SVG moveTo, is that always desirable (think animation)
+//    at a minimum report each segment with an append path. Need to do anyway for pen down and wrapping on
+// movements need to keep track of high and low water marks for x and y
+function svgClosePath( fillStyle) {
+  if (fillStyle = undefined) {
+    fillStyle = turtle.color
+  }
+  if (svgPath !== "") { // something to close
+    if (svgLastMove !== undefined) { // output accumulated movement
+      svgD = svgD + " m" + svgLastMove[0] + " " + svgLastMove[1]
+    } //else no move accumulated, nothing to do, but close the stroke
+    if (turtle.shape) {
+      svgD = svgD +  '" fill="' + fillStyle + '" vector-effect="non-scaling-stroke" />'
+    } else {
+      svgD = svgD +  '" fill="none" vector-effect="non-scaling-stroke" />'
+    }
+    svgBlob = svgBlob + svgD
+  } // else no path open, nothing to close or add.
+}
+
+
+function svgClose() {
+  svgClosePath()
+  svgBlob = svgBlob + '</svg>'
 }
 
 
@@ -340,6 +449,7 @@ function fillshape( styl) {
     }
 
     //imageContext.save()
+    svgClosePath( styl);
     imageContext.closePath();
     imageContext.fillStyle=styl;
     imageContext.strokeStyle=turtle.color; //stroke and fill can be different
@@ -373,6 +483,8 @@ function forward(distance) {
    var new_X;
    var new_Y;
    var distance;
+   var entryX = turtle.pos.x;
+   var entryY = turtle.pos.y;
 
    // wrap on the X boundary
    function xWrap(cutBound, otherBound) {
