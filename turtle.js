@@ -129,21 +129,46 @@ function initialize() {
 }
 
 
-var svgBlob
-var svgLastMove
+function round( n, digits) {
+    // round n to the digits number of digits
+    // n is the number to be rounded
+    // digits is the number of digits
+    if (digits === undefined) {
+      digits = 0
+    }
+    magnitude = Math.pow( 10, digits)
+    return Math.round( n * magnitude) / magnitude
+}
+
+
+// **** SVG VARIABLES ****
+
+const svgPrecision = 3
+var svgBlob = ""
+var svgD = ""
+var svgLastMove = undefined;
+var svgPath = "";
+var svgBackground = "";
+var pathCount = 0
+var svgXHighWater = 0
+var svgXLowWater = 0
+var svgYHighWater = 0
+var svgYLowWater = 0
 
 function svgInitialize() {
-// really want to delay putting out the preamble, because it needs to contain the height and width which is computed by the actual turtle
-// movement. It may have to include some instructions for translating between the turtle coordinate scheme to the SVG scheme.
-  svgBlob = '<svg id="turtle-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="300">'
-  svgLastMoveX = undefined;
-  svgLastMoveY = undefined;
-  svgMaxX = turtle.pos.x;
-  svgMinX = turtle.pos.x;
-  svgMaxY = turtle.pos.y;
-  svgMinY = turtle.pos.y;
+// width and height are problemmatic here as not all or more of the canvas may be used.
+  svgBlob = ""
+  svgD = ""
   svgPath = "";
+  svgBackground = "";
   pathCount = 0
+  svgXHighWater = 0
+  svgXLowWater = 0
+  svgYHighWater = 0
+  svgYLowWater = 0
+}
+
+/*  ***SAMPLE SVG***
 
 <svg id="turtle-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="300">
   <path id="turtle-path-0" stroke="black" d="M 250 250 M 100 100 l 0 50 l -50 0 l 0 -50 l 50 0 " fill="none" vector-effect="non-scaling-stroke" />
@@ -154,82 +179,115 @@ function svgInitialize() {
   <path stroke="red" stroke-width="3" d="M150 200 l50 0" fill="none" vector-effect="non-scaling-stroke" />
 
 </svg>
+
+
+<svg viewBox="-40 0 150 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g fill="grey"
+     transform="rotate(-10 50 100)
+                translate(-36 45.5)
+                skewX(40)
+                scale(1 0.5)
+                matrix(3 1 -1 3 30 40)" />
+                matrix(1 0 0 -1 xLowWater yHighWater)" />
+  </g>
+ 
+  <use xlink:href="#heart" fill="none" stroke="red"/>
+</svg>
+*/
+
+
+// what calls this?
+// forward only when a path isn't already open?
+//   might be the easiest
+//   then it can Close a path because it just appends
+function svgOpenPath( x, y) {
+   console.log( "sOP:", x, y, svgD)
+   if (svgPath == "") { // no path open
+     svgPath = '<path stroke="' + turtle.color
+     svgD =  ' d="M ' + round( x, svgPrecision) + ' ' + round( y, svgPrecision)
+     svgLastMove = undefined
+   }
+  console.log( "sOP svgD:",svgD)
 }
 
 
-// working assumption: path is opened to the turtle's current position
-//   movements with pen up are accumulated.
-//   movements with pen down are drawn in place
-//   x and y coordinates are not needed within a given path
-
-// a new path is opened when there is a forward or backward
-function svgOpenPath() {
-  svgClosePath() // in case one is open...
-  svgD =   '\n<path stroke="' + turtle.color + ' d="M" + turtle.pos.x + " " + turtle.pos.y'
+function updateHighWater( x, y, radx, rady) {
+  if (radx === undefined) {
+    radx = turtle.width
+  }
+  if (rady === undefined) {
+    rady = turtle.width
+  }
+  if (x + radx> svgXHighWater) {
+    svgXHighWater = x + radx
+  }
+  if (x - radx < svgXLowWater) {
+    svgXLowWater = x - radx
+  }
+  if (y + rady > svgYHighWater) {
+    svgYHighWater = y + rady
+  }
+  if (y - rady < svgYLowWater) {
+    svgYLowWater = y - rady
+  }
 }
 
 
 function svgAppendPath( rx, ry) {
-  // rx is the relative x movement
-  // rx is the relative y movement
-  // assume turtle has moved when this is called
-  if (turtle.visible) { // pen down
+  console.log( "sAP:",rx, ry, turtle.penDown, "last:", svgLastMove)
+  updateHighWater( turtle.pos.x, turtle.pos.y)
+
+  if (turtle.penDown) { // pen down
+    if (svgPath === "") { // path not open, putting off as long as possible
+      svgOpenPath( turtle.pos.x - rx, turtle.pos.y - ry); // position of where turtle started line segment
+      svgLastMove = undefined; // since the open was absolute, don't need lead in
+      updateHighWater( turtle.pos.x - rx, turtle.pos.y - ry)
+    }
     if (svgLastMove !== undefined) { // move the accumulated movement
-      svgD = svgD + " m" + svgLastMove[0] + " " + svgLastMove[1]
+      svgD = svgD + " m " + round( svgLastMove[0], svgPrecision) + " " + round( svgLastMove[1], svgPrecision)
       svgLastMove = undefined
     }
-    svgD = svgD + " l" + rx + " " + ry
+    svgD = svgD + " l " + round( rx, svgPrecision) + " " + round( ry, svgPrecision)
   } else { // pen up
     if (svgLastMove !== undefined) {
       svgLastMove[0] = svgLastMove[0] + rx
       svgLastMove[1] = svgLastMove[1] + ry
     } else {
-      svgLastMove = rx, ry
+      svgLastMove = [rx, ry]
     }
   }
-
-  // keep track of turtle high water marks
-  if (turtle.pos.x > svgMaxX) {
-    svgMaxX = turtle.pos.x;
-  }
-  if (turtle.pos.x < svgMinX) {
-    svgMinX = turtle.pos.x;
-  }
-  if (turtle.pos.Y > svgMaxY) {
-    svgMaxY = turtle.pos.y;
-  }
-  if (turtle.pos.Y < svgMinY) {
-    svgMinY = turtle.pos.y;
-  }
+  console.log( "sAP svgD:",svgD)
 }
 
 
-// assuming on color change, width change, shape begin or shape end, the current path is closed
-// a ne path is not opened until there is a forward or backward command
-// This is written to collapse all pen up movements into a single SVG moveTo, is that always desirable (think animation)
-//    at a minimum report each segment with an append path. Need to do anyway for pen down and wrapping on
-// movements need to keep track of high and low water marks for x and y
-function svgClosePath( fillStyle) {
-  if (fillStyle = undefined) {
-    fillStyle = turtle.color
-  }
+// assuming on color change, width change or shape begin or shape end, the current path is closed
+// really should not close path if nothing has marked... can this be done in the open path?
+function svgClosePath() {
   if (svgPath !== "") { // something to close
-    if (svgLastMove !== undefined) { // output accumulated movement
-      svgD = svgD + " m" + svgLastMove[0] + " " + svgLastMove[1]
-    } //else no move accumulated, nothing to do, but close the stroke
-    if (turtle.shape) {
-      svgD = svgD +  '" fill="' + fillStyle + '" vector-effect="non-scaling-stroke" />'
-    } else {
-      svgD = svgD +  '" fill="none" vector-effect="non-scaling-stroke" />'
-    }
-    svgBlob = svgBlob + svgD
+    //if (svgLastMove !== undefined) { // output accumulated movement
+    //  svgD = svgD + " m " + round( svgLastMove[0], svgPrecision) + " " + round( svgLastMove[1], svgPrecision)
+    //} //else no move accumulated, nothing to do, but close the stroke
+    svgPath = svgPath + '"' + svgD + '" fill="none" vector-effect="non-scaling-stroke" />\n'
+    svgBlob = svgBlob + svgPath
+    svgD = ""
+    svgPath = ""
   } // else no path open, nothing to close or add.
+  svgLastMove = undefined // just toss it out
 }
-
 
 function svgClose() {
-  svgClosePath()
-  svgBlob = svgBlob + '</svg>'
+//really want to set the size of the blob here and provide a transform
+// so svgBlog = preamble + svgBlob + '</svg'
+  svgClosePath();
+  var svgOpenBlob = '<svg id="turtle-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="' + round( svgXHighWater - svgXLowWater, svgPrecision) + '"'
+  svgOpenBlob = svgOpenBlob + ' height="' + round( svgYHighWater - svgYLowWater, svgPrecision) + '">\n'
+  if (svgBackground !== "") {
+    svgOpenBlob = svgOpenBlob + '<rect width="100%" height="100%" fill="' + svgBackground + '"/>\n';
+  }
+  svgOpenBlob = svgOpenBlob + '<g transform="matrix(1 0 0 -1 ' + round( -svgXLowWater, svgPrecision) + ' ' + round( svgYHighWater, svgPrecision) + ')">\n'
+  svgBlob = svgOpenBlob + svgBlob
+  svgBlob = svgBlob + '</g>\n';
+  svgBlob = svgBlob + '</svg>';
 }
 
 
@@ -449,7 +507,6 @@ function fillshape( styl) {
     }
 
     //imageContext.save()
-    svgClosePath( styl);
     imageContext.closePath();
     imageContext.fillStyle=styl;
     imageContext.strokeStyle=turtle.color; //stroke and fill can be different
@@ -480,11 +537,22 @@ function forward(distance) {
    // define some local variables and functions
    var cosAngle = Math.cos(turtle.angle);
    var sinAngle = Math.sin(turtle.angle);
-   var new_X;
-   var new_Y;
+   var entryX;
+   var entryY;
+   var newX;
+   var newY;
    var distance;
    var entryX = turtle.pos.x;
    var entryY = turtle.pos.y;
+   var x = turtle.pos.x;
+   var y = turtle.pos.y;
+
+   // get the boundaries of the canvas
+   var max_X = imageContext.canvas.width / 2;
+   var min_X = -imageContext.canvas.width / 2;
+   var max_Y = imageContext.canvas.height / 2;
+   var min_Y = -imageContext.canvas.height / 2;
+
 
    // wrap on the X boundary
    function xWrap(cutBound, otherBound) {
@@ -494,6 +562,9 @@ function forward(distance) {
       distance -= distanceToEdge;
       x = otherBound;
       y = edgeY;
+      turtle.pos.x = x;
+      turtle.pos.y = y;
+      svgAppendPath( x - entryX, y - entryY)
    }
 
    // wrap on the Y boundary
@@ -504,6 +575,9 @@ function forward(distance) {
       distance -= distanceToEdge;
       x = edgeX;
       y = otherBound;
+      turtle.pos.x = x;
+      turtle.pos.y = y;
+      svgAppendPath( x - entryX, y - entryY)
    }
 
    // don't wrap the turtle on any boundary
@@ -512,22 +586,15 @@ function forward(distance) {
       turtle.pos.x = x;
       turtle.pos.y = y;
       distance = 0;
+      svgAppendPath( x - entryX, y - entryY)
    }
 
 
    imageContext.save();
    centerCoords(imageContext);
    if (! turtle.shape) {
-     imageContext.beginPath();
+      imageContext.beginPath();
    }
-
-   // get the boundaries of the canvas
-   var max_X = imageContext.canvas.width / 2;
-   var min_X = -imageContext.canvas.width / 2;
-   var max_Y = imageContext.canvas.height / 2;
-   var min_Y = -imageContext.canvas.height / 2;
-   var x = turtle.pos.x;
-   var y = turtle.pos.y;
 
    // trace out the forward steps
    while (distance > 0) {
@@ -536,31 +603,28 @@ function forward(distance) {
         imageContext.moveTo(x, y);
       }
       // calculate the new location of the turtle after doing the forward movement
-      new_X = x + sinAngle * distance;
-      new_Y = y + cosAngle * distance;
+      newX = x + sinAngle * distance;
+      newY = y + cosAngle * distance;
 
       // if wrap is on, trace a part segment of the path and wrap on boundary if necessary
       if (! turtle.shape && turtle.wrap) {
-         if (new_X > max_X) {
+         if (newX > max_X) {
             xWrap(max_X, min_X);
          }
-         else if (new_X < min_X) {
+         else if (newX < min_X) {
             xWrap(min_X, max_X);
          }
-         else if (new_Y > max_Y) {
-             yWrap(max_Y, min_Y);
+         else if (newY > max_Y) {
+            yWrap(max_Y, min_Y);
          }
-         else if (new_Y < min_Y) {
+         else if (newY < min_Y) {
             yWrap(min_Y, max_Y);
          }
          else {
-            noWrap(new_X, new_Y);
+            noWrap(newX, newY);
          }
-      }
-
-      // wrap is not on.
-      else {
-         noWrap(new_X, new_Y);
+      } else { // wrap is not on.
+         noWrap(newX, newY);
       }
    }
    // draw only if the pen is currently down.
@@ -569,7 +633,7 @@ function forward(distance) {
    }
    imageContext.restore();
    if (! turtle.shape) {
-     drawIf();
+      drawIf();
    }
 }
 
@@ -671,7 +735,21 @@ function curveleft (radius, extent) {
   imageContext.restore();
   drawIf();
 }
+/*
+part of a path d= expression:
+a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
+rx and ry are the radia of an elipse
+x-axis-rotation is the rotation of the elipse
+large-arg-flag
+sweep-flag
+dx and dy are the center of the arc
 
+so this translates "curveleft (radius, extent)" roughly to:
+
+<path ... d="... a <radius> <radius> 0 1 <turtle.pos.x> + <radius> * sin(<turtle.heading>) <turtle.pos.x> + <radius> * cos(<turtle.heading>)
+   "l <x of arc end> <y of arc end>"
+arc end is determined from the center of the arc through extent degrees
+*/
 curveLeft = curveleft;
 
 
@@ -739,7 +817,13 @@ function circle(radius, extent, CW) {
   //imageContext.fillStyle=turtle.color;
   // negate angles and CW due to context translation
   if (extent === undefined) {
-   imageContext.arc (turtle.pos.x, turtle.pos.y, radius, 0, 2*Math.PI);
+    imageContext.arc (turtle.pos.x, turtle.pos.y, radius, 0, 2*Math.PI);
+    svgClosePath()
+    svgBlob = svgBlob + '<circle cx="' + round( turtle.pos.x, svgPrecision) + '" cy="' + round( turtle.pos.y, svgPrecision)
+              + '" r="' + round( radius, svgPrecision) + '"'
+              + ' style="stroke:' + turtle.color + '; stroke-width:' + turtle.width + '; fill:none"/>\n'; 
+    updateHighWater( turtle.pos.x, turtle.pos.y,  radius + turtle.width, radius + turtle.width)
+   
   } else if (CW) {
     imageContext.arc (turtle.pos.x, turtle.pos.y, radius, -startAngle, -(startAngle+degToRad(extent)), CW);
   } else {
@@ -751,9 +835,33 @@ function circle(radius, extent, CW) {
   imageContext.restore();
   drawIf();
 }
+/*
+<circle cx="40" cy="40" r="24"
+    style="stroke:#006600;
+           stroke-width: 3;
+           stroke-dasharray: 10 5;
+           fill:#00cc00"/>
 
+so the partial arc problem can be part of a path d= expression:
+a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
+rx and ry are the radii of an elipse
+x-axis-rotation is the rotation of the elipse
+large-arg-flag
+sweep-flag
+dx and dy are the center of the arc
+
+so this translates "circle (radius, extent, CW)" roughly to:
+
+need to compute path start, path end and circle center
+angle start = turtle.heading
+circle center = turtle.pos
+path start = turtle.pos.x + radius * Math.cos( turtle.angle), turtle.pos.y + radius * Math.sin( turtle.angle)
+path end = turtle.pos.x + radius * Math.cos( turtle.angle + extent), turtle.pos.y + radius * Math.sin( turtle.angle + extent)
+<path ... d="M <pathStartX> <pathStartY a <radius> <radius> 0 1 0 circleCenterX circleCenterY l pathEndX pathEndY
+   "l <x of arc end> <y of arc end>"
+arc end is determined from the center of the arc through extent degrees
+*/
 arc = circle;
-
 
 /*******************************************************************************
  * dot -- draw a filled circle at the turtle position
@@ -777,6 +885,10 @@ function dot(size) {
   imageContext.stroke();
   imageContext.fill();
   imageContext.restore();
+  svgClosePath()
+  svgBlob = svgBlob + '<circle cx="' + round( turtle.pos.x, svgPrecision) + '" cy="' + round( turtle.pos.y, svgPrecision)
+            + '" r="' + round( size, svgPrecision) + '"'
+            + ' style="stroke:' + turtle.color + '; stroke-width:' + turtle.width + '; fill:' + turtle.color + '"/>\n';
   drawIf();
 }
 
@@ -925,7 +1037,7 @@ seth = angle;
  * returns: None
  ******************************************************************************/
 
-function background(styl) {
+function background( styl) {
     if (styl == undefined) {
        styl = turtle.color;
     }
@@ -940,6 +1052,7 @@ function background(styl) {
     }
     imageContext.fillStyle = styl;
     imageContext.fillRect(0, 0, imageCanvas.width, imageCanvas.height);
+    svgBackground = styl;
     //imageContext.fill;
 }
 
@@ -1071,6 +1184,7 @@ logoColors = ["black", "blue", "lime", "cyan", "red", "magenta", "yellow", "whit
  * returns: None
  ******************************************************************************/
 function color (col) {
+  svgClosePath();
   if (typeof(col) === "number") {
     if (col < 16) { // assume standard logo turtle color
       col = logoColors [col];
@@ -1136,7 +1250,7 @@ minx = minX;
 
 
 /*******************************************************************************
- * maxY -- get the maximum Y value
+ * axY -- get the maximum Y value
  *
  * arguments: None
  *

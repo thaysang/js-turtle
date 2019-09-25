@@ -490,6 +490,31 @@ function downloadClicked(e) {
 
 
 /*************************************************************************
+ * svgDownloadClicked -- handler for when the SVG download button is clicked
+ *
+ * arguments:
+ *   None
+ *
+ * returns:
+ *   false to prevent further processing
+ *************************************************************************/
+function svgDownloadClicked(e) {
+/*
+    e.preventDefault();
+    svgClose();
+    var BB = get_blob();
+    saveAs(
+        new BB(
+            svgBlob, {type: "text/plain;charset=" + document.characterSet}
+        )
+        , (downloadFilename.value || downloadFilename.placeholder) + ".svg"
+    );
+*/
+    return false;
+}
+
+
+/*************************************************************************
  * saveCanvasClicked -- handler for when the save canvas button is clicked
  *
  * arguments:
@@ -759,6 +784,7 @@ document.getElementById("body").onresize=fixDragButton;
 document.getElementById("stopButton").onclick=stopClicked;
 document.getElementById("stopButton").hidden=true;
 document.getElementById("downloadButton").onclick=downloadClicked;
+document.getElementById("saveSVG").onclick=svgDownloadClicked;
 document.getElementById("uploadButton").onclick= function () {
     document.getElementById("uploadFile").click();
 };
